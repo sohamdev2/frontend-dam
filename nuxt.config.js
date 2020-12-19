@@ -1,17 +1,49 @@
+import redirectSSL from 'redirect-ssl'
+
 export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
-    title: 'Digital Asset Manager',
+    title: process.env.APP_NAME,
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
+      {
+        hid: 'description',
+        name: 'description',
+        content: "Simplify,streamline & accelerate the marketer's life",
+      },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
+      {
+        rel: 'stylesheet',
+        href:
+          'https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap',
+      },
+    ],
+    script: [
+      {
+        src: `https://www.bugherd.com/sidebarv2.js?apikey=${process.env.BUGHERD_KEY}`,
+        async: 'true',
+      },
+      { src: '/js/jquery.min.js' },
+      { src: '/js/bootstrap.min.js' },
+      { src: '/js/plugin.js' },
+      { src: '/js/vendor.js' },
+      { src: '/js/dev.vendor.js' },
+    ],
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
-  css: [],
+  css: [
+    '~/assets/css/bootstrap.min.css',
+    '~/assets/css/utilities.css',
+    '~/assets/css/plugin.css',
+    '~/assets/css/vuedropzone.css',
+    '~/assets/css/vendor.css',
+    '~/assets/css/dev.vendor.css',
+  ],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [],
@@ -23,17 +55,75 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
+    '@nuxtjs/moment',
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/auth-next',
   ],
 
+  router: {
+    middleware: ['auth'],
+  },
+
+  auth: {
+    redirect: {
+      logout: '/login',
+      home: '/',
+    },
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: 'login',
+            method: 'post',
+            propertyName: 'data.access_token',
+          },
+          user: {
+            url: 'user',
+            method: 'get',
+            propertyName: 'data.user',
+          },
+          logout: {
+            url: 'logout',
+            method: 'post',
+          },
+        },
+      },
+    },
+    cookie: {
+      options: {
+        path: '/',
+        secure: process.env.SECURE_AUTH_COOKIE === 'true',
+      },
+    },
+  },
+
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
-  axios: {},
+  axios: {
+    baseURL: process.env.API_BASE_URL,
+    https: process.env.HTTPS === 'true',
+  },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
+  serverMiddleware: [
+    redirectSSL.create({
+      enabled: process.env.NODE_ENV === 'production',
+    }),
+    // '~/middleware/url-check.js',
+  ],
   build: {},
+  publicRuntimeConfig: {
+    appName: process.env.APP_NAME,
+    baseUrl: process.env.BASE_URL,
+    apiBaseUrl: process.env.API_BASE_URL,
+    backendUrl: process.env.BACKEND_URL,
+    userPlaceHolderImg: process.env.USER_PLACEHOLDER_IMG,
+    googleAuthUrl: process.env.GOOGLE_AUTH_URL,
+    bugherdKey: process.env.BUGHERD_KEY,
+  },
+  privateRuntimeConfig: {},
 }

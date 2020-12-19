@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.3.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="Layer_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1342.1 987"
+	 style="enable-background:new 0 0 1342.1 987;" xml:space="preserve">
+<style type="text/css">
+	.Drop_x0020_Shadow{fill:none;}
+	.Round_x0020_Corners_x0020_2_x0020_pt{fill:#FFFFFF;stroke:#1D1D1B;stroke-miterlimit:10;}
+	.Live_x0020_Reflect_x0020_X{fill:none;}
+	.Bevel_x0020_Soft{fill:url(#SVGID_1_);}
+	.Dusk{fill:#FFFFFF;}
+	.Foliage_GS{fill:#FFDD00;}
+	.Pompadour_GS{fill-rule:evenodd;clip-rule:evenodd;fill:#51AEE2;}
+	.st0{opacity:3.000000e-02;fill:#606060;}
+	.st1{fill:#F6F8F9;}
+	.st2{fill:#EAEAEA;}
+</style>
+<metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+		<sliceSourceBounds  bottomLeftOrigin="true" height="987" width="1342.1" x="828.9" y="-1884.9"></sliceSourceBounds>
+	</sfw>
+</metadata>
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="-828.9412" y1="-897.9109" x2="-828.2341" y2="-897.2038">
+	<stop  offset="0" style="stop-color:#E6E6EB"/>
+	<stop  offset="0.1754" style="stop-color:#E2E2E7"/>
+	<stop  offset="0.3552" style="stop-color:#D6D6DB"/>
+	<stop  offset="0.5371" style="stop-color:#C2C3C6"/>
+	<stop  offset="0.7204" style="stop-color:#A5A7A9"/>
+	<stop  offset="0.9031" style="stop-color:#818485"/>
+	<stop  offset="1" style="stop-color:#6B6E6E"/>
+</linearGradient>
+<path id="Path_4152" class="st0" d="M313.7,984.5c-12.7-1.2-25.3-3-37.8-5.5C80.8,939-67.8,688.9,31.9,503.8
+	c58.4-108.3,200.8-145.2,237.8-269.3c19.8-66.2,3-158.5,66.9-202.6c47.2-32.6,111-38,165.9-26.1C608,28.7,693.4,133.5,806,120.3
+	c85.9-10.1,160.3-69.9,247.6-79.1c210.5-22.3,29.5,295.7,119.1,380.9c55,52.3,128.2,48.2,159,129.3
+	c44.2,116.5-59.6,376.9-179.9,421.9c-9.3,2.9-19,4.1-28.6,3.7l-717.7,9.6C374.9,987.5,344.2,986.8,313.7,984.5z"/>
+<g>
+	<g id="Path_2708_1_">
+		<path class="st1" d="M463.8,888.5c-17.6,0-31.6-11.6-35.7-29.6L292.7,269.8c-2.4-10.5-0.9-20.8,4.2-29
+			c5.1-8.2,13.7-14.1,24.2-16.5l294.8-67.8l196.8,103.1l111.5,485.1c5,21.8-6.7,40.5-28.5,45.5l-422.2,97.1
+			C470.3,888.1,467,888.5,463.8,888.5z"/>
+		<g>
+			<path class="st2" d="M615.4,160.8l193.8,101.6l111.1,483.3c2.2,9.6,0.9,18.6-3.7,26c-4.6,7.4-12.2,12.5-21.7,14.7l-422.2,97.1
+				c-3,0.7-6,1-8.9,1c-15.9,0-28.1-10.2-31.8-26.5L296.6,268.9c-4.5-19.5,6-36.2,25.5-40.7L615.4,160.8 M616.5,152.4l-296.2,68.1
+				c-23.8,5.5-36.9,26.4-31.5,50.3l135.4,589.1c4.6,20.2,20.4,32.7,39.6,32.7c3.5,0,7-0.4,10.6-1.2l422.2-97.1
+				c23.8-5.5,36.9-26.4,31.5-50.3L816.2,257L616.5,152.4L616.5,152.4z"/>
+		</g>
+	</g>
+	<path id="Path_2709_1_" class="st2" d="M616.5,152.4l23.5,102.1c5.5,23.8,26.4,36.9,50.3,31.5l126-29L616.5,152.4z"/>
+</g>
+<g>
+	<g id="Path_2708">
+		<path class="st1" d="M579.4,983c-22.3,0-37.9-15.6-37.9-37.9V340.6c0-22.3,15.6-37.9,37.9-37.9h302.5l168.7,144.6v497.8
+			c0,22.3-15.6,37.9-37.9,37.9H579.4z"/>
+		<path class="st2" d="M880.4,306.7l166.2,142.4l0,495.9c0,20-14,33.9-33.9,33.9H579.4c-20,0-33.9-14-33.9-33.9V340.6
+			c0-20,14-33.9,33.9-33.9H880.4 M883.4,298.7h-304c-24.5,0-41.9,17.5-41.9,41.9v604.4c0,24.5,17.5,41.9,41.9,41.9h433.2
+			c24.5,0,41.9-17.5,41.9-41.9l0-499.6L883.4,298.7L883.4,298.7z"/>
+	</g>
+	<path id="Path_2709_2_" class="st2" d="M883.4,298.7v104.8c0,24.5,17.5,41.9,41.9,41.9h129.3L883.4,298.7z"/>
+</g>
+</svg>
