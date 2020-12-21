@@ -1,0 +1,92 @@
+.login-screen .form-group,
+.cs-form-group .form-group {
+  margin-bottom: 25px;
+}
+.login-screen .login-btn {
+  margin-top: 5px;
+}
+.login-screen .sign-screen-right {
+  padding-left: 5em;
+  padding-right: 12em;
+  width: 40%;
+  overflow-y: initial;
+}
+.two-part-view.login-screen {
+  justify-content: flex-end;
+  overflow-y: auto;
+  -webkit-justify-content: flex-end;
+}
+.login-screen .form-group,
+.cs-form-group .form-group {
+  margin-bottom: 25px;
+}
+.login-screen .login-btn {
+  margin-top: 5px;
+}
+@media only screen and (max-width: 1800px) {
+  .login-screen .sign-screen-right {
+    padding-right: 5em;
+  }
+}
+@media only screen and (max-width: 1650px) {
+  .login-screen .form-group {
+    margin-bottom: 15px;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .login-screen .sign-screen-right {
+    padding-right: 2em;
+    padding-left: 2em;
+  }
+}
+@media only screen and (max-width: 991px) {
+  .login-screen .sign-screen-right {
+    padding-right: 1em;
+    padding-left: 1em;
+  }
+}
+@media only screen and (max-width: 767px) {
+  .login-screen .sign-screen-right {
+    float: none;
+    width: 100%;
+    background-color: transparent;
+    display: inline-block;
+    margin: auto;
+    height: 100%;
+    overflow: visible;
+    padding: 0 30px;
+  }
+  .single-screen {
+    height: auto;
+  }
+
+  .login-screen .sign-screen-left {
+    display: none;
+  }
+  .login-screen .row + .row .col-sm-12 {
+    text-align: center;
+  }
+  .login-screen .sign-screen-left {
+    display: none;
+  }
+  .login-screen .row + .row .col-sm-12 {
+    text-align: center;
+  }
+  .login-screen .sign-screen-right-content {
+    padding: 30px 0 50px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .login-screen .sign-screen-right {
+    width: 100%;
+  }
+}
+.single-screen {
+  height: 100vh;
+  width: 100vw;
+  overflow-y: auto;
+}
+.single-screen .sign-screen {
+  height: 100%;
+}

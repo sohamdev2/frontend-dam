@@ -27,10 +27,10 @@ export default {
         async: 'true',
       },
       { src: '/js/jquery.min.js' },
-      { src: '/js/bootstrap.min.js' },
+      { src: '/js/popper.min.js' },
       { src: '/js/plugin.js' },
-      { src: '/js/vendor.js' },
-      { src: '/js/dev.vendor.js' },
+      { src: '/js/bootstrap.min.js' },
+      { src: '/js/script.js' },
     ],
   },
 
@@ -39,6 +39,7 @@ export default {
     '~/assets/css/bootstrap.min.css',
     '~/assets/css/plugin.css',
     '~/assets/css/style.css',
+    '~/assets/css/dev.vendor.css',
   ],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
