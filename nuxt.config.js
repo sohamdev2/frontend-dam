@@ -13,7 +13,6 @@ export default {
         content: "Simplify,streamline & accelerate the marketer's life",
       },
     ],
-
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
       {
@@ -46,7 +45,7 @@ export default {
   ],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: [],
+  plugins: ['~/plugins/vuelidate.js', '~/plugins/helper.js'],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
@@ -63,6 +62,7 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
+    '@nuxtjs/toast',
   ],
 
   router: {
@@ -76,6 +76,14 @@ export default {
     },
     strategies: {
       local: {
+        token: {
+          property: 'data.access_token',
+          required: true,
+          type: 'Bearer',
+        },
+        user: {
+          property: 'data.user',
+        },
         endpoints: {
           login: {
             url: 'login',
@@ -101,7 +109,46 @@ export default {
       },
     },
   },
-
+  toast: {
+    position: 'top-center',
+    theme: 'toasted-primary', // toasted-primary, outline, bubble
+    duration: '5000',
+    iconPack: 'fontawesome',
+    /* action: [
+      {
+        text: 'close',
+        onClick: (e, toastObject) => {
+          toastObject.goAway(0);
+        }
+      }
+    ], */
+    register: [
+      {
+        name: 'success',
+        message: (message) => message,
+        options: {
+          type: 'success',
+          icon: 'check',
+        },
+      },
+      {
+        name: 'error',
+        message: (message) => message,
+        options: {
+          type: 'error',
+          icon: 'exclamation-circle',
+        },
+      },
+      {
+        name: 'info',
+        message: (message) => message,
+        options: {
+          type: 'info',
+          icon: 'exclamation',
+        },
+      },
+    ],
+  },
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
     baseURL: process.env.API_BASE_URL,
