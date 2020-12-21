@@ -7,11 +7,11 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
-    "lint:js": "eslint_d --ext .js,.vue --ignore-path .gitignore .",
+    "lint:js": "eslint_d --ext .js,.vue --ignore-path .gitignore . --cache",
     "lint": "npm run lint:js"
   },
   "lint-staged": {
-    "*.{js,vue}": "eslint"
+    "*.{js,vue}": "eslint_d --cache"
   },
   "husky": {
     "hooks": {

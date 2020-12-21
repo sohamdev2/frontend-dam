@@ -1,15 +1,1 @@
-<svg id="digital_assets" data-name="digital assets" xmlns="http://www.w3.org/2000/svg" width="23.94" height="24" viewBox="0 0 23.94 24">
-  <circle id="Ellipse_82" data-name="Ellipse 82" cx="1.975" cy="1.975" r="1.975" transform="translate(19.99 0)" fill="#fff"/>
-  <path id="Path_2595" data-name="Path 2595" d="M33.909,33.909a1.989,1.989,0,1,0,2.813,0A1.987,1.987,0,0,0,33.909,33.909Z" transform="translate(-13.38 -13.38)" fill="#fff"/>
-  <path id="Path_2596" data-name="Path 2596" d="M33.909,17.309a1.989,1.989,0,1,0,2.813,0A1.987,1.987,0,0,0,33.909,17.309Z" transform="translate(-13.38 -6.715)" fill="#fff"/>
-  <circle id="Ellipse_83" data-name="Ellipse 83" cx="1.975" cy="1.975" r="1.975" transform="translate(9.995 0)" fill="#fff"/>
-  <path id="Path_2597" data-name="Path 2597" d="M17.209,33.909a1.989,1.989,0,1,0,2.813,0A1.987,1.987,0,0,0,17.209,33.909Z" transform="translate(-6.675 -13.38)" fill="#fff"/>
-  <path id="Path_2598" data-name="Path 2598" d="M17.209,17.309a1.989,1.989,0,1,0,2.813,0A1.987,1.987,0,0,0,17.209,17.309Z" transform="translate(-6.675 -6.715)" fill="#fff"/>
-  <circle id="Ellipse_84" data-name="Ellipse 84" cx="1.975" cy="1.975" r="1.975" transform="translate(0 0)" fill="#fff"/>
-  <path id="Path_2599" data-name="Path 2599" d="M.609,17.309a1.989,1.989,0,1,0,2.813,0A1.987,1.987,0,0,0,.609,17.309Z" transform="translate(-0.01 -6.715)" fill="#fff"/>
-  <path id="Path_2600" data-name="Path 2600" d="M.609,33.909a1.989,1.989,0,1,0,2.813,0A1.987,1.987,0,0,0,.609,33.909Z" transform="translate(-0.01 -13.38)" fill="#fff"/>
-  <rect id="Rectangle_769" data-name="Rectangle 769" width="4.01" height="9.995" transform="translate(0 11.97)" fill="#fff"/>
-  <rect id="Rectangle_770" data-name="Rectangle 770" width="4.01" height="9.995" transform="translate(19.93 11.97)" fill="#fff"/>
-  <rect id="Rectangle_771" data-name="Rectangle 771" width="4.01" height="19.99" transform="translate(9.995 1.975)" fill="#fff"/>
-  <rect id="Rectangle_772" data-name="Rectangle 772" width="19.93" height="4.01" transform="translate(1.975 19.99)" fill="#fff"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"><defs><style>.a{fill:#fff;}</style></defs><g transform="translate(-330.119 -132.961)"><path class="a" d="M339.119,150.961a.973.973,0,1,1,.688-.285A.968.968,0,0,1,339.119,150.961Z"/><path class="a" d="M331.092,142.931a.971.971,0,0,1-.973-.97.971.971,0,0,1,.973-.969.969.969,0,1,1,0,1.939Z"/><path class="a" d="M347.147,150.961a.971.971,0,0,1-.972-.969V136.3l-14.407,14.363-.034.057a.971.971,0,0,1-1.33-1.413l.456-.455-.014-.013,13.98-13.937H331.091a.97.97,0,1,1,0-1.94h16.056a.97.97,0,0,1,.972.97v16.06a.954.954,0,0,1-.284.685A.964.964,0,0,1,347.147,150.961Z"/></g></svg>
