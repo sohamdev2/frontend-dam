@@ -9,8 +9,8 @@
                 class="logo"
                 src="~/assets/img/marcom_hq_2_1.svg"
                 alt="MarComHQ"
-                @click="loginPage"
               />
+              <!-- <h2 class="my-3">Digital Asset Manager</h2> -->
               <p>Sign In to Your Account</p>
               <div class="body-text">
                 Required fields are marked with an asterisk (*)
@@ -61,58 +61,20 @@
                   </div>
                 </div>
                 <div class="col-sm-12">
-                  <button
+                  <AppButton
                     type="submit"
-                    :class="{
-                      'btn btn-block cs-btn': true,
-                      'btn-disable': loading,
-                    }"
+                    :disabled="loading || $v.$invalid"
+                    :loading="loading"
                   >
-                    Sign In to MarComHQ
-                    <i v-if="loading" class="fa fa-circle-o-notch fa-spin"></i>
-                  </button>
+                    <template #loading> Signing in... </template>
+                    Sign In to MarcomHQ
+                  </AppButton>
                 </div>
                 <div class="col-sm-12">
                   <div class="pull-right mt-25 text-right">
-                    <nuxt-link to="forgot-password" class="color-gray"
-                      >Forgot Password</nuxt-link
-                    >
-                  </div>
-                </div>
-              </div>
-
-              <div class="signin-more">
-                <p>or</p>
-              </div>
-              <div class="signin-with signin-with-title mb0">
-                <div class="google-btn-wrapper">
-                  <a class="btn btn-block" @click="googleSignIn">
-                    <img
-                      src="~/assets/img/google-icon.png"
-                      alt
-                      class="hidden-xs"
-                    />
-                    <img
-                      src="~/assets/img/google-icon-mobile.jpg"
-                      alt
-                      class="visible-xs"
-                    />
-                    Sign in with Google
-                  </a>
-                </div>
-
-                <div class="row">
-                  <div class="col-sm-12">
-                    <div class="signin-with-btn">
-                      <h3 class="text-center">Don’t have an account?</h3>
-                    </div>
-                    <a
-                      href="javascript:void(0)"
-                      class="btn btn-block"
-                      @click="goToSignup"
-                    >
-                      Sign Up
-                    </a>
+                    <nuxt-link to="/forgot-password" class="color-gray">
+                      Forgot Password
+                    </nuxt-link>
                   </div>
                 </div>
               </div>
@@ -143,65 +105,15 @@ export default {
   },
   methods: {
     async login(e) {
-      if (this.checkIfAlreadyLogin()) {
-        this.processIfAlreadyLoggedIn()
-        return
-      }
+      if ((this.$v.$touch(), this.$v.$invalid)) return
 
-      this.$v.$touch()
-      if (this.$v.$invalid) {
-        return
-      }
-      try {
-        this.loading = true
-        await this.$auth.loginWith('local', {
-          data: {
-            email: this.form.email,
-            password: this.form.password,
-          },
-        })
+      this.loading = true
 
-        // set auth token globally
-        this.$axios.setToken(this.$auth.getToken('local'))
-
-        // set force-logout to false if it is true, when user logged in again
-        this.$store.commit('setForceLogin', false)
-
-        const currentWorkspace = {
-          id: this.$auth.user.workspace_id,
-          workspace_unique_id: this.$auth.user.workspace_unique_id,
-          name: this.$auth.user.workspace_name,
-          role: this.$auth.user.role,
-          type: this.$auth.user.workspace_type,
-        }
-
-        // set current workspace globally
-        this.$auth.$storage.setUniversal('currentWorkspace', currentWorkspace)
-
-        if (this.$auth.$storage.getUniversal('trackReferringUrl') === true) {
-          return this.$router.replace({
-            name: this.$auth.$storage.getUniversal('referringUrlName'),
-            params: this.$auth.$storage.getUniversal('referringUrlParams'),
-            query: this.$auth.$storage.getUniversal('referringUrlQuery'),
-          })
-        }
-
-        if (this.$auth.user.workspace_id === 0) {
-          return this.$router.replace('create-workspace')
-        }
-        if (this.$auth.user.workspace_id > 0) {
-          return this.$router.replace({
-            name: 'workspace_id-dashboard',
-            params: { workspace_id: this.$auth.user.workspace_id },
-          })
-        }
-      } catch (e) {
-        this.loading = false
-        this.$toast.global.error(this.$getErrorMessage(e))
-        // this.$toast.global.success(data.message);
-        // this.$toast.global.info(data.message);
-        // this.$toast.global.woops();
-      }
+      await this.$auth
+        .loginWith('local', { data: this.form })
+        .then(() => this.$router.push('/'))
+        .catch(this.$showErrorToast)
+      this.loading = false
     },
   },
   validations: {
