@@ -1,0 +1,22 @@
+1. Open command prompt as admin.
+
+2. Navigate to your Office folder.
+If you install your Office in the ProgramFiles folder, the path will be “%ProgramFiles%\Microsoft Office\Office16” or “%ProgramFiles(x86)%\Microsoft Office\Office16”. It depends on the architecture of the Windows OS you are using. If you are not sure of this issue, don’t worry, just run both of the commands above. One of them will be not executed and an error message will be printed on the screen.
+
+cd /d %ProgramFiles%\Microsoft Office\Office16
+OR
+cd /d %ProgramFiles(x86)%\Microsoft Office\Office16
+
+3. Convert your Office license to volume one if possible.
+for /f %x in ('dir /b ..\root\Licenses16\proplusvl_kms*.xrm-ms') do cscript ospp.vbs /inslic:"..\root\Licenses16\%x"
+
+4. Use KMS client key to activate your Office
+Make sure your PC is connected to the internet, then run the following command.
+
+cscript ospp.vbs /inpkey:XQNVK-8JYDB-WJ9W3-YJ8YR-WFG99
+cscript ospp.vbs /unpkey:BTDRB >nul
+cscript ospp.vbs /unpkey:KHGM9 >nul
+cscript ospp.vbs /unpkey:CPQVG >nul
+cscript ospp.vbs /sethst:kms8.msguides.com
+cscript ospp.vbs /setprt:1688
+cscript ospp.vbs /act
