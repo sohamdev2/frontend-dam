@@ -23,7 +23,12 @@ export default ({ app, $axios }, inject) => {
     app.$clearAuthCookies()
   }
 
-  const clearAuthCookies = () => {}
+  const clearAuthCookies = () => {
+    if (process.client) {
+      window.localStorage.clear()
+      window.sessionStorage.clear()
+    }
+  }
 
   const isMobileDevice = () => {
     return app.$device.isMobile
@@ -38,6 +43,9 @@ export default ({ app, $axios }, inject) => {
 
   inject('getErrorMessage', getErrorMessage)
   inject('showErrorToast', showErrorToast)
+  inject('getWorkspaceId', () => {
+    return app.$auth?.user?.dealer?.workspace_id
+  })
 
   inject('logout', logout)
   inject('clearAuthCookies', clearAuthCookies)

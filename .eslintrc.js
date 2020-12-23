@@ -23,6 +23,6 @@ module.exports = {
         endOfLine: 'auto',
       },
     ],
-    camelcase: ['off', { ignoreDestructuring: true, properties: 'never' }],
+    camelcase: ['warn', { ignoreDestructuring: true, properties: 'never' }],
   },
 }

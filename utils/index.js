@@ -118,6 +118,7 @@ export const sortToTime = (x, reverse) =>
   (reverse ? -Infinity : Infinity)
 
 export const sortToTypedNumber = (x) => Number(x)
+
 export function log() {
   console.log(...arguments)
 }
@@ -127,4 +128,27 @@ export function stringToRegex(input) {
   input = input && input.trim().replace(/([\[\]\\\^\$\.\|\?\*\+\(\)])/g, '\\$1')
 
   return input && new RegExp(input, 'ig')
+}
+export function localeNumber(value) {
+  return Number(value).toLocaleString()
+}
+
+export function shuffle(array) {
+  let currentIndex = array.length
+  let temporaryValue
+  let randomIndex
+
+  // While there remain elements to shuffle...
+  while (currentIndex !== 0) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex)
+    currentIndex -= 1
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex]
+    array[currentIndex] = array[randomIndex]
+    array[randomIndex] = temporaryValue
+  }
+
+  return array
 }

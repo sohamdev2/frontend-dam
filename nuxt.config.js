@@ -2,6 +2,10 @@ import redirectSSL from 'redirect-ssl'
 
 export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
+  loading: {
+    color: '#ed703d',
+    height: '3px',
+  },
   head: {
     title: process.env.APP_NAME,
     meta: [
@@ -43,7 +47,11 @@ export default {
   ],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: ['~/plugins/vuelidate.js', '~/plugins/helper.js'],
+  plugins: [
+    '~/plugins/vuelidate.js',
+    '~/plugins/helper.js',
+    { src: '~/plugins/vue-carousel.js', mode: 'client' },
+  ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
@@ -61,6 +69,12 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
     '@nuxtjs/toast',
+    [
+      'nuxt-vuex-localstorage',
+      {
+        localStorage: ['appData'], //  If not entered, “localStorage” is the default value
+      },
+    ],
   ],
 
   router: {
