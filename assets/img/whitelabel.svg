@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="54.297" height="44.869" viewBox="0 0 54.297 44.869">
+  <g id="Group_105" data-name="Group 105" transform="translate(-946 -514)">
+    <g id="Group_104" data-name="Group 104" transform="translate(946 514)">
+      <path id="Path_2063" data-name="Path 2063" d="M225,0V44.869h32.915V33.588h10.859V0Zm14.311,28.706H236.2v-14.9h3.115Zm18.688,0h-8.586c-4.377,0-7.66-2.862-7.66-7.66a7.577,7.577,0,1,1,15.153,0c0,2.1-.842,4.209-2.778,5.051h3.956L258,28.706ZM249.328,16.5a4.447,4.447,0,0,0-4.293,4.63,4.305,4.305,0,1,0,8.586,0A4.447,4.447,0,0,0,249.328,16.5Z" transform="translate(-225)"/>
+      <g id="Group_103" data-name="Group 103" transform="translate(45.963)">
+        <path id="Path_2064" data-name="Path 2064" d="M280.779.758H279.6V0h3.2V.758H281.62v3.2h-.842V.758Z" transform="translate(-279.6)" fill="#fff"/>
+        <path id="Path_2065" data-name="Path 2065" d="M284.1,0h1.347l.926,2.61h0L287.3,0h1.347V4.041H287.8V.926h0L286.71,3.957h-.673L285.026.926h0V3.957h-.842V0Z" transform="translate(-280.312)" fill="#fff"/>
+      </g>
+      <path id="Path_2066" data-name="Path 2066" d="M266,50.471l8.586-8.671H266Z" transform="translate(-231.486 -6.612)" fill="#fff"/>
+    </g>
+  </g>
+</svg>
