@@ -23,15 +23,131 @@
 .login-screen .login-btn {
   margin-top: 5px;
 }
+.sign-screen-dtable {
+  display: table;
+  margin: 0 auto;
+  height: 100%;
+  max-width: 460px;
+  padding: 0 15px 15px;
+  min-height: 100vh;
+  width: 100%;
+}
+.sign-screen-dtable > .sign-screen-dtable-cell {
+  display: table-cell;
+  vertical-align: middle;
+  position: relative;
+}
+.sign-screen-right-content {
+  padding: 3em 15px 4em 15px;
+  line-height: 1;
+}
+.sign-heading-text p,
+.domain-text p {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 25px;
+}
+html,
+body,
+.center-part-view .center-part-view-body,
+.create-project .fixed-button,
+.scope-work-footer,
+.project-task-template .project-page,
+.project_task_group_boxes,
+.side-baar-header,
+.side-baar-comment-box,
+.select2-container--default
+  .select2-selection--multiple
+  .select2-selection__choice,
+.cs-dropdown .dropdown-menu ul li a:hover,
+.cs-dropdown .dropdown-menu ul li a.active,
+.header-right .dropdown .dropdown-menu .workspace-menu,
+.dropdown-menu .dropdown-item a:hover,
+.dropdown-menu .dropdown-item:active {
+  background-color: #f6f8f9;
+}
+.body-text {
+  line-height: normal;
+}
+@media only screen and (max-width: 1450px) {
+  .sign-heading-text .logo {
+    margin-bottom: 45px;
+  }
+}
 @media only screen and (max-width: 1800px) {
   .login-screen .sign-screen-right {
     padding-right: 5em;
   }
 }
+.form-group label:not(.radio) {
+  color: #43425d;
+  font-weight: normal;
+  margin-bottom: 5px;
+  line-height: normal;
+}
+.color-gray {
+  color: #888888;
+}
+
+.mt-25 {
+  margin-top: 25px !important;
+}
+.pull-right {
+  float: right;
+}
+.text-right {
+  text-align: right !important;
+}
+.sign-heading-text p,
+.domain-text p,
+.login-screen .form-group,
+.cs-form-group .form-group,
+.signin-with h3,
+.sign-heading-text {
+  margin-bottom: 15px;
+}
+@media only screen and (max-height: 1366px) and (max-width: 1024px) {
+  .bottom-fix-link-center {
+    bottom: 10px;
+  }
+}
+
+.bottom-fix-link-center {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
 @media only screen and (max-width: 1650px) {
   .login-screen .form-group {
     margin-bottom: 15px;
   }
+  .mt-25 {
+    margin-top: 15px !important;
+  }
+  .sign-heading-text .logo {
+    margin-bottom: 25px;
+  }
+  .sign-heading-text p,
+  .domain-text p,
+  .login-screen .form-group,
+  .cs-form-group .form-group,
+  .signin-with h3,
+  .sign-heading-text {
+    margin-bottom: 15px;
+  }
+}
+@media only screen and (max-width: 1650px) {
+  .mb-25 {
+    margin-bottom: 15px !important;
+  }
+}
+.body-text {
+  line-height: normal;
+}
+.mb-25 {
+  margin-bottom: 25px !important;
 }
 @media only screen and (max-width: 1200px) {
   .login-screen .sign-screen-right {

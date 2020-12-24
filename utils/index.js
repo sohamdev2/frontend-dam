@@ -69,8 +69,17 @@ export function toHumanlySize(size) {
 }
 
 export const imageExtensions = ['jpg', 'png', 'jpeg', 'svg', 'gif']
-export const videoExtensions = ['mp4', 'mkv', 'webm', 'mov', 'mpeg-4']
+export const videoExtensions = [
+  'mp4',
+  'mkv',
+  'webm',
+  'mov',
+  'mpeg-4',
+  'mov',
+  'avi',
+]
 export const pdfExtensions = ['pdf']
+export const docExtensions = ['doc', 'docx', 'ppt', 'pptx', 'xlsx', 'xls']
 
 export function isPdf(ext) {
   return !!ext && pdfExtensions.includes(ext.toLowerCase())
@@ -82,6 +91,10 @@ export function isImage(ext) {
 
 export function isVideo(ext) {
   return !!ext && videoExtensions.includes(ext.toLowerCase())
+}
+
+export function isDoc(ext) {
+  return !!ext && docExtensions.includes(ext.toLowerCase())
 }
 
 export function toQueryString(obj) {

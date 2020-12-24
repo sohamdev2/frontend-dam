@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import Model from '@/components/Model'
+import Model from '@/components/widgets/Model'
 
 export default {
   components: { Model },

@@ -37,6 +37,20 @@
             <source :src="file.display_file" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
+          <iframe
+            v-else-if="isDoc"
+            :src="`https://view.officeapps.live.com/op/embed.aspx?src=${file.display_file}`"
+            width="100%"
+            height="100%"
+            frameborder="0"
+          >
+            This is an embedded
+            <a target="_blank" href="http://office.com">Microsoft Office</a>
+            document, powered by
+            <a target="_blank" href="http://office.com/webapps">
+              Office Online </a
+            >.
+          </iframe>
           <img
             v-else
             class="img-fluid"
@@ -171,7 +185,12 @@
                   <div class="bulk-box">
                     <h3>Tags</h3>
                     <span v-if="ui.loading">Loading...</span>
-                    <TagsInput v-else v-model="tags" disabled />
+                    <TagsInput
+                      v-else
+                      v-model="tags"
+                      placeholder="No Tags Provided"
+                      disabled
+                    />
                   </div>
                 </div>
               </div>
@@ -237,6 +256,7 @@ export default {
   },
   data() {
     return {
+      proxyurl,
       ui: {
         tab: 'overview',
         loading: false,
@@ -259,6 +279,9 @@ export default {
     },
     isVideo() {
       return this.$isVideo(this.file.file_type)
+    },
+    isDoc() {
+      return this.$isDoc(this.file.file_type)
     },
     previewImage() {
       const ext = this.file.file_type
@@ -449,5 +472,10 @@ export default {
 .metadata-tab table td span,
 .metadata-tab table td strong {
   display: inline-block !important;
+}
+
+#wacframe .cui-statusbar .cui-ctl,
+#wacframe .cui-statusbar .cui-ctl-medium {
+  display: none !important;
 }
 </style>
