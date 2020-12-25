@@ -13,7 +13,7 @@ export { _state as state }
 
 export const mutations = {
   expanded: mutator('expanded'),
-  pinned: mutator('expanded'),
+  pinned: mutator('pinned'),
   setDownloadingItem(state, { item, id }) {
     if (!state.files[id]) state.files[id] = Object.assign({}, item)
     else Object.assign(state.files[id], item)
@@ -43,22 +43,23 @@ export const actions = {
     }
 
     commit('setDownloadingItem', { id, item })
+    commit('pinned', true)
+    commit('expanded', true)
+
     let zipUrl =
       (process.env.BACKAND_URL || 'https://marcom2-api.whitelabeliq.net') +
       '/upload/dam_assets_zip/'
     let name
     let orgUrl
+
     try {
       const {
         data: { url },
-      } = await this.$axios.$post(
-        'digital-assets/dashboard/download-multiple-files',
-        {
-          workspace_id: this.$getWorkspaceId(),
-          digital_assets_id: files,
-          category_id: folders,
-        }
-      )
+      } = await this.$axios.$post('digital/download-multiple-files', {
+        workspace_id: this.$getWorkspaceId(),
+        digital_assets_id: files,
+        category_id: folders,
+      })
       orgUrl = url
       name = url.split(/(\/|\\)/gm).pop()
       zipUrl += name
@@ -75,7 +76,7 @@ export const actions = {
       callCountApi: false,
       extras: { orgUrl },
     }).then(() =>
-      this.$axios.$post('digital-assets/dashboard/delete-file', {
+      this.$axios.$post('digital/delete-file', {
         workspace_id: this.$getWorkspaceId(),
         url: orgUrl,
       })
@@ -109,7 +110,7 @@ export const actions = {
     if (callCountApi)
       try {
         await this.$axios.$get(
-          'digital-assets/dashboard/download-count?' +
+          'digital/download-count?' +
             toQueryString({
               workspace_id: this.$getWorkspaceId(),
               digital_assets_id: id,

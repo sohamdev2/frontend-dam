@@ -2,8 +2,7 @@
   <div>
     <transition name="slide-up">
       <div v-if="!!count" class="select-bar" style="display: flex">
-        <div v-if="deleting" class="select-left"></div>
-        <div v-else class="select-left">
+        <div class="select-left">
           <div class="select-all">
             <span>Select</span>
             <div class="custom-radio" @click="$emit('click:select-all')">
