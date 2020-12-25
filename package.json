@@ -29,6 +29,7 @@
     "nuxt": "^2.14.12",
     "nuxt-vuex-localstorage": "^1.2.7",
     "redirect-ssl": "^2.0.0",
+    "v-clipboard": "^2.2.3",
     "vue-carousel": "^0.18.0",
     "vue-content-loader": "^0.2.3",
     "vue-radial-progress": "^0.3.2",

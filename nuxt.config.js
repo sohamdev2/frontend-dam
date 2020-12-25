@@ -50,6 +50,7 @@ export default {
   plugins: [
     '~/plugins/vuelidate.js',
     '~/plugins/helper.js',
+    '~/plugins/v-clipboard.js',
     { src: '~/plugins/vue-carousel.js', mode: 'client' },
   ],
 

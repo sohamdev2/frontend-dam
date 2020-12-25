@@ -75,17 +75,17 @@
 
 <script>
 export default {
-  asyncData({ params, query, $axios, error }) {
+  asyncData({ params, query, $axios, redirect }) {
     return $axios
       .$get(`show-share-assets?type=${params.type}&status=${query.status}`)
       .then(({ data }) => ({
-        category: data.category,
-        assets: data.assets,
-        stack: [{ category: data.category, assets: data.assets }],
+        category: data.category || [],
+        assets: data.assets || [],
+        stack: [{ category: data.category || [], assets: data.assets || [] }],
       }))
       .catch((e) => {
         console.log(e)
-        error(e)
+        redirect('/')
       })
   },
   data() {
@@ -112,6 +112,11 @@ export default {
   },
   mounted() {
     window.onpopstate = () => this.prevStack()
+    this.$router.replace({
+      query: {
+        status: this.$route.query.status,
+      },
+    })
   },
   methods: {
     sort(path, field_name, primer) {
@@ -142,8 +147,12 @@ export default {
     async nextStack(folderId) {
       if (this.loading) return
       this.loading = true
-      location.hash = '#' + btoa(String(folderId))
-
+      this.$router.push({
+        query: {
+          status: this.$route.query.status,
+          file: btoa(String(folderId)),
+        },
+      })
       await this.$axios
         .$get(
           'view-share-files-with-category?' +
