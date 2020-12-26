@@ -125,6 +125,23 @@
             <div id="tab1-in" class="collapse show" data-parent="#accordion">
               <div class="tab-body overview-tab">
                 <p>{{ file.description }}</p>
+                <template v-if="file.category && file.category.length">
+                  <h5>Included in Folders</h5>
+                  <ul class="px-4 pt-3">
+                    <li v-for="folder in file.category" :key="folder.id">
+                      <nuxt-link
+                        :to="{
+                          name: 'workspace_id-asset-manager-folders',
+                          params: { workspace_id: $getWorkspaceId() },
+                          hash: `#${folder.id}`,
+                        }"
+                      >
+                        {{ folder.category_name }}
+                      </nuxt-link>
+                    </li>
+                  </ul>
+                  <hr />
+                </template>
                 <table>
                   <tr>
                     <td>ID</td>
