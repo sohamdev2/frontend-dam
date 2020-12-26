@@ -135,10 +135,10 @@
                   </tr>
                   <template v-if="metaData">
                     <tr v-for="(value, key) in metaData" :key="key">
-                      <td>{{ key }}</td>
+                      <td>{{ $camelCaseToNormalCase(key) }}</td>
                       <td>
                         <span> : </span>
-                        <strong v-html="getFormattedMetaValue(value, key)">
+                        <strong v-html="$getFormattedMetaValue(value, key)">
                         </strong>
                       </td>
                     </tr>
@@ -158,10 +158,10 @@
                     }"
                     :key="key"
                   >
-                    <td>{{ key }}</td>
+                    <td>{{ $camelCaseToNormalCase(key) }}</td>
                     <td>
                       <span> : </span>
-                      <strong v-html="getFormattedMetaValue(value, key)">
+                      <strong v-html="$getFormattedMetaValue(value, key)">
                       </strong>
                     </td>
                   </tr>
@@ -435,32 +435,6 @@ export default {
         video.preload = 'metadata'
         video.play()
       })
-    },
-    getFormattedMetaValue(value, key) {
-      switch (key) {
-        case 'FileSize':
-          return this.$toHumanlySize(value)
-        case 'FileDateTime':
-          return this.$moment(value * 1000).format('Do MMM, YYYY')
-        case 'Orientation':
-        case 'orientation':
-          if (value === 1 || value === 2) return 'landscape'
-          else if (value === 6 || value === 8 || value === 5 || value === 7)
-            return 'portrait '
-          else if (value === 1 || value === 2) return 'upside-down landscape'
-          else return value
-        case 'DateTime':
-        case 'DateTimeOriginal':
-        case 'DateTimeDigitized':
-          return this.$moment(value, 'YYYY:MM:DD hh:mm:ss').format(
-            'Do MMM, YYYY <i>HH:mm:ss</i>'
-          )
-        case 'MakerNote':
-        case 'UserComment':
-          return '&dash;'
-      }
-
-      return value || '&dash;'
     },
   },
 }

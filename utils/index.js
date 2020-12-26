@@ -68,6 +68,67 @@ export function toHumanlySize(size) {
   )
 }
 
+/**
+ * Convert `SnakeCaseWords` to `Normal Case Words"
+ * eg SnakeCaseWords => Snake Case Words
+ * eg SnakeCaseWords => Snake Case Words
+ *
+ * @param {String} key
+ * @author Pranav Raut
+ */
+export function camelCaseToNormalCase(key) {
+  const words = [key[0]]
+  let index = 0
+
+  key
+    .slice(1)
+    .split('')
+    .forEach((char, i) => {
+      if (
+        char >= 'A' &&
+        char <= 'Z' &&
+        (words[index].length >= 3 || (key[i + 1] >= 'a' && key[i + 1] <= 'z'))
+      ) {
+        words.push(char)
+        index += 1
+      } else words[index] += char + ''
+    })
+
+  return words.join(' ')
+}
+
+export function getFormattedMetaValue(value, key) {
+  switch (key) {
+    case 'FileSize':
+      return this.$toHumanlySize(value)
+    case 'FileDateTime':
+      return this.$moment(value * 1000).format('Do MMM, YYYY')
+    case 'Orientation':
+    case 'orientation':
+      if (value === 1 || value === 2) return 'landscape'
+      else if (value === 6 || value === 8 || value === 5 || value === 7)
+        return 'portrait '
+      else if (value === 1 || value === 2) return 'upside-down landscape'
+      else return value
+    case 'ImageWidth':
+    case 'ImageHeight':
+      return `${value}px`
+    case 'GPSDateStamp':
+      return this.$moment(value, 'YYYY:MM:DD').format('Do MMM, YYYY')
+    case 'DateTime':
+    case 'DateTimeOriginal':
+    case 'DateTimeDigitized':
+      return this.$moment(value, 'YYYY:MM:DD hh:mm:ss').format(
+        'Do MMM, YYYY <i>HH:mm:ss</i>'
+      )
+    case 'MakerNote':
+    case 'UserComment':
+      return '&dash;'
+  }
+
+  return value || '&dash;'
+}
+
 export const imageExtensions = ['jpg', 'png', 'jpeg', 'svg', 'gif']
 export const videoExtensions = [
   'mp4',
@@ -118,6 +179,7 @@ export function suppressError(fun) {
   try {
     fun()
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.info('suppressError:', e)
   }
 }
@@ -133,6 +195,7 @@ export const sortToTime = (x, reverse) =>
 export const sortToTypedNumber = (x) => Number(x)
 
 export function log() {
+  // eslint-disable-next-line no-console
   console.log(...arguments)
 }
 

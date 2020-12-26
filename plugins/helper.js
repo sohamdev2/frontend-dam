@@ -2,8 +2,8 @@ import * as utils from '@/utils'
 
 export default ({ app, $axios }, inject) => {
   const setPageTitle = (title, back = false) => {
-    app.store.dispatch('page/setPageTitle', title)
-    app.store.dispatch('page/setbackArrow', back)
+    // app.store.dispatch('page/setPageTitle', title)
+    // app.store.dispatch('page/setbackArrow', back)
     process.client && (document.title = title)
   }
 
