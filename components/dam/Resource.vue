@@ -2,7 +2,7 @@
   <div class="dam-res" :class="`mode-${mode}`">
     <div
       class="resource-box"
-      :class="{ selected, video: isVideo || isImage }"
+      :class="{ selected, video: isVideo || isImage, image: isImage }"
       v-on="{
         ...(isVideo
           ? {
@@ -35,12 +35,12 @@
           <video
             ref="video"
             class="thevideo"
-            :data-video="file.display_file"
+            :data-video="__url"
             playsinline
             muted
             loop
           >
-            <source :src="file.display_file" type="video/mp4" />
+            <source :src="__url" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
@@ -89,8 +89,8 @@
             data-fancybox
             data-width="640"
             data-height="360"
-            :data-href="file.display_file"
-            :href="file.display_file"
+            :data-href="__url"
+            :href="__url"
             @click.stop="setPlaytime"
           >
           </a>
@@ -111,8 +111,8 @@
             data-fancybox
             data-width="640"
             data-height="360"
-            :data-href="file.display_file"
-            :href="file.display_file"
+            :data-href="__url"
+            :href="__url"
           >
           </a>
         </template>
@@ -142,7 +142,10 @@
 </template>
 
 <script>
+import fileType from '~/mixins/fileType'
+
 export default {
+  mixins: [fileType],
   props: {
     file: { type: Object, default: () => ({}) },
     selected: { type: Boolean, default: false },
@@ -158,26 +161,6 @@ export default {
     }
   },
   computed: {
-    previewImage() {
-      const ext = this.file.file_type
-      if (!ext) return
-      let thumbnail = null
-
-      if (ext === 'pdf')
-        thumbnail = require('@/assets/img/icon/file/pdf-icon-red.svg')
-      else if (!this.isImage)
-        thumbnail =
-          this.file.preview_image ||
-          require('@/assets/img/icon/file/general.svg')
-
-      return thumbnail || this.file.display_file
-    },
-    isImage() {
-      return this.$isImage(this.file.file_type)
-    },
-    isVideo() {
-      return this.$isVideo(this.file.file_type)
-    },
     isPlaying() {
       if (!this.isVideo) return false
 
@@ -279,7 +262,7 @@ export default {
     downloadFile() {
       this.$store.dispatch('downloadIndicator/downloadFile', {
         id: this.file.id,
-        url: this.file.display_file,
+        url: this.__url,
         name: this.file.display_file_name,
         callCountApi: !this.shareMode,
       })

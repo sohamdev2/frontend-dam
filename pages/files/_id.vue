@@ -22,7 +22,7 @@
           <iframe
             v-if="isPdf"
             type="application/pdf"
-            :src="file.display_file + '#toolbar=0'"
+            :src="__url + '#toolbar=0'"
             width="100%"
             height="100%"
           ></iframe>
@@ -34,12 +34,12 @@
             controlsList="nodownload"
             controls
           >
-            <source :src="file.display_file" type="video/mp4" />
+            <source :src="__url" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           <iframe
             v-else-if="isDoc"
-            :src="`https://view.officeapps.live.com/op/embed.aspx?src=${file.display_file}`"
+            :src="`https://view.officeapps.live.com/op/embed.aspx?src=${__url}`"
             width="100%"
             height="100%"
             frameborder="0"
@@ -51,6 +51,9 @@
               Office Online </a
             >.
           </iframe>
+          <div v-else-if="isAudio">
+            <av-waveform :audio-src="__url"></av-waveform>
+          </div>
           <img
             v-else
             class="img-fluid"
@@ -131,8 +134,7 @@
                     <li v-for="folder in file.category" :key="folder.id">
                       <nuxt-link
                         :to="{
-                          name: 'workspace_id-asset-manager-folders',
-                          params: { workspace_id: $getWorkspaceId() },
+                          name: 'navigator  ',
                           hash: `#${folder.id}`,
                         }"
                       >
@@ -224,6 +226,7 @@
 <script>
 import EXIF from 'exif-js'
 import Axios from 'axios'
+import fileType from '~/mixins/fileType'
 import { proxyurl } from '~/utils/helper'
 
 function sortObject(obj) {
@@ -237,6 +240,7 @@ function sortObject(obj) {
 
 export default {
   layout: 'app-min',
+  mixins: [fileType],
   async asyncData({ params, redirect, $axios, $getWorkspaceId, error }) {
     if (!params.id || Number.isNaN(Number(params.id)))
       redirect('/' + params.workspace_id + '/asset-manager')
@@ -287,32 +291,6 @@ export default {
   computed: {
     allButtonDisabled() {
       return this.ui.loading || this.ui.deleting || this.ui.archiving
-    },
-    isPdf() {
-      return this.$isPdf(this.file.file_type)
-    },
-    isImage() {
-      return this.$isImage(this.file.file_type)
-    },
-    isVideo() {
-      return this.$isVideo(this.file.file_type)
-    },
-    isDoc() {
-      return this.$isDoc(this.file.file_type)
-    },
-    previewImage() {
-      const ext = this.file.file_type
-      if (!ext) return
-      let thumbnail = null
-
-      if (ext === 'pdf')
-        thumbnail = require('@/assets/img/icon/file/pdf-icon-red.svg')
-      else if (!this.isImage)
-        thumbnail =
-          this.file.preview_image ||
-          require('@/assets/img/icon/file/general.svg')
-
-      return thumbnail || this.file.display_file
     },
     fileId() {
       return this.$route.params.id
@@ -394,7 +372,7 @@ export default {
 
       new Axios({
         method: 'get',
-        url: proxyurl + this.file.display_file,
+        url: proxyurl + this.__url,
         responseType: 'blob',
       })
         .then(({ data }) => {
@@ -419,7 +397,7 @@ export default {
     downloadFile() {
       this.$store.dispatch('downloadIndicator/downloadFile', {
         id: this.file.id,
-        url: this.file.display_file,
+        url: this.__url,
         name: this.file.display_file_name,
       })
     },
@@ -448,7 +426,7 @@ export default {
         video.muted = true
         video.playsInline = true
         video.setAttribute('crossOrigin', 'anonymous')
-        video.setAttribute('src', this.file.display_file)
+        video.setAttribute('src', this.__url)
         video.preload = 'metadata'
         video.play()
       })

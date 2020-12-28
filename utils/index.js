@@ -141,6 +141,7 @@ export const videoExtensions = [
 ]
 export const pdfExtensions = ['pdf']
 export const docExtensions = ['doc', 'docx', 'ppt', 'pptx', 'xlsx', 'xls']
+export const audioExtensions = ['mp3', 'wav', 'wma', 'aac']
 
 export function isPdf(ext) {
   return !!ext && pdfExtensions.includes(ext.toLowerCase())
@@ -156,6 +157,10 @@ export function isVideo(ext) {
 
 export function isDoc(ext) {
   return !!ext && docExtensions.includes(ext.toLowerCase())
+}
+
+export function isAudio(ext) {
+  return !!ext && audioExtensions.includes(ext.toLowerCase())
 }
 
 export function toQueryString(obj) {
