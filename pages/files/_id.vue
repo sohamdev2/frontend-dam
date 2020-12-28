@@ -134,7 +134,7 @@
                     <li v-for="folder in file.category" :key="folder.id">
                       <nuxt-link
                         :to="{
-                          name: 'navigator  ',
+                          name: 'navigator',
                           hash: `#${folder.id}`,
                         }"
                       >
