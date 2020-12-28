@@ -1,13 +1,15 @@
+const GENERAL_ICON = require('@/assets/img/icon/file/general.svg')
+
 export default {
   computed: {
     __file_ext() {
-      return this.file?.file_type
+      return this.file && this.file.file_type
     },
     __url() {
-      return this.file?.display_file
+      return this.file && this.file.display_file
     },
     __thumb() {
-      return this.file?.preview_image
+      return this.file && this.file.preview_image
     },
     //
     isPdf() {
@@ -28,19 +30,17 @@ export default {
     previewImage() {
       const ext = this.__file_ext
 
-      if (!ext) return
+      if (!ext) return GENERAL_ICON
 
-      let thumbnail = null
-
-      if (this.isPdf)
-        thumbnail = require('@/assets/img/icon/file/pdf-icon-red.svg')
-      else if (this.isAudio)
-        thumbnail = require('@/assets/img/icon/file/audio.svg')
-      else if (!this.isImage)
-        thumbnail =
-          this.__preview_image || require('@/assets/img/icon/file/general.svg')
-
-      return thumbnail || this.__url
+      if (this.isPdf) return require('@/assets/img/icon/file/pdf-icon-red.svg')
+      else if (this.isAudio) return require('@/assets/img/icon/file/audio.svg')
+      else if (this.isImage) return this.__url
+      else
+        try {
+          return require(`@/assets/img/icon/file/${ext}.svg`)
+        } catch {
+          return this.__thumb || GENERAL_ICON
+        }
     },
   },
 }

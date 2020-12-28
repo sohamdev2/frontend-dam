@@ -294,4 +294,8 @@ export default {
   background-origin: content-box !important;
   background-size: contain;
 }
+
+.resource-box.image .preview-images {
+  background: white !important;
+}
 </style>
