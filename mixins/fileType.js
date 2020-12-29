@@ -28,18 +28,27 @@ export default {
       return this.$isAudio(this.__file_ext)
     },
     previewImage() {
-      const ext = this.__file_ext
-
+      return this.getPreviewIcon()
+    },
+  },
+  methods: {
+    getPreviewIcon(
+      ext = this.__file_ext,
+      thumb = this.__thumb,
+      url = this.__url
+    ) {
       if (!ext) return GENERAL_ICON
 
-      if (this.isPdf) return require('@/assets/img/icon/file/pdf-icon-red.svg')
-      else if (this.isAudio) return require('@/assets/img/icon/file/audio.svg')
-      else if (this.isImage) return this.__url
+      if (this.$isPdf(ext))
+        return require('@/assets/img/icon/file/pdf-icon-red.svg')
+      else if (this.$isAudio(ext))
+        return require('@/assets/img/icon/file/audio.svg')
+      else if (this.$isImage(ext)) return url
       else
         try {
           return require(`@/assets/img/icon/file/${ext}.svg`)
         } catch {
-          return this.__thumb || GENERAL_ICON
+          return thumb || GENERAL_ICON
         }
     },
   },

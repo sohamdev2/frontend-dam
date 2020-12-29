@@ -56,7 +56,7 @@
       </div>
     </div>
 
-    <ShareFile ref="shareDialog" :files="[folder]" type="folder"></ShareFile>
+    <ShareFile ref="shareDialog" :folders="[folder]" type="folder"></ShareFile>
   </div>
 </template>
 
