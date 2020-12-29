@@ -7,10 +7,9 @@
     </div>
     <div class="main-menu col-7">
       <ul>
-        <li><a href="images.html">Images</a></li>
-        <li><a href="documents.html">Documents</a></li>
-        <li><a href="audios.html">Audios</a></li>
-        <li><a href="videos.html">Videos</a></li>
+        <li v-for="link in headerLinks" :key="link.name">
+          <nuxt-link :to="link.to">{{ link.name }}</nuxt-link>
+        </li>
       </ul>
     </div>
     <div class="login-info col">
@@ -46,14 +45,26 @@
 
 <script>
 export default {
+  data() {
+    return {
+      headerLinks: [
+        { name: 'Images', to: { name: 'navigator', hash: '#image' } },
+        { name: 'Documents', to: { name: 'navigator', hash: '#application' } },
+        { name: 'Audios', to: { name: 'navigator', hash: '#audio' } },
+        { name: 'Videos', to: { name: 'navigator', hash: '#video' } },
+      ],
+    }
+  },
   computed: {
     user() {
       return this.$auth.user
     },
   },
   mounted() {
-    window.$(this.$el).find('[data-toggle="tooltip"]').tooltip()
-    window.$(this.$el).find('.dropdown-toggle').dropdown()
+    this.$nextTick(() => {
+      window.$(this.$el).find('[data-toggle="tooltip"]').tooltip()
+      window.$(this.$el).find('.dropdown-toggle').dropdown()
+    })
   },
 }
 </script>
