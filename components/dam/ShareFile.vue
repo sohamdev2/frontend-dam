@@ -84,7 +84,7 @@ export default {
   components: { Model },
   extends: Model,
   props: {
-    files: { type: Array, required: true, default: () => [] },
+    files: { type: Array, default: () => [] },
     folders: { type: Array, default: () => [] },
     type: { type: String, required: true, default: 'file' },
   },
