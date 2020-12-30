@@ -121,7 +121,6 @@
         <Pagination
           v-if="lastPage > 1 && !loading"
           key="pagination"
-          loading="loading"
           :last-page="lastPage"
           :current-page.sync="page"
         />
