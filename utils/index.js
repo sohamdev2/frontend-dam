@@ -115,6 +115,9 @@ export function getFormattedMetaValue(value, key) {
       return `${value}px`
     case 'GPSDateStamp':
       return this.$moment(value, 'YYYY:MM:DD').format('Do MMM, YYYY')
+    case 'DateUploaded':
+    case 'LastModified':
+      return this.$moment(value, 'D MMM YYYY').format('Do MMM, YYYY')
     case 'DateTime':
     case 'DateTimeOriginal':
     case 'DateTimeDigitized':
