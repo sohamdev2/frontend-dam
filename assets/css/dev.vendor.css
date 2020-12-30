@@ -226,7 +226,9 @@ body,
   color: #d6d6d6;
   line-height: 1;
 }
-
+.select2-results__options .select2-results__option::before {
+  content: none;
+}
 
 /* ########### CUSTOM STYLE ########### */
 .slide-up-enter {
