@@ -88,7 +88,7 @@ export default {
   data() {
     return {
       categoriesObject: [
-        { text: 'Home', id: '' },
+        { text: 'Folders', id: '' },
         { text: 'Audios', id: 'audio' },
         { text: 'Documents', id: 'application' },
         { text: 'Images', id: 'image' },

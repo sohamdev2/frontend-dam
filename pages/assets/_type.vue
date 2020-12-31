@@ -75,6 +75,7 @@
 
 <script>
 export default {
+  auth: false,
   asyncData({ params, query, $axios, redirect }) {
     return $axios
       .$get(`show-share-assets?type=${params.type}&status=${query.status}`)
