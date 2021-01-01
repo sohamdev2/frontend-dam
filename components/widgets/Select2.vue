@@ -5,6 +5,8 @@
 </template>
 
 <script>
+/* eslint-disable vue/require-default-prop */
+
 export default {
   name: 'Select2',
   props: {
