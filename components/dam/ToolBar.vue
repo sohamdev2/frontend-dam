@@ -131,7 +131,8 @@ export default {
   methods: {
     goToCategory(value) {
       this.$router.replace({
-        name: 'navigator',
+        name: 'brand_name-folders',
+        params: { brand_name: this.$getBrandName() },
         hash: `#${value}`,
       })
     },

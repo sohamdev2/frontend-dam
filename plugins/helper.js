@@ -47,6 +47,8 @@ export default ({ app, $axios }, inject) => {
     return app.$auth?.user?.dealer?.workspace_id
   })
 
+  inject('getBrandName', () => app.$auth?.user?.dealer?.sub_domain)
+
   inject('logout', logout)
   inject('clearAuthCookies', clearAuthCookies)
   inject('isMobileDevice', isMobileDevice)

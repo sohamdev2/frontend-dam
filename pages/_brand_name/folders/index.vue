@@ -296,8 +296,8 @@ export default {
         await this.getCategoryItems()
       else
         return this.$router.replace({
-          name: 'navigator',
-          params: { workspace_id: this.$getWorkspaceId() },
+          name: 'brand_name-folders',
+          params: { brand_name: this.$getBrandName() },
         })
 
       this.noData = !this.files.length && !this.subFolders.length
@@ -357,8 +357,8 @@ export default {
           const message = this.$getErrorMessage(e)
           if (message === 'Category not found')
             return this.$router.replace({
-              name: 'navigator',
-              params: { workspace_id: this.$getWorkspaceId() },
+              name: 'brand_name-folders',
+              params: { brand_name: this.$getBrandName() },
             })
 
           this.$toast.global.error(message)
