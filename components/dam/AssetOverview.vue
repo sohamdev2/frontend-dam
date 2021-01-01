@@ -74,7 +74,7 @@ export default {
           subText: this.dashboardData.total_audios || 0,
         },
         {
-          to: { name: 'navigator' },
+          to: { name: 'brand_name-folders' },
           src: require('@/assets/img/icon/min-folder.svg'),
           name: 'Folders',
           subText: this.dashboardData.total_folder || 0,

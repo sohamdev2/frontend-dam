@@ -175,7 +175,7 @@ export default {
     },
   },
   head: {
-    title: 'Navigator | Digital Asset Manager',
+    title: 'Folders | Digital Asset Manager',
   },
 }
 </script>
