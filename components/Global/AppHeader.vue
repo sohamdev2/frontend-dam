@@ -1,7 +1,7 @@
 <template>
   <header class="header-sec row no-gutters">
     <div class="main-logo col">
-      <nuxt-link to="/">
+      <nuxt-link :to="`/${$getBrandName()}`">
         <img src="@/assets/img/brand-logo.svg" alt="Logo" />
       </nuxt-link>
     </div>

@@ -94,14 +94,23 @@
 import { required, email } from 'vuelidate/lib/validators'
 
 export default {
+  asyncData({ store, query, error }) {
+    if (query.brandName) store.commit('brandName', query.brandName)
+    else error({ status: 404, message: 'Page does not exists!' })
+  },
   data() {
     return {
       loading: false,
       form: {
         email: null,
         password: null,
+        type: 'sub_doamin',
       },
     }
+  },
+  mounted() {
+    this.$router.replace({ query: null })
+    this.form.url = this.$store.state.brandName
   },
   methods: {
     async login(e) {
@@ -111,7 +120,7 @@ export default {
 
       await this.$auth
         .loginWith('local', { data: this.form })
-        .then(() => this.$router.push('/'))
+        .then(() => this.$router.push(`/${this.form.url}`))
         .catch(this.$showErrorToast)
       this.loading = false
     },

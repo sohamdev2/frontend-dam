@@ -246,18 +246,20 @@ export default {
     if (!params.id || Number.isNaN(Number(params.id)))
       redirect('/' + params.workspace_id + '/asset-manager')
 
+    const throw404 = () =>
+      error({
+        status: 404,
+        message: 'Requested file was not found',
+      })
+
     let metaData, tags, file
     await $axios
       .$post('digital/view-detail', {
         digital_assets_id: params.id,
         workspace_id: $getWorkspaceId(),
       })
-      .then(({ data }) => {
-        if (!data)
-          return error({
-            status: 404,
-            message: 'Requested file was not found',
-          })
+      .then(({ data, code }) => {
+        if (!data) return throw404()
 
         metaData = data.file_meta_data || {}
 
@@ -272,7 +274,10 @@ export default {
         tags = data.tags
         file = data
       })
-      .catch((e) => error(e))
+      .catch(({ response, message }) => {
+        if (response) throw404()
+        else error(message)
+      })
 
     return { metaData, tags, file }
   },
