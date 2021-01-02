@@ -94,9 +94,9 @@
 import { required, email } from 'vuelidate/lib/validators'
 
 export default {
-  asyncData({ store, query, error }) {
+  asyncData({ store, query, redirect }) {
     if (query.brandName) store.commit('brandName', query.brandName)
-    else error({ status: 404, message: 'Page does not exists!' })
+    else redirect('/404')
   },
   data() {
     return {
