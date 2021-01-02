@@ -289,3 +289,30 @@ body,
   filter: invert(53%) sepia(84%) saturate(605%) hue-rotate(333deg)
     brightness(99%) contrast(88%);
 }
+
+/* ##### css fixes ### */
+
+/* detail page  */
+.detail-left h2 {
+  word-break: break-all;
+}
+.overview-tab table td,
+.metadata-tab table td,
+.overview-tab table td span,
+.metadata-tab table td span {
+  white-space: nowrap !important;
+  vertical-align: top;
+}
+
+.overview-tab table td strong,
+.overview-tab table td span,
+.metadata-tab table td span,
+.metadata-tab table td strong {
+  display: inline-block !important;
+  word-break: break-all !important;
+  white-space: normal !important;
+}
+.overview-tab table td span,
+.metadata-tab table td span {
+  margin-left: 0.125rem;
+}
