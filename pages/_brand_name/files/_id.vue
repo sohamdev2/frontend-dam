@@ -29,7 +29,7 @@
           <video
             v-else-if="isVideo"
             ref="video"
-            style="width: 100%; height: auto"
+            style="height: 100%; width: auto; margin: auto"
             :poster="videoThumbnail"
             controlsList="nodownload"
             controls
@@ -52,7 +52,17 @@
             >.
           </iframe>
           <div v-else-if="isAudio">
-            <av-waveform :audio-src="__url"></av-waveform>
+            <av-waveform
+              :audio-src="__url"
+              :canv-width="1200"
+              :canv-height="200"
+              :playtime-font-size="18"
+              :played-line-width="2"
+              :playtime-clickable="false"
+              :noplayed-line-width="1"
+              played-line-color="#ed703d"
+              noplayed-line-color="#1a1d2556"
+            ></av-waveform>
           </div>
           <img
             v-else
@@ -239,6 +249,13 @@ function sortObject(obj) {
     }, {})
 }
 
+function resizeCanvas() {
+  const $canvas = window.$('.detail-img canvas')
+  const $container = window.$('.detail-img')
+
+  $canvas.outerWidth($container.width())
+}
+
 export default {
   layout: 'app-min',
   mixins: [fileType],
@@ -306,6 +323,16 @@ export default {
     this.$setPageTitle(this.file.display_file_name || 'Digital Asset Manager')
     this.getExif()
     if (this.isVideo) this.$nextTick(() => this.getThumbnail())
+    else if (this.isAudio) {
+      this.$nextTick(() => {
+        window.$(document).ready(function () {
+          resizeCanvas()
+          window.$(window).on('resize', function () {
+            resizeCanvas()
+          })
+        })
+      })
+    }
   },
   methods: {
     removeTagFromFile(tag) {
