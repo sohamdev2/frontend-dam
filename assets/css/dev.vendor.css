@@ -316,3 +316,7 @@ body,
 .metadata-tab table td span {
   margin-left: 0.125rem;
 }
+.section-filter .select2-container--default .select2-selection--single,
+.section-filter .select2 {
+  background-color: transparent !important ;
+}
