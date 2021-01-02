@@ -74,7 +74,7 @@ export default {
     [
       'nuxt-vuex-localstorage',
       {
-        localStorage: ['appData'], //  If not entered, “localStorage” is the default value
+        localStorage: ['appData', 'localStorage'], //  If not entered, “localStorage” is the default value
       },
     ],
   ],
