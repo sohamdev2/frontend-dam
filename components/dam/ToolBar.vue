@@ -117,6 +117,16 @@ export default {
       )
     },
     title() {
+      return this.getTitle()
+    },
+  },
+  watch: {
+    title(title) {
+      this.$setPageTitle(title + ' | Digital Asset Manager')
+    },
+  },
+  methods: {
+    getTitle() {
       if (!this.hashParam) return 'Folders'
 
       if (this.hashParam === 'search') return 'Search Result'
@@ -134,13 +144,6 @@ export default {
           ?.text?.toLowerCase()
       )
     },
-  },
-  watch: {
-    title(title) {
-      this.$setPageTitle(title)
-    },
-  },
-  methods: {
     goToCategory(value) {
       this.$router.replace({
         name: 'brand_name-folders',
@@ -185,9 +188,6 @@ export default {
 
       if (toEmit) this.$emit('sort', toEmit)
     },
-  },
-  head: {
-    title: 'Folders | Digital Asset Manager',
   },
 }
 </script>
