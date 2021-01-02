@@ -24,15 +24,17 @@
           </span>
         </label>
       </div>
-      <div v-if="!isFolder && hashParam != 'search'" class="section-filter">
-        <Select2
-          class="select2-hidden-accessible"
-          :value="hashParam"
-          :options="categoriesObject"
-          :attrs="{ minimumResultsForSearch: -1 }"
-          @input="goToCategory"
-        />
-      </div>
+      <client-only>
+        <div v-if="showSelect" class="section-filter">
+          <Select2
+            class="select2-hidden-accessible"
+            :value="hashParam"
+            :options="categoriesObject"
+            :attrs="{ minimumResultsForSearch: -1 }"
+            @input="goToCategory"
+          />
+        </div>
+      </client-only>
     </div>
     <div
       v-if="assetsCount > 0"
@@ -107,10 +109,20 @@ export default {
         !isNaN(Number(this.hashParam))
       )
     },
+    showSelect() {
+      return (
+        !this.isFolder &&
+        this.hashParam !== 'search' &&
+        this.hashParam !== 'popular'
+      )
+    },
     title() {
       if (!this.hashParam) return 'Folders'
 
       if (this.hashParam === 'search') return 'Search Result'
+
+      if (this.hashParam === 'popular')
+        return 'Popular Tag: ' + this.$route.query.tag
 
       if (this.isFolder)
         return this.folder?.folder_name || this.folder?.category_name || ''
@@ -119,7 +131,7 @@ export default {
         'All ' +
         this.categoriesObject
           .find(({ id }) => this.hashParam === id)
-          .text.toLowerCase()
+          ?.text?.toLowerCase()
       )
     },
   },

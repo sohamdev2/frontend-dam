@@ -183,6 +183,9 @@ export default {
     hashParam() {
       return (this.$route.hash || '').replace('#', '')
     },
+    queryTag() {
+      return this.$route.query.tag
+    },
     folderList() {
       return this.$store.state.appData.folders
     },
@@ -215,6 +218,11 @@ export default {
   },
   watch: {
     hashParam() {
+      this.page = 1
+      this.lastPage = -1
+      this.getData()
+    },
+    queryTag() {
       this.page = 1
       this.lastPage = -1
       this.getData()
@@ -286,7 +294,9 @@ export default {
       if (!this.hashParam) {
         if (!this.folderList.length) await this.getFolders()
         this.subFolders = [...this.folderList]
-      } else if (
+      } else if (this.hashParam === 'popular' && this.queryTag)
+        await this.getPopularTagFiles()
+      else if (
         this.hashParam === 'search' &&
         this.$refs.searchBar.getHasFilters()
       )
@@ -334,6 +344,18 @@ export default {
         .then(({ data }) => {
           this.files = data.category_assets || []
         })
+        .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
+    },
+    async getPopularTagFiles(tag) {
+      await this.$axios
+        .$get(
+          'digital/popular-tag-assets?' +
+            this.$toQueryString({
+              workspace_id: this.$getWorkspaceId(),
+              tag_name: this.queryTag,
+            })
+        )
+        .then(({ data }) => (this.files = data || []))
         .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
     },
     async getFolderData() {

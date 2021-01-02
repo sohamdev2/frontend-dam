@@ -17,6 +17,7 @@ export default {
     value: { type: Array, default: () => [] },
     imutable: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
+    clickEvent: { type: Boolean, default: false },
     placeholder: { type: String, default: 'Click here to add tags' },
   },
   data() {
@@ -49,7 +50,8 @@ export default {
   },
   methods: {
     init() {
-      const $input = window.$(this.$el).find('[data-role="tagsinput"]')
+      const $this = window.$(this.$el)
+      const $input = $this.find('[data-role="tagsinput"]')
       const vue = this
 
       $input.tagsinput({
@@ -62,7 +64,7 @@ export default {
         $input.tagsinput('add', v, { preventEmit: true })
       )
 
-      const $tagInput = window.$(vue.$el).find('.bootstrap-tagsinput > input')
+      const $tagInput = $this.find('.bootstrap-tagsinput > input')
 
       $tagInput.attr('disabled', this.disabled)
       $tagInput.on('keydown', (e) => {
@@ -77,10 +79,9 @@ export default {
           )
 
           if (~index) {
-            window
-              .$(window.$(this.$el).find(`.tag.label.label-info`)[index])
-              .hide()
-              .fadeIn()
+            const tagEL = $this.find('.tag.label.label-info')[index]
+
+            window.$(tagEL).hide().fadeIn()
 
             $tagInput[0].value = ''
             return
@@ -95,15 +96,14 @@ export default {
         }
       })
 
-      const changed = () => {
+      const changed = () =>
         this.$nextTick(() => {
           const tags = $input.tagsinput('items')
-          vue.$emit('input', tags)
+          this.$emit('input', tags)
 
           if (tags.length > 0) $tagInput.attr('placeholder', '')
-          else $tagInput.attr('placeholder', vue.placeholder)
+          else $tagInput.attr('placeholder', this.placeholder)
         })
-      }
 
       $input
         .on('beforeItemRemove', (event) => {
@@ -130,6 +130,12 @@ export default {
 
           this.$emit('click:addTag', item)
         })
+
+      $this.find('.tag.label.label-info').click(function (ev) {
+        ev.tagItemText = window.$(this).text()
+
+        vue.$emit('click:item', ev)
+      })
 
       this.doneInit = true
     },

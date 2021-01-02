@@ -20,7 +20,8 @@
           "
           disabled
           imutable
-          @click:item.stop
+          click-event
+          @click:item.stop="openTagView"
         />
       </div>
     </div>
@@ -32,6 +33,18 @@ export default {
   computed: {
     dashboardData() {
       return this.$store.state.appData.dashboardData
+    },
+  },
+  methods: {
+    openTagView({ tagItemText }) {
+      this.$router.push({
+        name: 'brand_name-folders',
+        params: {
+          brand_name: this.$getBrandName(),
+        },
+        hash: '#popular',
+        query: { tag: tagItemText },
+      })
     },
   },
 }
