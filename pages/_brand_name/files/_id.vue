@@ -326,6 +326,8 @@ export default {
     else if (this.isAudio) {
       this.$nextTick(() => {
         window.$(document).ready(function () {
+          window.$('.detail-img audio').attr('controlsList', 'nodownload')
+
           resizeCanvas()
           window.$(window).on('resize', function () {
             resizeCanvas()
@@ -469,15 +471,11 @@ export default {
 </script>
 
 <style>
-.overview-tab table td strong,
-.overview-tab table td span,
-.metadata-tab table td span,
-.metadata-tab table td strong {
-  display: inline-block !important;
+.detail-img audio {
+  width: 100%;
 }
-
-#wacframe .cui-statusbar .cui-ctl,
-#wacframe .cui-statusbar .cui-ctl-medium {
+.cui-statusbar .cui-ctl,
+.cui-statusbar .cui-ctl-medium {
   display: none !important;
 }
 </style>
