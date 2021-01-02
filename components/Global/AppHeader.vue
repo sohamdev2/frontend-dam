@@ -1,7 +1,7 @@
 <template>
   <header class="header-sec row no-gutters">
     <div class="main-logo col">
-      <nuxt-link to="/">
+      <nuxt-link :to="`/${$getBrandName()}`">
         <img src="@/assets/img/brand-logo.svg" alt="Logo" />
       </nuxt-link>
     </div>
@@ -48,10 +48,38 @@ export default {
   data() {
     return {
       headerLinks: [
-        { name: 'Images', to: { name: 'navigator', hash: '#image' } },
-        { name: 'Documents', to: { name: 'navigator', hash: '#application' } },
-        { name: 'Audios', to: { name: 'navigator', hash: '#audio' } },
-        { name: 'Videos', to: { name: 'navigator', hash: '#video' } },
+        {
+          name: 'Images',
+          to: {
+            name: 'brand_name-folders',
+            params: { brand_name: this.$getBrandName() },
+            hash: '#image',
+          },
+        },
+        {
+          name: 'Documents',
+          to: {
+            name: 'brand_name-folders',
+            params: { brand_name: this.$getBrandName() },
+            hash: '#application',
+          },
+        },
+        {
+          name: 'Audios',
+          to: {
+            name: 'brand_name-folders',
+            params: { brand_name: this.$getBrandName() },
+            hash: '#audio',
+          },
+        },
+        {
+          name: 'Videos',
+          to: {
+            name: 'brand_name-folders',
+            params: { brand_name: this.$getBrandName() },
+            hash: '#video',
+          },
+        },
       ],
     }
   },

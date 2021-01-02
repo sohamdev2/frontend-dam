@@ -80,7 +80,8 @@ div
             @click="
               $route.params.searchParams &&
                 ($router.push({
-                  name: 'navigator',
+                  name: 'brand_name-folders',
+                  params: { brand_name: $getBrandName() },
                   params: { workspace_id: $getWorkspaceId() },
                 }),
                 (moreOptions = false))
@@ -500,8 +501,9 @@ export default {
 
       this.$emit('search')
       this.$router.push({
-        name: 'navigator',
+        name: 'brand_name-folders',
         params: {
+          brand_name: this.$getBrandName(),
           workspace_id: this.$getWorkspaceId(),
           searchParams: this.searchParams,
         },

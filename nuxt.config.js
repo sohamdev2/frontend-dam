@@ -80,13 +80,14 @@ export default {
   ],
 
   router: {
-    middleware: ['auth'],
+    middleware: ['brand-name-check', 'auth'],
   },
 
   auth: {
     redirect: {
-      logout: '/login',
-      home: '/',
+      login: '/login',
+      logout: false,
+      home: false,
     },
     strategies: {
       local: {
@@ -174,7 +175,7 @@ export default {
     redirectSSL.create({
       enabled: process.env.NODE_ENV === 'production',
     }),
-    // '~/middleware/url-check.js',
+    '~/middleware/url-check.js',
   ],
   build: {},
   publicRuntimeConfig: {

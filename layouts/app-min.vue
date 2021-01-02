@@ -23,5 +23,10 @@
 </template>
 
 <script>
-export default {}
+export default {
+  mounted() {
+    this.$store.dispatch('appData/fetchDashboardData')
+    this.$store.dispatch('appData/fetchFolders')
+  },
+}
 </script>

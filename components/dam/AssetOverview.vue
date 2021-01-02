@@ -44,31 +44,47 @@ export default {
     overviewItems() {
       return [
         {
-          to: { name: 'navigator', hash: `#image` },
+          to: {
+            name: 'brand_name-folders',
+            params: { brand_name: this.$getBrandName() },
+            hash: `#image`,
+          },
           src: require('~/assets/img/icon/img-icon.svg'),
           name: 'Images',
           subText: this.dashboardData.total_images || 0,
         },
         {
-          to: { name: 'navigator', hash: `#application` },
+          to: {
+            name: 'brand_name-folders',
+            params: { brand_name: this.$getBrandName() },
+            hash: `#application`,
+          },
           src: require('@/assets/img/icon/file-icon.svg'),
           name: 'Documents',
           subText: this.dashboardData.total_documents || 0,
         },
         {
-          to: { name: 'navigator', hash: `#audio` },
+          to: {
+            name: 'brand_name-folders',
+            params: { brand_name: this.$getBrandName() },
+            hash: `#audio`,
+          },
           src: require('~/assets/img/icon/audio-icon.svg'),
           name: 'Audio',
           subText: this.dashboardData.total_audios || 0,
         },
         {
-          to: { name: 'navigator' },
+          to: { name: 'brand_name-folders' },
           src: require('@/assets/img/icon/min-folder.svg'),
           name: 'Folders',
           subText: this.dashboardData.total_folder || 0,
         },
         {
-          to: { name: 'navigator', hash: `#video` },
+          to: {
+            name: 'brand_name-folders',
+            params: { brand_name: this.$getBrandName() },
+            hash: `#video`,
+          },
           src: require('~/assets/img/icon/video-icon.svg'),
           name: 'Videos',
           subText: this.dashboardData.total_videos || 0,

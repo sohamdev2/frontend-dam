@@ -131,7 +131,8 @@ export default {
   methods: {
     goToCategory(value) {
       this.$router.replace({
-        name: 'navigator',
+        name: 'brand_name-folders',
+        params: { brand_name: this.$getBrandName() },
         hash: `#${value}`,
       })
     },
@@ -174,7 +175,7 @@ export default {
     },
   },
   head: {
-    title: 'Navigator | Digital Asset Manager',
+    title: 'Folders | Digital Asset Manager',
   },
 }
 </script>

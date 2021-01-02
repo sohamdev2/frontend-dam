@@ -66,7 +66,8 @@ export default {
       const props = { is: 'nuxt-link' }
 
       props.to = {
-        name: 'navigator',
+        name: 'brand_name-folders',
+        params: { brand_name: this.$getBrandName() },
         hash: `#${this.folder.id}`,
       }
 

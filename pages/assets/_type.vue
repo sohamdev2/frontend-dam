@@ -74,6 +74,8 @@
 </template>
 
 <script>
+/* eslint-disable camelcase */
+
 export default {
   auth: false,
   asyncData({ params, query, $axios, redirect }) {
@@ -85,6 +87,7 @@ export default {
         stack: [{ category: data.category || [], assets: data.assets || [] }],
       }))
       .catch((e) => {
+        // eslint-disable-next-line no-console
         console.log(e)
         redirect('/')
       })

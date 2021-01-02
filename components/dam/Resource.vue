@@ -55,8 +55,8 @@
       <nuxt-link
         :event="selected || shareMode ? '' : 'click'"
         :to="{
-          name: 'files-id',
-          params: { id: file.id },
+          name: 'brand_name-files-id',
+          params: { id: file.id, brand_name: $getBrandName() },
         }"
         class="resource-title"
       >
@@ -119,8 +119,8 @@
         <nuxt-link
           v-else-if="mode != 'column'"
           :to="{
-            name: 'files-id',
-            params: { id: file.id },
+            name: 'brand_name-files-id',
+            params: { id: file.id, brand_name: $getBrandName() },
           }"
           class="btn bg-light-gray"
         >

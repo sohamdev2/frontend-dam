@@ -1,6 +1,6 @@
 import * as utils from '@/utils'
 
-export default ({ app, $axios }, inject) => {
+export default ({ app, $axios, router, store }, inject) => {
   const setPageTitle = (title, back = false) => {
     // app.store.dispatch('page/setPageTitle', title)
     // app.store.dispatch('page/setbackArrow', back)
@@ -18,9 +18,16 @@ export default ({ app, $axios }, inject) => {
     app.$toast?.global?.error(getErrorMessage(e))
   }
 
+  const getBrandName = () => app.$auth?.user?.dealer?.sub_domain
+  const getWorkspaceId = () => app.$auth?.user?.dealer?.workspace_id
+
   const logout = async () => {
+    const brandName = getBrandName()
+
     await app.$auth.logout()
-    app.$clearAuthCookies()
+    await app.$clearAuthCookies()
+
+    app.router.replace(`/login?brandName=${brandName}`)
   }
 
   const clearAuthCookies = () => {
@@ -30,9 +37,8 @@ export default ({ app, $axios }, inject) => {
     }
   }
 
-  const isMobileDevice = () => {
-    return app.$device.isMobile
-  }
+  // const isMobileDevice = () =>
+  //    app.$device.isMobile
 
   Object.entries(utils).forEach(([key, value]) => {
     if (typeof value === 'function') inject(key, value)
@@ -43,11 +49,10 @@ export default ({ app, $axios }, inject) => {
 
   inject('getErrorMessage', getErrorMessage)
   inject('showErrorToast', showErrorToast)
-  inject('getWorkspaceId', () => {
-    return app.$auth?.user?.dealer?.workspace_id
-  })
+  inject('getWorkspaceId', getWorkspaceId)
+  inject('getBrandName', getBrandName)
 
   inject('logout', logout)
   inject('clearAuthCookies', clearAuthCookies)
-  inject('isMobileDevice', isMobileDevice)
+  // inject('isMobileDevice', isMobileDevice)
 }

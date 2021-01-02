@@ -29,7 +29,8 @@
       <nuxt-link
         :event="selected || shareMode ? '' : 'click'"
         :to="{
-          name: 'navigator',
+          name: 'brand_name-folders',
+          params: { brand_name: $getBrandName() },
           hash: `#${folder.id}`,
         }"
         class="resource-title"
