@@ -155,6 +155,11 @@ export default {
   components: { ContentLoader },
 
   mixins: [fileSelection],
+  fetch() {
+    this.page = 1
+    this.lastPage = -1
+    this.getData()
+  },
   data() {
     let page
     if (this.$route.query.page) {
@@ -217,15 +222,14 @@ export default {
     },
   },
   watch: {
-    hashParam() {
-      this.page = 1
-      this.lastPage = -1
-      this.getData()
-    },
     queryTag() {
-      this.page = 1
-      this.lastPage = -1
-      this.getData()
+      this.$fetch()
+    },
+    '$route.hash'() {
+      this.$fetch()
+    },
+    '$route.query.searchId'() {
+      this.$fetch()
     },
     page(page) {
       if (page === -1) {
@@ -245,17 +249,12 @@ export default {
     //   this.$setPageTitle(currentFolder?.folder_name || 'Digital Asset Manager')
     // },
   },
-  mounted() {
-    // this.$setPageTitle('Digital Asset Manager')
-    this.getFolders()
-    this.getData()
-  },
   methods: {
     /**
      * Add newly added folders
      */
     getFolders() {
-      this.$store.dispatch('appData/fetchFolders')
+      return this.$store.dispatch('appData/fetchFolders')
     },
     selectAll() {
       this.selectedFiles = [...this.files]
@@ -296,10 +295,7 @@ export default {
         this.subFolders = [...this.folderList]
       } else if (this.hashParam === 'popular' && this.queryTag)
         await this.getPopularTagFiles()
-      else if (
-        this.hashParam === 'search' &&
-        this.$refs.searchBar.getHasFilters()
-      )
+      else if (this.hashParam === 'search' && this.$route.params.hasFilters)
         await this.getSearchResult()
       else if (this.isFolder) await this.getFolderData()
       else if (categories.includes(this.hashParam))
@@ -337,10 +333,7 @@ export default {
     },
     async getSearchResult() {
       await this.$axios
-        .$post(
-          'digital-assets/dashboard/search-assets',
-          this.$refs.searchBar.getRequestBody()
-        )
+        .$post('digital/search-assets', this.$route.params.searchRequestBody)
         .then(({ data }) => {
           this.files = data.category_assets || []
         })

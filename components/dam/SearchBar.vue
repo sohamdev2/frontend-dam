@@ -24,13 +24,12 @@ div
           {{ $localeNumber(dashboardData.media_assets) }} assets
         </span>
 
-        <a
-          class="search-btn"
-          :class="{ 'btn-disable': !hasFilters }"
-          :disabled="!hasFilters"
-          @click="search"
-        >
-          <img src="~/assets/img/icon/bigsearch-icon.svg" alt="search" />
+        <a class="search-btn" @click="moreOptions = !moreOptions">
+          <img
+            src="~/assets/img/icon/tag-icon.svg"
+            style="filter: invert(1)"
+            alt="filter"
+          />
         </a>
       </div>
     </div>
@@ -42,9 +41,16 @@ div
         }"
         type="button"
         class="btn btn-icon"
-        @click="moreOptions = !moreOptions"
+        :class="{ 'btn-disable': !hasFilters }"
+        :disabled="!hasFilters"
+        @click="search"
       >
-        Refine <img src="~/assets/img/icon/tag-icon.svg" alt="" />
+        Search
+        <img
+          src="~/assets/img/icon/bigsearch-icon.svg"
+          style="filter: invert(1)"
+          alt="search"
+        />
       </button>
     </div>
     <!-- filter options -->
@@ -500,31 +506,47 @@ export default {
       if (!this.hasFilters) return
 
       this.$emit('search')
-      this.$router.push({
-        name: 'brand_name-folders',
-        params: {
-          brand_name: this.$getBrandName(),
-          workspace_id: this.$getWorkspaceId(),
-          searchParams: this.searchParams,
-        },
-        hash: '#search',
-      })
+      if (this.hashParam === 'search')
+        this.$router.replace({
+          params: {
+            brand_name: this.$getBrandName(),
+            workspace_id: this.$getWorkspaceId(),
+            searchParams: this.searchParams,
+            hasFilters: this.getHasFilters(),
+            searchRequestBody: this.getRequestBody(),
+          },
+          hash: '#search',
+          query: { searchId: Date.now() },
+        })
+      else
+        this.$router.push({
+          name: 'brand_name-folders',
+          params: {
+            brand_name: this.$getBrandName(),
+            workspace_id: this.$getWorkspaceId(),
+            searchParams: this.searchParams,
+            hasFilters: this.getHasFilters(),
+            searchRequestBody: this.getRequestBody(),
+          },
+          hash: '#search',
+          query: { searchId: Date.now() },
+        })
       this.moreOptions = false
     },
     keyEvent(ev) {
       if (ev.key === 'Escape') this.moreOptions = false
     },
     async getSearchData() {
-      // this.searchDataLoading = true
-      // this.searchData = {}
-      // await this.$axios
-      //   .$get(
-      //     '/digital-assets/dashboard/all-popular-data?' +
-      //       this.$toQueryString({ workspace_id: this.$getWorkspaceId() })
-      //   )
-      //   .then(({ data }) => (this.searchData = data))
-      //   .catch()
-      // this.searchDataLoading = false
+      this.searchDataLoading = true
+      this.searchData = {}
+      await this.$axios
+        .$get(
+          '/digital/all-popular-data?' +
+            this.$toQueryString({ workspace_id: this.$getWorkspaceId() })
+        )
+        .then(({ data }) => (this.searchData = data))
+        .catch()
+      this.searchDataLoading = false
     },
     removeFilter(item) {
       switch (item.type) {
@@ -641,5 +663,10 @@ export default {
   background-color: #e2e2e2 !important;
   color: #483229;
   box-shadow: none !important;
+}
+
+.search-btn.btn-disable {
+  cursor: default;
+  opacity: 0.45;
 }
 </style>
