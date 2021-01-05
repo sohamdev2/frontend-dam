@@ -54,7 +54,7 @@ export const actions = {
 
     return data
   },
-  async fetchFolders({ commit, state }) {
+  async fetchFolders({ commit }) {
     commit('loading.folders', true)
 
     const { data } = await this.$axios

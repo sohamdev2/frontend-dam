@@ -155,11 +155,6 @@ export default {
   components: { ContentLoader },
 
   mixins: [fileSelection],
-  fetch() {
-    this.page = 1
-    this.lastPage = -1
-    this.getData()
-  },
   data() {
     let page
     if (this.$route.query.page) {
@@ -223,13 +218,13 @@ export default {
   },
   watch: {
     queryTag() {
-      this.$fetch()
+      this.initData()
     },
-    '$route.hash'() {
-      this.$fetch()
+    hashParam(hashParam) {
+      this.initData()
     },
     '$route.query.searchId'() {
-      this.$fetch()
+      this.initData()
     },
     page(page) {
       if (page === -1) {
@@ -249,10 +244,18 @@ export default {
     //   this.$setPageTitle(currentFolder?.folder_name || 'Digital Asset Manager')
     // },
   },
+  mounted() {
+    this.initData()
+  },
   methods: {
     /**
      * Add newly added folders
      */
+    initData() {
+      this.page = 1
+      this.lastPage = -1
+      this.getData()
+    },
     getFolders() {
       return this.$store.dispatch('appData/fetchFolders')
     },
@@ -300,12 +303,11 @@ export default {
       else if (this.isFolder) await this.getFolderData()
       else if (categories.includes(this.hashParam))
         await this.getCategoryItems()
-      else
+      else {
         return this.$router.replace({
-          name: 'brand_name-folders',
-          params: { brand_name: this.$getBrandName() },
+          hash: null,
         })
-
+      }
       this.noData = !this.files.length && !this.subFolders.length
 
       this.loading = false
