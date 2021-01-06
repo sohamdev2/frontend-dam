@@ -6,8 +6,13 @@
         <div class="center-part-view-main full-width-box boxes-part">
           <div class="center-part-view">
             <div class="center-part-view-body">
-              <SearchBar />
-              <nuxt></nuxt>
+              <div class="row">
+                <div class="col">
+                  <div class="right-body">
+                    <nuxt></nuxt>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

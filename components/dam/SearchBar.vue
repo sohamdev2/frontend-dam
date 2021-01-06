@@ -364,6 +364,9 @@ export default {
     dashboardData() {
       return this.$store.state.appData.dashboardData
     },
+    dashboardDataLoading() {
+      return this.$store.state.appData.loading.dashboard
+    },
     filterItems() {
       const filters = []
 
