@@ -43,12 +43,14 @@
         </div>
       </div>
     </transition>
-    <ShareFile
-      ref="shareDialog"
-      :files="[...selectedFiles]"
-      :folders="[...selectedFolders]"
-      type="folder"
-    ></ShareFile>
+    <client-only>
+      <ShareFile
+        ref="shareDialog"
+        :files="[...selectedFiles]"
+        :folders="[...selectedFolders]"
+        type="folder"
+      ></ShareFile>
+    </client-only>
   </div>
 </template>
 

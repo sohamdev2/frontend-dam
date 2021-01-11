@@ -229,7 +229,9 @@
         </div>
       </div>
     </div>
-    <ShareFile ref="shareDialog" :files="[file]" type="folder"></ShareFile>
+    <client-only>
+      <ShareFile ref="shareDialog" :files="[file]" type="folder"></ShareFile>
+    </client-only>
     <DownloadingIndicator />
   </div>
 </template>

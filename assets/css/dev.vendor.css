@@ -292,6 +292,15 @@ body,
 
 /* ##### css fixes ### */
 
+/* global */
+.main-left-sidebar {
+  z-index: 800;
+}
+.select-bar {
+  display: flex;
+  z-index: 900;
+}
+
 /* detail page  */
 .detail-left h2 {
   word-break: break-all;

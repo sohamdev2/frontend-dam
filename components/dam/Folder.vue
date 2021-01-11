@@ -56,8 +56,13 @@
         </template>
       </div>
     </div>
-
-    <ShareFile ref="shareDialog" :folders="[folder]" type="folder"></ShareFile>
+    <client-only>
+      <ShareFile
+        ref="shareDialog"
+        :folders="[folder]"
+        type="folder"
+      ></ShareFile>
+    </client-only>
   </div>
 </template>
 

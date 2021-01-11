@@ -131,13 +131,14 @@
         </a>
       </div>
     </div>
-
-    <ShareFile
-      v-if="!emitShare"
-      ref="shareDialog"
-      :files="[file]"
-      type="folder"
-    ></ShareFile>
+    <client-only>
+      <ShareFile
+        v-if="!emitShare"
+        ref="shareDialog"
+        :files="[file]"
+        type="folder"
+      ></ShareFile>
+    </client-only>
   </div>
 </template>
 

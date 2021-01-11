@@ -94,11 +94,13 @@
       </template>
     </template>
 
-    <ShareFile
-      ref="shareDialog"
-      :files="(shareFile && [shareFile]) || []"
-      type="folder"
-    ></ShareFile>
+    <client-only>
+      <ShareFile
+        ref="shareDialog"
+        :files="(shareFile && [shareFile]) || []"
+        type="folder"
+      ></ShareFile>
+    </client-only>
   </div>
 </template>
 
