@@ -207,10 +207,10 @@ export default {
   pointer-events: none;
 }
 .VueCarousel-navigation-prev {
-  left: 0 !important;
+  left: 15px !important;
 }
 .VueCarousel-navigation-next {
-  right: 0 !important;
+  right: 15px !important;
 }
 .VueCarousel-dot {
   margin: 0 !important;
