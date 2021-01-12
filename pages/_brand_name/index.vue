@@ -22,11 +22,17 @@
         </carousel>
       </client-only>
     </div>
-    <template v-if="dashboardData && dashboardData.trending_data">
+    <template
+      v-if="
+        dashboardData &&
+        dashboardData.trending_data &&
+        dashboardData.trending_data.length
+      "
+    >
       <div class="section-title">
         <h2>Trending</h2>
       </div>
-      <client-only v-if="dashboardData">
+      <client-only>
         <carousel
           :per-page="4"
           class="resource-container row-resource"
@@ -145,7 +151,7 @@ export default {
 <style lang="css">
 .banner-item {
   width: 100%;
-  height: 250px;
+  height: 320px;
   object-fit: scale-down;
   background-position: center;
   background-repeat: no-repeat;
