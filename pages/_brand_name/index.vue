@@ -207,15 +207,20 @@ export default {
   pointer-events: none;
 }
 .VueCarousel-navigation-prev {
-  left: 15px !important;
+  left: 0px !important;
 }
 .VueCarousel-navigation-next {
+  right: 0px !important;
+}
+.resource-container .VueCarousel-navigation-prev {
+  left: 15px !important;
+}
+.resource-container .VueCarousel-navigation-next {
   right: 15px !important;
 }
 .VueCarousel-dot {
   margin: 0 !important;
 }
-
 .custom-checkbox label.hide-select {
   padding-left: 0 !important;
   cursor: default;
