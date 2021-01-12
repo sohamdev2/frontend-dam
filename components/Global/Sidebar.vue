@@ -50,4 +50,48 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.asset-left {
+  overflow: hidden;
+}
+.asset-left > div,
+.popular-tags,
+.subfolder-list.sidebar {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.asset-overview {
+  margin-bottom: 1rem;
+}
+.folder-list.ec-list {
+  flex: 1;
+  max-height: unset !important;
+  overflow: auto !important;
+  margin-bottom: 1rem;
+}
+.asset-left > div,
+.popular-tags {
+  height: 100%;
+}
+
+.subfolder-list.sidebar {
+  flex: 1;
+}
+.popular-tags {
+  flex: 1;
+  max-height: 35%;
+  margin-top: 0rem;
+}
+.popular-tags .tag-inner {
+  flex: 1;
+  height: 100%;
+  max-height: unset;
+  padding-bottom: 1rem;
+  overflow: auto;
+}
+
+.popular-tags input[type='text'] {
+  display: none;
+}
+</style>
