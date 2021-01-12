@@ -54,8 +54,10 @@
         <template v-if="files.length">
           <div :key="key" class="mini-title">
             <div class="custom-checkbox">
-              <input id="Images" type="checkbox" class="form-check-input" />
-              <label for="Images">{{ keytoTitle(key) }}</label>
+              <!-- <input id="Images" type="checkbox" class="form-check-input" /> -->
+              <label for="Images" class="hide-select">{{
+                keytoTitle(key)
+              }}</label>
             </div>
             <nuxt-link
               :to="{
@@ -212,5 +214,13 @@ export default {
 }
 .VueCarousel-dot {
   margin: 0 !important;
+}
+
+.custom-checkbox label.hide-select {
+  padding-left: 0 !important;
+  cursor: default;
+}
+.custom-checkbox label.hide-select:before {
+  opacity: 0 !important;
 }
 </style>

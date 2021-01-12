@@ -177,6 +177,7 @@ export default {
       // pagination
       page, // currentPage
       lastPage: -1,
+      totalApiAssets: null,
     }
   },
   computed: {
@@ -206,25 +207,25 @@ export default {
         : null
     },
     totalAssets() {
-      return this.files.length + this.subFolders.length
+      return this.totalApiAssets || this.files.length + this.subFolders.length
+    },
+    selectedCount() {
+      return this.selectedFiles.length + this.selectedFolders.length
     },
     selectedAll() {
-      return (
-        !!this.totalAssets &&
-        this.selectedFiles.length + this.selectedFolders.length ===
-          this.totalAssets
-      )
+      const length = this.files.length + this.subFolders.length
+      return !!length && this.selectedCount === length
     },
   },
   watch: {
     queryTag() {
-      this.initData()
+      this.prefetch()
     },
     hashParam(hashParam) {
-      this.initData()
+      this.prefetch()
     },
     '$route.query.searchId'() {
-      this.initData()
+      this.prefetch()
     },
     page(page) {
       if (page === -1) {
@@ -245,15 +246,16 @@ export default {
     // },
   },
   mounted() {
-    this.initData()
+    this.prefetch()
   },
   methods: {
     /**
      * Add newly added folders
      */
-    initData() {
+    prefetch() {
       this.page = 1
       this.lastPage = -1
+      this.totalApiAssets = null
       this.getData()
     },
     getFolders() {
@@ -327,6 +329,8 @@ export default {
             this.page = 1
             return this.getData()
           } else this.page = data.current_page
+
+          this.totalApiAssets = data.total
 
           this.lastPage = data.last_page
           this.files = data.data || []

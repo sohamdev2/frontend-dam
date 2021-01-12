@@ -195,6 +195,10 @@ export default {
 <style>
 .custom-checkbox label.hide-select {
   padding-left: 0 !important;
+  cursor: default;
+}
+.select2-search.select2-search--dropdown {
+  display: none;
 }
 .custom-checkbox label.hide-select:before {
   opacity: 0 !important;
