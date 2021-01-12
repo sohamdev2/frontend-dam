@@ -164,7 +164,10 @@
                     </td>
                   </tr>
                   <template v-if="metaData">
-                    <tr v-for="(value, key) in metaData" :key="key">
+                    <tr
+                      v-for="(value, key) in filterMetaData(metaData)"
+                      :key="key"
+                    >
                       <td>{{ $camelCaseToNormalCase(key) }}</td>
                       <td>
                         <span> : </span>
@@ -394,6 +397,22 @@ export default {
         .catch(this.onError)
 
       this.ui.deleting = false
+    },
+    filterMetaData(metaData) {
+      const allowed = [
+        'Credit',
+        'DateUploaded',
+        'FileName',
+        'FileSize',
+        'LastModified',
+      ]
+
+      return Object.keys(metaData)
+        .filter((key) => allowed.includes(key))
+        .reduce((obj, key) => {
+          obj[key] = metaData[key]
+          return obj
+        }, {})
     },
     getExif() {
       const vue = this
