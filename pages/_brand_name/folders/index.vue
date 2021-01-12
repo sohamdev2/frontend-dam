@@ -121,6 +121,8 @@
         <Pagination
           v-if="lastPage > 1 && !loading"
           key="pagination"
+          class="pb-5"
+          :class="{ 'mb-5': mode == 'column' }"
           :last-page="lastPage"
           :current-page.sync="page"
         />
