@@ -80,7 +80,7 @@ export default {
   ],
 
   router: {
-    middleware: ['brand-name-check', 'auth'],
+    middleware: ['verify-brand-name', 'auth'],
   },
 
   auth: {

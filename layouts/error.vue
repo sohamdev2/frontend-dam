@@ -9,7 +9,6 @@ import Page404 from '@/pages/404.vue'
 export default {
   components: { Page401, Page404 },
   props: { error: { type: Object, default: () => ({}) } },
-  layout: 'app-min-no-search',
   computed: {
     page() {
       if (this.error.status === 401) return 'Page401'

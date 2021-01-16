@@ -43,27 +43,36 @@ export const mutations = {
 }
 export const actions = {
   async fetchDashboardData({ commit, state }) {
+    if (!this.$auth.loggedIn) return
+
     commit('loading.dashboard', true)
 
-    const { data } = await this.$axios
+    const response = await this.$axios
       .$get(`/digital/common-data?workspace_id=${this.$getWorkspaceId()}`)
       .catch(this.$showErrorToast)
 
     commit('loading.dashboard', false)
-    commit('dashboardData', data)
 
-    return data
+    if (response) {
+      commit('dashboardData', response.data)
+
+      return response.data
+    }
   },
   async fetchFolders({ commit }) {
+    if (!this.$auth.loggedIn) return
+
     commit('loading.folders', true)
 
-    const { data } = await this.$axios
+    const response = await this.$axios
       .$get(`/digital/category-list?workspace_id=${this.$getWorkspaceId()}`)
       .catch(this.$showErrorToast)
 
     commit('loading.folders', false)
-    commit('folders', data)
+    if (response) {
+      commit('folders', response.data)
 
-    return data
+      return response.data
+    }
   },
 }

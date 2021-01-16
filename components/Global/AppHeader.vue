@@ -2,7 +2,11 @@
   <header class="header-sec row no-gutters">
     <div class="main-logo col">
       <nuxt-link :to="`/${$getBrandName()}`">
-        <img src="@/assets/img/brand-logo.svg" alt="Logo" />
+        <img
+          :src="user.instance.logo || require('@/assets/img/logo.svg')"
+          alt="Logo"
+          height="48"
+        />
       </nuxt-link>
     </div>
     <div class="main-menu col-7">
@@ -20,7 +24,7 @@
           data-placement="top"
           :title="user.name"
         >
-          {{ user.name }}
+          {{ user.name || user.email }}
         </a>
         <a
           role="button"

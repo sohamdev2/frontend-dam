@@ -39,7 +39,7 @@
                 <div class="form-group">
                   <label>Name *</label>
                   <input
-                    v-model="form.name"
+                    v-model="$v.form.name.$model"
                     type="text"
                     class="form-control"
                     placeholder="Name"
@@ -56,7 +56,7 @@
                 <div class="form-group">
                   <label>Password *</label>
                   <input
-                    v-model="form.password"
+                    v-model="$v.form.password.$model"
                     type="password"
                     class="form-control"
                     placeholder="Password"
@@ -82,7 +82,7 @@
                 <div class="form-group">
                   <label>Confirm Password *</label>
                   <input
-                    v-model="form.confirm_password"
+                    v-model="$v.form.confirm_password.$model"
                     type="password"
                     class="form-control"
                     placeholder="Confirm Password"
@@ -94,7 +94,7 @@
                     "
                     class="input-error"
                   >
-                    Confirm password is required
+                    Confirm Password is required
                   </div>
                   <div
                     v-else-if="
@@ -103,7 +103,7 @@
                     "
                     class="input-error"
                   >
-                    Passwords must match with confirm password
+                    Password and Confirm Password did not match.
                   </div>
                 </div>
               </div>
@@ -136,7 +136,7 @@ import { required, minLength, sameAs } from 'vuelidate/lib/validators'
 import moment from 'moment-timezone'
 
 export default {
-  auth: false,
+  auth: 'guest',
   async asyncData({ $guestAxios, query, $showErrorToast, redirect, error }) {
     const { invitation_token } = query
 
@@ -155,7 +155,11 @@ export default {
         return redirect('/login')
       }
 
-      return { form: data, message, error: false }
+      return {
+        form: { ...data, password: '', confirm_password: '' },
+        message,
+        error: false,
+      }
     } catch (e) {
       const { data, status } = e.response || {}
       if (data?.message?.includes('link is expired'))
@@ -183,10 +187,22 @@ export default {
           token: this.form.invitation_token,
           password: this.form.password,
         })
-        .then(({ data: { message } }) => {
-          this.$toast.global.success(message)
-          this.$router.replace('/login')
-        })
+        .then(
+          ({
+            data: {
+              message,
+              data: {
+                user: { url },
+              },
+            },
+          }) => {
+            this.$store.commit('localStorage/brandName', url)
+            this.$store.commit('brandName', url)
+
+            this.$toast.global.success(message)
+            this.$router.replace(`/login?brandName=${url}`)
+          }
+        )
         .catch(this.$showErrorToast)
 
       this.loading = false
@@ -204,5 +220,3 @@ export default {
   },
 }
 </script>
-
-<style scoped></style>

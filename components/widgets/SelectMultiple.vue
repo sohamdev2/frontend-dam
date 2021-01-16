@@ -5,7 +5,9 @@
 </template>
 
 <script>
-function custom_template(obj) {
+/* eslint-disable vue/require-default-prop */
+
+function customTemplate(obj) {
   const image = obj.display_profile_image
   const text = obj.text
 
@@ -41,8 +43,8 @@ export default {
           // allowClear: true,
           containerCssClass: this.containerCssClass,
           dropdownCssClass: this.dropdownCssClass,
-          templateSelection: custom_template,
-          templateResult: custom_template,
+          templateSelection: customTemplate,
+          templateResult: customTemplate,
         })
         .val(this.value)
         .trigger('change')

@@ -18,8 +18,8 @@ export default ({ app, $axios, router, store }, inject) => {
     app.$toast?.global?.error(getErrorMessage(e))
   }
 
-  const getBrandName = () => app.$auth?.user?.dealer?.sub_domain
-  const getWorkspaceId = () => app.$auth?.user?.dealer?.workspace_id
+  const getBrandName = () => app.$auth?.user?.url
+  const getWorkspaceId = () => app.$auth?.user?.workspace_id
 
   const logout = async () => {
     const brandName = getBrandName()

@@ -19,8 +19,8 @@
 
 <script>
 export default {
-  props: { error: { type: Object, default: () => ({}) } },
   auth: false,
+  props: { error: { type: Object, default: () => ({}) } },
   methods: {
     backToHome() {
       this.$router.push('/')

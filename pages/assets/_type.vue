@@ -78,18 +78,24 @@
 
 export default {
   auth: false,
-  asyncData({ params, query, $axios, redirect }) {
+  asyncData({ params, query, $axios, redirect, error }) {
     return $axios
       .$get(`show-share-assets?type=${params.type}&status=${query.status}`)
-      .then(({ data }) => ({
-        category: data.category || [],
-        assets: data.assets || [],
-        stack: [{ category: data.category || [], assets: data.assets || [] }],
-      }))
+      .then(({ data }) => {
+        if (!data.category.length && !data.assets.length)
+          return redirect('/404')
+
+        return {
+          category: data.category || [],
+          assets: data.assets || [],
+          stack: [{ category: data.category || [], assets: data.assets || [] }],
+        }
+      })
       .catch((e) => {
         // eslint-disable-next-line no-console
         console.log(e)
-        redirect('/')
+        error(e)
+        // redirect('/')
       })
   },
   data() {

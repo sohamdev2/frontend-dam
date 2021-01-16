@@ -22,22 +22,18 @@
                 <div class="form-group">
                   <label>Email Address *</label>
                   <input
-                    v-model.lazy="form.email"
+                    v-model="$v.form.email.$model"
                     type="email"
                     class="form-control"
                   />
-                  <div
-                    v-if="$v.form.email.$error && !$v.form.email.required"
-                    class="input-error"
-                  >
-                    Email address is required
-                  </div>
-                  <div
-                    v-if="$v.form.email.$error && !$v.form.email.email"
-                    class="input-error"
-                  >
-                    Please enter valid email address.
-                  </div>
+                  <template v-if="$v.form.email.$error">
+                    <div v-if="!$v.form.email.required" class="input-error">
+                      Email address is required
+                    </div>
+                    <div v-else-if="!$v.form.email.email" class="input-error">
+                      Please enter valid email address.
+                    </div>
+                  </template>
                 </div>
               </div>
             </div>
@@ -85,7 +81,7 @@ export default {
         .then(({ data: { message } }) => {
           this.$toast.global.success(message)
 
-          this.$router.replace('/')
+          this.$router.replace('/login')
         })
         .catch(this.$showErrorToast)
       this.loading = false
@@ -98,5 +94,3 @@ export default {
   },
 }
 </script>
-
-<style scoped></style>

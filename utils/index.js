@@ -55,7 +55,7 @@ export function getMarkedText(text, search, tag = 'mark') {
 }
 
 export function toHumanlySize(size) {
-  const sizes = ['B', 'KB', 'MB', 'GB', 'TB']
+  const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
   size = Number(size)
   let index = 0
   while (size > 900) {

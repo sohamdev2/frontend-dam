@@ -47,7 +47,7 @@
                     <div class="form-group">
                       <label>Password *</label>
                       <input
-                        v-model.lazy="$v.form.password.$model"
+                        v-model="$v.form.password.$model"
                         type="password"
                         class="form-control"
                       />
@@ -96,12 +96,7 @@
 import { required, email } from 'vuelidate/lib/validators'
 
 export default {
-  asyncData({ store, query, redirect }) {
-    const brandName = query.brandName || store.state.localStorage?.brandName
-
-    if (brandName) return { brandName }
-    // else redirect('/404')
-  },
+  auth: false,
   data() {
     return {
       loading: false,
@@ -115,33 +110,28 @@ export default {
   mounted() {
     if (this.$route.query.brandName) this.$router.replace({ query: null })
 
-    window.$(window).ready(this.init.bind(this, true))
     this.init()
   },
   methods: {
     init(ready) {
       const brandName =
-        this.brandName || this.$store.state.localStorage?.brandName
-
-      console.log(ready, brandName)
-
-      if (!brandName) {
-        if (!ready) this.$router.replace('/404')
-        return
-      }
+        this.$store.state?.brandName || this.$route.query.brandName
 
       this.form.url = brandName
 
       this.$store.commit('localStorage/brandName', brandName)
+      this.$store.commit('brandName', brandName)
     },
     async login(e) {
       if ((this.$v.$touch(), this.$v.$invalid)) return
 
       this.loading = true
 
+      const { brandName } = this.$store.state
+
       await this.$auth
         .loginWith('local', { data: this.form })
-        .then(() => this.$router.push(`/${this.form.url}`))
+        .then(() => this.$router.push(`/${brandName}`))
         .catch(this.$showErrorToast)
       this.loading = false
     },

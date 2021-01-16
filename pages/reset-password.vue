@@ -39,7 +39,7 @@
                 <div class="form-group">
                   <label>Password *</label>
                   <input
-                    v-model="form.password"
+                    v-model="$v.form.password.$model"
                     type="password"
                     class="form-control"
                     placeholder="Password"
@@ -65,7 +65,7 @@
                 <div class="form-group">
                   <label>Confirm Password *</label>
                   <input
-                    v-model="form.confirm_password"
+                    v-model="$v.form.confirm_password.$model"
                     type="password"
                     class="form-control"
                     placeholder="Confirm Password"
@@ -77,7 +77,7 @@
                     "
                     class="input-error"
                   >
-                    Confirm password is required
+                    Confirm Password is required
                   </div>
                   <div
                     v-else-if="
@@ -86,7 +86,7 @@
                     "
                     class="input-error"
                   >
-                    Passwords must match with confirm password
+                    Password and Confirm Password did not match.
                   </div>
                 </div>
               </div>
@@ -119,11 +119,10 @@ import { required, minLength, sameAs } from 'vuelidate/lib/validators'
 import moment from 'moment-timezone'
 
 export default {
-  auth: false,
+  auth: 'guest',
   async asyncData({ $guestAxios, query, $showErrorToast, redirect, error }) {
     const { token } = query
 
-    // eslint-disable-next-line camelcase
     if (!token) return redirect('/')
 
     try {
@@ -163,15 +162,29 @@ export default {
       this.form.timezone = moment.tz.guess()
 
       this.$guestAxios
-        .post('generate-password', {
-          email_token: this.form.email_token,
+        .post('reset-password', {
+          reset_token: this.form.email_token,
           token: this.form.token,
           password: this.form.password,
         })
-        .then(({ data: { message } }) => {
-          this.$toast.global.success(message)
-          this.$router.replace('/login')
-        })
+        .then(
+          ({
+            data: {
+              message,
+              data: {
+                user: { url },
+              },
+            },
+          }) => {
+            this.$store.commit('localStorage/brandName', url)
+            this.$store.commit('brandName', url)
+
+            this.$nextTick(() => {
+              this.$toast.global.success(message)
+              this.$router.push(`/login?brandName=${url}`)
+            })
+          }
+        )
         .catch(this.$showErrorToast)
 
       this.loading = false

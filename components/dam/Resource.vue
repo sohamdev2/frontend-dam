@@ -201,10 +201,9 @@ export default {
             video: {
               tpl:
                 `<video class="fancybox-video" data-id="file-${this.file.id}" controlsList="nodownload" controls poster="${this.videoThumbnail}">` +
-                '<source src="{{src}}" type="{{format}}" />' +
+                '<source src="{{src}}"  />' +
                 'Sorry, your browser doesn\'t support embedded videos, <a href="{{src}}">download</a> and watch with your favorite video player!' +
                 '</video>',
-              format: '', // custom video format
               autoStart: true,
             },
           })
@@ -213,9 +212,8 @@ export default {
           .$(this.$el)
           .find('[data-fancybox]')
           .fancybox({
-            video: {
-              tpl: '<img src="{{src}}" type="{{format}}" />',
-              autoStart: true,
+            img: {
+              tpl: '<img src="{{src}}"  />',
             },
           })
     })

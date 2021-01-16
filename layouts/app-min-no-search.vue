@@ -1,6 +1,6 @@
 <template>
   <ShowWhenReady>
-    <AppHeader />
+    <AppHeader v-if="$auth.loggedIn" />
     <div class="main">
       <div class="main-right-bodypart front-page">
         <div class="center-part-view-main full-width-box boxes-part">
