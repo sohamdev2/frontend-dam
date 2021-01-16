@@ -102,6 +102,8 @@
       </template>
     </template>
 
+    <DownloadingIndicator />
+
     <client-only>
       <ShareFile
         ref="shareDialog"

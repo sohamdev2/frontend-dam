@@ -161,7 +161,7 @@ export default {
     let page
     if (this.$route.query.page) {
       const queryPage = Number(this.$route.query.page)
-      page = isNaN(queryPage) ? 0 : queryPage
+      page = isNaN(queryPage) ? 1 : queryPage
     } else page = 1
 
     return {
@@ -248,7 +248,7 @@ export default {
     // },
   },
   mounted() {
-    this.prefetch()
+    this.getData()
   },
   methods: {
     /**
