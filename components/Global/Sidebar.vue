@@ -64,11 +64,15 @@ export default {
 .asset-overview {
   margin-bottom: 1rem;
 }
-.folder-list.ec-list {
+.dam-folder-list {
   flex: 1;
-  max-height: unset !important;
   overflow: auto !important;
   margin-bottom: 1rem;
+}
+.folder-list.ec-list {
+  max-height: unset !important;
+  overflow: hidden !important;
+  margin-bottom: 0;
 }
 .asset-left > div,
 .popular-tags {
