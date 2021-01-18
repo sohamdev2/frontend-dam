@@ -250,6 +250,9 @@ body,
 .slide-up-enter-active,
 .slide-up-leave-active {
   transition: all 240ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  /* position: absolute;
+  right: 0;
+  left: 0; */
 }
 
 .slide-right-enter {
