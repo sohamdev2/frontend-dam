@@ -108,9 +108,9 @@ export default {
     }
   },
   mounted() {
-    if (this.$route.query.brandName) this.$router.replace({ query: null })
-
     this.init()
+
+    if (this.$route.query.brandName) this.$router.replace({ query: null })
   },
   methods: {
     init(ready) {
