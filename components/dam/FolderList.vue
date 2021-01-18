@@ -1,21 +1,20 @@
 <template>
-  <client-only>
-    <transition name="slide-up">
-      <transition-group
-        v-if="sortedFolder.length"
-        class="folder-list ec-list"
-        name="slide"
-        style="max-height: 240px; overflow: auto"
-        tag="ul"
-      >
-        <FolderItem
-          v-for="folder in sortedFolder"
-          :key="folder.id"
-          :folder="folder"
-        />
-      </transition-group>
+  <div>
+    <transition-group
+      class="folder-list ec-list"
+      name="slide-up"
+      style="max-height: 240px; overflow: auto"
+      tag="ul"
+    >
+      <FolderItem
+        v-for="(folder, i) in sortedFolder"
+        :key="folder.id"
+        :style="{ transitionDelay: `${(i % 12) * 50}ms` }"
+        :folder="folder"
+      />
+    </transition-group>
+    <client-only v-if="folderLoading">
       <ContentLoader
-        v-else-if="folderLoading"
         :speed="1"
         :width="240"
         style="margin-top: 1rem"
@@ -27,8 +26,8 @@
         <rect x="10" y="75" rx="2" ry="2" width="220" height="24" />
         <rect x="10" y="110" rx="2" ry="2" width="220" height="24" />
       </ContentLoader>
-    </transition>
-  </client-only>
+    </client-only>
+  </div>
 </template>
 
 <script>
