@@ -46,13 +46,7 @@
       <div class="file-sort">
         <Select2
           value="Sort by"
-          :options="[
-            'Sort by',
-            { text: 'Name', id: 'name' },
-            { text: 'Date', id: 'date' },
-            { text: 'Type', id: 'file_type' },
-            { text: 'Size', id: 'file_size' },
-          ]"
+          :options="sortingOptions"
           :attrs="{ minimumResultsForSearch: -1 }"
           @input="emitSortParamsArray"
         />
@@ -89,6 +83,13 @@ export default {
   },
   data() {
     return {
+      sortingOptions: [
+        'Sort by',
+        { text: 'Date', id: 'date' },
+        { text: 'Name', id: 'name' },
+        { text: 'Size', id: 'file_size' },
+        { text: 'Type', id: 'file_type' },
+      ],
       categoriesObject: [
         { text: 'Folders', id: '' },
         { text: 'Audios', id: 'audio' },
