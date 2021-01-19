@@ -3,15 +3,17 @@ div
   <div class="filter-search row no-gutters">
     <div class="filter-wrapper col">
       <div class="input-group-prepend filter-select">
-        <Select2
-          v-model="searchParams.filter"
-          class="select"
-          :attrs="{ minimumResultsForSearch: -1 }"
-          :options="filterOptions"
-        />
+        <client-only>
+          <Select2
+            v-model="searchParams.filter"
+            class="select"
+            :attrs="{ minimumResultsForSearch: -1 }"
+            :options="filterOptions"
+          />
+        </client-only>
       </div>
       <input
-        v-model="searchParams.search_term"
+        v-model.trim="searchParams.search_term"
         type="text"
         class="form-control search-field"
         aria-label="Text input with dropdown button"

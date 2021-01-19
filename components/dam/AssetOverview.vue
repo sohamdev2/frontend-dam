@@ -70,7 +70,7 @@ export default {
             hash: `#audio`,
           },
           src: require('~/assets/img/icon/audio-icon.svg'),
-          name: 'Audio',
+          name: 'Audios',
           subText: this.dashboardData.total_audios || 0,
         },
         {

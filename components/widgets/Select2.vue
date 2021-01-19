@@ -1,5 +1,5 @@
 <template>
-  <select :class="classObj">
+  <select :class="classObj" style="display: none">
     <slot></slot>
   </select>
 </template>

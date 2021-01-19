@@ -9,7 +9,7 @@
       @click:select-all="selectAll"
       @click:select-none="selectNone"
     />
-    <div style="margin: auto; overflow: hidden">
+    <div style="margin: auto; overflow: hidden" class="pb-3">
       <ContentLoader
         v-if="loading"
         :speed="1"

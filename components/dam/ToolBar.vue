@@ -85,8 +85,8 @@ export default {
     return {
       sortingOptions: [
         'Sort by',
-        { text: 'Date', id: 'date' },
         { text: 'Name', id: 'name' },
+        { text: 'Recent', id: 'date' },
         { text: 'Size', id: 'file_size' },
         { text: 'Type', id: 'file_type' },
       ],
@@ -161,13 +161,13 @@ export default {
             ['files', 'display_file_name', this.$sortToUpperCase],
           ]
           break
-        case 'date':
+        case 'file_type':
           toEmit = [
             ['subFolders', 'folder_name', this.$sortToUpperCase],
             ['files', 'file_type', this.$sortToUpperCase],
           ]
           break
-        case 'file_type':
+        case 'date':
           toEmit = [
             ['subFolders', 'date', this.$sortToTime],
             ['files', 'date', this.$sortToTime],
