@@ -3,7 +3,10 @@
     <div class="main-logo col">
       <nuxt-link :to="`/${$getBrandName()}`">
         <img
-          :src="user.instance.logo || require('@/assets/img/logo.svg')"
+          :src="
+            (user && user.instance && user.instance.logo) ||
+            require('@/assets/img/logo.svg')
+          "
           alt="Logo"
           height="48"
         />
@@ -19,6 +22,7 @@
     <div class="login-info col">
       <div class="btn-group">
         <a
+          v-if="user"
           class="login-name"
           data-toggle="tooltip"
           data-placement="top"
@@ -33,7 +37,7 @@
           aria-haspopup="true"
           aria-expanded="false"
         >
-          <img src="@/assets/img/login-parson.jpg" alt="parson" />
+          <img src="@/assets/img/login-parson.jpg" alt="person" />
         </a>
         <div class="dropdown-menu custom-dropdown">
           <a class="dropdown-item" href="javascript:void(0);">My account</a>

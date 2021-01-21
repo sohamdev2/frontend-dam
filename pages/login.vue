@@ -120,7 +120,7 @@ export default {
       this.loading = true
 
       await this.$auth
-        .loginWith('local', { data: this.form })
+        .loginWith('local', { data: { ...this.form, url: this.brandName } })
         .then(() => this.$router.push(`/${this.brandName}`))
         .catch(this.$showErrorToast)
 
