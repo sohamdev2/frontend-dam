@@ -189,8 +189,9 @@ export default {
         })
         .then(
           ({
+            message,
             data: {
-              message,
+              message: dataMessage,
               data: {
                 user: { url },
               },
@@ -199,7 +200,7 @@ export default {
             this.$store.commit('localStorage/brandName', url)
             this.$store.commit('brandName', url)
 
-            this.$toast.global.success(message)
+            this.$toast.global.success(dataMessage || message)
             this.$router.replace(`/login?brandName=${url}`)
           }
         )

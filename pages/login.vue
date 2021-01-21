@@ -73,7 +73,10 @@
                   </div>
                   <div class="col-sm-12">
                     <div class="pull-right mt-25 text-right">
-                      <nuxt-link to="/forgot-password" class="color-gray">
+                      <nuxt-link
+                        :to="`/forgot-password?brandName=${brandName}`"
+                        class="color-gray"
+                      >
                         Forgot Password
                       </nuxt-link>
                     </div>
@@ -94,12 +97,15 @@
 
 <script>
 import { required, email } from 'vuelidate/lib/validators'
+import storeBrandName from '~/mixins/storeBrandName'
 
 export default {
   auth: false,
+  mixins: [storeBrandName],
   data() {
     return {
       loading: false,
+      brandName: '',
       form: {
         email: null,
         password: null,
@@ -107,32 +113,17 @@ export default {
       },
     }
   },
-  mounted() {
-    this.init()
-
-    if (this.$route.query.brandName) this.$router.replace({ query: null })
-  },
   methods: {
-    init(ready) {
-      const brandName =
-        this.$store.state?.brandName || this.$route.query.brandName
-
-      this.form.url = brandName
-
-      this.$store.commit('localStorage/brandName', brandName)
-      this.$store.commit('brandName', brandName)
-    },
     async login(e) {
       if ((this.$v.$touch(), this.$v.$invalid)) return
 
       this.loading = true
 
-      const { brandName } = this.$store.state
-
       await this.$auth
         .loginWith('local', { data: this.form })
-        .then(() => this.$router.push(`/${brandName}`))
+        .then(() => this.$router.push(`/${this.brandName}`))
         .catch(this.$showErrorToast)
+
       this.loading = false
     },
   },

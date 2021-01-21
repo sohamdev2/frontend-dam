@@ -62,9 +62,11 @@
 
 <script>
 import { required, email } from 'vuelidate/lib/validators'
+import storeBrandName from '~/mixins/storeBrandName'
 
 export default {
   auth: false,
+  mixins: [storeBrandName],
   data() {
     return {
       form: { email: null },
@@ -74,16 +76,20 @@ export default {
   methods: {
     async submit(e) {
       if ((this.$v.$touch(), this.$v.$invalid) || this.loading) return
+
       this.loading = true
 
       await this.$guestAxios
         .post('forgot-password', this.form)
-        .then(({ data: { message } }) => {
-          this.$toast.global.success(message)
+        .then(({ message, data }) => {
+          this.$toast.global.success(
+            data?.message || message || 'Check your inbox for reset s'
+          )
 
-          this.$router.replace('/login')
+          this.$router.replace(`/login?brandName=${this.brandName}`)
         })
         .catch(this.$showErrorToast)
+
       this.loading = false
     },
   },
