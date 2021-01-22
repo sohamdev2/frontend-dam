@@ -11,11 +11,12 @@
           navigation-next-label="›"
           navigation-prev-label="‹"
         >
-          <slide v-for="file in bannerData" :key="file.id" class="owl-item">
+          <slide v-for="banner in bannerData" :key="banner.id" class="owl-item">
             <div
               class="banner-item"
+              :title="banner.title"
               :style="{
-                backgroundImage: `url('${file.display_file}')`,
+                backgroundImage: `url('${banner.image}')`,
               }"
             ></div>
           </slide>
@@ -124,10 +125,9 @@ export default {
   },
   computed: {
     bannerData() {
-      return this.$shuffle([
-        // ...[this.dashboardData.trending_data].filter(),
-        ...this.dashboardData.recent_uploads.images,
-      ]).slice(0, 6)
+      return [...this.dashboardData.banners].sort(
+        ({ postion: a, postions: b }) => a - b
+      )
     },
     dashboardData() {
       return this.$store.state.appData.dashboardData
