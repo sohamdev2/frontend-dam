@@ -8,7 +8,7 @@
             require('@/assets/img/logo.svg')
           "
           alt="Logo"
-          height="48"
+          height="24"
         />
       </nuxt-link>
     </div>
