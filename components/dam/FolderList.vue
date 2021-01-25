@@ -13,7 +13,7 @@
         :folder="folder"
       />
     </transition-group>
-    <client-only v-if="loading">
+    <client-only v-if="folderLoading">
       <div style="margin-top: 1rem; height: 280px; overflow: hidden">
         <ContentLoader :speed="1" :width="240" :height="400" :animate="true">
           <rect x="10" y="5" rx="2" ry="2" width="220" height="24" />

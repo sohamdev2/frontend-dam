@@ -30,7 +30,10 @@
         :event="selected || shareMode ? '' : 'click'"
         :to="{
           name: 'brand_name-folders',
-          params: { brand_name: $getBrandName() },
+          params: {
+            brand_name: $getBrandName(),
+            folder_name: folder.folder_name || folder.category_name,
+          },
           hash: `#${folder.id}`,
         }"
         class="resource-title"

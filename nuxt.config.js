@@ -51,6 +51,7 @@ export default {
     '~/plugins/vuelidate.js',
     '~/plugins/helper.js',
     '~/plugins/v-clipboard.js',
+    '~/plugins/vue-async-computed.js',
     { src: '~/plugins/vue-audio-visual.js', mode: 'client' },
     { src: '~/plugins/vue-carousel.js', mode: 'client' },
   ],
@@ -81,6 +82,13 @@ export default {
 
   router: {
     middleware: ['verify-brand-name', 'auth'],
+    extendRoutes(routes, resolve) {
+      routes.push({
+        name: 'page_not_found',
+        path: '*',
+        component: resolve(__dirname, 'pages/404.vue'),
+      })
+    },
   },
 
   auth: {
@@ -169,7 +177,6 @@ export default {
     baseURL: process.env.API_BASE_URL,
     https: process.env.HTTPS === 'true',
   },
-
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   serverMiddleware: [
     redirectSSL.create({

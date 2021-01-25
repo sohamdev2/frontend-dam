@@ -9,7 +9,7 @@
       @click:select-all="selectAll"
       @click:select-none="selectNone"
     />
-    <div style="margin: auto; overflow: hidden" class="pb-3">
+    <div style="margin: auto; overflow: hidden; width: 97%" class="pb-3">
       <ContentLoader
         v-if="loading"
         :speed="1"
@@ -199,15 +199,6 @@ export default {
         !isNaN(Number(this.hashParam))
       )
     },
-    currentFolder() {
-      return this.isFolder
-        ? this.$deepSearch(
-            this.folderList,
-            'category_id',
-            (_, id) => Number(this.hashParam) === Number(id)
-          )
-        : null
-    },
     totalAssets() {
       return this.totalApiAssets || this.files.length + this.subFolders.length
     },
@@ -217,6 +208,34 @@ export default {
     selectedAll() {
       const length = this.files.length + this.subFolders.length
       return !!length && this.selectedCount === length
+    },
+  },
+  asyncComputed: {
+    async currentFolder() {
+      if (!this.isFolder) return null
+
+      let folder = this.$deepSearch(
+        this.folderList,
+        'category_id',
+        (_, id) => Number(this.hashParam) === Number(id)
+      )
+
+      if (!folder && this.$route.params.folder_name)
+        folder = { folder_name: this.$route.params.folder_name }
+      else
+        await this.$axios
+          .$post('digital/view-category', {
+            workspace_id: this.$getWorkspaceId(),
+            category_id: this.hashParam,
+          })
+          .then(({ data }) => {
+            folder = data
+            // this.$store.commit("dam/setFolderItem", data);
+          })
+          .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
+      // .finally(() => (this.loading = false));
+
+      return folder || null
     },
   },
   watch: {

@@ -7,11 +7,18 @@
         ...(isVideo
           ? {
               mouseenter: () =>
-                !paused && $suppressError(() => $refs.video.play()),
+                !paused &&
+                $suppressError(() => {
+                  playingModel = true
+                  $refs.video.play()
+                }),
               mouseleave: () =>
                 !paused &&
-                !isPlaying &&
-                $suppressError(() => $refs.video.pause()),
+                isPlaying &&
+                $suppressError(() => {
+                  playingModel = false
+                  $refs.video.pause()
+                }),
             }
           : {}),
       }"
@@ -36,9 +43,10 @@
           />
 
           <video
+            v-show="playingModel"
             ref="video"
             class="thevideo"
-            :data-video="__url"
+            :data-video="file.display_file"
             playsinline
             muted
             loop
@@ -59,7 +67,12 @@
         :event="selected || shareMode ? '' : 'click'"
         :to="{
           name: 'brand_name-files-id',
-          params: { id: file.id, brand_name: $getBrandName() },
+          params: {
+            id: file.id,
+            brand_name: $getBrandName(),
+            came_from_hash: hashParam,
+            folder_name: $route.params.folder_name,
+          },
         }"
         class="resource-title"
       >
@@ -123,7 +136,12 @@
           v-else-if="mode != 'column'"
           :to="{
             name: 'brand_name-files-id',
-            params: { id: file.id, brand_name: $getBrandName() },
+            params: {
+              id: file.id,
+              brand_name: $getBrandName(),
+              came_from_hash: hashParam,
+              folder_name: $route.params.folder_name,
+            },
           }"
           class="btn bg-light-gray"
         >
@@ -160,12 +178,16 @@ export default {
   },
   data() {
     return {
+      playingModel: false,
       paused: false,
       videoThumbnail: this.file.preview_image,
       videoThumbnailAdded: false,
     }
   },
   computed: {
+    hashParam() {
+      return (this.$route.hash || '').replace('#', '')
+    },
     isPlaying() {
       if (!this.isVideo) return false
 
@@ -173,10 +195,11 @@ export default {
       if (!video) return false
 
       return (
-        video.currentTime > 0 &&
-        !video.paused &&
-        !video.ended &&
-        video.readyState > 2
+        (video.currentTime > 0 &&
+          !video.paused &&
+          !video.ended &&
+          video.readyState > 2) ||
+        this.playingModel
       )
     },
     workspaceId() {

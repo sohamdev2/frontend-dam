@@ -6,11 +6,12 @@
       style="display: flex; flex-direction: column"
     >
       <div>
-        <a class="back-link" @click="$router.go(-1)">
-          Go Back
-          <!-- {{ file.display_file_name }} -->
-        </a>
-        <h2>{{ file.display_file_name }}</h2>
+        <nuxt-link v-if="breadcrumb" class="back-link" :to="breadcrumb.url">
+          {{ breadcrumb.name }}
+        </nuxt-link>
+        <h2>
+          {{ file.display_file_name }}
+        </h2>
       </div>
       <div
         class="detail-box"
@@ -246,6 +247,17 @@ import Axios from 'axios'
 import fileType from '~/mixins/fileType'
 import { proxyurl } from '~/utils/helper'
 
+const categories = ['video', 'audio', 'image', 'application', 'archive']
+
+const categoriesObject = [
+  { text: 'Home', id: '' },
+  { text: 'Audios', id: 'audio' },
+  { text: 'Documents', id: 'application' },
+  { text: 'Images', id: 'image' },
+  { text: 'Videos', id: 'video' },
+  { text: 'Archived', id: 'archive' },
+]
+
 function sortObject(obj) {
   return Object.keys(obj)
     .sort()
@@ -318,11 +330,83 @@ export default {
     }
   },
   computed: {
+    hashParam() {
+      return this.$route.params.came_from_hash
+    },
+    folderList() {
+      return this.$store.state.appData?.folderList || []
+    },
+    isFolder() {
+      return (
+        !!this.hashParam && !this.inCategory && !isNaN(Number(this.hashParam))
+      )
+    },
+    inCategory() {
+      return categories.includes(this.hashParam)
+    },
+    category() {
+      return categoriesObject.find(({ id }) => this.hashParam === id)
+    },
     allButtonDisabled() {
       return this.ui.loading || this.ui.deleting || this.ui.archiving
     },
     fileId() {
       return this.$route.params.id
+    },
+  },
+  asyncComputed: {
+    async breadcrumb() {
+      if (this.inCategory)
+        return {
+          name: 'All ' + this.category.text?.toLowerCase(),
+          url: {
+            name: 'brand_name-folders',
+            params: { brand_name: this.$getBrandName() },
+            hash: `#${this.hashParam}`,
+          },
+        }
+
+      if (!this.isFolder)
+        return {
+          name: 'Home',
+          url: {
+            name: 'brand_name',
+            params: {
+              brand_name: this.$getBrandName(),
+            },
+          },
+        }
+
+      let folder = this.$deepSearch(
+        this.folderList,
+        'category_id',
+        (_, id) => Number(this.hashParam) === Number(id)
+      )
+
+      if (!folder && this.$route.params.folder_name)
+        folder = { folder_name: this.$route.params.folder_name }
+      else
+        await this.$axios
+          .$post('digital/view-category', {
+            workspace_id: this.$getWorkspaceId(),
+            category_id: this.hashParam,
+          })
+          .then(({ data }) => {
+            folder = data
+            // this.$store.commit("dam/setFolderItem", data);
+          })
+          .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
+      // .finally(() => (this.loading = false));
+
+      if (folder)
+        return {
+          name: folder.folder_name || folder.category_name,
+          url: {
+            name: 'brand_name-folders',
+            params: { brand_name: this.$getBrandName() },
+            hash: `#${this.hashParam}`,
+          },
+        }
     },
   },
   mounted() {
