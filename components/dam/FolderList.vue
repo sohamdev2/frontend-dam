@@ -13,19 +13,15 @@
         :folder="folder"
       />
     </transition-group>
-    <client-only v-if="folderLoading">
-      <ContentLoader
-        :speed="1"
-        :width="240"
-        style="margin-top: 1rem"
-        :height="400"
-        :animate="true"
-      >
-        <rect x="10" y="5" rx="2" ry="2" width="220" height="24" />
-        <rect x="10" y="40" rx="2" ry="2" width="220" height="24" />
-        <rect x="10" y="75" rx="2" ry="2" width="220" height="24" />
-        <rect x="10" y="110" rx="2" ry="2" width="220" height="24" />
-      </ContentLoader>
+    <client-only v-if="loading">
+      <div style="margin-top: 1rem; height: 280px; overflow: hidden">
+        <ContentLoader :speed="1" :width="240" :height="400" :animate="true">
+          <rect x="10" y="5" rx="2" ry="2" width="220" height="24" />
+          <rect x="10" y="40" rx="2" ry="2" width="220" height="24" />
+          <rect x="10" y="75" rx="2" ry="2" width="220" height="24" />
+          <rect x="10" y="110" rx="2" ry="2" width="220" height="24" />
+        </ContentLoader>
+      </div>
     </client-only>
   </div>
 </template>
