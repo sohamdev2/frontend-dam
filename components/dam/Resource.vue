@@ -27,9 +27,12 @@
       >
         <div v-if="isVideo" class="preview-images">
           <img
-            class="preview-images preview no-image"
-            style="padding: 0 !important"
-            :style="{ backgroundImage: `url('${videoThumbnail}')` }"
+            class="preview-images preview/"
+            style="object-fit: contain !important"
+            :style="{
+              padding: `${videoThumbnailAdded ? 0 : 2}rem !important`,
+            }"
+            :src="videoThumbnail"
           />
 
           <video
@@ -159,6 +162,7 @@ export default {
     return {
       paused: false,
       videoThumbnail: this.file.preview_image,
+      videoThumbnailAdded: false,
     }
   },
   computed: {
@@ -236,6 +240,7 @@ export default {
         const vue = this
         const canvas = document.createElement('canvas')
         const context = canvas.getContext('2d')
+        vue.videoThumbnailAdded = false
         video.addEventListener(
           'loadeddata',
           function () {
@@ -245,6 +250,7 @@ export default {
             resolve()
 
             vue.videoThumbnail = canvas.toDataURL('image/jpeg')
+            vue.videoThumbnailAdded = true
           },
           false
         )
@@ -280,10 +286,13 @@ export default {
   background-position: center;
   background-repeat: no-repeat;
 }
+/* .dam-res.mode-row .resource-box.video .preview-images {
+  margin: 2rem;
+  transform: translateX(-1rem) translateY(-1rem);
+} */
 .dam-res.mode-row .preview-images:not(.no-image) .preview {
   background-size: cover;
 }
-
 .dam-res:not(.mode-column) .preview-images.no-image .preview {
   height: calc(100% - 1.5rem);
   width: calc(100% - 0.5rem);
