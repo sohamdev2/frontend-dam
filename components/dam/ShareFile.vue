@@ -7,8 +7,8 @@
           <div v-if="shareUrl" class="search-folder mb-0">
             <template>
               <h4>Share Link</h4>
-              <div class="row mt-3 align-items-center">
-                <div class="col">
+              <div class="mt-3 align-items-center" style="display: flex">
+                <div style="flex: 1; padding-right: 1rem">
                   <input
                     type="text"
                     :value="shareUrl"
@@ -18,13 +18,13 @@
                     onClick="this.setSelectionRange(0, this.value.length)"
                   />
                 </div>
-                <div class="col-3">
+                <div>
                   <button
                     v-clipboard="shareUrl"
                     v-clipboard:success="() => (copied = true)"
                     v-clipboard:error="() => $toast.global.error('Copy failed')"
                     type="button"
-                    class="btn w-100 copy-button"
+                    class="btn copy-button"
                     :class="{ copied, 'dam-btn-outline': !copied }"
                     :disabled="copied"
                   >
@@ -38,19 +38,7 @@
             <h4>Create Share Link</h4>
             <ul class="ml-4 mt-3 dam-share-file-list">
               <li v-for="folder in folders" :key="folder.id">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  viewBox="0 0 220 180"
-                >
-                  <path
-                    data-name="Icon feather-folder"
-                    d="M223,164.5c0,11.046-9.85,20-22,20H25c-12.15,0-22-8.954-22-20V24.5c0-11.046,9.85-20,22-20H80l22,30h99c12.15,0,22,8.954,22,20Z"
-                    transform="translate(-3 -4.5)"
-                    fill="#edf0f5"
-                  ></path>
-                </svg>
+                <FolderIcon />
                 {{ folder.folder_name || folder.category_name }}
               </li>
               <li v-for="file in files" :key="file.id">
