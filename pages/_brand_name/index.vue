@@ -174,6 +174,9 @@ export default {
   padding: 0 !important;
   margin-bottom: 0 !important;
 }
+.VueCarousel button {
+  outline: none !important;
+}
 
 .VueCarousel.resource-container .VueCarousel-slide {
   max-width: 25%;

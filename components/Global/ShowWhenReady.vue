@@ -29,15 +29,24 @@ export default {
   },
   computed: {
     loaded() {
-      return this.$localStorageLoaded || this.$store.state?.appData?.status
+      return (
+        this.$localStorageLoaded &&
+        (this.$auth.isLoggedIn
+          ? this.$store.state?.appData?.dashboardData
+          : this.$store.state?.appData?.status)
+      )
     },
   },
-
+  watch: {
+    loaded() {
+      this.show = this.loaded
+    },
+  },
   mounted() {
     this.$nextTick(() => (this.show = this.loaded))
   },
   updated() {
-    this.$nextTick(() => (this.show = this.loaded))
+    // this.$nextTick(() => (this.show = this.loaded))
   },
 }
 </script>
