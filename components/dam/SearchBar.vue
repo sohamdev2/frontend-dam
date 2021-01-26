@@ -1,4 +1,3 @@
-div
 <template>
   <div class="filter-search row no-gutters">
     <div class="filter-wrapper col">
@@ -56,7 +55,8 @@ div
       </button>
     </div>
     <!-- filter options -->
-    <div class="tag-list daterange-loop" :class="{ open: moreOptions }">
+    <div class="tag-list" :class="{ open: moreOptions }">
+      <div class="daterange-loop daterange-wrapper"></div>
       <div class="row align-items-center">
         <div
           class="col-md-12 col-lg-6 mb-4 order-2 order-lg-1"
@@ -166,7 +166,7 @@ div
                   placeholder="Custom Date date"
                   opens="center"
                   no-color
-                  parent=".daterange-wrapper"
+                  parent=".daterange-loop"
                   format="MMM Do, YYYY"
                   @dateRangeUpdateDate="
                     ;(searchParams.start_date || searchParams.end_date) &&
@@ -416,19 +416,19 @@ export default {
           })
 
       filters.push(
-        ...this.searchParams.file_types.map((type) => ({
+        ...(this.searchParams.file_types || []).map((type) => ({
           key: `ext-${type}`,
           type: 'file_types',
           name: `Ext:&nbsp;<b>${type}</b>`,
           value: type,
         })),
-        ...this.searchParams.tags.map((tag) => ({
+        ...(this.searchParams.tags || []).map((tag) => ({
           key: `tag-${tag}`,
           type: 'tags',
           name: `Tag:&nbsp;<b>${tag}</b>`,
           value: tag,
         })),
-        ...this.searchParams.other_tags.map((tag) => ({
+        ...(this.searchParams.other_tags || []).map((tag) => ({
           key: `tag-${tag}`,
           type: 'other_tags',
           name: `Tag:&nbsp;<b>${tag}</b>`,
@@ -619,6 +619,75 @@ export default {
 </script>
 
 <style>
+.daterange-wrapper .daterangepicker .ranges .range_inputs .btn {
+  border-color: #13b854;
+  width: 100% !important;
+}
+.daterange-wrapper .daterangepicker .ranges {
+  display: block !important;
+}
+.selected-tags {
+  flex-direction: row;
+  height: auto;
+  overflow: unset;
+}
+.daterangepicker td.active,
+.daterangepicker td.active:hover {
+  background-color: #357ebd !important;
+  border-color: transparent;
+  color: #fff;
+}
+.daterangepicker td.in-range {
+  background-color: #ebf4f8 !important;
+}
+.daterangepicker .input-mini {
+  height: 30px !important;
+}
+.daterange-wrapper .daterangepicker {
+  padding-bottom: 112px !important;
+}
+.tag-list .popular-tags {
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: auto !important;
+  max-height: 100% !important;
+}
+.tag-list .select2 {
+  border: none;
+}
+.tag-list .select2-search__field {
+  width: auto !important;
+}
+.tag-list .select2-selection__choice p {
+  display: inline-block;
+}
+
+.tag-list .select2-container .select2-search--inline .select2-search__field {
+  margin-top: 0;
+}
+.tag-list .select2-selection__choice {
+  display: flex;
+  flex-direction: row-reverse;
+}
+.tag-list
+  .select2-container--default
+  .select2-selection--multiple
+  .select2-selection__choice__remove {
+  margin-left: 4px;
+  margin-right: 0;
+}
+
+.tag-list .select2-container--default .select2-selection--multiple {
+  width: 100% !important;
+  border: none;
+  border-radius: 4px;
+  display: flex;
+  padding: 3px;
+}
+.selected-tags .select-field {
+  height: 100%;
+}
+
 .select-field input + label {
   transition: 240ms ease-out;
 }
