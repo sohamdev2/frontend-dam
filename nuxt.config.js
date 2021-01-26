@@ -82,13 +82,13 @@ export default {
 
   router: {
     middleware: ['verify-brand-name', 'auth'],
-    extendRoutes(routes, resolve) {
-      routes.push({
-        name: 'page_not_found',
-        path: '*',
-        component: resolve(__dirname, 'pages/404.vue'),
-      })
-    },
+    // extendRoutes(routes, resolve) {
+    //   routes.push({
+    //     name: 'page_not_found',
+    //     path: '*',
+    //     component: resolve(__dirname, 'pages/404.vue'),
+    //   })
+    // },
   },
 
   auth: {
