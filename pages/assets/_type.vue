@@ -12,7 +12,7 @@
       </div>
       <div v-else class="resource-container" :class="[`${mode}-resource`]">
         <div key="header" class="arange-filters">
-          <div class="preview-head"></div>
+          <div class="preview-head" style="flex: 0 0 126px"></div>
           <div class="name-head sorting">
             <span>Name</span>
             <SortIcon
@@ -196,5 +196,8 @@ export default {
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
+}
+.sorting {
+  cursor: pointer;
 }
 </style>

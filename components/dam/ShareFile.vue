@@ -1,6 +1,18 @@
 <template>
   <Model v-model="active" inner-class="share-popup">
     <div class="modal-body">
+      <button
+        type="button"
+        class="close"
+        style="top: 1rem; right: 1rem"
+        @click="active = false"
+      >
+        <img
+          aria-hidden="true"
+          src="~/assets/img/icon/close-icon.svg"
+          alt="close image"
+        />
+      </button>
       <div class="subfolder-list sidebar fix-height">
         <div class="add-folder">
           <h4>Share selected files</h4>
@@ -139,6 +151,11 @@ export default {
 </script>
 
 <style>
+.dam-share-file-list {
+  max-height: 50vh;
+  height: 100%;
+  overflow: auto;
+}
 .dam-share-file-list li {
   display: flex;
   align-items: center;
