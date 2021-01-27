@@ -315,6 +315,9 @@ export default {
       this.subFolders = []
       this.files = []
       this.selectNone()
+      document.querySelector(
+        '.center-part-view .center-part-view-body'
+      ).scrollTop = 0
 
       if (!this.hashParam) {
         if (!this.folderList.length) await this.getFolders()

@@ -1,5 +1,5 @@
 <template>
-  <ShowWhenReady>
+  <ShowWhenReady :show="show">
     <AppHeader />
     <div class="main">
       <div class="main-right-bodypart front-page">
@@ -27,6 +27,11 @@
 
 <script>
 export default {
+  computed: {
+    show() {
+      return !!this.$store.state?.appData?.dashboardData
+    },
+  },
   mounted() {
     this.$store.dispatch('appData/fetchDashboardData')
     this.$store.dispatch('appData/fetchFolders')

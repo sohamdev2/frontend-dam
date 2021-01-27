@@ -1,7 +1,7 @@
 <template>
   <div>
     <FadeTransition>
-      <div v-if="show">
+      <div v-if="showModel">
         <slot></slot>
       </div>
       <div v-else class="preloader">
@@ -22,31 +22,33 @@ import { FadeTransition } from 'vue2-transitions'
 
 export default {
   components: { FadeTransition },
+  props: { show: { type: Boolean, default: true } },
   data() {
     return {
-      show: false,
+      showModel: false,
     }
   },
   computed: {
     loaded() {
       return (
+        this.show &&
         this.$localStorageLoaded &&
         (this.$auth.isLoggedIn
-          ? this.$store.state?.appData?.dashboardData
+          ? !!this.$store.state?.appData?.dashboardData
           : this.$store.state?.appData?.status)
       )
     },
   },
   watch: {
     loaded() {
-      this.show = this.loaded
+      this.showModel = this.loaded
     },
   },
   mounted() {
-    this.$nextTick(() => (this.show = this.loaded))
+    this.$nextTick(() => (this.showModel = this.loaded))
   },
   updated() {
-    // this.$nextTick(() => (this.show = this.loaded))
+    this.$nextTick(() => (this.showModel = this.loaded))
   },
 }
 </script>
