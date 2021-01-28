@@ -141,6 +141,7 @@ export const videoExtensions = [
   'mpeg-4',
   'mov',
   'avi',
+  '3gp',
 ]
 export const pdfExtensions = ['pdf']
 export const docExtensions = ['doc', 'docx', 'ppt', 'pptx', 'xlsx', 'xls']
