@@ -179,7 +179,10 @@
           <div class="col-md-12 col-lg-6 col-xl mb-5 mb-xl-0">
             <h6>Popular File Types</h6>
             <div
-              v-for="type in searchData.popular_file_type"
+              v-for="type in [...searchData.popular_file_type]
+                .filter((a) => a && a.total_assets_count >= 5)
+                .sort($sortBy('total_assets_count'))
+                .slice(0, 12)"
               :key="type.id"
               class="select-field"
             >
@@ -203,7 +206,10 @@
             <h6>Popular Tags</h6>
             <div class="popular-tags mb-3">
               <div
-                v-for="tag in searchData.popular_tag"
+                v-for="tag in [...searchData.popular_tag]
+                  .filter((a) => a && a.total_tag_count >= 5)
+                  .sort($sortBy('total_tag_count'))
+                  .slice(0, 12)"
                 :key="tag.id"
                 class="select-field"
               >
@@ -328,7 +334,7 @@ const filterOptions = Object.freeze([
   { text: 'Videos', id: 'video' },
 ])
 
-function SearchParams($route) {
+function SearchParams() {
   this.exact_term = false
   this.file_types = []
   this.tags = []
@@ -348,8 +354,7 @@ export default {
       optionDates,
       SearchParams,
       filterOptions,
-      searchParams:
-        this.$route.params.searchParams || new SearchParams(this.$route),
+      searchParams: this.$route.params.searchParams || new SearchParams(),
       moreOptions: false,
       //
       searchData: {},
@@ -467,8 +472,12 @@ export default {
     },
   },
   mounted() {
-    this.searchParams.filter =
-      filterOptions.find(({ id }) => this.hashParam === id)?.id || 'all'
+    this.$nextTick(() => {
+      this.searchParams = this.$route.params.searchParams || new SearchParams()
+      if (this.hashParam !== 'search')
+        this.searchParams.filter =
+          filterOptions.find(({ id }) => this.hashParam === id)?.id || 'all'
+    })
     this.getSearchData()
   },
   destroyed() {
