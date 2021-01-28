@@ -53,10 +53,11 @@
                 <FolderIcon />
                 {{ folder.folder_name || folder.category_name }}
               </li>
-              <li v-for="file in files" :key="file.id">
-                <img :src="file.preview_image" height="18" />
-                {{ file.display_file_name }}
-              </li>
+              <SharePreviewItem
+                v-for="file in files"
+                :key="file.id"
+                :file="file"
+              />
             </ul>
             <hr />
             <div class="d-flex justify-content-end">
