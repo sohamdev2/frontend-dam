@@ -467,10 +467,11 @@ export default {
           filterOptions.find(({ id }) => this.hashParam === id)?.id || 'all'
     },
     moreOptions(moreOptions) {
-      window.$('.daterangepicker').remove()
-
       if (moreOptions) document.addEventListener('keyup', this.keyEvent)
-      else document.removeEventListener('keyup', this.keyEvent)
+      else {
+        // window.$('.daterangepicker').remove()
+        document.removeEventListener('keyup', this.keyEvent)
+      }
     },
   },
   mounted() {
