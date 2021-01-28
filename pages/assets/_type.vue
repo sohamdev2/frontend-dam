@@ -120,13 +120,17 @@ export default {
       else this.$nuxt.$loading.finish()
     },
   },
+  created() {
+    this.sort('category', 'folder_name', this.$sortToUpperCase)
+    this.sort('assets', 'display_file_name', this.$sortToUpperCase)
+  },
   mounted() {
     window.onpopstate = () => this.prevStack()
-    this.$router.replace({
-      query: {
-        status: this.$route.query.status,
-      },
-    })
+    // this.$router.replace({
+    //   query: {
+    //     status: this.$route.query.status,
+    //   },
+    // })
   },
   methods: {
     sort(path, field_name, primer) {

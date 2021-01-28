@@ -39,7 +39,7 @@ export default async function ({
     return
   }
 
-  if (authConfig === 'guest') return
+  if (authConfig === 'guest' || authConfig === false) return
 
   if (!brand_name) checkAndRedirect('/404')
 

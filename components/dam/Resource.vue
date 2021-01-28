@@ -37,7 +37,9 @@
             class="preview-images preview/"
             style="object-fit: contain !important"
             :style="{
-              padding: `${videoThumbnailAdded ? 0 : 2}rem !important`,
+              padding: `${
+                videoThumbnailAdded || mode == 'column' ? 0 : 2
+              }rem !important`,
             }"
             :src="videoThumbnail"
           />
