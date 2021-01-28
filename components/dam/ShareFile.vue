@@ -50,7 +50,7 @@
             <h4>Create Share Link</h4>
             <ul class="ml-4 mt-3 dam-share-file-list">
               <li v-for="folder in folders" :key="folder.id">
-                <FolderIcon />
+                <FolderIcon style="filter: brightness(0.5)" />
                 {{ folder.folder_name || folder.category_name }}
               </li>
               <SharePreviewItem
