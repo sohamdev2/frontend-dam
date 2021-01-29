@@ -580,6 +580,10 @@ export default {
 .detail-img audio {
   width: 100%;
 }
+.detail-img div > div {
+  display: flex;
+  flex-direction: column-reverse;
+}
 .cui-statusbar .cui-ctl,
 .cui-statusbar .cui-ctl-medium {
   display: none !important;
