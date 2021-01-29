@@ -60,4 +60,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.pagination {
+  margin: 1rem 0px;
+}
+</style>

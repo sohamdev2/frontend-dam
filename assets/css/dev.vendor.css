@@ -296,6 +296,17 @@ body,
 /* ##### css fixes ### */
 
 /* global */
+.btn.btn-disable img,
+.btn.btn-disable svg {
+  filter: brightness(0.3) grayscale(1) !important;
+}
+.selectBaractive .resource-container {
+  padding-bottom: 0px !important;
+}
+.selectBaractive .right-body {
+  padding-bottom: calc(80px + 2rem) !important;
+}
+
 .main-left-sidebar {
   z-index: 800;
 }
