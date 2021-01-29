@@ -1,7 +1,7 @@
 <template>
   <li>
     <img :src="previewImage" height="18" />
-    {{ file.display_file_name }}
+    <span>{{ file.display_file_name }}</span>
   </li>
 </template>
 

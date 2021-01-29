@@ -51,7 +51,7 @@
             <ul class="ml-4 mt-3 dam-share-file-list">
               <li v-for="folder in folders" :key="folder.id">
                 <FolderIcon style="filter: brightness(0.5)" />
-                {{ folder.folder_name || folder.category_name }}
+                <span>{{ folder.folder_name || folder.category_name }}</span>
               </li>
               <SharePreviewItem
                 v-for="file in files"
@@ -155,13 +155,22 @@ export default {
 .dam-share-file-list {
   max-height: 50vh;
   height: 100%;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
 }
 .dam-share-file-list li {
   display: flex;
   align-items: center;
+  width: 100%;
+  overflow: hidden;
 }
-
+.dam-share-file-list li > span {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .dam-share-file-list li > img,
 .dam-share-file-list li > svg {
   height: 18px;
