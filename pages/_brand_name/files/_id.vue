@@ -31,7 +31,6 @@
           <video
             v-else-if="isVideo"
             ref="video"
-            style="height: 100%; width: auto; margin: auto"
             :poster="videoThumbnail"
             controlsList="nodownload"
             controls
@@ -579,6 +578,14 @@ export default {
 <style>
 .detail-img audio {
   width: 100%;
+}
+.detail-img video,
+.detail-img img {
+  height: auto;
+  width: 100%;
+  margin: auto;
+  max-width: 100%;
+  max-height: 100%;
 }
 .detail-img div > div {
   display: flex;
