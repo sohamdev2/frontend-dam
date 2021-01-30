@@ -316,7 +316,7 @@ export default {
   transform: translateX(-1rem) translateY(-1rem);
 } */
 .dam-res.mode-row .preview-images:not(.no-image) .preview {
-  background-size: cover;
+  background-size: contain;
 }
 .dam-res:not(.mode-column) .preview-images.no-image .preview {
   height: calc(100% - 1.5rem);
