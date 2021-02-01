@@ -413,12 +413,20 @@ export default {
             type: 'date',
             name: `Upload Date:&nbsp;<b>${text}</b>`,
           })
-        } else if (this.searchParams.start_date || this.searchParams.end_date)
-          filters.push({
-            key: 'date',
-            type: 'custom_date',
-            name: `Upload Date:&nbsp;<b>${this.$refs.dateRangePicker.getValueText()}</b>`,
-          })
+        } else if (this.searchParams.start_date || this.searchParams.end_date) {
+          if (this.$refs.dateRangePicker)
+            filters.push({
+              key: 'date',
+              type: 'custom_date',
+              name: `Upload Date:&nbsp;<b>${this.$refs.dateRangePicker.getValueText()}</b>`,
+            })
+          else if (this.$route.params.filterItems) {
+            const a = this.$route.params.filterItems.find(
+              ({ key }) => key === 'date'
+            )
+            if (a) filters.push(a)
+          }
+        }
 
       filters.push(
         ...(this.searchParams.file_types || []).map((type) => ({
@@ -466,10 +474,27 @@ export default {
         this.searchParams.filter =
           filterOptions.find(({ id }) => this.hashParam === id)?.id || 'all'
     },
+    '$route.query.moreOptions'(moreOptions) {
+      this.moreOptions = moreOptions === true
+    },
     moreOptions(moreOptions) {
-      if (moreOptions) document.addEventListener('keyup', this.keyEvent)
-      else {
-        // window.$('.daterangepicker').remove()
+      if (moreOptions) {
+        document.addEventListener('keyup', this.keyEvent)
+
+        this.$nextTick(() => {
+          this.$forceUpdate()
+        })
+      } else {
+        const query = { ...this.$route.query }
+        delete query.moreOptions
+
+        this.$router.replace({
+          params: this.$route.params,
+          query,
+          hash: this.$route.hash,
+        })
+
+        // window.$(".daterangepicker").remove();
         document.removeEventListener('keyup', this.keyEvent)
       }
     },
@@ -523,31 +548,23 @@ export default {
       if (!this.hasFilters) return
 
       this.$emit('search')
-      if (this.hashParam === 'search')
-        this.$router.replace({
-          params: {
-            brand_name: this.$getBrandName(),
-            workspace_id: this.$getWorkspaceId(),
-            searchParams: this.searchParams,
-            hasFilters: this.getHasFilters(),
-            searchRequestBody: this.getRequestBody(),
-          },
-          hash: '#search',
-          query: { searchId: Date.now() },
-        })
-      else
-        this.$router.push({
-          name: 'brand_name-folders',
-          params: {
-            brand_name: this.$getBrandName(),
-            workspace_id: this.$getWorkspaceId(),
-            searchParams: this.searchParams,
-            hasFilters: this.getHasFilters(),
-            searchRequestBody: this.getRequestBody(),
-          },
-          hash: '#search',
-          query: { searchId: Date.now() },
-        })
+
+      const routeOptions = {
+        params: {
+          brand_name: this.$getBrandName(),
+          workspace_id: this.$getWorkspaceId(),
+          searchParams: this.searchParams,
+          hasFilters: this.getHasFilters(),
+          searchRequestBody: this.getRequestBody(),
+          filterItems: this.filterItems,
+        },
+        hash: '#search',
+        query: { searchId: Date.now() },
+      }
+
+      if (this.hashParam !== 'search') routeOptions.name = 'brand_name-folders'
+
+      this.$router.replace(routeOptions)
       this.moreOptions = false
     },
     keyEvent(ev) {
@@ -658,7 +675,9 @@ export default {
 .daterange-wrapper .daterangepicker {
   padding-bottom: 112px !important;
 }
-.tag-list .popular-tags {
+
+.tag-list .popular-tags,
+.toolbar .popular-tags {
   flex-direction: row;
   flex-wrap: wrap;
   height: auto !important;

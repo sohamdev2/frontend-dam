@@ -1,5 +1,7 @@
 <template>
-  <div class="section-title d-flex flex-column flex-lg-row align-items-center">
+  <div
+    class="section-title d-flex flex-column flex-lg-row align-items-center toolbar"
+  >
     <div
       class="d-flex sec-title-left justify-content-between justify-content-lg-start"
     >
@@ -35,6 +37,39 @@
           />
         </div>
       </client-only>
+      <div
+        v-if="hashParam == 'search' && $route.params.filterItems"
+        class="mt-2 ml-3"
+      >
+        <transition-group
+          tag="div"
+          name="slide-right"
+          class="popular-tags selected-tags"
+        >
+          <div
+            v-for="filterItem in $route.params.filterItems.slice(0, 2)"
+            :key="filterItem.key"
+            style="cursor: default"
+            class="select-field"
+          >
+            <label v-html="filterItem.name"></label>
+          </div>
+          <div
+            v-if="$route.params.filterItems.length > 2"
+            key="more"
+            class="select-field"
+            style="display: inline-flex; align-items: center"
+          >
+            <div class="mr-2">and</div>
+            <label
+              style="cursor: pointer; white-space: nowrap"
+              @click="openSearch"
+            >
+              {{ $route.params.filterItems.length - 2 }} more
+            </label>
+          </div>
+        </transition-group>
+      </div>
     </div>
     <div
       v-if="assetsCount > 0"
@@ -127,13 +162,22 @@ export default {
     },
   },
   methods: {
+    openSearch() {
+      this.$router.replace({
+        params: this.$route.params,
+        query: { ...this.$route.query, moreOptions: true },
+        hash: this.$route.hash,
+      })
+    },
     getTitle() {
       if (!this.hashParam) return 'Folders'
 
-      if (this.hashParam === 'search') return 'Search Result'
-
-      if (this.hashParam === 'popular')
-        return 'Popular Tag: ' + this.$route.query.tag
+      switch (this.hashParam) {
+        case 'search':
+          return 'Showing result of'
+        case 'popular':
+          return 'Popular Tag: ' + this.$route.query.tag
+      }
 
       if (this.isFolder)
         return this.folder?.folder_name || this.folder?.category_name || ''
@@ -194,6 +238,11 @@ export default {
 </script>
 
 <style>
+.toolbar .popular-tags .select-field label {
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.082) !important;
+  padding-right: 8px;
+}
+
 .custom-checkbox label.hide-select {
   padding-left: 0 !important;
   cursor: default;
