@@ -86,7 +86,7 @@ export default {
       sortingOptions: [
         'Sort by',
         { text: 'Name', id: 'name' },
-        { text: 'Recent', id: 'date' },
+        { text: 'Recent', id: 'updated_at' },
         { text: 'Size', id: 'file_size' },
         { text: 'Type', id: 'file_type' },
       ],
