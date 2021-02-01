@@ -182,7 +182,7 @@
               v-for="type in [...searchData.popular_file_type]
                 .filter((a) => a && a.total_assets_count >= 5)
                 .sort($sortBy('total_assets_count'))
-                .slice(0, 12)"
+                .slice(0, 9)"
               :key="type.id"
               class="select-field"
             >
