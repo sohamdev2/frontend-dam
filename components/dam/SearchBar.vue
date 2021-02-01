@@ -25,7 +25,11 @@
           {{ $localeNumber(dashboardData.media_assets) }} assets
         </span>
 
-        <a class="search-btn" @click="moreOptions = !moreOptions">
+        <a
+          class="search-btn"
+          :class="{ active: hasFilters }"
+          @click="moreOptions = !moreOptions"
+        >
           <img
             src="~/assets/img/icon/tag-icon.svg"
             style="filter: invert(1)"
@@ -768,6 +772,11 @@ export default {
   background-color: #e2e2e2 !important;
   color: #483229;
   box-shadow: none !important;
+}
+
+.search-btn.active img {
+  filter: invert(53%) sepia(84%) saturate(605%) hue-rotate(333deg)
+    brightness(99%) contrast(88%) !important;
 }
 
 .search-btn.btn-disable {
