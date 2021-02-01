@@ -78,7 +78,7 @@
 
 export default {
   auth: false,
-  asyncData({ params, query, $axios, redirect, error }) {
+  asyncData({ params, query, $axios, redirect, error, $getErrorMessage }) {
     return $axios
       .$get(`show-share-assets?type=${params.type}&status=${query.status}`)
       .then(({ data }) => {
@@ -92,10 +92,7 @@ export default {
         }
       })
       .catch((e) => {
-        // eslint-disable-next-line no-console
-        console.log(e)
-        error(e)
-        // redirect('/')
+        error({ status: 404, message: $getErrorMessage(e) })
       })
   },
   data() {
