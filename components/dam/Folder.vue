@@ -21,7 +21,11 @@
                 fill="#edf0f5"
               ></path>
             </svg>
-            <span v-if="assetsCount">{{ assetsCount }} Assets</span>
+            <span v-if="assetsCount">
+              {{ assetsCount }} Asset<template v-if="assetsCount > 1"
+                >s</template
+              >
+            </span>
             <span v-else>Empty Folder</span>
           </div>
         </div>
@@ -41,7 +45,14 @@
         <span>{{ folder.folder_name || folder.category_name }}</span>
       </nuxt-link>
       <div class="format-type">
-        <span>{{ shareMode ? '-' : assetsCount }}</span>
+        <span style="text-transform: unset">
+          <template v-if="assetsCount"
+            >{{ assetsCount }} Asset<template v-if="assetsCount > 1"
+              >s</template
+            ></template
+          >
+          <template v-else>Empty Folder</template>
+        </span>
       </div>
       <div class="date">
         {{ $moment(folder.date).format('Do MMM, YYYY') }}
