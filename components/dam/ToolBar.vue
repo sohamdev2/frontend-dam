@@ -167,7 +167,7 @@ export default {
             ['files', 'file_type', this.$sortToUpperCase],
           ]
           break
-        case 'date':
+        case 'updated_at':
           toEmit = [
             ['subFolders', 'date', this.$sortToTime],
             ['files', 'date', this.$sortToTime],
