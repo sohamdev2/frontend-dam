@@ -582,6 +582,10 @@ export default {
 </script>
 
 <style>
+.detail-img img {
+  border-radius: 0 !important;
+}
+
 .detail-img audio {
   width: 100%;
 }
