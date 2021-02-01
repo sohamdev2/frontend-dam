@@ -298,7 +298,7 @@ export default {
         metaData = data.file_meta_data || {}
 
         if (metaData) {
-          ;['COMPUTED', 'FileName', 'SectionsFound'].forEach(
+          ;['COMPUTED', 'COMMENT', 'FileName', 'SectionsFound'].forEach(
             (key) => delete metaData[key]
           )
 
@@ -517,10 +517,16 @@ export default {
       })
         .then(({ data }) => {
           EXIF.getData(data, function () {
-            vue.exif = EXIF.getAllTags(this)
-            ;['undefined', 'thumbnail', 'MakerNote', 'UserComment'].forEach(
-              (key) => delete vue.exif[key]
-            )
+            const a = Object.assign({}, EXIF.getAllTags(this))
+            ;[
+              'undefined',
+              'thumbnail',
+              'COMMENT',
+              'MakerNote',
+              'UserComment',
+            ].forEach((key) => delete a[key])
+            console.log(a)
+            vue.exif = a
           })
 
           const file = new File([data], vue.file.display_file_name, {})
