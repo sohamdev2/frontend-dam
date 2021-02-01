@@ -218,11 +218,12 @@ export default {
   },
 
   mounted() {
-    this.$nextTick(async () => {
+    this.$nextTick(() => {
       window.$(this.$el).find('[data-toggle="tooltip"]').tooltip()
 
       if (this.isVideo) {
-        await this.getThumbnail()
+        this.getThumbnail()
+
         window
           .$(this.$el)
           .find('[data-fancybox]')
@@ -260,34 +261,15 @@ export default {
       }, 250)
     },
     getThumbnail() {
-      return new Promise((resolve) => {
-        const video = this.$refs.video
-        const vue = this
-        const canvas = document.createElement('canvas')
-        const context = canvas.getContext('2d')
-        vue.videoThumbnailAdded = false
-        video.addEventListener(
-          'loadeddata',
-          function () {
-            context.drawImage(video, 0, 0, canvas.width, canvas.height)
-            video.pause()
+      this.videoThumbnailAdded = false
 
-            resolve()
-
-            vue.videoThumbnail = canvas.toDataURL('image/jpeg')
-            vue.videoThumbnailAdded = true
-          },
-          false
-        )
-
-        video.muted = true
-        video.playsInline = true
-        video.setAttribute('crossOrigin', 'anonymous')
-        video.preload = 'metadata'
-        video.playbackRate = 1.5
-
-        video.play()
-      })
+      return this.$store
+        .dispatch('getThumbnail', this.file.display_file)
+        .then((dataURl) => {
+          this.videoThumbnail = dataURl
+          this.videoThumbnailAdded = true
+        })
+        .catch(() => {})
     },
     downloadFile() {
       this.$store.dispatch('downloadIndicator/downloadFile', {
