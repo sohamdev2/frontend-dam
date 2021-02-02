@@ -68,6 +68,30 @@ export function toHumanlySize(size) {
   )
 }
 
+const notAllowed = [
+  'undefined',
+  'thumbnail',
+  'COMMENT',
+  'MakerNote',
+  'UserComment',
+  'UndefinedTag:0x9999',
+  'UndefinedTag:0x8889',
+  'ComponentsConfiguration',
+  'COMPUTED',
+  'FileName',
+  'SectionsFound',
+  'FileDateTime',
+  'SceneType',
+  'SceneCaptureType',
+]
+
+export function deleteMetaKeys(array) {
+  notAllowed.forEach((key) => delete array[key])
+}
+
+const isUpperCase = (char) => char >= 'A' && char <= 'Z'
+const isLowerCase = (char) => char >= 'a' && char <= 'z'
+
 /**
  * Convert `SnakeCaseWords` to `Normal Case Words"
  * eg SnakeCaseWords => Snake Case Words
@@ -84,11 +108,7 @@ export function camelCaseToNormalCase(key) {
     .slice(1)
     .split('')
     .forEach((char, i) => {
-      if (
-        char >= 'A' &&
-        char <= 'Z' &&
-        (words[index].length >= 3 || (key[i + 1] >= 'a' && key[i + 1] <= 'z'))
-      ) {
+      if (isUpperCase(char) && isLowerCase(key[i + 2])) {
         words.push(char)
         index += 1
       } else words[index] += char + ''
@@ -112,6 +132,9 @@ export function getFormattedMetaValue(value, key) {
       else return value
     case 'ImageWidth':
     case 'ImageHeight':
+    case 'ExifImageLength':
+    case 'ExifImageHeight':
+    case 'ExifImageWidth':
       return `${value}px`
     case 'GPSDateStamp':
       return this.$moment(value, 'YYYY:MM:DD').format('Do MMM, YYYY')
@@ -122,7 +145,7 @@ export function getFormattedMetaValue(value, key) {
     case 'DateTimeOriginal':
     case 'DateTimeDigitized':
       return this.$moment(value, 'YYYY:MM:DD hh:mm:ss').format(
-        'Do MMM, YYYY <i>HH:mm:ss</i>'
+        'Do MMM, YYYY hh:mm A'
       )
     case 'MakerNote':
     case 'UserComment':
@@ -214,6 +237,7 @@ export function stringToRegex(input) {
 
   return input && new RegExp(input, 'ig')
 }
+
 export function localeNumber(value) {
   return Number(value).toLocaleString()
 }

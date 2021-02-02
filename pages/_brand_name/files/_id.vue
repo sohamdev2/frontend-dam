@@ -276,7 +276,14 @@ function resizeCanvas() {
 export default {
   layout: 'app-min',
   mixins: [fileType],
-  async asyncData({ params, redirect, $axios, $getWorkspaceId, error }) {
+  async asyncData({
+    params,
+    redirect,
+    $axios,
+    $getWorkspaceId,
+    $deleteMetaKeys,
+    error,
+  }) {
     if (!params.id || Number.isNaN(Number(params.id)))
       redirect('/' + params.workspace_id + '/asset-manager')
 
@@ -298,9 +305,7 @@ export default {
         metaData = data.file_meta_data || {}
 
         if (metaData) {
-          ;['COMPUTED', 'COMMENT', 'FileName', 'SectionsFound'].forEach(
-            (key) => delete metaData[key]
-          )
+          $deleteMetaKeys(metaData)
 
           metaData = sortObject(metaData)
         }
@@ -518,14 +523,7 @@ export default {
         .then(({ data }) => {
           EXIF.getData(data, function () {
             const a = Object.assign({}, EXIF.getAllTags(this))
-            ;[
-              'undefined',
-              'thumbnail',
-              'COMMENT',
-              'MakerNote',
-              'UserComment',
-            ].forEach((key) => delete a[key])
-            console.log(a)
+            this.$deleteMetaKeys(a)
             vue.exif = a
           })
 
