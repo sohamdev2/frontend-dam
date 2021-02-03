@@ -652,10 +652,6 @@ export default {
 </script>
 
 <style>
-.daterange-wrapper .daterangepicker .ranges .range_inputs .btn {
-  border-color: #13b854;
-  width: 100% !important;
-}
 .daterange-wrapper .daterangepicker .ranges {
   display: block !important;
 }
@@ -664,22 +660,6 @@ export default {
   height: auto;
   overflow: unset;
 }
-.daterangepicker td.active,
-.daterangepicker td.active:hover {
-  background-color: #357ebd !important;
-  border-color: transparent;
-  color: #fff;
-}
-.daterangepicker td.in-range {
-  background-color: #ebf4f8 !important;
-}
-.daterangepicker .input-mini {
-  height: 30px !important;
-}
-.daterange-wrapper .daterangepicker {
-  padding-bottom: 112px !important;
-}
-
 .tag-list .popular-tags,
 .toolbar .popular-tags {
   flex-direction: row;
