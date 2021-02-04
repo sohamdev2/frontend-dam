@@ -108,7 +108,7 @@
             class="btn"
             :class="{ 'btn-disable': !hasFilters }"
             :disabled="!hasFilters"
-            @click="search"
+            @click="search()"
           >
             Apply Filters
           </button>
@@ -490,13 +490,18 @@ export default {
         })
       } else {
         const query = { ...this.$route.query }
-        delete query.moreOptions
 
-        this.$router.replace({
-          params: this.$route.params,
-          query,
-          hash: this.$route.hash,
-        })
+        if (query.moreOptions) {
+          delete query.moreOptions
+
+          this.$router
+            .replace({
+              params: this.$route.params,
+              query,
+              hash: this.$route.hash,
+            })
+            .catch(() => {})
+        }
 
         // window.$(".daterangepicker").remove();
         document.removeEventListener('keyup', this.keyEvent)
@@ -551,7 +556,7 @@ export default {
     search() {
       if (!this.hasFilters) return
 
-      this.$emit('search')
+      // this.$emit('search')
 
       const routeOptions = {
         params: {
@@ -566,9 +571,10 @@ export default {
         query: { searchId: Date.now() },
       }
 
-      if (this.hashParam !== 'search') routeOptions.name = 'brand_name-folders'
+      if (this.$route.name !== 'brand_name-folders')
+        routeOptions.name = 'brand_name-folders'
 
-      this.$router.replace(routeOptions)
+      this.$router.replace(routeOptions).catch(() => {})
       this.moreOptions = false
     },
     keyEvent(ev) {
