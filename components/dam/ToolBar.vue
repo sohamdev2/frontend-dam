@@ -78,14 +78,30 @@
       <div>
         <span class="file-counter">{{ assetsCount }} Assets</span>
       </div>
-      <div class="file-sort">
-        <Select2
-          value="Sort by"
-          :options="sortingOptions"
-          :attrs="{ minimumResultsForSearch: -1 }"
-          @input="emitSortParamsArray"
-        />
-      </div>
+      <template>
+        <div class="file-sort">
+          <Select2
+            :value="sortingModel"
+            :options="sortingOptions"
+            :attrs="{ minimumResultsForSearch: -1 }"
+            @input="emitSortParamsArray"
+          />
+        </div>
+        <div
+          v-if="sortingModel != 'Sort by'"
+          class="px-2 ml-3 mt-2"
+          style="cursor: poister"
+          @click="emitSortParamsArray()"
+        >
+          <img
+            height="18"
+            width="18"
+            src="@/assets/img/down-arrow.svg"
+            :style="{ transform: `rotate(${sortingDesc ? 180 : 0}deg)` }"
+          />
+        </div>
+      </template>
+
       <div class="file-grid">
         <span
           class="tile"
@@ -115,9 +131,12 @@ export default {
     selectedAll: { type: Boolean, default: false },
     assetsCount: { type: Number, default: 0 },
     mode: { type: String, default: 'row' },
+    sorting: { type: String, default: 'Sort by' },
+    sortingDesc: { type: Boolean, default: false },
   },
   data() {
     return {
+      sortingModel: this.sorting || 'Sort by',
       sortingOptions: [
         'Sort by',
         { text: 'Name', id: 'name' },
@@ -157,6 +176,12 @@ export default {
     },
   },
   watch: {
+    sortingModel(sortingModel) {
+      this.$emit('update:sorting', sortingModel)
+    },
+    sorting(sorting) {
+      this.sortingModel = sorting || 'Sort by'
+    },
     title(title) {
       this.$setPageTitle(title + ' | Digital Asset Manager')
     },
@@ -196,8 +221,9 @@ export default {
         hash: `#${value}`,
       })
     },
-    emitSortParamsArray(value) {
+    emitSortParamsArray(value = this.sortingModel) {
       let toEmit = null
+
       switch (value) {
         case 'name':
           toEmit = [
@@ -207,7 +233,7 @@ export default {
           break
         case 'file_type':
           toEmit = [
-            ['subFolders', 'folder_name', this.$sortToUpperCase],
+            ['subFolders', 'total_assets', this.$sortToUpperCase],
             ['files', 'file_type', this.$sortToUpperCase],
           ]
           break
@@ -219,17 +245,18 @@ export default {
           break
         case 'file_size':
           toEmit = [
-            ['subFolders', 'total_assets', this.$sortToTypedNumber],
+            ['subFolders', 'file_size', this.$sortToTypedNumber],
             ['files', 'file_size', this.$sortToTypedNumber],
           ]
           break
         default:
-          toEmit = [
-            ['subFolders', 'id', this.$sortToTypedNumber],
-            ['files', 'id', this.$sortToTypedNumber],
-          ]
+          // toEmit = [
+          //   ['subFolders', 'id', this.$sortToTypedNumber],
+          //   ['files', 'id', this.$sortToTypedNumber],
+          // ]
           break
       }
+      this.sortingModel = value
 
       if (toEmit) this.$emit('sort', toEmit)
     },

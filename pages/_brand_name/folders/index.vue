@@ -5,6 +5,8 @@
       :assets-count="totalAssets"
       :selected-all="selectedAll"
       :mode.sync="mode"
+      :sorting.sync="sorting.toolbar.value"
+      :sorting-desc="sorting.toolbar.desc"
       @sort="(args) => args.forEach((arg) => sort(...arg))"
       @click:select-all="selectAll"
       @click:select-none="selectNone"
@@ -52,46 +54,12 @@
         mode="in-out"
         tag="div"
       >
-        <div v-if="!loading" key="header" class="arange-filters">
-          <div class="preview-head"></div>
-          <div class="name-head sorting">
-            <span>Name</span>
-            <SortIcon
-              @click="
-                sort('subFolders', 'folder_name', $sortToUpperCase)
-                sort('files', 'display_file_name', $sortToUpperCase)
-              "
-            />
-          </div>
-          <div class="format-type sorting">
-            <span>Assets</span>
-            <SortIcon
-              @click="
-                sort('subFolders', 'total_assets', $sortToTypedNumber)
-                sort('files', 'file_type', $sortToUpperCase)
-              "
-            />
-          </div>
-          <div class="date sorting">
-            <span>Date</span>
-            <SortIcon
-              @click="
-                sort('subFolders', 'date', $sortToTime)
-                sort('files', 'date', $sortToTime)
-              "
-            />
-          </div>
-          <div class="size sorting">
-            <span>Size</span>
-            <SortIcon
-              @click="
-                sort('subFolders', 'folder_name', $sortToUpperCase)
-                sort('files', 'file_size', $sortToTypedNumber)
-              "
-            />
-          </div>
-          <div class="action-head">Action</div>
-        </div>
+        <ListingHeader
+          v-if="!loading"
+          key="header"
+          :sorting.sync="sorting.toolbar.value"
+          @sort="(args) => args.forEach((arg) => sort(...arg))"
+        ></ListingHeader>
         <Folder
           v-for="(folder, i) in subFolders"
           :key="'folder-' + folder.id"
@@ -147,8 +115,9 @@
 <script>
 /* eslint-disable camelcase */
 
-import fileSelection from '@/mixins/fileSelection'
 import { ContentLoader } from 'vue-content-loader'
+import fileSelection from '@/mixins/fileSelection'
+import assetSorting from '@/mixins/assetSorting'
 
 const categories = ['video', 'audio', 'image', 'application', 'archive']
 
@@ -156,7 +125,7 @@ export default {
   layout: 'app',
   components: { ContentLoader },
 
-  mixins: [fileSelection],
+  mixins: [fileSelection, assetSorting],
   data() {
     let page
     if (this.$route.query.page) {
@@ -171,7 +140,6 @@ export default {
 
       // ** UI **
       mode: 'row', // list Style
-      sorting: { files: {}, subFolders: {} },
 
       // loaders
       loading: true,
@@ -243,6 +211,7 @@ export default {
       this.prefetch()
     },
     hashParam(hashParam) {
+      this.resetSort()
       this.prefetch()
     },
     '$route.query.searchId'() {
@@ -340,13 +309,16 @@ export default {
     },
     async getCategoryItems() {
       const hashParam = this.hashParam
+      const body = {
+        workspace_id: this.$getWorkspaceId(),
+        type: this.hashParam,
+        page: this.page,
+        sort_value: this.apiSortValue(),
+        sort_by: this.apiSortOrder(),
+      }
 
       await this.$axios
-        .$post('digital/view-all-assets-by-type', {
-          workspace_id: this.$getWorkspaceId(),
-          type: this.hashParam,
-          page: this.page,
-        })
+        .$post('digital/view-all-assets-by-type', body)
         .then(({ data }) => {
           if (this.hashParam !== hashParam) return
           if (data.last_page < this.page) {
@@ -369,7 +341,7 @@ export default {
         })
         .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
     },
-    async getPopularTagFiles(tag) {
+    async getPopularTagFiles() {
       await this.$axios
         .$get(
           'digital/popular-tag-assets?' +
@@ -408,22 +380,6 @@ export default {
 
           this.$toast.global.error(message)
         })
-    },
-    sort(path, field_name, primer) {
-      primer = primer || ((v) => v)
-
-      if (this.sorting[path].field === field_name)
-        this.sorting[path].reverse = !this.sorting[path].reverse
-      else this.sorting[path].reverse = false
-      this.sorting[path].field = field_name
-
-      this[path] = this[path].sort(
-        this.$sortBy(
-          this.sorting[path].field,
-          this.sorting[path].reverse,
-          (x) => primer(x, this.sorting[path].reverse)
-        )
-      )
     },
   },
   head: {

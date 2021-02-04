@@ -11,48 +11,14 @@
         <h4>No Data Found</h4>
       </div>
       <div v-else class="resource-container" :class="[`${mode}-resource`]">
-        <div key="header" class="arange-filters">
-          <div class="preview-head" style="flex: 0 0 126px"></div>
-          <div class="name-head sorting">
-            <span>Name</span>
-            <SortIcon
-              @click="
-                sort('category', 'folder_name', $sortToUpperCase)
-                sort('assets', 'display_file_name', $sortToUpperCase)
-              "
-            />
-          </div>
-          <div class="format-type sorting">
-            <span>Assets</span>
-            <SortIcon
-              @click="
-                sort('category', 'total_assets', $sortToTypedNumber)
-                sort('assets', 'file_type', $sortToUpperCase)
-              "
-            />
-          </div>
-          <div class="date sorting">
-            <span>Date</span>
-            <SortIcon
-              @click="
-                sort('category', 'date', $sortToTime)
-                sort('assets', 'date', $sortToTime)
-              "
-            />
-          </div>
-          <div class="size sorting">
-            <span>Size</span>
-            <SortIcon
-              @click="
-                sort('category', 'folder_name', $sortToUpperCase)
-                sort('assets', 'file_size', $sortToTypedNumber)
-              "
-            />
-          </div>
-          <div class="action-head">Action</div>
-        </div>
+        <ListingHeader
+          v-if="!loading"
+          key="header"
+          :sorting.sync="sorting.toolbar.value"
+          @sort="(args) => args.forEach((arg) => sort(...arg))"
+        />
         <Folder
-          v-for="folder in category"
+          v-for="folder in subFolders"
           :key="'folder-' + folder.id"
           :folder="folder"
           :mode="mode"
@@ -60,7 +26,7 @@
           @click.capture.native="nextStack(folder.id)"
         />
         <Resource
-          v-for="file in assets"
+          v-for="file in files"
           :key="'file-' + file.id"
           :file="file"
           :mode="mode"
@@ -75,9 +41,11 @@
 
 <script>
 /* eslint-disable camelcase */
+import assetSorting from '@/mixins/assetSorting'
 
 export default {
   auth: false,
+  mixins: [assetSorting],
   asyncData({ params, query, $axios, redirect, error, $getErrorMessage }) {
     return $axios
       .$get(`show-share-assets?type=${params.type}&status=${query.status}`)
@@ -86,9 +54,11 @@ export default {
           return redirect('/404')
 
         return {
-          category: data.category || [],
-          assets: data.assets || [],
-          stack: [{ category: data.category || [], assets: data.assets || [] }],
+          subFolders: data.category || [],
+          files: data.assets || [],
+          stack: [
+            { subFolders: data.category || [], files: data.assets || [] },
+          ],
         }
       })
       .catch((e) => {
@@ -100,15 +70,11 @@ export default {
       mode: 'column',
       deleting: false,
       loading: false,
-      sorting: {
-        category: {},
-        assets: {},
-      },
     }
   },
   computed: {
     noData() {
-      return !this.category.length && !this.assets.length
+      return !this.subFolders.length && !this.files.length
     },
   },
   watch: {
@@ -118,8 +84,8 @@ export default {
     },
   },
   created() {
-    this.sort('category', 'folder_name', this.$sortToUpperCase)
-    this.sort('assets', 'display_file_name', this.$sortToUpperCase)
+    this.sort('subFolders', 'folder_name', this.$sortToUpperCase)
+    this.sort('files', 'display_file_name', this.$sortToUpperCase)
   },
   mounted() {
     window.onpopstate = () => this.prevStack()
@@ -130,51 +96,37 @@ export default {
     // })
   },
   methods: {
-    sort(path, field_name, primer) {
-      primer = primer || ((v) => v)
-
-      if (this.sorting[path].field === field_name)
-        this.sorting[path].reverse = !this.sorting[path].reverse
-      else this.sorting[path].reverse = false
-      this.sorting[path].field = field_name
-
-      this[path] = this[path].sort(
-        this.$sortBy(
-          this.sorting[path].field,
-          this.sorting[path].reverse,
-          (x) => primer(x, this.sorting[path].reverse)
-        )
-      )
-    },
-    prevStack(folderId) {
+    prevStack() {
       if (this.stack.length > 1) this.stack.pop()
 
-      const { category, assets } = this.stack[this.stack.length - 1]
+      const { subFolders, files } = this.stack[this.stack.length - 1]
 
-      this.category = category
-      this.assets = assets
+      this.subFolders = subFolders
+      this.files = files
     },
-
     async nextStack(folderId) {
       if (this.loading) return
       this.loading = true
+
       this.$router.push({
         query: {
           status: this.$route.query.status,
           file: btoa(String(folderId)),
         },
       })
+
       await this.$axios
         .$get(
           'view-share-files-with-category?' +
             this.$toQueryString({ category_id: folderId })
         )
         .then(({ data }) => {
-          this.category = data.folder || []
-          this.assets = data.category_assets || []
+          this.subFolders = data.folder || []
+          this.files = data.category_assets || []
+
           this.stack.push({
-            category: this.category,
-            assets: this.assets,
+            subFolders: this.subFolders,
+            files: this.files,
           })
         })
         .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))

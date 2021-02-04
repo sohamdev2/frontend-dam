@@ -85,7 +85,7 @@
         </span>
       </nuxt-link>
       <div class="format-type">
-        <span>{{ file.file_type || 'raw' }}</span>
+        <span v-html="file.file_type || '&dash;'"></span>
       </div>
       <div class="date">{{ $moment(file.date).format('Do MMM, YYYY') }}</div>
       <div class="size">{{ $toHumanlySize(file.file_size) }}</div>

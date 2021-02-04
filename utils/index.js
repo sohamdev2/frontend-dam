@@ -24,7 +24,7 @@ export function sortBy(field, reverse, primer, ignoreCase = false) {
       b = b && b.toUpperCase()
     }
 
-    if (typeof a === 'number' && typeof b === 'number') return reverse * (b - a)
+    // if (typeof a === 'number' && typeof b === 'number') return reverse * (b - a)
 
     return reverse * ((a > b) - (b > a))
   }
