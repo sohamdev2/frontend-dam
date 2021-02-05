@@ -139,7 +139,7 @@ export default {
       sortingModel: this.sorting || 'Sort by',
       sortingOptions: [
         'Sort by',
-        { text: 'Name', id: 'name' },
+        { text: 'Name', id: 'display_file_name' },
         { text: 'Recent', id: 'updated_at' },
         { text: 'Size', id: 'file_size' },
         { text: 'Type', id: 'file_type' },
@@ -225,7 +225,7 @@ export default {
       let toEmit = null
 
       switch (value) {
-        case 'name':
+        case 'display_file_name':
           toEmit = [
             ['subFolders', 'folder_name', this.$sortToUpperCase],
             ['files', 'display_file_name', this.$sortToUpperCase],
@@ -256,9 +256,12 @@ export default {
           // ]
           break
       }
+
       this.sortingModel = value
 
-      if (toEmit) this.$emit('sort', toEmit)
+      this.$nextTick(() => {
+        if (toEmit) this.$emit('sort', toEmit)
+      })
     },
   },
 }

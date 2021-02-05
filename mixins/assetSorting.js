@@ -10,16 +10,18 @@ export default {
 
   methods: {
     apiSortValue() {
-      return this.sorting.files.field === 'date'
+      return this.sorting.toolbar.value === 'Sort by'
         ? 'updated_at'
-        : this.sorting.files.field || 'updated_at'
+        : this.sorting.toolbar.value || 'updated_at'
     },
     apiSortOrder() {
-      const toReverse =
-        this.sorting.files.field === 'date' ||
-        this.sorting.files.field === 'updated_at'
-      const order = this.sorting.toolbar.desc
-      return (toReverse ? !order : order) ? 'DESC' : 'ASC'
+      // const toReverse =
+      //   this.sorting.files.field === 'date' ||
+      //   this.sorting.files.field === 'updated_at'
+      // let order = this.sorting.toolbar.desc
+      const order = this.sorting.files.reverse
+      // order = toReverse ? !order : order
+      return order ? 'DESC' : 'ASC'
     },
     resetSort() {
       this.sorting = {

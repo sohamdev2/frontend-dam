@@ -4,7 +4,7 @@
     <div
       class="name-head sorting"
       @click="
-        sortingModel = 'name'
+        sortingModel = 'display_file_name'
         emitSort([
           ['subFolders', 'folder_name', $sortToUpperCase],
           ['files', 'display_file_name', $sortToUpperCase],
