@@ -89,11 +89,13 @@ export default {
   },
   mounted() {
     window.onpopstate = () => this.prevStack()
-    // this.$router.replace({
-    //   query: {
-    //     status: this.$route.query.status,
-    //   },
-    // })
+
+    if (this.$route.query.file)
+      this.$router.replace({
+        query: {
+          status: this.$route.query.status,
+        },
+      })
   },
   methods: {
     prevStack() {
