@@ -92,7 +92,9 @@ export default {
       return this.$getWorkspaceId()
     },
     assetsCount() {
-      return this.folder.total_assets || this.folder.sub_category_count || 0
+      return (
+        (this.folder.total_assets || 0) + (this.folder.sub_category_count || 0)
+      )
     },
   },
 }
