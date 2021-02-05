@@ -32,14 +32,18 @@ export default async function ({
     store.state?.localStorage?.brandName ||
     store.state?.brandName
 
+  if (authConfig === 'guest' || authConfig === false) {
+    if ($auth.loggedIn) return redirect(`/${$getBrandName()}`)
+
+    return
+  }
+
   if ($auth.loggedIn) {
     if (brand_name && $getBrandName() !== brand_name)
       return redirect(`/${$getBrandName()}`)
 
     return
   }
-
-  if (authConfig === 'guest' || authConfig === false) return
 
   if (!brand_name) checkAndRedirect('/404')
 
