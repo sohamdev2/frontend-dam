@@ -182,38 +182,35 @@
           </div>
           <div class="col-md-12 col-lg-6 col-xl mb-5 mb-xl-0">
             <h6>Popular File Types</h6>
-            <div
-              v-for="type in [...searchData.popular_file_type]
-                .filter((a) => a && a.total_assets_count >= 5)
-                .sort($sortBy('total_assets_count'))
-                .slice(0, 9)"
-              :key="type.id"
-              class="select-field"
-            >
-              <input
-                :id="`file-type-${type.file_type}`"
-                :value="type.file_type"
-                :checked="searchParams.file_types.includes(type.file_type)"
-                type="checkbox"
-                name="file-type"
-                @click="selectFileType"
-              />
-              <label :for="`file-type-${type.file_type}`">
-                <span>{{ type.file_type }}</span>
-                <span>
-                  {{ Number(type.total_assets_count || 0).toLocaleString() }}
-                </span>
-              </label>
-            </div>
+            <template v-if="fileTypes.length">
+              <div
+                v-for="type in fileTypes"
+                :key="type.id"
+                class="select-field"
+              >
+                <input
+                  :id="`file-type-${type.file_type}`"
+                  :value="type.file_type"
+                  :checked="searchParams.file_types.includes(type.file_type)"
+                  type="checkbox"
+                  name="file-type"
+                  @click="selectFileType"
+                />
+                <label :for="`file-type-${type.file_type}`">
+                  <span>{{ type.file_type }}</span>
+                  <span>
+                    {{ Number(type.total_assets_count || 0).toLocaleString() }}
+                  </span>
+                </label>
+              </div>
+            </template>
+            <div v-else>No data available.</div>
           </div>
           <div class="col-md-12 col-lg-12 col-xl-4 mb-3 mb-xl-0">
             <h6>Popular Tags</h6>
-            <div class="popular-tags mb-3">
+            <div v-if="popularTags.length" class="popular-tags mb-3">
               <div
-                v-for="tag in [...searchData.popular_tag]
-                  .filter((a) => a && a.total_tag_count >= 5)
-                  .sort($sortBy('total_tag_count'))
-                  .slice(0, 12)"
+                v-for="tag in popularTags"
                 :key="tag.id"
                 class="select-field"
               >
@@ -232,8 +229,8 @@
                 </label>
               </div>
             </div>
-            <div class="search-tag">
-              <div class="form-group row">
+            <div class="search-tag w-100">
+              <div class="form-group row w-100">
                 <div
                   v-if="searchData.popular_tag_select && moreOptions"
                   class="col-sm-12"
@@ -377,6 +374,18 @@ export default {
     },
     dashboardDataLoading() {
       return this.$store.state.appData.loading.dashboard
+    },
+    fileTypes() {
+      return [...(this.searchData?.popular_file_type || [])]
+        .filter((a) => a && a.total_assets_count >= 5)
+        .sort(this.$sortBy('total_assets_count'))
+        .slice(0, 9)
+    },
+    popularTags() {
+      return [...(this.searchData?.popular_tag || [])]
+        .filter((a) => a && a.total_tag_count >= 5)
+        .sort(this.$sortBy('total_tag_count'))
+        .slice(0, 12)
     },
     filterItems() {
       const filters = []
@@ -539,10 +548,10 @@ export default {
 
       return {
         workspace_id: this.$getWorkspaceId(),
-        popular_file_type: [...this.searchParams.file_types],
+        popular_file_type: [...(this.searchParams.file_types || [])],
         popular_tag: [
-          ...this.searchParams.tags,
-          ...this.searchParams.other_tags,
+          ...(this.searchParams.tags || []),
+          ...(this.searchParams.other_tags || []),
         ],
         search_text: this.searchParams.search_term,
         orientation: this.searchParams.orientation,
