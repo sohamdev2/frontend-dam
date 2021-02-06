@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-const categories = ['video', 'audio', 'image', 'application', 'archive']
+// const categories = ['video', 'audio', 'image', 'application', 'archive']
 
 export default {
   data() {
@@ -51,12 +51,13 @@ export default {
         if (toReverse) this.sorting.toolbar.desc = !this.sorting.toolbar.desc
       }
 
-      if (hasPages)
-        if (categories.includes(this.hashParam)) {
-          if (path === 'subFolders') return
+      if (hasPages) {
+        if (path === 'subFolders')
+          // if (categories.includes(this.hashParam)) {
+          return
 
-          return this.prefetch()
-        }
+        return this.prefetch()
+      }
 
       this[path] = this[path].sort(
         this.$sortBy(
