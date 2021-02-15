@@ -1,4 +1,4 @@
-export const proxyurl = 'https://cors-anywhere.herokuapp.com/'
+// export const proxyurl = 'https://cors-anywhere.herokuapp.com/'
 
 export function mutator(name, after) {
   return function (state, arg) {

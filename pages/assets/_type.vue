@@ -51,7 +51,7 @@ export default {
       .$get(`show-share-assets?type=${params.type}&status=${query.status}`)
       .then(({ data }) => {
         if (!data.category.length && !data.assets.length)
-          return redirect('/404')
+          return error({ status: 404 })
 
         return {
           subFolders: data.category || [],

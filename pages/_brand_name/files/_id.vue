@@ -242,9 +242,8 @@
 
 <script>
 import EXIF from 'exif-js'
-import Axios from 'axios'
+import axios from 'axios'
 import fileType from '~/mixins/fileType'
-import { proxyurl } from '~/utils/helper'
 
 const categories = ['video', 'audio', 'image', 'application', 'archive']
 
@@ -322,7 +321,6 @@ export default {
   },
   data() {
     return {
-      proxyurl,
       ui: {
         tab: 'overview',
         loading: false,
@@ -515,11 +513,10 @@ export default {
         return
       }
 
-      new Axios({
-        method: 'get',
-        url: proxyurl + this.__url,
-        responseType: 'blob',
-      })
+      axios
+        .get(this.__url, {
+          responseType: 'blob',
+        })
         .then(({ data }) => {
           EXIF.getData(data, function () {
             const a = Object.assign({}, EXIF.getAllTags(this))

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { toQueryString } from '~/utils'
-import { mutator, proxyurl } from '~/utils/helper'
+import { mutator } from '~/utils/helper'
 
 const _state = () => ({
   pinned: false,
@@ -36,7 +36,7 @@ export const actions = {
       id,
       url: id,
       name: 'Zipping selected files/folders',
-      progess: 0,
+      progress: 0,
       loaded: 0,
       total: 0,
       downloading: false,
@@ -93,7 +93,7 @@ export const actions = {
     const item = {
       url,
       name,
-      progess: 0,
+      progress: 0,
       loaded: 0,
       total: 0,
       downloading: true,
@@ -123,7 +123,7 @@ export const actions = {
       }
 
     return axios
-      .get(proxyurl + url, {
+      .get(url, {
         cancelToken: source.token,
         responseType: 'blob',
         onDownloadProgress(progressEvent) {
@@ -131,7 +131,7 @@ export const actions = {
             (progressEvent.loaded * 100) / progressEvent.total
           )
 
-          item.progess = percentCompleted
+          item.progress = percentCompleted
           item.loaded = progressEvent.loaded
           item.total = progressEvent.total
 

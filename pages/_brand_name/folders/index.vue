@@ -11,14 +11,12 @@
       @click:select-all="selectAll"
       @click:select-none="selectNone"
     />
-    <div style="margin: auto; overflow: hidden; width: 97%" class="pb-3">
-      <ContentLoader
-        v-if="loading"
-        :speed="1"
-        :animate="true"
-        :width="450"
-        :height="200"
-      >
+    <div
+      v-if="loading"
+      style="margin: auto; overflow: hidden; width: 97%"
+      class="pb-3"
+    >
+      <ContentLoader :speed="1" :animate="true" :width="450" :height="200">
         <template v-if="mode === 'column'">
           <rect x="0" y="5" rx="1" ry="1" width="450" height="40" />
           <rect x="0" y="50" rx="1" ry="1" width="450" height="40" />

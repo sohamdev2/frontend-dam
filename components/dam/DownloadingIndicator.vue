@@ -124,7 +124,7 @@ export default {
       const items = Object.values(this.items)
       return (
         Math.round(
-          (items.reduce((sum, { progess }) => sum + progess, 0) /
+          (items.reduce((sum, { progress }) => sum + progress, 0) /
             items.length) *
             100
         ) / 100

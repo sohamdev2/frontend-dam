@@ -40,10 +40,6 @@
     </div>
     <div class="upload-btn">
       <button
-        :to="{
-          name: 'workspace_id-asset-manager-upload',
-          params: { workspace_id: workspaceId },
-        }"
         type="button"
         class="btn btn-icon"
         :class="{ 'btn-disable': !hasFilters }"
