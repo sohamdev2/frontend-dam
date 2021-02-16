@@ -49,9 +49,21 @@
           <div v-else class="search-folder mb-0">
             <h4>Create Share Link</h4>
             <ul class="ml-4 mt-3 dam-share-file-list">
-              <li v-for="folder in folders" :key="folder.id">
+              <li
+                v-for="folder in folders"
+                :key="folder.id"
+                class="share-folder-items"
+                style="position: relative"
+              >
                 <FolderIcon style="filter: brightness(0.5)" />
-                <span>{{ folder.folder_name || folder.category_name }}</span>
+                <span
+                  data-toggle="tooltip"
+                  :title="folder.folder_name || folder.category_name"
+                  >{{
+                    (folder.folder_name || folder.category_name)
+                      | shrinkString(46, 12)
+                  }}
+                </span>
               </li>
               <SharePreviewItem
                 v-for="file in files"
@@ -123,6 +135,22 @@ export default {
       if (copied)
         this.copyBtnResetTimer = setTimeout(() => (this.copied = false), 1500)
     },
+  },
+  mounted() {
+    this.$nextTick(() => {
+      window
+        .$(this.$el)
+        .find('.share-folder-items > [data-toggle="tooltip"]')
+        .tooltip()
+    })
+  },
+  updated() {
+    this.$nextTick(() => {
+      window
+        .$(this.$el)
+        .find('.share-folder-items > [data-toggle="tooltip"]')
+        .tooltip()
+    })
   },
   destroyed() {
     if (this.copyBtnResetTimer) clearTimeout(this.copyBtnResetTimer)
