@@ -9,8 +9,8 @@
         <nuxt-link v-if="breadcrumb" class="back-link" :to="breadcrumb.url">
           {{ breadcrumb.name }}
         </nuxt-link>
-        <h2>
-          {{ file.display_file_name }}
+        <h2 data-toggle="tooltip" :title="file.display_file_name">
+          {{ file.display_file_name | shrinkString(60, 15) }}
         </h2>
       </div>
       <div
@@ -161,7 +161,9 @@
                     <td>ID</td>
                     <td>
                       <span> : </span>
-                      <strong>{{ file.id }}</strong>
+                      <strong data-toggle="tooltip" :title="file.id">{{
+                        file.id
+                      }}</strong>
                     </td>
                   </tr>
                   <template v-if="metaData">
@@ -172,7 +174,11 @@
                       <td>{{ $camelCaseToNormalCase(key) }}</td>
                       <td>
                         <span> : </span>
-                        <strong v-html="$getFormattedMetaValue(value, key)">
+                        <strong
+                          data-toggle="tooltip"
+                          :title="value"
+                          v-html="$getFormattedMetaValue(value, key)"
+                        >
                         </strong>
                       </td>
                     </tr>
@@ -195,7 +201,11 @@
                     <td>{{ $camelCaseToNormalCase(key) }}</td>
                     <td>
                       <span> : </span>
-                      <strong v-html="$getFormattedMetaValue(value, key)">
+                      <strong
+                        data-toggle="tooltip"
+                        :title="value"
+                        v-html="$getFormattedMetaValue(value, key)"
+                      >
                       </strong>
                     </td>
                   </tr>
@@ -355,6 +365,9 @@ export default {
     fileId() {
       return this.$route.params.id
     },
+  },
+  updated() {
+    window.$('[data-toggle="tooltip"]').tooltip()
   },
   asyncComputed: {
     async breadcrumb() {

@@ -1,4 +1,7 @@
 import * as utils from '@/utils'
+import Vue from 'vue'
+
+Vue.filter('shrinkString', utils.shrinkString)
 
 export default ({ app, $axios, router, store }, inject) => {
   const setPageTitle = (title, back = false) => {
