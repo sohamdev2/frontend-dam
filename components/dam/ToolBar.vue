@@ -7,7 +7,7 @@
     >
       <div class="custom-checkbox">
         <input
-          v-if="!!assetsCount && hashParam"
+          v-if="!!assetsCount"
           id="toolbar-dam-select"
           class="form-check-input"
           type="checkbox"
