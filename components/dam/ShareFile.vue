@@ -159,7 +159,7 @@ export default {
     async createShareUrl() {
       this.creating = true
       await this.$axios
-        .$post('/digital/get-share-url', {
+        .$post('/digital/generate-share-assets-url', {
           workspace_id: this.$getWorkspaceId(),
           assets: this.files.map(({ id }) => id),
           category: this.folders.map(({ id }) => id),
