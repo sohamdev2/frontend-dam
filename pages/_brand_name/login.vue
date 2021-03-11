@@ -74,7 +74,7 @@
                   <div class="col-sm-12">
                     <div class="pull-right mt-25 text-right">
                       <nuxt-link
-                        :to="`/forgot-password?brandName=${brandName}`"
+                        :to="`/${brandName}/forgot-password`"
                         class="color-gray"
                       >
                         Forgot Password
@@ -100,7 +100,7 @@ import { required, email } from 'vuelidate/lib/validators'
 import storeBrandName from '~/mixins/storeBrandName'
 
 export default {
-  middleware: ['redirect-if-logged-in'],
+  middleware: ['redirect-if-logged-in', 'check-url'],
   mixins: [storeBrandName],
   data() {
     return {
@@ -117,7 +117,7 @@ export default {
       if ((this.$v.$touch(), this.$v.$invalid)) return
 
       this.loading = true
-      console.log(this.brandName)
+
       await this.$auth
         .loginWith('local', { data: { ...this.form, url: this.brandName } })
         .then(() => this.$router.push(`/${this.brandName}`))

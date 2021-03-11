@@ -65,7 +65,7 @@ import { required, email } from 'vuelidate/lib/validators'
 import storeBrandName from '~/mixins/storeBrandName'
 
 export default {
-  auth: false,
+  middleware: ['check-url'],
   mixins: [storeBrandName],
   data() {
     return {

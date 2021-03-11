@@ -118,7 +118,7 @@
 <script>
 export default {
   layout: 'app',
-  middleware: ['check-auth'],
+  middleware: ['check-auth', 'check-url'],
   data() {
     return {
       shareFile: null,
@@ -147,6 +147,9 @@ export default {
 
       return key.slice(0, key.length - 1)
     },
+  },
+  head() {
+    return { title: this.$getBrandName() }
   },
 }
 </script>

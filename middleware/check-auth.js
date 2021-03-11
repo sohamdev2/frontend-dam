@@ -1,4 +1,4 @@
-export default function ({ $auth, $getBrandName, redirect }) {
+export default function ({ $auth, $getBrandName, error, redirect }) {
   if (!$auth.loggedIn)
     redirect({
       name: 'brand_name-login',
