@@ -19,7 +19,7 @@
       @click="
         sortingModel = 'file_type'
         emitSort([
-          ['subFolders', 'total_assets', $sortToUpperCase],
+          ['subFolders', 'total_contain', $sortToTypedNumber],
           ['files', 'file_type', $sortToUpperCase],
         ])
       "
@@ -45,7 +45,7 @@
       @click="
         sortingModel = 'file_size'
         emitSort([
-          ['subFolders', '', $sortToUpperCase],
+          ['subFolders', 'total_contain', $sortToTypedNumber],
           ['files', 'file_size', $sortToTypedNumber],
         ])
       "

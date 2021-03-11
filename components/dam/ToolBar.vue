@@ -140,7 +140,7 @@ export default {
       sortingOptions: [
         'Sort by',
         { text: 'Name', id: 'display_file_name' },
-        { text: 'Recent', id: 'updated_at' },
+        { text: 'Date', id: 'updated_at' },
         { text: 'Size', id: 'file_size' },
         { text: 'Type', id: 'file_type' },
       ],
@@ -233,7 +233,7 @@ export default {
           break
         case 'file_type':
           toEmit = [
-            ['subFolders', 'total_assets', this.$sortToUpperCase],
+            ['subFolders', 'total_contain', this.$sortToTypedNumber],
             ['files', 'file_type', this.$sortToUpperCase],
           ]
           break
@@ -245,7 +245,7 @@ export default {
           break
         case 'file_size':
           toEmit = [
-            ['subFolders', 'file_size', this.$sortToTypedNumber],
+            ['subFolders', 'total_contain', this.$sortToTypedNumber],
             ['files', 'file_size', this.$sortToTypedNumber],
           ]
           break

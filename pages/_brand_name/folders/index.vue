@@ -119,6 +119,14 @@ import assetSorting from '@/mixins/assetSorting'
 
 const categories = ['video', 'audio', 'image', 'application', 'archive']
 
+function makeFolder(array) {
+  return [...array].map((folder) => ({
+    ...folder,
+    total_contain:
+      (folder.total_assets || 0) + (folder.sub_category_count || 0),
+  }))
+}
+
 export default {
   layout: 'app',
   components: { ContentLoader },
@@ -288,7 +296,7 @@ export default {
 
       if (!this.hashParam) {
         if (!this.folderList.length) await this.getFolders()
-        this.subFolders = [...this.folderList]
+        this.subFolders = makeFolder(this.folderList)
       } else if (this.hashParam === 'popular' && this.queryTag)
         await this.getPopularTagFiles()
       else if (this.hashParam === 'search' && this.$route.params.hasFilters)
@@ -334,9 +342,7 @@ export default {
     async getSearchResult() {
       await this.$axios
         .$post('digital/search-assets', this.$route.params.searchRequestBody)
-        .then(({ data }) => {
-          this.files = data.category_assets || []
-        })
+        .then(({ data }) => (this.files = data.category_assets || []))
         .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
     },
     async getPopularTagFiles() {
@@ -365,7 +371,7 @@ export default {
         .then(({ data }) => {
           if (this.hashParam !== hashParam) return
 
-          this.subFolders = data.folder || []
+          this.subFolders = makeFolder(data.folder || [])
           this.files = data.category_assets || []
         })
         .catch((e) => {

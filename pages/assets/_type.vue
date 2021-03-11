@@ -43,6 +43,14 @@
 /* eslint-disable camelcase */
 import assetSorting from '@/mixins/assetSorting'
 
+function makeFolder(array) {
+  return [...array].map((folder) => ({
+    ...folder,
+    total_contain:
+      (folder.total_assets || 0) + (folder.sub_category_count || 0),
+  }))
+}
+
 export default {
   mixins: [assetSorting],
   asyncData({ params, query, $axios, redirect, error, $getErrorMessage }) {
@@ -51,13 +59,13 @@ export default {
       .then(({ data }) => {
         if (!data.category.length && !data.assets.length)
           return error({ status: 404 })
+        const subFolders = makeFolder(data.category || [])
+        const files = data.assets || []
 
         return {
-          subFolders: data.category || [],
-          files: data.assets || [],
-          stack: [
-            { subFolders: data.category || [], files: data.assets || [] },
-          ],
+          subFolders,
+          files,
+          stack: [{ subFolders, files }],
         }
       })
       .catch((e) => {
@@ -122,7 +130,8 @@ export default {
             this.$toQueryString({ category_id: folderId })
         )
         .then(({ data }) => {
-          this.subFolders = data.folder || []
+          this.subFolders = makeFolder(data.folder || [])
+
           this.files = data.category_assets || []
 
           this.stack.push({
