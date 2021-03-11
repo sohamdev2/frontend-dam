@@ -91,12 +91,7 @@ export const actions = {
     )
   },
   downloadFile(
-    {
-      commit,
-      state: {
-        downloadIndicator: { files: stateFiles },
-      },
-    },
+    { commit, state: { files: stateFiles } },
     {
       id,
       url,

@@ -308,6 +308,7 @@ export default {
         url: this.__url,
         name: this.file.display_file_name,
         callCountApi: !this.shareMode,
+        useModernDownload: true,
       })
     },
   },
