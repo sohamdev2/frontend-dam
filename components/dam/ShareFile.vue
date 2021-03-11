@@ -57,7 +57,7 @@
               >
                 <FolderIcon style="filter: brightness(0.5)" />
                 <span
-                  data-toggle="tooltip"
+                  v-tooltip="folder.folder_name || folder.category_name"
                   :title="folder.folder_name || folder.category_name"
                   >{{
                     (folder.folder_name || folder.category_name)
@@ -135,22 +135,6 @@ export default {
       if (copied)
         this.copyBtnResetTimer = setTimeout(() => (this.copied = false), 1500)
     },
-  },
-  mounted() {
-    this.$nextTick(() => {
-      window
-        .$(this.$el)
-        .find('.share-folder-items > [data-toggle="tooltip"]')
-        .tooltip()
-    })
-  },
-  updated() {
-    this.$nextTick(() => {
-      window
-        .$(this.$el)
-        .find('.share-folder-items > [data-toggle="tooltip"]')
-        .tooltip()
-    })
   },
   destroyed() {
     if (this.copyBtnResetTimer) clearTimeout(this.copyBtnResetTimer)
