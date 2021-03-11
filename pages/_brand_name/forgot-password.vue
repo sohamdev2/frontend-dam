@@ -86,7 +86,7 @@ export default {
             data?.message || message || 'Check your inbox for reset s'
           )
 
-          this.$router.replace(`/login?brandName=${this.brandName}`)
+          this.$router.replace(`${this.brandName}/login`)
         })
         .catch(this.$showErrorToast)
 

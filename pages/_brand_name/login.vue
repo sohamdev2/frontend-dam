@@ -100,12 +100,11 @@ import { required, email } from 'vuelidate/lib/validators'
 import storeBrandName from '~/mixins/storeBrandName'
 
 export default {
-  auth: false,
+  middleware: ['redirect-if-logged-in'],
   mixins: [storeBrandName],
   data() {
     return {
       loading: false,
-      brandName: '',
       form: {
         email: null,
         password: null,
@@ -118,7 +117,7 @@ export default {
       if ((this.$v.$touch(), this.$v.$invalid)) return
 
       this.loading = true
-
+      console.log(this.brandName)
       await this.$auth
         .loginWith('local', { data: { ...this.form, url: this.brandName } })
         .then(() => this.$router.push(`/${this.brandName}`))

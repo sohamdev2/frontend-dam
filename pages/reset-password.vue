@@ -119,33 +119,27 @@ import { required, minLength, sameAs } from 'vuelidate/lib/validators'
 import moment from 'moment-timezone'
 
 export default {
-  auth: 'guest',
-  async asyncData({ $guestAxios, query, $showErrorToast, redirect, error }) {
+  middleware: ['redirect-if-logged-in'],
+  asyncData({ $guestAxios, query, redirect, error }) {
     const { token } = query
 
-    if (!token) return redirect('/')
+    if (!token) return redirect('/404')
 
-    try {
-      const {
-        data: { message, data, status },
-      } = await $guestAxios.post('reset-password-details', { token })
+    return $guestAxios
+      .post('reset-password-details', { token })
+      .then(({ data: { message, data, status } }) => {
+        if (!status) return error({ status: status || 500, message })
+        return {
+          form: { ...data, password: '', confirm_password: '' },
+          error: false,
+          message,
+        }
+      })
+      .catch(({ response, message }) => {
+        const { data, status } = response || {}
 
-      if (!status) {
-        $showErrorToast(message)
-        return redirect('/login')
-      }
-
-      return {
-        form: { ...data, password: '', confirm_password: '' },
-        error: false,
-        message,
-      }
-    } catch (e) {
-      const { data, status } = e.response || {}
-      if (data?.message?.includes('link is expired'))
-        return { message: data.message, status, error: true }
-      else error({ status: status || 500, message: data?.message || e.message })
-    }
+        error({ status: status || 500, message: data?.message || message })
+      })
   },
   data() {
     return {
@@ -176,12 +170,9 @@ export default {
               },
             },
           }) => {
-            this.$store.commit('localStorage/brandName', url)
-            this.$store.commit('brandName', url)
-
             this.$nextTick(() => {
               this.$toast.global.success(message)
-              this.$router.push(`/login?brandName=${url}`)
+              this.$router.push(`${url}/login`)
             })
           }
         )
