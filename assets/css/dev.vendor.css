@@ -230,29 +230,89 @@ body,
   content: none;
 }
 
-/* ########### CUSTOM STYLE ########### */
+/* --- vue-transition-animation --- */
+.slide-100-move,
+.slide-move {
+  transition: transform 240ms ease-in-out;
+  transition-delay: 0 !important;
+}
+.slide-enter {
+  transform: translateY(-28%);
+  opacity: 0;
+}
+.slide-100-enter {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+.slide-100-enter-to,
+.slide-enter-to {
+  transform: unset;
+  opacity: 1;
+}
+
+.slide-100-enter-active,
+.slide-enter-active {
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.slide-leave,
+.slide-100-leave {
+  transform: unset;
+  opacity: 1;
+}
+.slide-leave-to {
+  transform: translateY(28%);
+  opacity: 0;
+}
+.slide-100-leave-to {
+  transform: translateY(100%);
+  opacity: 0;
+}
+.slide-100-enter-active,
+.slide-100-leave-active,
+.slide-enter-active,
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 240ms ease-in-out;
+}
+
+.slide-up-move,
+.slide-right-move {
+  transition: transform 240ms ease-in-out;
+  transition-delay: 0 !important;
+}
+
 .slide-up-enter {
   transform: translateY(100%);
   opacity: 0;
 }
 .slide-up-enter-to {
-  transform: translateY(0);
+  transform: unset;
   opacity: 1;
 }
 .slide-up-leave {
-  transform: translateY(0);
+  transform: unset;
   opacity: 1;
 }
 .slide-up-leave-to {
   transform: translateY(100%);
   opacity: 0;
 }
-.slide-up-enter-active,
+
+.slide-up-move,
+.slide-right-move {
+  transition: all 250ms ease;
+}
+
+.slide-up-enter-active {
+  transition: all 250ms ease;
+}
 .slide-up-leave-active {
-  transition: all 240ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  /* position: absolute;
-  right: 0;
-  left: 0; */
+  display: none;
+  transition: none !important;
+  transition-delay: 0 !important;
 }
 
 .slide-right-enter {
@@ -274,8 +334,9 @@ body,
 .slide-right-enter-active,
 .slide-right-leave-active {
   position: absolute;
-  transition: all 240ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: all 250ms ease;
 }
+/* --- end --- */
 
 .dam-btn-outline {
   background-color: transparent;

@@ -48,7 +48,7 @@
         key="folder-list"
         class="resource-container"
         :class="[`${mode}-resource`]"
-        name="folder-transition"
+        name="slide-up"
         mode="in-out"
         tag="div"
       >
@@ -57,7 +57,7 @@
           key="header"
           :sorting.sync="sorting.toolbar.value"
           @sort="(args) => args.forEach((arg) => sort(...arg))"
-        ></ListingHeader>
+        />
         <Folder
           v-for="(folder, i) in subFolders"
           :key="'folder-' + folder.id"
@@ -122,7 +122,7 @@ const categories = ['video', 'audio', 'image', 'application', 'archive']
 export default {
   layout: 'app',
   components: { ContentLoader },
-  middleware: ['check-auth'],
+  middleware: ['check-auth', 'check-url'],
   mixins: [fileSelection, assetSorting],
   data() {
     let page
