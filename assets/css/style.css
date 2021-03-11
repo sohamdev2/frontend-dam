@@ -72,7 +72,8 @@ input {background-image: url(../img/icon/pixel.png);background-repeat: repeat;}
 .upload-btn {padding-left:20px;}
 .upload-btn .btn.btn-icon {min-width: 160px;min-height: 50px;justify-content: space-between;font-size: 14px;}
 .upload-btn .btn.btn-icon img {margin-left: 10px;margin-right: 0;max-width: 20px;height: auto;}
-.upload-btn img {filter: invert(100%) sepia(100%) saturate(2%) hue-rotate(227deg) brightness(106%) contrast(101%);}
+
+/* .upload-btn img {filter: invert(100%) sepia(100%) saturate(2%) hue-rotate(227deg) brightness(106%) contrast(101%);} */
 
 .select2-selection__clear {display: none !important;}
 .select2.select2-container--open {-webkit-box-shadow: none;box-shadow: none;}

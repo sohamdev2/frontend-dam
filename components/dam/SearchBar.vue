@@ -47,11 +47,7 @@
         @click="search"
       >
         Search
-        <img
-          src="~/assets/img/icon/bigsearch-icon.svg"
-          style="filter: invert(1)"
-          alt="search"
-        />
+        <img src="~/assets/img/icon/bigsearch-icon.svg" alt="search" />
       </button>
     </div>
     <!-- filter options -->
