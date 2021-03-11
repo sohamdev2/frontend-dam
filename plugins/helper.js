@@ -3,7 +3,7 @@ import Vue from 'vue'
 
 Vue.filter('shrinkString', utils.shrinkString)
 
-export default ({ app, $axios }, inject) => {
+export default ({ app, $axios, store }, inject) => {
   const setPageTitle = (title) => {
     // app.store.dispatch('page/setPageTitle', title)
     // app.store.dispatch('page/setbackArrow', back)
@@ -30,17 +30,18 @@ export default ({ app, $axios }, inject) => {
     const brandName = getBrandName()
 
     await app.$auth.logout()
-    await app.$clearAuthCookies()
+    // await app.$clearAuthCookies()
+    store.commit('appData/resetState')
 
-    app.router.replace(`/login?brandName=${brandName}`)
+    app.router.replace(`/${brandName}/login`).catch(() => {})
   }
 
-  const clearAuthCookies = () => {
-    if (process.client) {
-      window.localStorage.clear()
-      window.sessionStorage.clear()
-    }
-  }
+  // const clearAuthCookies = () => {
+  //   if (process.client) {
+  //     window.localStorage.clear()
+  //     window.sessionStorage.clear()
+  //   }
+  // }
 
   // const isMobileDevice = () =>
   //    app.$device.isMobile
@@ -64,6 +65,6 @@ export default ({ app, $axios }, inject) => {
   inject('getBrandName', getBrandName)
 
   inject('logout', logout)
-  inject('clearAuthCookies', clearAuthCookies)
+  // inject('clearAuthCookies', clearAuthCookies)
   // inject('isMobileDevice', isMobileDevice)
 }
