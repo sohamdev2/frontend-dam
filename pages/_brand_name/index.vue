@@ -48,7 +48,7 @@
               emit-share
               hide-select
               @share="onShareFile"
-            ></Resource>
+            />
           </slide>
         </carousel>
       </client-only>
@@ -95,7 +95,7 @@
                   emit-share
                   hide-select
                   @share="onShareFile"
-                ></Resource>
+                />
               </slide>
             </carousel>
           </client-only>
@@ -110,7 +110,7 @@
         ref="shareDialog"
         :files="(shareFile && [shareFile]) || []"
         type="folder"
-      ></ShareFile>
+      />
     </client-only>
   </div>
 </template>
@@ -118,6 +118,7 @@
 <script>
 export default {
   layout: 'app',
+  middleware: ['check-auth'],
   data() {
     return {
       shareFile: null,

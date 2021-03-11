@@ -19,7 +19,6 @@
 
 <script>
 export default {
-  auth: false,
   props: { error: { type: Object, default: () => ({}) } },
   methods: {
     backToHome() {

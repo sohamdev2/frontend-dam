@@ -122,7 +122,7 @@ const categories = ['video', 'audio', 'image', 'application', 'archive']
 export default {
   layout: 'app',
   components: { ContentLoader },
-
+  middleware: ['check-auth'],
   mixins: [fileSelection, assetSorting],
   data() {
     let page

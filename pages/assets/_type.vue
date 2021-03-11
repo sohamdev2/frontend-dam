@@ -44,7 +44,6 @@
 import assetSorting from '@/mixins/assetSorting'
 
 export default {
-  auth: false,
   mixins: [assetSorting],
   asyncData({ params, query, $axios, redirect, error, $getErrorMessage }) {
     return $axios

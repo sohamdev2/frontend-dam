@@ -284,6 +284,7 @@ function resizeCanvas() {
 
 export default {
   layout: 'app-min',
+  middleware: ['check-auth'],
   mixins: [fileType],
   async asyncData({
     params,

@@ -20,7 +20,6 @@
 
 <script>
 export default {
-  auth: false,
   layout: 'app-min-no-search',
   props: { error: { type: Object, default: () => ({}) } },
   methods: {

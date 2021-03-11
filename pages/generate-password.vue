@@ -136,7 +136,6 @@ import { required, minLength, sameAs } from 'vuelidate/lib/validators'
 import moment from 'moment-timezone'
 
 export default {
-  auth: 'guest',
   async asyncData({ $guestAxios, query, $showErrorToast, redirect, error }) {
     const { invitation_token } = query
 
@@ -197,11 +196,8 @@ export default {
               },
             },
           }) => {
-            this.$store.commit('localStorage/brandName', url)
-            this.$store.commit('brandName', url)
-
             this.$toast.global.success(dataMessage || message)
-            this.$router.replace(`/login?brandName=${url}`)
+            this.$router.replace(`${url}/login`)
           }
         )
         .catch(this.$showErrorToast)
