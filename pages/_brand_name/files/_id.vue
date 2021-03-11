@@ -9,8 +9,13 @@
         <nuxt-link v-if="breadcrumb" class="back-link" :to="breadcrumb.url">
           {{ breadcrumb.name }}
         </nuxt-link>
-        <h2 data-toggle="tooltip" :title="file.display_file_name">
-          {{ file.display_file_name | shrinkString(60, 15) }}
+        <h2>
+          <span
+            v-tooltip="file.display_file_name"
+            :title="file.display_file_name"
+          >
+            {{ file.display_file_name | shrinkString(60, 15) }}
+          </span>
         </h2>
       </div>
       <div
@@ -63,15 +68,24 @@
               :noplayed-line-width="1"
               played-line-color="#ed703d"
               noplayed-line-color="#1a1d2556"
-            ></av-waveform>
+            />
           </div>
           <img
-            v-else
+            v-else-if="isImage"
             class="img-fluid"
             style="object-fit: contain"
             :src="previewImage"
             :alt="file.display_file_name"
           />
+          <div v-else class="m-auto">
+            <img
+              class="img-fluid"
+              style="max-height: 128px; object-fit: contain"
+              :src="previewImage"
+              :alt="file.display_file_name"
+            />
+            <p class="mt-3">No preview available for this file.</p>
+          </div>
         </div>
         <div class="detail-controls">
           <button
@@ -94,7 +108,7 @@
             Share
             <img src="@/assets/img/icon/select-share.svg" alt="share" />
           </button>
-          <button
+          <!-- <button
             type="button"
             class="btn btn-icon btn-icon-reverse"
             :disabled="allButtonDisabled"
@@ -102,7 +116,7 @@
           >
             Embed
             <img src="@/assets/img/icon/embed-Icon.svg" alt="embed" />
-          </button>
+          </button> -->
         </div>
       </div>
     </div>
@@ -126,7 +140,11 @@
             </a>
           </li>
         </ul>
-        <div id="accordion" class="tab-content">
+        <div id="accordion" class="tab-content" style="position: relative">
+          <SpinLoading
+            v-if="ui.tab == 'metadata' && ui.exifLoading"
+            style="position: absolute; top: 1rem; right: 1rem"
+          />
           <div class="tab-pane" :class="{ active: ui.tab === 'overview' }">
             <div
               class="mob-tab-title collapsed"
@@ -166,6 +184,18 @@
                       }}</strong>
                     </td>
                   </tr>
+                  <tr v-if="parentFolder">
+                    <td>Parent folder</td>
+                    <td>
+                      <span> : </span>
+                      <strong v-tooltip="parentFolder.name">
+                        <nuxt-link :to="parentFolder.url" target="_blank">
+                          {{ parentFolder.name }}
+                          <i class="fa fa-external-link" aria-hidden="true"></i>
+                        </nuxt-link>
+                      </strong>
+                    </td>
+                  </tr>
                   <template v-if="metaData">
                     <tr
                       v-for="(value, key) in filterMetaData(metaData)"
@@ -175,8 +205,8 @@
                       <td>
                         <span> : </span>
                         <strong
-                          data-toggle="tooltip"
-                          :title="value"
+                          v-tooltip="$getFormattedMetaValue(value, key, true)"
+                          :title="$getFormattedMetaValue(value, key, true)"
                           v-html="$getFormattedMetaValue(value, key)"
                         >
                         </strong>
@@ -202,8 +232,8 @@
                     <td>
                       <span> : </span>
                       <strong
-                        data-toggle="tooltip"
-                        :title="value"
+                        v-tooltip="$getFormattedMetaValue(value, key, true)"
+                        :title="$getFormattedMetaValue(value, key, true)"
                         v-html="$getFormattedMetaValue(value, key)"
                       >
                       </strong>
@@ -284,7 +314,7 @@ function resizeCanvas() {
 
 export default {
   layout: 'app-min',
-  middleware: ['check-auth'],
+  middleware: ['check-auth', 'check-url'],
   mixins: [fileType],
   async asyncData({
     params,
@@ -337,6 +367,7 @@ export default {
         loading: false,
         deleting: false,
         archiving: false,
+        exifLoading: false,
       },
       videoThumbnail: null,
       exif: null,
@@ -365,6 +396,11 @@ export default {
     },
     fileId() {
       return this.$route.params.id
+    },
+    parentFolder() {
+      const breadcrumbs = []
+      console.log(this.file)
+      return breadcrumbs[breadcrumbs.length - 1]
     },
   },
   updated() {
@@ -506,35 +542,34 @@ export default {
         'FileName',
         'FileSize',
         'LastModified',
+        'Dimensions',
       ]
 
       return Object.keys(metaData)
-        .filter((key) => allowed.includes(key))
+        .filter((key) => allowed.includes(key) && metaData[key])
         .reduce((obj, key) => {
           obj[key] = metaData[key]
           return obj
         }, {})
     },
-    getExif() {
+    async getExif() {
       const vue = this
+      vue.metaData = sortObject({
+        ...vue.metaData,
+        FileName: vue.file.display_file_name,
+        FileSize: vue.file.file_size,
+      })
 
-      if (this.file.file_size > 52428800 /* 5MB */) {
-        vue.metaData = sortObject({
-          ...vue.metaData,
-          FileName: this.file.display_file_name,
-          FileSize: this.file.file_size,
-        })
-        return
-      }
+      if (vue.file.file_size > 52428800 /* 5MB */) return
+      vue.ui.exifLoading = true
 
-      axios
-        .get(this.__url, {
-          responseType: 'blob',
-        })
+      await axios
+        .get(vue.__url, { responseType: 'blob' })
         .then(({ data }) => {
+          vue.ui.exifLoading = false
           EXIF.getData(data, function () {
-            const a = Object.assign({}, EXIF.getAllTags(this))
-            this.$deleteMetaKeys(a)
+            const a = Object.assign({}, EXIF.getAllTags(vue))
+            vue.$deleteMetaKeys(a)
             vue.exif = a
           })
 
@@ -546,8 +581,9 @@ export default {
             FileSize: file.size,
           })
         })
-        // eslint-disable-next-line no-console
         .catch((e) => console.info('exif-fetch-error:', e))
+
+      vue.ui.exifLoading = false
     },
     downloadFile() {
       this.$store.dispatch('downloadIndicator/downloadFile', {

@@ -176,10 +176,10 @@ export function camelCaseToNormalCase(key) {
   return words.join(' ')
 }
 
-export function getFormattedMetaValue(value, key) {
+export function getFormattedMetaValue(value, key, tooltip) {
   switch (key) {
     case 'FileName':
-      return shrinkString(value, 50, 12)
+      return tooltip ? value : shrinkString(value, 50, 12)
     case 'FileSize':
       return this.$toHumanlySize(value)
     case 'FileDateTime':
