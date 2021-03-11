@@ -2,7 +2,13 @@
   <div class="col-lg-6 offset-lg-3">
     <div class="error-page">
       <div class="error-text text-center">
-        <h1>Page not found</h1>
+        <h1>
+          {{
+            (error.statusCode || error.code || error.status) == 404
+              ? 'Page not found'
+              : error.status || 'Oops'
+          }}
+        </h1>
         <p>
           {{
             error.message ||

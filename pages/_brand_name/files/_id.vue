@@ -316,16 +316,12 @@ export default {
   layout: 'app-min',
   middleware: ['check-auth', 'check-url'],
   mixins: [fileType],
-  async asyncData({
-    params,
-    redirect,
-    $axios,
-    $getWorkspaceId,
-    $deleteMetaKeys,
-    error,
-  }) {
+  async asyncData({ params, $axios, $getWorkspaceId, $deleteMetaKeys, error }) {
     if (!params.id || Number.isNaN(Number(params.id)))
-      redirect('/' + params.workspace_id + '/asset-manager')
+      return error({
+        status: 404,
+        message: 'Requested file was not found',
+      })
 
     const throw404 = () =>
       error({
