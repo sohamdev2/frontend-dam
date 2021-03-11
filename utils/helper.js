@@ -1,12 +1,5 @@
 // export const proxyurl = 'https://cors-anywhere.herokuapp.com/'
 
-export function mutator(name, after) {
-  return function (state, arg) {
-    state[name] = arg
-    if (after && typeof after === 'function') after(state)
-  }
-}
-
 export function queue(concurrency = 1) {
   let running = 0
   const taskQueue = []
@@ -26,4 +19,42 @@ export function queue(concurrency = 1) {
   return {
     push: (task) => (running < concurrency ? runTask(task) : enqueueTask(task)),
   }
+}
+
+export function mapSyncModel(data = 'model', prop = 'value') {
+  return {
+    [prop](propValue) {
+      this[data] = propValue
+    },
+    [data](dataValue) {
+      if (prop === 'value') this.$emit('input', dataValue)
+      else this.$emit(`update:${prop}`, dataValue)
+    },
+  }
+}
+
+export function debounce(func, wait) {
+  let timeout
+  return function (...args) {
+    const context = this
+    clearTimeout(timeout)
+    timeout = setTimeout(() => func.apply(context, args), wait)
+  }
+}
+
+export function makeMutations(...arr) {
+  return arr.reduce((obj, key) => {
+    obj[key] = (state, value) => assignValue(state, key, value)
+
+    return obj
+  }, {})
+}
+
+function assignValue(src, key, value) {
+  const paths = key.split('.')
+
+  if (!src) return
+
+  if (paths.length === 1) src[paths[0]] = value
+  else assignValue(src[paths[0]], paths.slice(1).join('.'), value)
 }

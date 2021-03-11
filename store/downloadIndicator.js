@@ -1,6 +1,5 @@
 import axios from 'axios'
-import { toQueryString } from '~/utils'
-import { mutator } from '~/utils/helper'
+import { makeMutations } from '~/utils/helper'
 
 const _state = () => ({
   pinned: false,
@@ -12,8 +11,7 @@ const _state = () => ({
 export { _state as state }
 
 export const mutations = {
-  expanded: mutator('expanded'),
-  pinned: mutator('pinned'),
+  ...makeMutations('expanded', 'pinned'),
   setDownloadingItem(state, { item, id }) {
     if (!state.files[id]) state.files[id] = Object.assign({}, item)
     else Object.assign(state.files[id], item)
@@ -29,8 +27,19 @@ export const mutations = {
 }
 
 export const actions = {
-  async downloadMultipleFiles({ dispatch, commit }, { files, folders }) {
-    const id = Math.floor(Math.random() * 1e6).toString(16)
+  async downloadMultipleFiles(
+    { dispatch, commit, state: { files: stateFiles } },
+    { files, folders, shareMode = false }
+  ) {
+    const id = btoa(JSON.stringify({ files, folders }))
+
+    if (stateFiles[id] && stateFiles[id].downloading) return
+
+    const baseUrl =
+      this.$config.backendUrl ||
+      process.env.BACKEND_URL ||
+      process.env.BACKAND_URL ||
+      'http://marcom3-dev.whitelabeliq.net'
 
     const item = {
       id,
@@ -46,9 +55,7 @@ export const actions = {
     commit('pinned', true)
     commit('expanded', true)
 
-    let zipUrl =
-      (process.env.BACKAND_URL || 'https://marcom2-api.whitelabeliq.net') +
-      '/upload/dam_assets_zip/'
+    let zipUrl = baseUrl + '/upload/dam_assets_zip/'
     let name
     let orgUrl
 
@@ -64,7 +71,7 @@ export const actions = {
       name = url.split(/(\/|\\)/gm).pop()
       zipUrl += name
     } catch (e) {
-      this.$toast.global.error(this.$getErrorMessage(e))
+      this.$showErrorToast(e)
       commit('removeDownloadingItem', id)
       return
     }
@@ -74,6 +81,7 @@ export const actions = {
       name,
       url: zipUrl,
       callCountApi: false,
+      multiple: true,
       extras: { orgUrl },
     }).then(() =>
       this.$axios.$post('digital/delete-file', {
@@ -82,13 +90,42 @@ export const actions = {
       })
     )
   },
-  async downloadFile(
-    { commit, state },
-    { id, url, name, callCountApi = true, extras = {} }
+  downloadFile(
+    {
+      commit,
+      state: {
+        downloadIndicator: { files: stateFiles },
+      },
+    },
+    {
+      id,
+      url,
+      name,
+      callCountApi = true,
+      useModernDownload = false,
+      extras = {},
+      multiple,
+    }
   ) {
-    const files = state.files
+    if (stateFiles[id] && stateFiles[id].downloading) return
 
-    if (files[id] && files[id].downloading) return
+    // if (callCountApi)
+    //   try {
+    //     await this.$axios.$get(
+    //       'digital-assets/dashboard/download-count?' +
+    //         toQueryString({
+    //           workspace_id: this.$getWorkspaceId(),
+    //           digital_assets_id: id,
+    //         })
+    //     )
+    //   } catch (e) {
+    //     this.$showErrorToast(e)
+    //     commit('removeDownloadingItem', id)
+    //     return
+    //   }
+
+    if (!multiple && !useModernDownload)
+      return this.$downloadAsset('Digital Assets', id)
 
     const item = {
       url,
@@ -106,21 +143,6 @@ export const actions = {
     item.source = source
 
     commit('setDownloadingItem', { id, item })
-
-    if (callCountApi)
-      try {
-        await this.$axios.$get(
-          'digital/download-count?' +
-            toQueryString({
-              workspace_id: this.$getWorkspaceId(),
-              digital_assets_id: id,
-            })
-        )
-      } catch (e) {
-        this.$toast.global.error(this.$getErrorMessage(e))
-        commit('removeDownloadingItem', id)
-        return
-      }
 
     return axios
       .get(url, {
@@ -157,7 +179,7 @@ export const actions = {
         commit('removeDownloadingItem', id)
 
         // commit("setDownloadingItem", { id, item });
-        this.$toast.global.error(item.errorMessage)
+        this.$showErrorToast(item.errorMessage)
       })
   },
 }

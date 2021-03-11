@@ -1,5 +1,5 @@
 import { deepSearch } from '~/utils'
-import { mutator } from '~/utils/helper'
+import { makeMutations } from '~/utils/helper'
 
 const _state = () => ({
   dashboardData: null,
@@ -13,21 +13,54 @@ const _state = () => ({
 export { _state as state }
 
 export const mutations = {
-  dashboardData: mutator('dashboardData'),
-  folders: mutator('folders'),
-  'loading.dashboard'(state, value) {
-    state.loading.dashboard = value
-  },
-  'loading.folders'(state, value) {
-    state.loading.folders = value
-  },
+  ...makeMutations(
+    'dashboardData',
+    'folders',
+    'loading.dashboard',
+    'loading.folders'
+  ),
   setFolderItem(state, item) {
-    // let temp = [...state.folders];
+    // let temp = [...state.folderList];
+    if (!state.folderList.length) return
 
-    const folder = deepSearch(state.folders, 'id', (_, id) => item.id === id)
-    if (folder) Object.assign(folder, item)
+    if (item.parent_id) {
+      const parent = deepSearch(
+        state.folderList,
+        'id',
+        (_, id) => item.parent_id === id
+      )
 
-    state.folders = [...state.folders]
+      if (!parent) return
+
+      const folder = deepSearch(
+        state.folderList,
+        'id',
+        (_, id) => item.id === id
+      )
+
+      if (folder) Object.assign(folder, item)
+      else {
+        if (!parent.sub_category_data) parent.sub_category_data = []
+        const index = parent.sub_category_data.findIndex(
+          ({ id }) => id === item.id
+        )
+
+        if (~index) parent.sub_category_data[index] = item
+        else parent.sub_category_data.push(item)
+      }
+    } else {
+      const folder = deepSearch(
+        state.folderList,
+        'id',
+        (_, id) => item.id === id
+      )
+
+      if (!folder) return
+      Object.assign(folder, item)
+    }
+
+    state.folderList = [...state.folderList]
+
     // if (parent) {
     //   const index = parent.sub_category_data.findIndex(
     //     ({ id }) => id == item.id
@@ -38,41 +71,48 @@ export const mutations = {
     //   if (~index) temp[index] = item;
     // }
 
-    // state.folders = [...temp];
+    // state.folderList = [...temp];
+  },
+  resetState(state) {
+    Object.assign(state, _state())
   },
 }
+
 export const actions = {
-  async fetchDashboardData({ commit, state }) {
+  async fetchDashboardData({ commit }) {
     if (!this.$auth.loggedIn) return
 
     commit('loading.dashboard', true)
 
-    const response = await this.$axios
+    const data = await this.$axios
       .$get(`/digital/common-data?workspace_id=${this.$getWorkspaceId()}`)
+      .then(({ data }) => data)
       .catch(this.$showErrorToast)
 
-    commit('loading.dashboard', false)
+    if (data) {
+      commit('dashboardData', data)
 
-    if (response) {
-      commit('dashboardData', response.data)
-
-      return response.data
+      return data
     }
+
+    commit('loading.dashboard', false)
   },
   async fetchFolders({ commit }) {
     if (!this.$auth.loggedIn) return
 
     commit('loading.folders', true)
 
-    const response = await this.$axios
+    const data = await this.$axios
       .$get(`/digital/category-list?workspace_id=${this.$getWorkspaceId()}`)
+      .then(({ data }) => data)
       .catch(this.$showErrorToast)
 
-    commit('loading.folders', false)
-    if (response) {
-      commit('folders', response.data)
+    if (data) {
+      commit('folders', data)
 
-      return response.data
+      return data
     }
+
+    commit('loading.folders', false)
   },
 }

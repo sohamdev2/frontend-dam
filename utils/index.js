@@ -1,4 +1,9 @@
 /* eslint-disable no-prototype-builtins */
+
+export function isSame(obj1, obj2) {
+  return JSON.stringify(obj1) === JSON.stringify(obj2)
+}
+
 /**
  * Gives a comparator function which is to be given to Array.sort() function
  *
@@ -24,10 +29,24 @@ export function sortBy(field, reverse, primer, ignoreCase = false) {
       b = b && b.toUpperCase()
     }
 
-    // if (typeof a === 'number' && typeof b === 'number') return reverse * (b - a)
+    // if (typeof a === "number" && typeof b === "number")
+    //   return reverse * (a - b);
 
     return reverse * ((a > b) - (b > a))
   }
+}
+
+export const shrinkString = (originStr, maxChars, trailingCharCount) => {
+  let shrinkedStr = originStr
+  const shrinkedLength = maxChars - trailingCharCount - 3
+  if (originStr.length > shrinkedLength) {
+    const front = originStr.substr(0, shrinkedLength)
+    const mid = '...'
+    const end = originStr.substr(-trailingCharCount)
+    shrinkedStr = front + mid + end
+  }
+
+  return shrinkedStr
 }
 
 export function deepSearch(object, key, predicate) {
@@ -68,7 +87,46 @@ export function toHumanlySize(size) {
   )
 }
 
-const notAllowed = [
+export function getValidationMessage({ message, response }) {
+  let _message = ''
+
+  if (response) {
+    const {
+      data: { error },
+      message,
+    } = response
+
+    if (error) [_message] = Object.values(error || {})
+
+    _message = _message || message
+  }
+
+  return _message || message
+}
+
+export function escapeHtml(unsafe) {
+  return unsafe
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+}
+
+// eslint-disable-next-line camelcase
+export function downloadAsset(attachment_type, assets_id) {
+  const downloadURL = `/get_assets?${this.$toQueryString({
+    attachment_type,
+    assets_id,
+  })}`
+
+  const link = document.createElement('a')
+  link.href = window.location.origin + downloadURL
+  document.body.appendChild(link)
+  link.click()
+}
+
+const filterMetaInfo = [
   'undefined',
   'thumbnail',
   'COMMENT',
@@ -83,10 +141,11 @@ const notAllowed = [
   'FileDateTime',
   'SceneType',
   'SceneCaptureType',
+  'THUMBNAIL',
 ]
 
 export function deleteMetaKeys(array) {
-  notAllowed.forEach((key) => delete array[key])
+  filterMetaInfo.forEach((key) => delete array[key])
 }
 
 const isUpperCase = (char) => char >= 'A' && char <= 'Z'
@@ -115,19 +174,6 @@ export function camelCaseToNormalCase(key) {
     })
 
   return words.join(' ')
-}
-
-export const shrinkString = (originStr, maxChars, trailingCharCount) => {
-  let shrinkedStr = originStr
-  const shrinkedLength = maxChars - trailingCharCount - 3
-  if (originStr.length > shrinkedLength) {
-    const front = originStr.substr(0, shrinkedLength)
-    const mid = '...'
-    const end = originStr.substr(-trailingCharCount)
-    shrinkedStr = front + mid + end
-  }
-
-  return shrinkedStr
 }
 
 export function getFormattedMetaValue(value, key) {
@@ -241,9 +287,9 @@ export const sortToTime = (x, reverse) =>
 
 export const sortToTypedNumber = (x) => Number(x)
 
-export function log() {
+export function log(...args) {
   // eslint-disable-next-line no-console
-  console.log(...arguments)
+  console.log(...args)
 }
 
 export function stringToRegex(input) {

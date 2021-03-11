@@ -3,8 +3,8 @@ import Vue from 'vue'
 
 Vue.filter('shrinkString', utils.shrinkString)
 
-export default ({ app, $axios, router, store }, inject) => {
-  const setPageTitle = (title, back = false) => {
+export default ({ app, $axios }, inject) => {
+  const setPageTitle = (title) => {
     // app.store.dispatch('page/setPageTitle', title)
     // app.store.dispatch('page/setbackArrow', back)
     process.client && (document.title = title)
@@ -21,7 +21,9 @@ export default ({ app, $axios, router, store }, inject) => {
     app.$toast?.global?.error(getErrorMessage(e))
   }
 
-  const getBrandName = () => app.$auth?.user?.url
+  const getBrandName = () =>
+    app.$auth?.user?.url || app.context.route.params.brand_name
+
   const getWorkspaceId = () => app.$auth?.user?.workspace_id
 
   const logout = async () => {
@@ -49,6 +51,12 @@ export default ({ app, $axios, router, store }, inject) => {
 
   inject('setPageTitle', setPageTitle)
   inject('guestAxios', $axios.create())
+  inject(
+    'marcomAxios',
+    $axios.create({
+      baseUrl: process.env.BACKEND_URL + '/api/v1',
+    })
+  )
 
   inject('getErrorMessage', getErrorMessage)
   inject('showErrorToast', showErrorToast)

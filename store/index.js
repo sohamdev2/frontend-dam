@@ -1,17 +1,11 @@
-import { mutator, queue } from '~/utils/helper'
+import { queue } from '~/utils/helper'
 
 const thumbnailCache = new Map()
 const thumbnailQueue = queue(5)
 
-const _state = () => ({
-  brandName: '',
-})
+const _state = () => ({})
 
 export { _state as state }
-
-export const mutations = {
-  brandName: mutator('brandName'),
-}
 
 export const actions = {
   nuxtServerInit({ dispatch }) {
@@ -20,11 +14,11 @@ export const actions = {
       dispatch('appData/fetchFolders')
     }
   },
-  getThumbnail(_, url) {
+  getThumbnail(_, { url, id }) {
     if (!process.client) return
 
-    if (thumbnailCache.has(url))
-      return new Promise((resolve) => resolve(thumbnailCache.get(url)))
+    if (thumbnailCache.has(id))
+      return new Promise((resolve) => resolve(thumbnailCache.get(id)))
 
     return new Promise((resolve, reject) => {
       thumbnailQueue.push((done) => {
@@ -39,7 +33,7 @@ export const actions = {
             context.drawImage(video, 0, 0, canvas.width, canvas.height)
             video.pause()
             const dataURL = canvas.toDataURL('image/jpeg')
-            thumbnailCache.set(url, dataURL)
+            thumbnailCache.set(id, dataURL)
 
             resolve(dataURL)
             done()
