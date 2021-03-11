@@ -49,9 +49,10 @@ export default {
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
     '~/plugins/vuelidate.js',
-    '~/plugins/helper.js',
     '~/plugins/v-clipboard.js',
+    '~/plugins/v-tooltip.js',
     '~/plugins/vue-async-computed.js',
+    '~/plugins/helper.js',
     { src: '~/plugins/vue-audio-visual.js', mode: 'client' },
     { src: '~/plugins/vue-carousel.js', mode: 'client' },
   ],
@@ -75,13 +76,13 @@ export default {
     [
       'nuxt-vuex-localstorage',
       {
-        localStorage: ['appData', 'localStorage'], //  If not entered, “localStorage” is the default value
+        localStorage: ['appData'], //  If not entered, “localStorage” is the default value
       },
     ],
   ],
 
   router: {
-    middleware: ['verify-brand-name', 'auth'],
+    // middleware: ['verify-brand-name', 'auth'],
     // extendRoutes(routes, resolve) {
     //   routes.push({
     //     name: 'page_not_found',
@@ -92,11 +93,7 @@ export default {
   },
 
   auth: {
-    redirect: {
-      login: '/login',
-      logout: false,
-      home: false,
-    },
+    redirect: false,
     strategies: {
       local: {
         token: {
