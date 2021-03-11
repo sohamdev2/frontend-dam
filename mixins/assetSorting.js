@@ -3,11 +3,11 @@
 const initialSortingData = () => ({
   initialData: true,
   files: {
-    field: 'date',
+    field: 'updated_at',
     reverse: true,
   },
   subFolders: {
-    field: 'date',
+    field: 'updated_at',
     reverse: true,
   },
   toolbar: { value: 'updated_at', desc: true },

@@ -32,8 +32,8 @@
       @click="
         sortingModel = 'updated_at'
         emitSort([
-          ['subFolders', 'date', $sortToTime],
-          ['files', 'date', $sortToTime],
+          ['subFolders', 'updated_at', $sortToTime],
+          ['files', 'updated_at', $sortToTime],
         ])
       "
     >

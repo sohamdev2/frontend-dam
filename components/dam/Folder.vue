@@ -55,7 +55,7 @@
         </span>
       </div>
       <div class="date">
-        {{ $moment(folder.date).format('Do MMM, YYYY') }}
+        {{ $moment(folder.updated_at).format('Do MMM, YYYY') }}
       </div>
       <div class="size">&dash;</div>
       <div class="resource-info">
@@ -65,17 +65,13 @@
             class="share-it action-btn"
             @click="$refs.shareDialog.toggleModel()"
           >
-            <ShareIcon></ShareIcon>
+            <ShareIcon />
           </a>
         </template>
       </div>
     </div>
     <client-only>
-      <ShareFile
-        ref="shareDialog"
-        :folders="[folder]"
-        type="folder"
-      ></ShareFile>
+      <ShareFile ref="shareDialog" :folders="[folder]" type="folder" />
     </client-only>
   </div>
 </template>

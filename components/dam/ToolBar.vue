@@ -239,8 +239,8 @@ export default {
           break
         case 'updated_at':
           toEmit = [
-            ['subFolders', 'date', this.$sortToTime],
-            ['files', 'date', this.$sortToTime],
+            ['subFolders', 'updated_at', this.$sortToTime],
+            ['files', 'updated_at', this.$sortToTime],
           ]
           break
         case 'file_size':

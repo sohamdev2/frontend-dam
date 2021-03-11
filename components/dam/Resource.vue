@@ -32,15 +32,15 @@
         @focus="$refs.video.play()"
         @blur="$refs.video.pause()"
       >
-        <div v-if="isVideo" class="preview-images">
+        <div
+          v-if="isVideo"
+          class="preview-images"
+          :style="mode == 'column' ? { background: 'transparent' } : {}"
+          :class="{ 'no-image': !videoThumbnail }"
+        >
           <img
             class="preview-images preview"
             style="object-fit: contain !important"
-            :style="{
-              padding: `${
-                videoThumbnailAdded || mode == 'column' ? 0 : 2
-              }rem !important`,
-            }"
             :src="videoThumbnail"
           />
           <video
@@ -48,7 +48,7 @@
             ref="video"
             class="thevideo"
             :data-video="file.display_file"
-            style="width: auto; height: 100%; object-fit: contain"
+            style="width: 100%; height: auto; object-fit: contain; margin: auto"
             playsinline
             muted
             loop
@@ -95,15 +95,15 @@
         class="resource-title"
       >
         <span :title="file.display_file_name">
-          <!-- data-toggle="tooltip"
-          data-position="bottom" -->
           {{ file.display_file_name }}
         </span>
       </nuxt-link>
       <div class="format-type">
         <span v-html="file.file_type || '&dash;'"></span>
       </div>
-      <div class="date">{{ $moment(file.date).format('Do MMM, YYYY') }}</div>
+      <div class="date">
+        {{ $moment(file.updated_at).format('Do MMM, YYYY') }}
+      </div>
       <div class="size">{{ $toHumanlySize(file.file_size) }}</div>
 
       <div class="resource-info">
