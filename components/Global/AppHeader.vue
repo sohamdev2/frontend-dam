@@ -23,9 +23,8 @@
       <div class="btn-group">
         <a
           v-if="user"
+          v-tooltip="user.name"
           class="login-name"
-          data-toggle="tooltip"
-          data-placement="top"
           :title="user.name"
         >
           {{ user.name || user.email }}
@@ -37,14 +36,37 @@
           aria-haspopup="true"
           aria-expanded="false"
         >
-          <img src="@/assets/img/login-parson.jpg" alt="person" />
+          <img
+            v-if="!user.profile_image"
+            :src="user.profile_image"
+            :alt="user.name"
+          />
+          <div
+            v-else
+            style="
+              position: relative;
+              text-transform: uppercase;
+              border-radius: 50%;
+            "
+            class="bg-light"
+          >
+            <img style="visibility: hidden" />
+            <span
+              style="
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translateY(-50%) translateX(-50%);
+              "
+            >
+              {{ (user.name || user.email || '').slice(0, 2) }}
+            </span>
+          </div>
         </a>
         <div class="dropdown-menu custom-dropdown">
-          <a class="dropdown-item" href="javascript:void(0);">My account</a>
-          <a class="dropdown-item" href="javascript:void(0);">Cart</a>
-          <a class="dropdown-item" href="javascript:void(0);" @click="$logout">
-            Sign out
-          </a>
+          <!-- <a class="dropdown-item disabled">Profile</a>
+          <a class="dropdown-item disabled">Share Urls</a> -->
+          <a class="dropdown-item" @click="$logout"> Sign out </a>
         </div>
       </div>
     </div>
