@@ -17,7 +17,7 @@
           create a Digital Asset Manger (DAM) instance or contact our team if
           you need any help to setup a DAM instance.
         </p>
-        <p>Already have a instance? Enter your brand url endpoint below.</p>
+        <p>Already have an instance? Enter your brand url endpoint below.</p>
       </div>
       <form
         style="max-width: 320px; margin: auto"
@@ -25,7 +25,7 @@
       >
         <div class="form-group">
           <input
-            v-model="brandName"
+            v-model.trim="brandName"
             class="form-control mt-3"
             placeholder
             autofocus
@@ -50,10 +50,11 @@
           <button
             class="btn"
             type="submit"
-            :disabled="$v.brandName.$error || loading"
+            :disabled="$v.brandName.$error || loading || !canGo"
           >
             <SpinLoading v-if="loading" style="margin-left: 0" />
-            <template v-else> Go to {{ brandName }} </template>
+            <template v-else-if="brandName"> Go to {{ brandName }} </template>
+            <template v-else>Enter your brand url</template>
           </button>
         </div>
       </form>
@@ -70,6 +71,7 @@ export default {
     return {
       brandName: '',
       loading: false,
+      canGo: true,
     }
   },
   methods: {
@@ -90,12 +92,16 @@ export default {
         if (value === '') return true
 
         this.loading = true
+        this.canGo = false
 
         return await this.$axios
           .post('verify-domain', {
             url: value,
           })
-          .then(({ data: { code } }) => code === 200)
+          .then(({ data: { code } }) => {
+            this.canGo = true
+            return code === 200
+          })
           .catch(() => {})
           .finally(() => (this.loading = false))
       },
