@@ -10,12 +10,13 @@
           {{ breadcrumb.name }}
         </nuxt-link>
         <h2>
-          <span
+          <div
             v-tooltip="file.display_file_name"
+            style="display: inline"
             :title="file.display_file_name"
           >
             {{ file.display_file_name | shrinkString(60, 15) }}
-          </span>
+          </div>
         </h2>
       </div>
       <div
