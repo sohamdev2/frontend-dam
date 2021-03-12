@@ -20,23 +20,19 @@ export const mutations = {
     'loading.folders'
   ),
   setFolderItem(state, item) {
-    // let temp = [...state.folderList];
-    if (!state.folderList.length) return
+    // let temp = [...state.folders];
+    if (!state.folders.length) return
 
     if (item.parent_id) {
       const parent = deepSearch(
-        state.folderList,
+        state.folders,
         'id',
         (_, id) => item.parent_id === id
       )
 
       if (!parent) return
 
-      const folder = deepSearch(
-        state.folderList,
-        'id',
-        (_, id) => item.id === id
-      )
+      const folder = deepSearch(state.folders, 'id', (_, id) => item.id === id)
 
       if (folder) Object.assign(folder, item)
       else {
@@ -49,17 +45,13 @@ export const mutations = {
         else parent.sub_category_data.push(item)
       }
     } else {
-      const folder = deepSearch(
-        state.folderList,
-        'id',
-        (_, id) => item.id === id
-      )
+      const folder = deepSearch(state.folders, 'id', (_, id) => item.id === id)
 
       if (!folder) return
       Object.assign(folder, item)
     }
 
-    state.folderList = [...state.folderList]
+    state.folders = [...state.folders]
 
     // if (parent) {
     //   const index = parent.sub_category_data.findIndex(
@@ -71,7 +63,7 @@ export const mutations = {
     //   if (~index) temp[index] = item;
     // }
 
-    // state.folderList = [...temp];
+    // state.folders = [...temp];
   },
   resetState(state) {
     Object.assign(state, _state())
