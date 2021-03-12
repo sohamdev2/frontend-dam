@@ -395,7 +395,6 @@ export default {
     },
     parentFolder() {
       const breadcrumbs = []
-      console.log(this.file)
       return breadcrumbs[breadcrumbs.length - 1]
     },
   },
@@ -577,6 +576,7 @@ export default {
             FileSize: file.size,
           })
         })
+        // eslint-disable-next-line no-console
         .catch((e) => console.info('exif-fetch-error:', e))
 
       vue.ui.exifLoading = false
@@ -592,31 +592,23 @@ export default {
       this.$toast.global.error(this.$getErrorMessage(e))
     },
     getThumbnail() {
-      return new Promise((resolve) => {
-        const video = document.createElement('video')
-        const vue = this
-        const canvas = document.createElement('canvas')
-        const context = canvas.getContext('2d')
-        video.addEventListener(
-          'loadeddata',
-          function () {
-            context.drawImage(video, 0, 0, canvas.width, canvas.height)
-            video.pause()
+      if (this.file.thumbnail_file)
+        return (this.videoThumbnail = this.file.thumbnail_file)
 
-            resolve()
+      this.videoThumbnailAdded = false
+      this.videoThumbnailFetching = true
 
-            vue.videoThumbnail = canvas.toDataURL('image/jpeg')
-          },
-          false
-        )
-
-        video.muted = true
-        video.playsInline = true
-        video.setAttribute('crossOrigin', 'anonymous')
-        video.setAttribute('src', this.__url)
-        video.preload = 'metadata'
-        video.play()
-      })
+      return this.$store
+        .dispatch('getThumbnail', {
+          id: this.file.id,
+          url: this.file.display_file,
+        })
+        .then((dataURI) => {
+          this.videoThumbnail = dataURI || this.previewImage
+          this.videoThumbnailAdded = true
+        })
+        .catch(() => (this.videoThumbnail = this.previewImage))
+        .finally(() => (this.videoThumbnailFetching = false))
     },
   },
 }

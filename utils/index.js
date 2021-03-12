@@ -8,7 +8,7 @@ export function isSame(obj1, obj2) {
  * Gives a comparator function which is to be given to Array.sort() function
  *
  * @param {String} field Sort list using the value of this field
- * @param {Boolean} reverse Whether to revese the sorted list
+ * @param {Boolean} reverse Whether to reverse the sorted list
  * @param {(x) => Any} primer Function to access nested field
  * @returns {(a, b) => Number} comparator function to given to Array.sort() function
  */
@@ -122,6 +122,7 @@ export function downloadAsset(attachment_type, assets_id) {
 
   const link = document.createElement('a')
   link.href = window.location.origin + downloadURL
+  link.target = '__blank'
   document.body.appendChild(link)
   link.click()
 }
