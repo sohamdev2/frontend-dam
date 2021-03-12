@@ -1,7 +1,6 @@
 <script>
 export default {
   middleware: ['check-auth'],
-
   async asyncData({
     query,
     $marcomAxios,
@@ -14,9 +13,13 @@ export default {
     $marcomAxios.setHeader('Authorization', $auth.strategy.token.get())
 
     await $marcomAxios
-      .get(downloadURL)
-      .then((response) => redirect(303, response.data))
-      .catch(error)
+      .$get(downloadURL)
+      .then((data) => redirect(303, data))
+      .catch(({ response, message }) => {
+        const { status, data } = response || {}
+
+        error({ status: status || 500, message: data?.message || message })
+      })
   },
 }
 </script>

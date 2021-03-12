@@ -55,7 +55,7 @@ export default ({ app, $axios, store }, inject) => {
   inject(
     'marcomAxios',
     $axios.create({
-      baseUrl: process.env.BACKEND_URL + '/api/v1',
+      baseURL: process.env.BACKEND_URL + '/api/v1/',
     })
   )
 
