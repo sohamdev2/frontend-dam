@@ -82,16 +82,24 @@
       </div>
 
       <nuxt-link
-        :event="selected || shareMode ? '' : 'click'"
-        :to="{
-          name: 'brand_name-files-id',
-          params: {
-            id: file.id,
-            brand_name: $getBrandName(),
-            came_from_hash: hashParam,
-            folder_name: $route.params.folder_name,
-          },
+        :is="shareMode ? 'a' : 'nuxt-link'"
+        :style="{
+          cursor: shareMode ? 'default' : 'pointer',
         }"
+        :event="selected || shareMode ? '' : 'click'"
+        :to="
+          shareMode
+            ? ''
+            : {
+                name: 'brand_name-files-id',
+                params: {
+                  id: file.id,
+                  brand_name: $getBrandName(),
+                  came_from_hash: hashParam,
+                  folder_name: $route.params.folder_name,
+                },
+              }
+        "
         class="resource-title"
       >
         <span :title="file.display_file_name">
@@ -150,21 +158,30 @@
           >
           </a>
         </template>
-        <nuxt-link
+        <component
+          :is="shareMode ? 'a' : 'nuxt-link'"
           v-else-if="mode != 'column'"
-          :to="{
-            name: 'brand_name-files-id',
-            params: {
-              id: file.id,
-              brand_name: $getBrandName(),
-              came_from_hash: hashParam,
-              folder_name: $route.params.folder_name,
-            },
+          :event="selected || shareMode ? '' : 'click'"
+          :style="{
+            cursor: shareMode ? 'default' : 'pointer',
           }"
+          :to="
+            shareMode
+              ? ''
+              : {
+                  name: 'brand_name-files-id',
+                  params: {
+                    id: file.id,
+                    brand_name: $getBrandName(),
+                    came_from_hash: hashParam,
+                    folder_name: $route.params.folder_name,
+                  },
+                }
+          "
           class="btn bg-light-gray"
         >
           View
-        </nuxt-link>
+        </component>
         <a class="action-btn download-link" @click="downloadFile">
           <DownloadIcon />
         </a>

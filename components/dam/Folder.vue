@@ -31,15 +31,23 @@
         </div>
       </div>
       <nuxt-link
+        :is="shareMode ? 'a' : 'nuxt-link'"
         :event="selected || shareMode ? '' : 'click'"
-        :to="{
-          name: 'brand_name-folders',
-          params: {
-            brand_name: $getBrandName(),
-            folder_name: folder.folder_name || folder.category_name,
-          },
-          hash: `#${folder.id}`,
+        :style="{
+          cursor: shareMode ? 'default' : 'pointer',
         }"
+        :to="
+          shareMode
+            ? ''
+            : {
+                name: 'brand_name-folders',
+                params: {
+                  brand_name: $getBrandName(),
+                  folder_name: folder.folder_name || folder.category_name,
+                },
+                hash: `#${folder.id}`,
+              }
+        "
         class="resource-title"
       >
         <span>{{ folder.folder_name || folder.category_name }}</span>
