@@ -386,7 +386,9 @@ export default {
         filters.push({
           key: 'search_term',
           type: 'search_term',
-          name: `Term: <b>${this.searchParams.search_term}</b>`,
+          name: `Term: <b>${this.$escapeHtml(
+            this.searchParams.search_term
+          )}</b>`,
         })
 
       if (this.searchParams.exact_term)
@@ -404,7 +406,7 @@ export default {
         filters.push({
           key: 'filter',
           type: 'filter',
-          name: `Search in :&nbsp;<b>${text}</b>`,
+          name: `Search in: <b>${text}</b>`,
         })
       }
 
@@ -416,14 +418,14 @@ export default {
           filters.push({
             key: 'date',
             type: 'date',
-            name: `Upload Date:&nbsp;<b>${text}</b>`,
+            name: `Upload Date: <b>${text}</b>`,
           })
         } else if (this.searchParams.start_date || this.searchParams.end_date) {
           if (this.$refs.dateRangePicker)
             filters.push({
               key: 'date',
               type: 'custom_date',
-              name: `Upload Date:&nbsp;<b>${this.$refs.dateRangePicker.getValueText()}</b>`,
+              name: `Upload Date: <b>${this.$refs.dateRangePicker.getValueText()}</b>`,
             })
           else if (this.$route.params.filterItems) {
             const a = this.$route.params.filterItems.find(
@@ -437,19 +439,19 @@ export default {
         ...(this.searchParams.file_types || []).map((type) => ({
           key: `ext-${type}`,
           type: 'file_types',
-          name: `Ext:&nbsp;<b>${type}</b>`,
+          name: `Ext: <b>${type}</b>`,
           value: type,
         })),
         ...(this.searchParams.tags || []).map((tag) => ({
           key: `tag-${tag}`,
           type: 'tags',
-          name: `Tag:&nbsp;<b>${tag}</b>`,
+          name: `Tag: <b>${tag}</b>`,
           value: tag,
         })),
         ...(this.searchParams.other_tags || []).map((tag) => ({
           key: `tag-${tag}`,
           type: 'other_tags',
-          name: `Tag:&nbsp;<b>${tag}</b>`,
+          name: `Tag: <b>${tag}</b>`,
           value: tag,
         }))
       )
@@ -462,7 +464,7 @@ export default {
         filters.push({
           key: 'orientation',
           type: 'orientation',
-          name: `Orientation: &nbsp;<b>${text}</b>`,
+          name: `Orientation: <b>${text}</b>`,
           value: this.searchParams.orientation,
         })
       }

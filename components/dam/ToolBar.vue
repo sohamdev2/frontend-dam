@@ -52,7 +52,10 @@
             style="cursor: default"
             class="select-field"
           >
-            <label v-html="filterItem.name"></label>
+            <label
+              style="display: inline-block"
+              v-html="filterItem.name"
+            ></label>
           </div>
           <div
             v-if="$route.params.filterItems.length > 2"
@@ -62,7 +65,11 @@
           >
             <div class="mr-2">and</div>
             <label
-              style="cursor: pointer; white-space: nowrap"
+              style="
+                display: inline-block;
+                cursor: pointer;
+                white-space: nowrap;
+              "
               @click="openSearch"
             >
               {{ $route.params.filterItems.length - 2 }} more
