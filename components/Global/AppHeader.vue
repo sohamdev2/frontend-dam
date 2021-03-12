@@ -66,6 +66,15 @@
         <div class="dropdown-menu custom-dropdown">
           <!-- <a class="dropdown-item disabled">Profile</a>
           <a class="dropdown-item disabled">Share Urls</a> -->
+          <nuxt-link
+            class="dropdown-item"
+            :to="{
+              name: 'brand_name-shared-urls',
+              params: { brand_name: this.$getBrandName() },
+            }"
+          >
+            Shared Urls
+          </nuxt-link>
           <a class="dropdown-item" @click="$logout"> Sign out </a>
         </div>
       </div>

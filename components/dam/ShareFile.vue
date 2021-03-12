@@ -156,7 +156,7 @@ export default {
           let [type, status] = data.share_url.split('?').pop().split('&')
           type = type.replace('type=', '')
           this.shareUrl =
-            window.location.origin + '/assets/' + type + '?' + status
+            window.location.origin + '/shared-assets/' + type + '?' + status
         })
         .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
 
