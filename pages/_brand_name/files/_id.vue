@@ -346,6 +346,10 @@ export default {
           metaData = sortObject(metaData)
         }
 
+        delete data.thumbnail_file
+        if ((data.file_type || '').toLowerCase() === 'gif')
+          delete data.compress_file
+
         tags = data.tags
         file = data
       })
