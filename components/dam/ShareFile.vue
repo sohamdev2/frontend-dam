@@ -56,13 +56,16 @@
                 style="position: relative"
               >
                 <FolderIcon style="filter: brightness(0.5)" />
-                <span
-                  v-tooltip="folder.folder_name || folder.category_name"
-                  :title="folder.folder_name || folder.category_name"
-                  >{{
-                    (folder.folder_name || folder.category_name)
-                      | shrinkString(46, 12)
-                  }}
+                <span class="file-name">
+                  <span
+                    v-tooltip="folder.folder_name || folder.category_name"
+                    :title="folder.folder_name || folder.category_name"
+                  >
+                    {{
+                      (folder.folder_name || folder.category_name)
+                        | shrinkString(46, 12)
+                    }}
+                  </span>
                 </span>
               </li>
               <SharePreviewItem
@@ -177,7 +180,7 @@ export default {
   width: 100%;
   overflow: hidden;
 }
-.dam-share-file-list li > span {
+.dam-share-file-list li .file-name {
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
