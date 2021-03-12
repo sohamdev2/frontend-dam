@@ -21,14 +21,18 @@
     </div>
     <div class="login-info col">
       <div class="btn-group">
-        <a
+        <nuxt-link
           v-if="user"
           v-tooltip="user.name"
           class="login-name"
           :title="user.name"
+          :to="{
+            name: 'brand_name-profile',
+            params: { brand_name: this.$getBrandName() },
+          }"
         >
           {{ user.name || user.email }}
-        </a>
+        </nuxt-link>
         <a
           role="button"
           class="dropdown-toggle dropdown-toggle-split"
@@ -64,8 +68,15 @@
           </div>
         </a>
         <div class="dropdown-menu custom-dropdown">
-          <!-- <a class="dropdown-item disabled">Profile</a>
-          <a class="dropdown-item disabled">Share Urls</a> -->
+          <nuxt-link
+            class="dropdown-item"
+            :to="{
+              name: 'brand_name-Profile',
+              params: { brand_name: this.$getBrandName() },
+            }"
+          >
+            Profile
+          </nuxt-link>
           <nuxt-link
             class="dropdown-item"
             :to="{
