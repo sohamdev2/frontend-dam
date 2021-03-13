@@ -180,7 +180,7 @@
                     <td>ID</td>
                     <td>
                       <span> : </span>
-                      <strong data-toggle="tooltip" :title="file.id">{{
+                      <strong v-tooltip="(file.id || '').toString()">{{
                         file.id
                       }}</strong>
                     </td>
@@ -206,9 +206,11 @@
                       <td>
                         <span> : </span>
                         <strong
-                          v-tooltip="$getFormattedMetaValue(value, key, true)"
+                          v-tooltip="
+                            $getFormattedMetaValue(value, key, true).toString()
+                          "
                           :title="$getFormattedMetaValue(value, key, true)"
-                          v-html="$getFormattedMetaValue(value, key)"
+                          :inner-html.prop="$getFormattedMetaValue(value, key)"
                         >
                         </strong>
                       </td>
