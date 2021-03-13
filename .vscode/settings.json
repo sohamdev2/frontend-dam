@@ -9,5 +9,6 @@
     "noplayed",
     "shrinked",
     "thead"
-  ]
+  ],
+  "search.useGlobalIgnoreFiles": true
 }

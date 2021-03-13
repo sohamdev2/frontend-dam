@@ -39,6 +39,9 @@ export function sortBy(field, reverse, primer, ignoreCase = false) {
 export const shrinkString = (originStr, maxChars, trailingCharCount) => {
   let shrinkedStr = originStr
   const shrinkedLength = maxChars - trailingCharCount - 3
+
+  if (maxChars + trailingCharCount + 3 > shrinkedStr.length) return shrinkedStr
+
   if (originStr.length > shrinkedLength) {
     const front = originStr.substr(0, shrinkedLength)
     const mid = '...'
@@ -122,7 +125,6 @@ export function downloadAsset(attachment_type, assets_id) {
 
   const link = document.createElement('a')
   link.href = window.location.origin + downloadURL
-  link.target = '__blank'
   document.body.appendChild(link)
   link.click()
 }
@@ -135,6 +137,7 @@ const filterMetaInfo = [
   'UserComment',
   'UndefinedTag:0x9999',
   'UndefinedTag:0x8889',
+  'UndefinedTag:0x9010',
   'ComponentsConfiguration',
   'COMPUTED',
   'FileName',

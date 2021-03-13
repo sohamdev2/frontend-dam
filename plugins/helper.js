@@ -50,6 +50,8 @@ export default ({ app, $axios, store }, inject) => {
     if (typeof value === 'function') inject(key, value)
   })
 
+  inject('fileAcceptInputImage', 'image/jpeg,image/gif,image/png,image/svg')
+
   inject('setPageTitle', setPageTitle)
   inject('guestAxios', $axios.create())
   inject(
