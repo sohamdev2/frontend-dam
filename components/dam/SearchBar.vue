@@ -222,26 +222,18 @@
               </div>
             </div>
             <div class="search-tag w-100">
-              <div class="form-group row w-100">
-                <div
-                  v-if="searchData.popular_tag_select && moreOptions"
-                  class="col-sm-12"
-                >
-                  <SelectMultiple
-                    v-model="searchParams.other_tags"
-                    class="form-control"
-                    :options="
-                      searchData.popular_tag_select.map((item) => ({
-                        ...item,
-                        text: item.tag_name,
-                        id: item.tag_id,
-                        value: item.tag_id,
-                      }))
-                    "
-                    placeholder="Other Tags"
-                    custom-event
-                  />
-                </div>
+              <div v-if="searchData.popular_tag_select" class="w-100">
+                <Multiselect
+                  v-model="searchParams.other_tags"
+                  class="w-100"
+                  multiple
+                  :close-on-select="false"
+                  :options="
+                    searchData.popular_tag_select.map((item) => item.tag_name)
+                  "
+                  placeholder="Other Tags"
+                  custom-event
+                />
               </div>
             </div>
           </div>
@@ -282,8 +274,10 @@
 
 <script>
 /* eslint-disable camelcase */
-
+import Multiselect from 'vue-multiselect'
 import moment from 'moment'
+import 'vue-multiselect/dist/vue-multiselect.min.css'
+
 const orientations = Object.freeze([
   { text: 'Horizontal', value: 'horizontal' },
   { text: 'Vertical', value: 'vertical' },
@@ -341,6 +335,7 @@ function SearchParams() {
 }
 
 export default {
+  components: { Multiselect },
   data() {
     return {
       orientations,
