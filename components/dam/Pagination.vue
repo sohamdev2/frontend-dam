@@ -50,7 +50,7 @@ export default {
       if (this.lastPage <= MAX_PAGE) {
         Array(this.lastPage)
           .fill(null)
-          .forEach((_, i) => links.push({ index: i }))
+          .forEach((_, i) => links.push({ index: i + 1 }))
       } else if (this.page < mid) {
         Array(mid)
           .fill(null)
