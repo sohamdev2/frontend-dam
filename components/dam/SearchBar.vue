@@ -122,7 +122,7 @@
                 :key="filterItem.key"
                 class="select-field"
               >
-                <label v-html="filterItem.name"></label>
+                <label :inner-html.prop="filterItem.name"></label>
                 <span @click="removeFilter(filterItem)"></span>
               </div>
             </transition-group>

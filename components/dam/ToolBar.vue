@@ -54,7 +54,7 @@
           >
             <label
               style="display: inline-block"
-              v-html="filterItem.name"
+              :inner-html.prop="filterItem.name"
             ></label>
           </div>
           <div

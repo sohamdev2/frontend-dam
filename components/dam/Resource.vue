@@ -107,7 +107,7 @@
         </span>
       </nuxt-link>
       <div class="format-type">
-        <span v-html="file.file_type || '&dash;'"></span>
+        <span :inner-html.prop="file.file_type || '&dash;'"></span>
       </div>
       <div class="date">
         {{ $moment(file.updated_at).format('Do MMM, YYYY') }}

@@ -237,7 +237,7 @@
                       <strong
                         v-tooltip="$getFormattedMetaValue(value, key, true)"
                         :title="$getFormattedMetaValue(value, key, true)"
-                        v-html="$getFormattedMetaValue(value, key)"
+                        :inner-html.prop="$getFormattedMetaValue(value, key)"
                       >
                       </strong>
                     </td>
