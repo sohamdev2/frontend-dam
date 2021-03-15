@@ -71,7 +71,7 @@
           <nuxt-link
             class="dropdown-item"
             :to="{
-              name: 'brand_name-Profile',
+              name: 'brand_name-profile',
               params: { brand_name: this.$getBrandName() },
             }"
           >
