@@ -81,17 +81,7 @@
             v-if="filterItems.length"
             class="btn dam-btn-outline"
             type="button"
-            @click="
-              $route.params.searchParams &&
-                ($router.push({
-                  name: 'brand_name-folders',
-                  params: { brand_name: $getBrandName() },
-                  params: { workspace_id: $getWorkspaceId() },
-                }),
-                (moreOptions = false))
-
-              searchParams = new SearchParams($route)
-            "
+            @click="reset"
           >
             Reset
           </button>
@@ -471,6 +461,13 @@ export default {
     },
   },
   watch: {
+    $route(route) {
+      if (route.hash !== '#search') {
+        window.$('body').removeClass('show-overly')
+        this.moreOptions = false
+        this.reset()
+      }
+    },
     hashParam() {
       if (!this.$route.params.searchParams)
         this.searchParams.filter =
@@ -519,6 +516,20 @@ export default {
     if (this.moreOptions) document.removeEventListener('keyup', this.keyEvent)
   },
   methods: {
+    reset() {
+      if (this.$route.params.searchParams) {
+        this.$router.push({
+          name: 'brand_name-folders',
+          params: {
+            brand_name: this.$getBrandName(),
+            workspace_id: this.$getWorkspaceId(),
+          },
+        })
+        this.moreOptions = false
+      }
+
+      this.searchParams = new SearchParams()
+    },
     getHasFilters() {
       return this.hasFilters
     },
