@@ -148,13 +148,34 @@
           </a>
         </template>
         <template v-else-if="isImage">
+          <template v-if="isVideo">
+            <a
+              ref="expandButton"
+              :href="`#file-video-${file.id}`"
+              data-fancybox
+            ></a>
+            <video
+              :id="`file-video-${file.id}`"
+              width="640"
+              height="320"
+              controlsList="nodownload"
+              controls
+              :data-id="`file-${file.id}`"
+              style="display: none"
+            >
+              <source :src="__url" type="video/mp4" />
+              Your browser doesn't support HTML5 video tag.
+            </video>
+          </template>
           <a
-            class="expand"
-            data-fancybox
+            v-else
+            ref="expandButton"
+            style="display: none"
+            data-fancybox="bigbuckbunny"
             data-width="640"
             data-height="360"
-            :data-href="__url"
-            :href="__url"
+            :data-href="__compressed_preview || __url"
+            :href="__compressed_preview || __url"
           >
           </a>
         </template>
