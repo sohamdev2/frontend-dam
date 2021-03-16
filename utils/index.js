@@ -214,10 +214,10 @@ export function getFormattedMetaValue(value, key, tooltip) {
       )
     case 'MakerNote':
     case 'UserComment':
-      return '&dash;'
+      return tooltip ? '' : '&dash;'
   }
 
-  return value || '&dash;'
+  return value || (tooltip ? '' : '&dash;')
 }
 
 export const imageExtensions = ['jpg', 'png', 'jpeg', 'svg', 'gif']
