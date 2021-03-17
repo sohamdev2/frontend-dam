@@ -44,9 +44,11 @@
             <source :src="__url" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <!-- <iframe
+          <iframe
             v-else-if="isDoc"
-            :src="`https://view.officeapps.live.com/op/embed.aspx?src=${__url}`"
+            :src="`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(
+              __url
+            )}`"
             width="100%"
             height="100%"
             frameborder="0"
@@ -57,7 +59,7 @@
             <a target="_blank" href="http://office.com/webapps">
               Office Online </a
             >.
-          </iframe> -->
+          </iframe>
           <div v-else-if="isAudio">
             <av-waveform
               :audio-src="__url"
