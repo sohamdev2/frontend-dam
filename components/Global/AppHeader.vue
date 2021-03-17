@@ -23,15 +23,21 @@
       <div class="btn-group">
         <nuxt-link
           v-if="user"
-          v-tooltip="user.name"
-          class="login-name"
-          :title="user.name"
+          v-slot="{ navigate }"
           :to="{
             name: 'brand_name-profile',
             params: { brand_name: this.$getBrandName() },
           }"
         >
-          {{ user.name || user.email }}
+          <div
+            v-tooltip="user.name"
+            class="login-name"
+            style="cursor: pointer"
+            :title="user.name"
+            @click="navigate"
+          >
+            {{ user.name || user.email }}
+          </div>
         </nuxt-link>
         <a
           role="button"
