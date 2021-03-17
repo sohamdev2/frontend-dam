@@ -40,6 +40,13 @@
         >
           <img
             class="preview-images preview"
+            :style="
+              videoThumbnail == previewImage
+                ? {
+                    maxWidth: `100px`,
+                  }
+                : {}
+            "
             style="object-fit: contain !important"
             :src="videoThumbnail"
           />
