@@ -19,7 +19,7 @@
         />
         <label
           for="toolbar-dam-select"
-          :class="{ 'hide-select': !assetsCount || !hashParam }"
+          :class="{ 'hide-select': !assetsCount }"
         >
           <span class="h2">
             {{ title }}
