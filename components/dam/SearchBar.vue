@@ -112,7 +112,10 @@
                 :key="filterItem.key"
                 class="select-field"
               >
-                <label :inner-html.prop="filterItem.name"></label>
+                <label
+                  :inner-html.prop="filterItem.name"
+                  style="display: inline-block"
+                ></label>
                 <span @click="removeFilter(filterItem)"></span>
               </div>
             </transition-group>
@@ -149,7 +152,7 @@
                   class="form-control type-2"
                   :start-date.sync="searchParams.start_date"
                   :end-date.sync="searchParams.end_date"
-                  placeholder="Custom Date date"
+                  placeholder="Custom Date"
                   opens="center"
                   no-color
                   parent=".daterange-loop"
