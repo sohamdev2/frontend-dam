@@ -46,7 +46,7 @@ export const shrinkString = (originStr, maxChars, trailingCharCount) => {
     const front = originStr.substr(0, shrinkedLength)
     const mid = '...'
     const end = originStr.substr(-trailingCharCount)
-    shrinkedStr = front + mid + end
+    shrinkedStr = front.trim() + mid + end.trim()
   }
 
   return shrinkedStr
@@ -232,7 +232,15 @@ export const videoExtensions = [
   '3gp',
 ]
 export const pdfExtensions = ['pdf']
-export const docExtensions = ['doc', 'docx', 'ppt', 'pptx', 'xlsx', 'xls']
+export const docExtensions = [
+  'doc',
+  'docx',
+  'ppt',
+  'pptx',
+  'xlsx',
+  'xls',
+  'dotx',
+]
 export const audioExtensions = ['mp3', 'wav', 'wma', 'aac']
 
 export function isPdf(ext) {

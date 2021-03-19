@@ -143,6 +143,11 @@ export const actions = {
       .get(url, {
         cancelToken: source.token,
         responseType: 'blob',
+        headers: {
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+          Expires: '0',
+        },
         onDownloadProgress(progressEvent) {
           const percentCompleted = Math.round(
             (progressEvent.loaded * 100) / progressEvent.total
