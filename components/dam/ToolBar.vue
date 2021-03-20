@@ -145,7 +145,6 @@ export default {
     return {
       sortingModel: this.sorting || 'Sort by',
       sortingOptions: [
-        'Sort by',
         { text: 'Name', id: 'display_file_name' },
         { text: 'Date', id: 'updated_at' },
         { text: 'Size', id: 'file_size' },
