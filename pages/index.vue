@@ -46,7 +46,7 @@
             <template v-if="!brandName">eg.</template> {{ $config.baseUrl }}/<b
               v-if="brandName"
               >{{ brandName }}</b
-            ><b v-else>&lt;brandName&gt;</b>
+            ><b v-else>&lt;Brand_URL&gt;</b>
           </div>
         </div>
         <div style="text-align: center">
