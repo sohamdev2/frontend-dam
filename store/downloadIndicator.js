@@ -72,6 +72,7 @@ export const actions = {
       )
       orgUrl = file_name
       zipUrl = url
+      name = file_name
     } catch (e) {
       this.$errorToast(e)
       commit('removeDownloadingItem', id)
@@ -88,7 +89,7 @@ export const actions = {
     }).then(() =>
       this.$axios.$post('digital/delete-file', {
         workspace_id: this.$getWorkspaceId(),
-        url: orgUrl,
+        file_name: orgUrl,
       })
     )
   },
