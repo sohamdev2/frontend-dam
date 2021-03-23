@@ -35,11 +35,11 @@ export const actions = {
 
     if (stateFiles[id] && stateFiles[id].downloading) return
 
-    const baseUrl =
-      this.$config.backendUrl ||
-      process.env.BACKEND_URL ||
-      process.env.BACKAND_URL ||
-      'http://marcom3-dev.whitelabeliq.net'
+    // const baseUrl =
+    //   this.$config.backendUrl ||
+    //   process.env.BACKEND_URL ||
+    //   process.env.BACKAND_URL ||
+    //   'http://marcom3-dev.whitelabeliq.net'
 
     const item = {
       id,
@@ -55,23 +55,25 @@ export const actions = {
     commit('pinned', true)
     commit('expanded', true)
 
-    let zipUrl = baseUrl + '/upload/dam_assets_zip/'
+    let zipUrl = ''
     let name
     let orgUrl
 
     try {
       const {
-        data: { url },
-      } = await this.$axios.$post('digital/download-multiple-files', {
-        workspace_id: this.$getWorkspaceId(),
-        digital_assets_id: files,
-        category_id: folders,
-      })
-      orgUrl = url
-      name = url.split(/(\/|\\)/gm).pop()
-      zipUrl += name
+        data: { url, file_name },
+      } = await this.$axios.$post(
+        'digital-assets/dashboard/download-multiple-files',
+        {
+          workspace_id: this.$getWorkspaceId(),
+          digital_assets_id: files,
+          category_id: folders,
+        }
+      )
+      orgUrl = file_name
+      zipUrl = url
     } catch (e) {
-      this.$showErrorToast(e)
+      this.$errorToast(e)
       commit('removeDownloadingItem', id)
       return
     }
