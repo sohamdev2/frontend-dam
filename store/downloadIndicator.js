@@ -144,9 +144,13 @@ export const actions = {
         cancelToken: source.token,
         responseType: 'blob',
         headers: {
-          'Cache-Control': 'no-cache',
-          Pragma: 'no-cache',
-          Expires: '0',
+          ...(multiple
+            ? {}
+            : {
+                'Cache-Control': 'no-cache',
+                Pragma: 'no-cache',
+                Expires: '0',
+              }),
         },
         onDownloadProgress(progressEvent) {
           const percentCompleted = Math.round(
