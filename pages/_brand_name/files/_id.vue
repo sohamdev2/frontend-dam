@@ -294,7 +294,7 @@ const categories = ['video', 'audio', 'image', 'application', 'archive']
 
 const categoriesObject = [
   { text: 'Home', id: '' },
-  { text: 'Audios', id: 'audio' },
+  { text: 'Audio', id: 'audio' },
   { text: 'Documents', id: 'application' },
   { text: 'Images', id: 'image' },
   { text: 'Videos', id: 'video' },

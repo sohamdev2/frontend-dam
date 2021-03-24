@@ -152,7 +152,7 @@ export default {
       ],
       categoriesObject: [
         { text: 'Folders', id: '' },
-        { text: 'Audios', id: 'audio' },
+        { text: 'Audio', id: 'audio' },
         { text: 'Documents', id: 'application' },
         { text: 'Images', id: 'image' },
         { text: 'Videos', id: 'video' },

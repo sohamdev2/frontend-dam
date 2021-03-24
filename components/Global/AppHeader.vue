@@ -121,7 +121,7 @@ export default {
           },
         },
         {
-          name: 'Audios',
+          name: 'Audio',
           to: {
             name: 'brand_name-folders',
             params: { brand_name: this.$getBrandName() },
