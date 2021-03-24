@@ -60,7 +60,7 @@ export default async function ({
     store.commit('localStorage/brandName', brand_name)
     store.commit('brandName', brand_name)
 
-    checkAndRedirect(`/login?brandName=${brand_name}`, '/login')
+    checkAndRedirect(`${brand_name}/login`, `${brand_name}/login`)
   } catch (e) {
     // eslint-disable-next-line no-console
     console.info('error Verify:', e.response?.data?.message || e.message)

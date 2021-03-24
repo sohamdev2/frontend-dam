@@ -1,18 +1,22 @@
 <template>
-  <component :is="page" :error="error"></component>
+  <div style="min-height: 100vh; display: flex">
+    <div style="margin: auto; padding: 1rem; max-width: 740px">
+      <div style="text-align: center">
+        <component :is="page" :error="error"></component>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import Page401 from '@/pages/401.vue'
 import Page404 from '@/pages/404.vue'
 
 export default {
-  components: { Page401, Page404 },
+  components: { Page404 },
   props: { error: { type: Object, default: () => ({}) } },
   computed: {
     page() {
-      if (this.error.status === 401) return 'Page401'
-      else return 'Page404'
+      return 'Page404'
     },
   },
   mounted() {

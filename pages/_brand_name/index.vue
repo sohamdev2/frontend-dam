@@ -118,7 +118,7 @@
 <script>
 export default {
   layout: 'app',
-  middleware: ['check-auth', 'check-url'],
+  middleware: ['check-url', 'check-auth'],
   data() {
     return {
       shareFile: null,

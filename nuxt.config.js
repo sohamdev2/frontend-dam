@@ -6,6 +6,7 @@ export default {
     color: '#ed703d',
     height: '3px',
   },
+
   head: {
     title: process.env.APP_NAME,
     meta: [
@@ -179,6 +180,14 @@ export default {
     redirectSSL.create({
       enabled: process.env.NODE_ENV === 'production',
     }),
+    (req, res, next) => {
+      if (/\/{2,}/.test(req.url)) {
+        const url = req.url.replace(/\/{2,}/g, '/')
+        res.writeHead(301, { Location: url })
+        return res.end()
+      }
+      next()
+    },
     '~/middleware/url-check.js',
   ],
   build: {},

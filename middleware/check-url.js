@@ -22,18 +22,34 @@ export default async function ({
         })
         .then(({ data: { code } }) => code === 200)
 
-      if (!isValid)
-        error({
-          message: `Brand with "${$getBrandName()}" doesn't exists.`,
-        })
+      if (!isValid) {
+        if ($getBrandName() === 'login') {
+          error({
+            status: 404,
+            message: `Try entering url as <Brand_URL>/login.`,
+          })
+        } else {
+          error({
+            message: `Brand with "${$getBrandName()}" doesn't exists.`,
+          })
+        }
+      }
     } catch (e) {
       const { data, status } = e.response || {}
 
-      if (data?.message?.includes('not available'))
-        return error({
-          status: status || 500,
-          message: `Brand with "${$getBrandName()}" doesn't exists.`,
-        })
+      if (data?.message?.includes('not available')) {
+        if ($getBrandName() === 'login')
+          error({
+            status: 404,
+            message: `Try entering url as <Brand_URL>/login.`,
+          })
+        else
+          error({
+            status: status || 500,
+            message: `Brand with "${$getBrandName()}" doesn't exists.`,
+          })
+        return
+      }
 
       error(e)
     }

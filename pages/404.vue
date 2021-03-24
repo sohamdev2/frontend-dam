@@ -1,25 +1,25 @@
 <template>
-  <div class="col-lg-6 offset-lg-3">
-    <div class="error-page">
-      <div class="error-text text-center">
-        <h1>
-          {{
-            (error.statusCode || error.code || error.status) == 404
-              ? 'Page not found'
-              : error.status || 'Oops'
-          }}
-        </h1>
-        <p>
-          {{
-            error.message ||
-            "Sorry, We didn't find the page you are looking for..."
-          }}
-        </p>
-        <nuxt-link v-if="$auth.loggedIn" to="/">Back to Home</nuxt-link>
-      </div>
-      <div class="error-img">
-        <img src="@/assets/img/icon/404-bg.png" alt class="img-responsive" />
-      </div>
+  <div class="error-page">
+    <div class="error-text text-center">
+      <h1>
+        {{
+          (error.statusCode || error.code || error.status) == 404
+            ? 'Page not found'
+            : error.status || 'Oops'
+        }}
+      </h1>
+      <p>
+        {{
+          error.message ||
+          "Sorry, We didn't find the page you are looking for..."
+        }}
+      </p>
+    </div>
+    <div class="error-img mt-4">
+      <img src="~/assets/img/404-bg.png" alt class="img-responsive" />
+    </div>
+    <div class="error-text text-center mt-3">
+      <nuxt-link to="/">Back to Home</nuxt-link>
     </div>
   </div>
 </template>
