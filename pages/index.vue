@@ -20,7 +20,7 @@
         <p>Already have an instance? Enter your brand url endpoint below.</p>
       </div>
       <form
-        style="max-width: 320px; margin: auto"
+        style="max-width: 380px; margin: auto"
         @submit.prevent="submitHandler"
       >
         <div class="form-group">
