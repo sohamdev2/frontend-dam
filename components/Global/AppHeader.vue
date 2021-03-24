@@ -47,7 +47,8 @@
           aria-expanded="false"
         >
           <img
-            v-if="!user.profile_image"
+            v-if="user.profile_image"
+            class="bg-light"
             :src="user.profile_image"
             :alt="user.name"
           />
