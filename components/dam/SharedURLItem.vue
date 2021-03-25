@@ -22,19 +22,15 @@
       </div>
     </td>
     <td class="project">
-      <span v-tooltip="$moment(url.date).format('LL LT')">
-        {{ $moment(url.date).format('Do, MMM YYYY') }}
+      <span v-tooltip="$moment(url.updated_at).format('LL LT')">
+        {{ $moment(url.updated_at).format('Do, MMM YYYY') }}
       </span>
     </td>
     <td class="work-type">
-      <span>
-        {{ url.userName }}
-      </span>
+      <span>{{ url.userName }}</span>
     </td>
     <td class="description">
-      <span>
-        {{ url.generated_source | normalizedSource }}
-      </span>
+      <span>{{ url.generated_source | normalizedSource }}</span>
     </td>
     <td class="description text-center">
       <a
