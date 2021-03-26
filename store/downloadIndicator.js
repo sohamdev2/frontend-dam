@@ -74,7 +74,7 @@ export const actions = {
       zipUrl = url
       name = file_name
     } catch (e) {
-      this.$errorToast(e)
+      this.$showErrorToast(e)
       commit('removeDownloadingItem', id)
       return
     }
