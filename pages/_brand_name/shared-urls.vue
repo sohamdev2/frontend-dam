@@ -74,6 +74,7 @@ import SharedURLItem from '~/components/dam/SharedURLItem'
 
 export default {
   components: { SharedURLItem },
+  middleware: ['check-auth', 'check-url'],
   layout: 'app-min-no-search',
   asyncData({ $axios, $getWorkspaceId, error, $sortBy }) {
     return $axios

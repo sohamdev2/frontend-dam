@@ -102,6 +102,7 @@
 <script>
 export default {
   layout: 'app-min-no-search',
+  middleware: ['check-auth', 'check-url'],
   data() {
     return {
       userModel: { ...this.$auth.user },
