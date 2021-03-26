@@ -43,10 +43,11 @@
             class="input-error text-info"
             style="color: #17a2b8 !important"
           >
-            <template v-if="!brandName">eg.</template> {{ $config.baseUrl }}/<b
-              v-if="brandName"
-              >{{ brandName }}</b
-            ><b v-else>&lt;Brand_URL&gt;</b>
+            <template v-if="!brandName">eg.</template>
+            {{ $config.baseUrl }}/<strong v-if="brandName">{{
+              brandName
+            }}</strong
+            ><strong v-else>&lt;Brand_URL&gt;</strong>
           </div>
         </div>
         <div style="text-align: center">
