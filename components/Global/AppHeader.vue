@@ -93,6 +93,15 @@
           >
             Shared Urls
           </nuxt-link>
+          <nuxt-link
+            class="dropdown-item"
+            :to="{
+              name: 'brand_name-support',
+              params: { brand_name: this.$getBrandName() },
+            }"
+          >
+            Support
+          </nuxt-link>
           <a class="dropdown-item" @click="$logout"> Sign out </a>
         </div>
       </div>
