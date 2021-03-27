@@ -35,7 +35,7 @@
           />
         </div>
         <span>
-          <b class="filetype">[{{ file.file_type }}]</b>
+          <strong class="filetype">[{{ file.file_type }}]</strong>
           {{ $toHumanlySize(file.file_size) }}
         </span>
       </div>
@@ -76,7 +76,8 @@
     />
 
     <DeleteDialog ref="deleteDialog" @click:confirm-button="deleteFile">
-      Are you sure you want to delete <b>{{ file.display_file_name }}</b>
+      Are you sure you want to delete
+      <strong>{{ file.display_file_name }}</strong>
     </DeleteDialog>
     <MoveFolderDialog ref="moveDialog" :files-to-move="[file]" />
   </div>
