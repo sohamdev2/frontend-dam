@@ -358,13 +358,13 @@ export default {
     fileTypes() {
       return [...(this.searchData?.popular_file_type || [])]
         .filter((a) => a && a.total_assets_count >= 5)
-        .sort(this.$sortBy('total_assets_count'))
-        .slice(0, 9)
+        .sort(this.$sortBy('total_assets_count', true, this.$sortToTypedNumber))
+        .slice(0, 12)
     },
     popularTags() {
       return [...(this.searchData?.popular_tag || [])]
         .filter((a) => a && a.total_tag_count >= 5)
-        .sort(this.$sortBy('total_tag_count'))
+        .sort(this.$sortBy('total_tag_count', true, this.$sortToTypedNumber))
         .slice(0, 12)
     },
     filterItems() {
