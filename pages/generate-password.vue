@@ -197,7 +197,7 @@ export default {
             },
           }) => {
             this.$toast.global.success(dataMessage || message)
-            this.$router.replace(`${url}/login`)
+            this.$router.replace(`/${url}/login`)
           }
         )
         .catch(this.$showErrorToast)

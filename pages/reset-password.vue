@@ -171,10 +171,8 @@ export default {
               },
             },
           }) => {
-            this.$nextTick(() => {
-              this.$toast.global.success(message)
-              this.$router.push(`/${url}/login`)
-            })
+            this.$toast.global.success(message)
+            this.$router.replace(`/${url}/login`)
           }
         )
         .catch(this.$showErrorToast)
