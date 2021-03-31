@@ -54,6 +54,7 @@ export default {
     '~/plugins/v-tooltip.js',
     '~/plugins/vue-async-computed.js',
     '~/plugins/helper.js',
+    '~/plugins/vue-infinite-loading.js',
     { src: '~/plugins/vue-audio-visual.js', mode: 'client' },
     { src: '~/plugins/vue-carousel.js', mode: 'client' },
   ],

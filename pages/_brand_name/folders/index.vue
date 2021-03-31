@@ -58,32 +58,34 @@
           :sorting.sync="sorting.toolbar.value"
           @sort="(args) => args.forEach((arg) => sort(...arg))"
         />
-        <Folder
-          v-for="(folder, i) in subFolders"
-          :key="'folder-' + folder.id"
-          :folder="folder"
-          :mode="mode"
-          :style="{
-            'transition-delay': `${(i % 12) * 30}ms !important`,
-          }"
-          :selected="folderSelection[folder.id]"
-          @removeMe="removeFolders"
-          @click:selected="toggleFolderSelection"
-        />
-        <Resource
-          v-for="(file, i) in files"
-          :key="'file-' + file.id"
-          :file="file"
-          :style="{
-            'transition-delay': `${
-              ((subFolders.length + i) % 12) * 30
-            }ms !important`,
-          }"
-          :mode="mode"
-          :deleting="deleting"
-          :selected="selection[file.id]"
-          @click:selected="toggleSelection"
-        />
+        <template v-for="({ folder, file }, i) in items">
+          <Folder
+            v-if="folder"
+            :key="'folder-' + folder.id"
+            :folder="folder"
+            :mode="mode"
+            :style="{
+              'transition-delay': `${(i % 12) * 30}ms !important`,
+            }"
+            :selected="folderSelection[folder.id]"
+            @removeMe="removeFolders"
+            @click:selected="toggleFolderSelection"
+          />
+          <Resource
+            v-else-if="file"
+            :key="'file-' + file.id"
+            :file="file"
+            :style="{
+              'transition-delay': `${
+                ((subFolders.length + i) % 12) * 30
+              }ms !important`,
+            }"
+            :mode="mode"
+            :deleting="deleting"
+            :selected="selection[file.id]"
+            @click:selected="toggleSelection"
+          />
+        </template>
         <Pagination
           v-if="lastPage > 1 && !loading"
           key="pagination"
@@ -92,6 +94,17 @@
           :last-page="lastPage"
           :current-page.sync="page"
         />
+        <template v-else-if="!loading">
+          <infinite-loading
+            key="inf-loader"
+            :identifier="identifier"
+            @infinite="nextLocalPage"
+          >
+            <div slot="spinner"></div>
+            <div slot="no-more"></div>
+            <div slot="no-results"></div>
+          </infinite-loading>
+        </template>
       </transition-group>
     </template>
 
@@ -154,6 +167,8 @@ export default {
       page, // currentPage
       lastPage: -1,
       totalApiAssets: null,
+      localPage: 1,
+      identifier: Date.now(),
     }
   },
   computed: {
@@ -172,6 +187,15 @@ export default {
         !categories.includes(this.hashParam) &&
         !isNaN(Number(this.hashParam))
       )
+    },
+    allItems() {
+      return [
+        ...this.subFolders.map((ev) => ({ folder: ev })),
+        ...this.files.map((ev) => ({ file: ev })),
+      ]
+    },
+    items() {
+      return [...this.allItems].slice(0, this.localPage * 12)
     },
     totalAssets() {
       return this.totalApiAssets || this.files.length + this.subFolders.length
@@ -223,6 +247,7 @@ export default {
     '$route.query.searchId'() {
       this.prefetch()
     },
+
     page(page) {
       if (page === -1) {
         this.$router.replace({
@@ -245,10 +270,20 @@ export default {
     this.getData()
   },
   methods: {
-    /**
-     * Add newly added folders
-     */
+    nextLocalPage($state) {
+      if (this.localPage > this.localTotalPages) {
+        $state.complete()
+        return
+      }
+
+      this.localPage += 1
+      setTimeout(() => {
+        $state.loaded()
+      }, 300)
+    },
+
     prefetch() {
+      this.identifier += 1
       this.page = 1
       this.lastPage = -1
       this.totalApiAssets = null
