@@ -69,7 +69,7 @@ export default {
   mixins: [storeBrandName],
   data() {
     return {
-      form: { email: null },
+      form: { email: null, url: null },
       loading: false,
     }
   },
@@ -78,7 +78,7 @@ export default {
       if ((this.$v.$touch(), this.$v.$invalid) || this.loading) return
 
       this.loading = true
-
+      this.form.url = this.brandName
       await this.$guestAxios
         .post('forgot-password', this.form)
         .then(({ message, data }) => {
