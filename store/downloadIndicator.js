@@ -62,19 +62,16 @@ export const actions = {
     try {
       const {
         data: { url, file_name },
-      } = await this.$axios.$post(
-        'digital-assets/dashboard/download-multiple-files',
-        {
-          workspace_id: this.$getWorkspaceId(),
-          digital_assets_id: files,
-          category_id: folders,
-        }
-      )
+      } = await this.$axios.$post('digital/download-multiple-files', {
+        workspace_id: this.$getWorkspaceId(),
+        digital_assets_id: files,
+        category_id: folders,
+      })
       orgUrl = file_name
       zipUrl = url
       name = file_name
     } catch (e) {
-      this.$errorToast(e)
+      this.$showErrorToast(e)
       commit('removeDownloadingItem', id)
       return
     }

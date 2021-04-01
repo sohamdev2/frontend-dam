@@ -358,13 +358,13 @@ export default {
     fileTypes() {
       return [...(this.searchData?.popular_file_type || [])]
         .filter((a) => a && a.total_assets_count >= 5)
-        .sort(this.$sortBy('total_assets_count'))
-        .slice(0, 9)
+        .sort(this.$sortBy('total_assets_count', true, this.$sortToTypedNumber))
+        .slice(0, 12)
     },
     popularTags() {
       return [...(this.searchData?.popular_tag || [])]
         .filter((a) => a && a.total_tag_count >= 5)
-        .sort(this.$sortBy('total_tag_count'))
+        .sort(this.$sortBy('total_tag_count', true, this.$sortToTypedNumber))
         .slice(0, 12)
     },
     filterItems() {
@@ -374,16 +374,16 @@ export default {
         filters.push({
           key: 'search_term',
           type: 'search_term',
-          name: `Term: <b>${this.$escapeHtml(
+          name: `Term: <strong>${this.$escapeHtml(
             this.searchParams.search_term
-          )}</b>`,
+          )}</strong>`,
         })
 
       if (this.searchParams.exact_term)
         filters.push({
           key: 'exact_term',
           type: 'exact_term',
-          name: '<b>Exact match</b>',
+          name: '<strong>Exact match</strong>',
         })
 
       if (this.searchParams.filter !== 'all') {
@@ -394,7 +394,7 @@ export default {
         filters.push({
           key: 'filter',
           type: 'filter',
-          name: `Search in: <b>${text}</b>`,
+          name: `Search in: <strong>${text}</strong>`,
         })
       }
 
@@ -406,14 +406,14 @@ export default {
           filters.push({
             key: 'date',
             type: 'date',
-            name: `Upload Date: <b>${text}</b>`,
+            name: `Upload Date: <strong>${text}</strong>`,
           })
         } else if (this.searchParams.start_date || this.searchParams.end_date) {
           if (this.$refs.dateRangePicker)
             filters.push({
               key: 'date',
               type: 'custom_date',
-              name: `Upload Date: <b>${this.$refs.dateRangePicker.getValueText()}</b>`,
+              name: `Upload Date: <strong>${this.$refs.dateRangePicker.getValueText()}</strong>`,
             })
           else if (this.$route.params.filterItems) {
             const a = this.$route.params.filterItems.find(
@@ -427,19 +427,19 @@ export default {
         ...(this.searchParams.file_types || []).map((type) => ({
           key: `ext-${type}`,
           type: 'file_types',
-          name: `Ext: <b>${type}</b>`,
+          name: `Ext: <strong>${type}</strong>`,
           value: type,
         })),
         ...(this.searchParams.tags || []).map((tag) => ({
           key: `tag-${tag}`,
           type: 'tags',
-          name: `Tag: <b>${tag}</b>`,
+          name: `Tag: <strong>${tag}</strong>`,
           value: tag,
         })),
         ...(this.searchParams.other_tags || []).map((tag) => ({
           key: `tag-${tag}`,
           type: 'other_tags',
-          name: `Tag: <b>${tag}</b>`,
+          name: `Tag: <strong>${tag}</strong>`,
           value: tag,
         }))
       )
@@ -452,7 +452,7 @@ export default {
         filters.push({
           key: 'orientation',
           type: 'orientation',
-          name: `Orientation: <b>${text}</b>`,
+          name: `Orientation: <strong>${text}</strong>`,
           value: this.searchParams.orientation,
         })
       }

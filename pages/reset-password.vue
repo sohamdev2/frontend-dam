@@ -160,6 +160,7 @@ export default {
           reset_token: this.form.email_token,
           token: this.form.token,
           password: this.form.password,
+          timezone: this.form.timezone,
         })
         .then(
           ({
@@ -170,10 +171,8 @@ export default {
               },
             },
           }) => {
-            this.$nextTick(() => {
-              this.$toast.global.success(message)
-              this.$router.push(`${url}/login`)
-            })
+            this.$toast.global.success(message)
+            this.$router.replace(`/${url}/login`)
           }
         )
         .catch(this.$showErrorToast)
