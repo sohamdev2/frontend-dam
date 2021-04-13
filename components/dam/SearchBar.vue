@@ -189,20 +189,18 @@
                   </label>
                 </div>
               </div>
-              <div class="search-tag w-100">
-                <div v-if="searchData.popular_tag_select" class="w-100">
-                  <Multiselect
-                    v-model="searchParams.other_tags"
-                    class="w-100"
-                    multiple
-                    :close-on-select="false"
-                    :options="
-                      searchData.popular_tag_select.map((item) => item.tag_name)
-                    "
-                    placeholder="Other Tags"
-                    custom-event
-                  />
-                </div>
+              <div v-if="searchData.popular_tag_select" class="tag-dropdown">
+                <Multiselect
+                  v-model="searchParams.other_tags"
+                  class="multiselect"
+                  multiple
+                  :close-on-select="false"
+                  :options="
+                    searchData.popular_tag_select.map((item) => item.tag_name)
+                  "
+                  placeholder="Other Tags"
+                  custom-event
+                />
               </div>
             </div>
           </div>

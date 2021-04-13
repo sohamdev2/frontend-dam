@@ -6,7 +6,7 @@
       </div>
       <div v-if="noData" key="no-data" class="no-data-found">
         <div class="inner w-100">
-          <img src="~/assets/img/icon/no-data-image.svg" alt="" />
+          <img src="~/assets/img/no-data-image.svg" alt="" />
           <p>No Data Found</p>
         </div>
       </div>
@@ -21,6 +21,7 @@
               v-if="!loading"
               key="header"
               :sorting.sync="sorting.toolbar.value"
+              :reverse="sorting.toolbar.desc"
               @sort="(args) => args.forEach((arg) => sort(...arg))"
             />
             <ul class="tbody customscrollbar">

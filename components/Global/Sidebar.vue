@@ -2,7 +2,27 @@
   <!-- <AssetOverview></AssetOverview> -->
   <div class="body-content-left">
     <div class="category-list common-box bg-gray">
-      <h4 class="title">Categories</h4>
+      <h4
+        v-if="
+          parentFolder &&
+          $refs.folderList &&
+          $refs.folderList.getCurrentFolderName()
+        "
+        class="title"
+      >
+        <nuxt-link
+          :to="{
+            name: 'brand_name-folders',
+            params: { brand_name: $getBrandName() },
+            hash: `#${parentFolder.parent_id || ''}`,
+          }"
+          class="back"
+        >
+          <img src="~/assets/img/back-blue.svg" alt="go up"
+        /></nuxt-link>
+        {{ $refs.folderList.getCurrentFolderName() }}
+      </h4>
+      <h4 v-else class="title">Categories</h4>
       <FolderList></FolderList>
     </div>
   </div>

@@ -55,7 +55,7 @@
         </div>
         <div v-else key="no-data" class="no-data-found">
           <div class="inner w-100">
-            <img src="~/assets/img/icon/no-data-image.svg" alt="" />
+            <img src="~/assets/img/no-data-image.svg" alt="" />
             <p>No Data Found</p>
           </div>
         </div>

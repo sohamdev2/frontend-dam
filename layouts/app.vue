@@ -1,13 +1,7 @@
 <template>
   <ShowWhenReady :show="show">
     <AppHeader />
-    <div class="body-content two-part">
-      <Sidebar />
-      <div class="body-content-right customscrollbar">
-        <SearchBar />
-        <nuxt></nuxt>
-      </div>
-    </div>
+    <nuxt></nuxt>
   </ShowWhenReady>
 </template>
 

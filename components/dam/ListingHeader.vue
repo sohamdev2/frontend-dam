@@ -89,7 +89,6 @@ export default {
   // },
   methods: {
     emitSort(arg) {
-      console.log(arg)
       this.$nextTick(() => this.$emit('sort', arg))
     },
   },

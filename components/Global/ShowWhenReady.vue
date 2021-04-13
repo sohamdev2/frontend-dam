@@ -1,28 +1,23 @@
 <template>
   <div>
-    <FadeTransition>
-      <div v-if="showModel">
-        <slot></slot>
+    <div v-if="showModel">
+      <slot></slot>
+    </div>
+    <div v-if="!showModel" class="preloader">
+      <div class="loading">
+        <img
+          src="~/assets/img/marcomhq-logo1.svg"
+          alt="MarcomHQ"
+          class="img-responsive"
+        />
       </div>
-      <div v-else class="preloader">
-        <div class="loading">
-          <img
-            src="~/assets/img/marcomhq-logo1.svg"
-            alt="MarcomHQ"
-            class="img-responsive"
-          />
-        </div>
-      </div>
-      <div class="body-overlay"></div>
-    </FadeTransition>
+    </div>
+    <div v-if="!showModel" class="body-overlay"></div>
   </div>
 </template>
 
 <script>
-import { FadeTransition } from 'vue2-transitions'
-
 export default {
-  components: { FadeTransition },
   props: { show: { type: Boolean, default: true } },
   data() {
     return {

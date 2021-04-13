@@ -21,15 +21,14 @@ export default {
     sorting(sorting) {
       this.sortingModel = sorting
     },
-    sortValueModel(sortingModel) {
+    sortingModel(sortingModel) {
       this.$emit('update:sorting', sortingModel)
     },
   },
   methods: {
     sortingClass(sorting) {
       return {
-        sortarrow: this.sorting === sorting,
-        descending: this.sorting === sorting && this.reverse,
+        active: this.sorting === sorting && this.reverse,
       }
     },
   },

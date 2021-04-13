@@ -1,138 +1,150 @@
 <template>
-  <div>
-    <div class="hero-section">
-      <client-only v-if="dashboardData">
-        <carousel
-          :per-page="1"
-          class="owl-stage-outer"
-          autoplay
-          navigation-enabled
-          loop
-          navigation-next-label="›"
-          navigation-prev-label="‹"
-        >
-          <slide v-for="banner in bannerData" :key="banner.id" class="owl-item">
-            <div
-              class="banner-item"
-              :title="banner.title"
-              :style="{
-                backgroundImage: `url('${banner.image}')`,
-              }"
-            ></div>
-          </slide>
-        </carousel>
-      </client-only>
-    </div>
-    <template
-      v-if="
-        dashboardData &&
-        dashboardData.trending_data &&
-        dashboardData.trending_data.length
-      "
-    >
-      <div class="section-title">
-        <h4>Trending</h4>
+  <div class="body-content two-part">
+    <div class="body-content-left">
+      <div class="category-list common-box bg-gray">
+        <h4 class="title">Categories</h4>
+        <FolderList></FolderList>
       </div>
-      <div class="trending-sec grid-tile resource-wrapper">
-        <div class="common-box bg-gray">
-          <div class="table-list-view">
-            <ul class="tbody">
-              <client-only>
-                <carousel
-                  :per-page="4"
-                  class="resource-container row-resource"
-                  navigation-enabled
-                  navigation-next-label="›"
-                  navigation-prev-label="‹"
-                  :pagination-enabled="false"
-                >
-                  <slide
-                    v-for="file in dashboardData.trending_data"
-                    :key="file.id"
-                  >
-                    <Resource
-                      :file="file"
-                      emit-share
-                      hide-select
-                      @share="onShareFile"
-                    />
-                  </slide>
-                </carousel>
-              </client-only>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </template>
-    <div class="section-title">
-      <h4>Recent Uploads</h4>
     </div>
-
-    <template v-if="dashboardData">
-      <template v-for="(files, key) in dashboardData.recent_uploads">
-        <template v-if="files.length">
-          <div :key="key" class="mini-title">
-            <!-- <input id="Images" type="checkbox" class="form-check-input" /> -->
-            <label for="Images" class="check-label">{{
-              keytoTitle(key)
-            }}</label>
-            <nuxt-link
-              :to="{
-                name: 'brand_name-folders',
-                params: { brand_name: $getBrandName() },
-                hash: `#${normalizedForNavitor(key)}`,
-              }"
-              class="browse-box"
-            >
-              <span>
-                Browse
-                {{ dashboardData[`total_${key}`] }} {{ keytoTitle(key) }}
-              </span>
-            </nuxt-link>
-          </div>
-          <div
-            :key="`files-${key}`"
-            class="recentuploads-sec grid-tile resource-wrapper"
+    <div class="body-content-right customscrollbar">
+      <div class="hero-section">
+        <client-only v-if="dashboardData">
+          <carousel
+            :per-page="1"
+            class="owl-stage-outer"
+            autoplay
+            navigation-enabled
+            loop
+            navigation-next-label="›"
+            navigation-prev-label="‹"
           >
-            <div class="common-box bg-gray">
-              <div class="table-list-view">
-                <ul class="tbody">
-                  <client-only>
-                    <carousel
-                      :per-page="4"
-                      class="resource-container row-resource"
-                      navigation-enabled
-                      navigation-next-label="›"
-                      navigation-prev-label="‹"
-                      :pagination-enabled="false"
+            <slide
+              v-for="banner in bannerData"
+              :key="banner.id"
+              class="owl-item"
+            >
+              <div
+                class="banner-item"
+                :title="banner.title"
+                :style="{
+                  backgroundImage: `url('${banner.image}')`,
+                }"
+              ></div>
+            </slide>
+          </carousel>
+        </client-only>
+      </div>
+      <template
+        v-if="
+          dashboardData &&
+          dashboardData.trending_data &&
+          dashboardData.trending_data.length
+        "
+      >
+        <div class="section-title">
+          <h4>Trending</h4>
+        </div>
+        <div class="trending-sec grid-tile resource-wrapper">
+          <div class="common-box bg-gray">
+            <div class="table-list-view">
+              <ul class="tbody">
+                <client-only>
+                  <carousel
+                    :per-page="4"
+                    class="resource-container row-resource"
+                    navigation-enabled
+                    navigation-next-label="›"
+                    navigation-prev-label="‹"
+                    :pagination-enabled="false"
+                  >
+                    <slide
+                      v-for="file in dashboardData.trending_data"
+                      :key="file.id"
                     >
-                      <slide v-for="file in files" :key="file.id">
-                        <Resource
-                          :file="file"
-                          emit-share
-                          hide-select
-                          @share="onShareFile"
-                        />
-                      </slide>
-                    </carousel>
-                  </client-only>
-                </ul>
-              </div>
+                      <Resource
+                        :file="file"
+                        emit-share
+                        hide-select
+                        @share="onShareFile"
+                      />
+                    </slide>
+                  </carousel>
+                </client-only>
+              </ul>
             </div>
           </div>
+        </div>
+      </template>
+      <div class="section-title">
+        <h4>Recent Uploads</h4>
+      </div>
+
+      <template v-if="dashboardData">
+        <template v-for="(files, key) in dashboardData.recent_uploads">
+          <template v-if="files.length">
+            <div :key="key" class="mini-title">
+              <!-- <input id="Images" type="checkbox" class="form-check-input" /> -->
+              <label for="Images" class="check-label">{{
+                keytoTitle(key)
+              }}</label>
+              <nuxt-link
+                :to="{
+                  name: 'brand_name-folders',
+                  params: { brand_name: $getBrandName() },
+                  hash: `#${normalizedForNavitor(key)}`,
+                }"
+                class="browse-box"
+              >
+                <span>
+                  Browse
+                  {{ dashboardData[`total_${key}`] }} {{ keytoTitle(key) }}
+                </span>
+              </nuxt-link>
+            </div>
+            <div
+              :key="`files-${key}`"
+              class="recentuploads-sec grid-tile resource-wrapper"
+            >
+              <div class="common-box bg-gray">
+                <div class="table-list-view">
+                  <ul class="tbody">
+                    <client-only>
+                      <carousel
+                        :per-page="4"
+                        class="resource-container row-resource"
+                        navigation-enabled
+                        navigation-next-label="›"
+                        navigation-prev-label="‹"
+                        :pagination-enabled="false"
+                      >
+                        <slide v-for="file in files" :key="file.id">
+                          <Resource
+                            :file="file"
+                            emit-share
+                            hide-select
+                            @share="onShareFile"
+                          />
+                        </slide>
+                      </carousel>
+                    </client-only>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </template>
         </template>
       </template>
-    </template>
 
-    <DownloadingIndicator />
+      <DownloadingIndicator />
 
-    <client-only>
-      <ShareFile
-        ref="shareDialog"
-        :files="(shareFile && [shareFile]) || []"
-        type="folder"
-      />
-    </client-only>
+      <client-only>
+        <ShareFile
+          ref="shareDialog"
+          :files="(shareFile && [shareFile]) || []"
+          type="folder"
+        />
+      </client-only>
+    </div>
   </div>
 </template>
 

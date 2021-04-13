@@ -1,132 +1,167 @@
 <template>
-  <div>
-    <ToolBar
-      :folder="currentFolder"
-      :assets-count="totalAssets"
-      :selected-all="selectedAll"
-      :mode.sync="mode"
-      :sorting.sync="sorting.toolbar.value"
-      :sorting-desc="sorting.toolbar.desc"
-      :breadcrumb="breadcrumb"
-      :file-count="totalApiAssets || files.length"
-      :subfolder-count="subFolders.length"
-      @sort="(args) => args.forEach((arg) => sort(...arg))"
-      @click:select-all="selectAll"
-      @click:select-none="selectNone"
-    />
-    <div
-      v-if="loading"
-      style="margin: auto; overflow: hidden; width: 97%"
-      class="pb-3"
-    >
-      <ContentLoader :speed="1" :animate="true" :width="450" :height="200">
-        <template v-if="mode === 'column'">
-          <rect x="0" y="5" rx="1" ry="1" width="450" height="40" />
-          <rect x="0" y="50" rx="1" ry="1" width="450" height="40" />
-          <rect x="0" y="95" rx="1" ry="1" width="450" height="40" />
-          <rect x="0" y="140" rx="1" ry="1" width="450" height="40" />
-        </template>
-        <template v-else>
-          <rect x="0" y="15" rx="1" ry="1" width="112.4" height="112.4" />
-          <rect x="117.4" y="15" rx="1" ry="1" width="112.4" height="112.4" />
-          <rect x="234.9" y="15" rx="1" ry="1" width="112.4" height="112.4" />
-          <rect x="352.3" y="15" rx="1" ry="1" width="112.4" height="112.4" />
-          <!-- <rect x="0" y="60" rx="1" ry="1" width="40" height="40" />
+  <div class="body-content two-part">
+    <div class="body-content-left">
+      <div class="category-list common-box bg-gray">
+        <h4
+          v-if="
+            currentFolder &&
+            $refs.folderList &&
+            $refs.folderList.getCurrentFolderName()
+          "
+          class="title"
+        >
+          <nuxt-link
+            :to="{
+              name: 'brand_name-folders',
+              params: { brand_name: $getBrandName() },
+              hash: `#${currentFolder.parent_id || ''}`,
+            }"
+            class="back"
+          >
+            <img src="~/assets/img/back-blue.svg" alt="go up"
+          /></nuxt-link>
+          {{ $refs.folderList.getCurrentFolderName() }}
+        </h4>
+        <h4 v-else class="title">Categories</h4>
+        <FolderList
+          ref="folderList"
+          :value="hashParam"
+          :parent-folder="currentFolder"
+        ></FolderList>
+      </div>
+    </div>
+    <div class="body-content-right customscrollbar">
+      <SearchBar />
+      <ToolBar
+        :folder="currentFolder"
+        :assets-count="totalAssets"
+        :selected-all="selectedAll"
+        :mode.sync="mode"
+        :sorting.sync="sorting.toolbar.value"
+        :sorting-desc="sorting.toolbar.desc"
+        :breadcrumb="breadcrumb"
+        :file-count="totalApiAssets || files.length"
+        :subfolder-count="subFolders.length"
+        @sort="(args) => args.forEach((arg) => sort(...arg))"
+        @click:select-all="selectAll"
+        @click:select-none="selectNone"
+      />
+      <div
+        v-if="loading"
+        style="margin: auto; overflow: hidden; width: 97%"
+        class="pb-3"
+      >
+        <ContentLoader :speed="1" :animate="true" :width="450" :height="200">
+          <template v-if="mode === 'column'">
+            <rect x="0" y="5" rx="1" ry="1" width="450" height="40" />
+            <rect x="0" y="50" rx="1" ry="1" width="450" height="40" />
+            <rect x="0" y="95" rx="1" ry="1" width="450" height="40" />
+            <rect x="0" y="140" rx="1" ry="1" width="450" height="40" />
+          </template>
+          <template v-else>
+            <rect x="0" y="15" rx="1" ry="1" width="112.4" height="112.4" />
+            <rect x="117.4" y="15" rx="1" ry="1" width="112.4" height="112.4" />
+            <rect x="234.9" y="15" rx="1" ry="1" width="112.4" height="112.4" />
+            <rect x="352.3" y="15" rx="1" ry="1" width="112.4" height="112.4" />
+            <!-- <rect x="0" y="60" rx="1" ry="1" width="40" height="40" />
                   <rect x="0" y="105" rx="1" ry="1" width="40" height="40" />
                   <rect x="0" y="105" rx="1" ry="1" width="40" height="40" /> -->
-        </template>
-      </ContentLoader>
-    </div>
-    <template v-show="!loading">
-      <div v-if="noData" key="no-data" class="no-data-found">
-        <div class="inner w-100">
-          <img src="~/assets/img/icon/no-data-image.svg" alt="" />
-          <p>No Data Found</p>
-        </div>
+          </template>
+        </ContentLoader>
       </div>
-      <transition-group
-        v-else
-        key="folder-list"
-        class="resource-wrapper"
-        :class="[`${mode}` == 'row' ? 'grid-tile' : 'grid-list']"
-        name="slide-up"
-        mode="in-out"
-        tag="div"
-      >
-        <div key="header" class="common-box bg-gray">
-          <div class="table-list-view">
-            <ListingHeader
-              v-if="!loading"
-              key="header"
-              :sorting.sync="sorting.toolbar.value"
-              @sort="(args) => args.forEach((arg) => sort(...arg))"
-            />
-            <ul class="tbody">
-              <template v-for="({ folder, file }, i) in items">
-                <Folder
-                  v-if="folder"
-                  :key="'folder-' + folder.id"
-                  :folder="folder"
-                  :mode="mode"
-                  :style="{
-                    'transition-delay': `${(i % 12) * 30}ms !important`,
-                  }"
-                  :selected="folderSelection[folder.id]"
-                  @removeMe="removeFolders"
-                  @click:selected="toggleFolderSelection"
-                />
-                <Resource
-                  v-else-if="file"
-                  :key="'file-' + file.id"
-                  :file="file"
-                  :style="{
-                    'transition-delay': `${
-                      ((subFolders.length + i) % 12) * 30
-                    }ms !important`,
-                  }"
-                  :mode="mode"
-                  :deleting="deleting"
-                  :selected="selection[file.id]"
-                  @click:selected="toggleSelection"
-                />
-              </template>
-            </ul>
-            <Pagination
-              v-if="lastPage > 1 && !loading"
-              key="pagination"
-              class="pb-5"
-              :class="{ 'mb-5': mode == 'column' }"
-              :last-page="lastPage"
-              :current-page.sync="page"
-            />
-            <template v-else-if="!loading">
-              <infinite-loading
-                key="inf-loader"
-                :identifier="identifier"
-                @infinite="nextLocalPage"
-              >
-                <div slot="spinner"></div>
-                <div slot="no-more"></div>
-                <div slot="no-results"></div>
-              </infinite-loading>
-            </template>
+      <template v-show="!loading">
+        <div v-if="noData" key="no-data" class="no-data-found">
+          <div class="inner w-100">
+            <img src="~/assets/img/no-data-image.svg" alt="" />
+            <p>No Data Found</p>
           </div>
         </div>
-      </transition-group>
-    </template>
+        <template v-else>
+          <transition-group
+            key="folder-list"
+            class="resource-wrapper"
+            :class="[`${mode}` == 'row' ? 'grid-tile' : 'grid-list']"
+            name="slide-up"
+            mode="in-out"
+            tag="div"
+          >
+            <div key="header" class="common-box bg-gray">
+              <div class="table-list-view">
+                <ListingHeader
+                  v-if="!loading"
+                  key="header"
+                  :sorting.sync="sorting.toolbar.value"
+                  :reverse="sorting.toolbar.desc"
+                  @sort="(args) => args.forEach((arg) => sort(...arg))"
+                />
+                <ul class="tbody">
+                  <template v-for="({ folder, file }, i) in items">
+                    <Folder
+                      v-if="folder"
+                      :key="'folder-' + folder.id"
+                      :folder="folder"
+                      :mode="mode"
+                      :style="{
+                        'transition-delay': `${(i % 12) * 30}ms !important`,
+                      }"
+                      :selected="folderSelection[folder.id]"
+                      @removeMe="removeFolders"
+                      @click:selected="toggleFolderSelection"
+                    />
+                    <Resource
+                      v-else-if="file"
+                      :key="'file-' + file.id"
+                      :file="file"
+                      :style="{
+                        'transition-delay': `${
+                          ((subFolders.length + i) % 12) * 30
+                        }ms !important`,
+                      }"
+                      :mode="mode"
+                      :deleting="deleting"
+                      :selected="selection[file.id]"
+                      @click:selected="toggleSelection"
+                    />
+                  </template>
+                </ul>
+                <Pagination
+                  v-if="lastPage > 1 && !loading"
+                  key="pagination"
+                  class="pb-5"
+                  :class="{ 'mb-5': mode == 'column' }"
+                  :last-page="lastPage"
+                  :current-page.sync="page"
+                />
+                <template v-else-if="!loading">
+                  <infinite-loading
+                    key="inf-loader"
+                    :identifier="identifier"
+                    @infinite="nextLocalPage"
+                  >
+                    <div slot="spinner"></div>
+                    <div slot="no-more"></div>
+                    <div slot="no-results"></div>
+                  </infinite-loading>
+                </template>
+              </div>
+            </div>
+          </transition-group>
+        </template>
+      </template>
 
-    <DownloadingIndicator />
+      <DownloadingIndicator />
 
-    <SelectionBar
-      :selected-files="selectedFiles"
-      :selected-folders="selectedFolders"
-      :selected-all="selectedAll"
-      :deleting.sync="deleting"
-      @deleted="removeSelectedAll"
-      @moved="removeSelectedFiles"
-      @click:select-all="selectAll"
-      @click:select-none="selectNone"
-    />
+      <SelectionBar
+        :selected-files="selectedFiles"
+        :selected-folders="selectedFolders"
+        :selected-all="selectedAll"
+        :deleting.sync="deleting"
+        @deleted="removeSelectedAll"
+        @moved="removeSelectedFiles"
+        @click:select-all="selectAll"
+        @click:select-none="selectNone"
+      />
+    </div>
   </div>
 </template>
 
@@ -270,6 +305,12 @@ export default {
         this.getData()
       }
     },
+    folderList() {
+      this.addNotInCurrent()
+    },
+    currentFolder() {
+      this.addNotInCurrent()
+    },
     // currentFolder(currentFolder) {
     //   this.$setPageTitle(currentFolder?.folder_name || 'Digital Asset Manager')
     // },
@@ -299,6 +340,44 @@ export default {
     },
     getFolders() {
       return this.$store.dispatch('appData/fetchFolders')
+    },
+    async addNotInCurrent() {
+      if (!this.hashParam) {
+        this.subFolders = makeFolder(this.folderList)
+
+        return
+      }
+
+      if (this.loading || !this.currentFolder) return
+
+      let folderToTraverse = null
+
+      await this.$nextTick()
+
+      if (this.isFolder) {
+        folderToTraverse = this.parentFolder.sub_category_data || []
+      } else if (!this.hashParam) folderToTraverse = this.folderList
+      else return
+
+      const temp = [...folderToTraverse].map((e) => ({ ...e }))
+
+      // const currentIdMap = new Map()
+      // temp.forEach(({ id }) => currentIdMap.set(id, true))
+
+      // const notInCurrent = []
+      // folderToTraverse.forEach((ev) => {
+      //   if (currentIdMap.get(ev.id) !== true) notInCurrent.push(ev)
+      // })
+      // if (notInCurrent.length) {
+      //   temp.push(...makeFolder(notInCurrent))
+      //   this.$nextTick(() => (this.noData = false))
+      // }
+
+      this.subFolders = makeFolder(temp)
+
+      this.$nextTick(
+        () => (this.noData = !(this.files.length || this.subFolders.length))
+      )
     },
     selectAll() {
       this.selectedFiles = [...this.files]

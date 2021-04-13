@@ -310,10 +310,8 @@ header.header-sec {position: fixed;left: 0;right: 0;top: 0;padding: 0 14px;backg
 .table-list-view .thead .sortarrow span:before {position: absolute;content: '';background-image: url(../img/asc.svg);right: 2px;top: 3px;width: 12px;height: 12px;background-position: center;background-size: cover;background-repeat: no-repeat;}
 .table-list-view .thead .sortarrow.active span:before{background-image: url(../img/desc.svg);}
 .table-list-view .tbody > li{position: relative;border-radius: 4px;display: flex;flex-wrap: wrap;align-items: center;box-shadow: 0px 1px 2px rgb(0 0 0 / 7%);-webkit-box-shadow: 0px 1px 2px rgb(0 0 0 / 7%);background-color: #ffffff;margin-bottom: 8px;padding: 0 15px;}
-
 .table-list-view .tbody > li.selected,
 .table-list-view .tbody > li.selected .categary-name {background-color: #E2E2E2 !important;}
-
 .table-list-view .tbody > li:hover .categary-name label {color: #333333;} 
 .table-list-view .tbody > li:hover .preview-img.video > img {opacity: 0;}
 .table-list-view .tbody > li:hover .preview-img.video video {opacity: 1;}
@@ -610,3 +608,9 @@ header.header-sec {position: fixed;left: 0;right: 0;top: 0;padding: 0 14px;backg
 .share-inner-table .categary-image {width: 60px;border-radius: 4px;}
 .share-inner-table .customscrollbar {height: calc(100% - 28px) !important;padding: 0 10px;}
 .share-inner-table .categary-actions a:hover img {filter: invert(39%) sepia(26%) saturate(7254%) hue-rotate(360deg) brightness(100%) contrast(109%);}
+
+.tag-dropdown .select2-selection__rendered .select2-search--inline:first-child input {width: 150px !important;min-height: 32px;margin: 0;padding-left: 5px;}
+.tag-dropdown .select2-selection--multiple {border: none !important;border-radius: 3px !important;}
+.tag-dropdown .select2-selection__rendered {height: auto !important;padding: 3px 3px 2px !important;display: block !important;}
+.tag-dropdown .select2-selection__choice {position: relative;display: flex;align-items: center;background-color: #EFF1F3 !important;border-radius: 3px !important;border-color: #D8DCE2 !important;margin-bottom: 3px;margin-right: 4px;padding: 7px 30px 7px 7px !important;color: #172B4D;font-size: 13px;}
+.tag-dropdown .select2-selection__choice__remove {position: absolute !important;right: 6px;line-height: 1;font-weight: 400 !important;top: 6px;font-size: 19px !important;margin-right: 0 !important;}
