@@ -7,7 +7,7 @@
             <div class="sign-screen-content">
               <div class="sign-heading-text text-center">
                 <img
-                  src="~/assets/img/brand-logo.svg"
+                  src="~/assets/img/logo.svg"
                   alt=""
                   class="img-responsive img-center"
                 />

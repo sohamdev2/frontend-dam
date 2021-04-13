@@ -151,7 +151,7 @@ export default {
 
       const formData = new FormData()
       formData.append('id', this.user.id)
-      formData.append('instance_id', this.user.instance.id)
+      formData.append('instance_id', this.user.instance_id)
 
       if (this.logo.file) formData.append('profile_image', this.logo.file)
       formData.append('name', this.userModel.name)

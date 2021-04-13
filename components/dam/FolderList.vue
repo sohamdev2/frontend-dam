@@ -1,7 +1,7 @@
 <template>
   <div class="customscrollbar">
     <client-only v-if="foldersLoading">
-      <div style="margin-top: 1rem; height: 280px; overflow: hidden">
+      <div>
         <ContentLoader :speed="1" :width="240" :height="400" :animate="true">
           <rect x="10" y="5" rx="2" ry="2" width="220" height="24" />
           <rect x="10" y="40" rx="2" ry="2" width="220" height="24" />
@@ -19,27 +19,12 @@
         :folder="folder"
       />
     </transition-group>
-    <div v-else class="no-data-found my-5 pb-5">
+    <!-- <div v-else class="no-data-found my-5 pb-5">
       <div class="inner w-100">
-        <img
-          src="~/assets/img/no-data-image.svg"
-          alt="No Data Found"
-          style="width: 80px; height: auto"
-        />
-        <p class="text-center">You don't have folder created...</p>
-        <nuxt-link
-          class="btn-comment btn d-flex mx-auto"
-          style="white-space: nowrap; align-items: center; width: min-content"
-          :to="{
-            query: { ...$route.query, createFolder: true },
-            hash: $route.hash,
-          }"
-          replace
-        >
-          New Folder
-        </nuxt-link>
+        <img src="~/assets/img/no-data-image.svg" alt="No Data Found" />
+        <p>You don't have folder...</p>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 

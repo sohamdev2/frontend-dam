@@ -1,14 +1,15 @@
 <template>
   <div class="body-content two-part">
-    <div class="body-content-left">
+    <div v-if="folderList.length" class="body-content-left">
       <div class="category-list common-box bg-gray">
         <h4 class="title">Categories</h4>
         <FolderList></FolderList>
       </div>
     </div>
     <div class="body-content-right customscrollbar">
-      <div class="hero-section">
-        <client-only v-if="dashboardData">
+      <SearchBar />
+      <div v-if="dashboardData" class="hero-section">
+        <client-only>
           <carousel
             :per-page="1"
             class="owl-stage-outer"
@@ -75,11 +76,11 @@
           </div>
         </div>
       </template>
-      <div class="section-title">
-        <h4>Recent Uploads</h4>
-      </div>
-
       <template v-if="dashboardData">
+        <div class="section-title">
+          <h4>Recent Uploads</h4>
+        </div>
+
         <template v-for="(files, key) in dashboardData.recent_uploads">
           <template v-if="files.length">
             <div :key="key" class="mini-title">
@@ -133,6 +134,21 @@
             </div>
           </template>
         </template>
+        <template
+          v-if="
+            !dashboardData.recent_uploads.images.length &&
+            !dashboardData.recent_uploads.documents.length &&
+            !dashboardData.recent_uploads.videos.length &&
+            !dashboardData.recent_uploads.audios.length
+          "
+        >
+          <div :key="key" class="no-data-found my-5">
+            <div class="inner w-100">
+              <img src="~/assets/img/no-data-image.svg" alt="No Data Found" />
+              <p>You don't have files</p>
+            </div>
+          </div>
+        </template>
       </template>
 
       <DownloadingIndicator />
@@ -158,6 +174,9 @@ export default {
     }
   },
   computed: {
+    folderList() {
+      return this.$store.state.appData.folders
+    },
     bannerData() {
       return [...this.dashboardData.banners].sort(
         ({ postion: a, postions: b }) => a - b

@@ -5,7 +5,7 @@
         <img
           :src="
             (user && user.instance && user.instance.logo) ||
-            require('~/assets/img/brand-logo.svg')
+            require('~/assets/img/logo.svg')
           "
           alt="Logo"
           height="24"
@@ -14,9 +14,6 @@
     </div>
     <div class="main-menu col-7">
       <ul>
-        {{
-          $route.hash
-        }}
         <li
           v-for="link in headerLinks"
           :key="link.name"
@@ -33,22 +30,13 @@
       <div class="btn-group">
         <nuxt-link
           v-if="user"
-          v-slot="{ navigate }"
           :to="{
             name: 'brand_name-profile',
             params: { brand_name: this.$getBrandName() },
           }"
           class="login-name"
         >
-          <div
-            v-tooltip="user.name"
-            class="login-name"
-            style="cursor: pointer"
-            :title="user.name"
-            @click="navigate"
-          >
-            {{ user.name || user.email }}
-          </div>
+          {{ user.name || user.email }}
         </nuxt-link>
         <a
           role="button"
@@ -63,12 +51,9 @@
             :src="user.profile_image"
             :alt="user.name"
           />
-          <div v-else>
-            <img style="visibility: hidden" />
-            <span>
-              {{ (user.name || user.email || '').slice(0, 2) }}
-            </span>
-          </div>
+          <span v-else>
+            {{ (user.name || user.email || '').slice(0, 1) }}
+          </span>
         </a>
 
         <div class="dropdown-menu custom-dropdown">

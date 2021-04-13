@@ -46,7 +46,7 @@
         <img src="~/assets/img/filter-icon.svg" alt="search" />
       </button>
     </div>
-    <div class="filter-menu customscrollbar" :class="{ open: moreOptions }">
+    <div class="filter-menu customscrollbar">
       <div class="row align-items-center">
         <div class="col-md-6">
           <h4 class="m-0">Refine your search</h4>
@@ -162,7 +162,11 @@
                   </li>
                 </ul>
               </template>
-              <div v-else>No data available.</div>
+              <ul v-else class="filter-option">
+                <li class="mt-3">
+                  <span class="text-secondary">No data available.</span>
+                </li>
+              </ul>
             </div>
           </div>
           <div class="col-md-4 col-lg-3 col-xl-5">
@@ -317,7 +321,6 @@ export default {
       filterOptions,
       searchParams: this.$route.params.searchParams || new SearchParams(),
       moreOptions: false,
-      //
       searchData: {},
       searchDataLoading: false,
     }
@@ -461,7 +464,7 @@ export default {
     },
     moreOptions(moreOptions) {
       if (moreOptions) {
-        document.addEventListener('keyup', this.keyEvent)
+        // document.addEventListener('keyup', this.keyEvent)
 
         this.$nextTick(() => {
           this.$forceUpdate()
@@ -482,7 +485,7 @@ export default {
         }
 
         // window.$(".daterangepicker").remove();
-        document.removeEventListener('keyup', this.keyEvent)
+        // document.removeEventListener('keyup', this.keyEvent)
       }
     },
   },

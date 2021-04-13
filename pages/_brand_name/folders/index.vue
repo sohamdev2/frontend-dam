@@ -1,6 +1,6 @@
 <template>
   <div class="body-content two-part">
-    <div class="body-content-left">
+    <div class="body-content-left" v-if="folderList.length">
       <div class="category-list common-box bg-gray">
         <h4
           v-if="

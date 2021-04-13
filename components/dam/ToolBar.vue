@@ -55,42 +55,6 @@
         <a class="clear-filter" @click="removeAllFilterItem()">Clear Filters</a>
       </div>
     </div>
-    <!-- <div
-      v-if="hashParam == 'search' && $route.params.filterItems"
-      class="mt-2 ml-3"
-    >
-      <transition-group
-        tag="div"
-        name="slide-right"
-        class="popular-tags selected-tags"
-      >
-        <div
-          v-for="filterItem in $route.params.filterItems.slice(0, 2)"
-          :key="filterItem.key"
-          style="cursor: default"
-          class="select-field"
-        >
-          <label
-            style="display: inline-block"
-            :inner-html.prop="filterItem.name"
-          ></label>
-        </div>
-        <div
-          v-if="$route.params.filterItems.length > 2"
-          key="more"
-          class="select-field"
-          style="display: inline-flex; align-items: center"
-        >
-          <div class="mr-2">and</div>
-          <label
-            style="display: inline-block; cursor: pointer; white-space: nowrap"
-            @click="openSearch"
-          >
-            {{ $route.params.filterItems.length - 2 }} more
-          </label>
-        </div>
-      </transition-group>
-    </div> -->
 
     <div
       v-if="assetsCount > 0"
@@ -120,6 +84,17 @@
                   >s</template
                 ></template
               >
+            </li>
+            <li>
+              <div class="search-by small-wd">
+                <select>
+                  <option>12</option>
+                  <option>20</option>
+                  <option>40</option>
+                  <option>80</option>
+                  <option>100</option>
+                </select>
+              </div>
             </li>
             <li>
               <div class="search-by">

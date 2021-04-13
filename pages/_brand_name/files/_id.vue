@@ -256,12 +256,7 @@
                   >
                     <div class="tag-add-box">
                       <span v-if="ui.loading">Loading...</span>
-                      <!-- <TagsInput
-                        v-else
-                        v-model="tags"
-                        placeholder="No Tags Provided"
-                        disabled
-                      /> -->
+
                       <span
                         v-for="tag in tags"
                         v-else

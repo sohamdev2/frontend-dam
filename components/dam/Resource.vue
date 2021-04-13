@@ -166,9 +166,6 @@
               >
                 View
               </component>
-              <!-- <a class="action-btn download-link" @click="downloadFile">
-                  <DownloadIcon />
-                </a> -->
             </div>
           </div>
         </div>
@@ -267,9 +264,6 @@
               >
                 View
               </component>
-              <!-- <a class="action-btn download-link" @click="downloadFile">
-                  <DownloadIcon />
-                </a> -->
             </div>
           </div>
         </div>

@@ -12,7 +12,7 @@
         />
       </div>
     </div>
-    <div v-if="!showModel" class="body-overlay"></div>
+    <div class="body-overlay"></div>
   </div>
 </template>
 

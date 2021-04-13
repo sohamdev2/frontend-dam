@@ -58,7 +58,7 @@ $(document).ready(function(){
 	$(document).on('click','.filter-icon, .filter-close, .body-overlay',function (){
 		$('.filter-menu').toggleClass('show');
 		$('body').toggleClass('show-overly');
-		 });
+	});
 	
 	
 	// Recent Uploads Mini Title
