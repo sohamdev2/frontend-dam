@@ -27,15 +27,20 @@
             <li>
               <a @click="$refs.shareDialog.toggleModel()">
                 Share
-                <img src="@/assets/img/icon/select-share.svg" alt="share" />
+                <img
+                  src="@/assets/img/share.svg"
+                  alt="share"
+                  class="white-icon"
+                />
               </a>
             </li>
             <li>
               <a @click="downloadSelectedFile">
                 Download
                 <img
-                  src="@/assets/img/icon/select-download.svg"
+                  src="@/assets/img/download.svg"
                   alt="download"
+                  class="white-icon"
                 />
               </a>
             </li>

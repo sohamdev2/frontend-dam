@@ -1,16 +1,17 @@
 <template>
-  <div>
-    <AssetOverview></AssetOverview>
-    <div class="subfolder-list sidebar">
-      <div class="add-folder">
-        <h4>Folders</h4>
-      </div>
+  <!-- <AssetOverview></AssetOverview> -->
+  <div class="body-content-left">
+    <div class="category-list common-box bg-gray">
+      <h4 class="title">Categories</h4>
       <FolderList></FolderList>
     </div>
-    <div class="popular-tags">
+  </div>
+
+  <!-- <div class="popular-tags">
       <h4>Popular Keywords</h4>
-      <div class="tag-inner">
-        <TagsInput
+      <div class="tag-inner"> -->
+  <!-- hitali -->
+  <!-- <TagsInput
           v-if="dashboardData"
           :value="
             dashboardData.popular_keywords.map(({ tag_name }, id) => ({
@@ -22,10 +23,9 @@
           imutable
           click-event
           @click:item.stop="openTagView"
-        />
-      </div>
-    </div>
-  </div>
+        /> -->
+  <!-- </div>
+    </div> -->
 </template>
 
 <script>

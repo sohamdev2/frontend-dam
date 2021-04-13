@@ -1,7 +1,7 @@
 <template>
   <div class="filter-search row no-gutters">
     <div class="filter-wrapper col">
-      <div class="input-group-prepend filter-select">
+      <div class="search-by">
         <client-only>
           <Select2
             v-model="searchParams.filter"
@@ -27,59 +27,34 @@
 
         <a
           class="search-btn"
-          :class="{ active: hasFilters }"
-          @click="moreOptions = !moreOptions"
+          :class="{ 'btn-disable': !hasFilters }"
+          :disabled="!hasFilters"
+          @click="search"
         >
-          <img
-            src="~/assets/img/icon/tag-icon.svg"
-            style="filter: invert(1)"
-            alt="filter"
-          />
+          <img src="~/assets/img/search.svg" alt="filter" />
         </a>
       </div>
     </div>
-    <div class="upload-btn">
+    <div class="refine-btn">
       <button
         type="button"
-        class="btn btn-icon"
-        :class="{ 'btn-disable': !hasFilters }"
-        :disabled="!hasFilters"
-        @click="search"
+        class="btn btn-icon filter-icon"
+        :class="{ active: hasFilters }"
+        @click="moreOptions = !moreOptions"
       >
-        Search
-        <img src="~/assets/img/icon/bigsearch-icon.svg" alt="search" />
+        Refine
+        <img src="~/assets/img/filter-icon.svg" alt="search" />
       </button>
     </div>
-    <!-- filter options -->
-    <div class="tag-list" :class="{ open: moreOptions }">
-      <div class="daterange-loop daterange-wrapper"></div>
+    <div class="filter-menu customscrollbar" :class="{ open: moreOptions }">
       <div class="row align-items-center">
-        <div
-          class="col-md-12 col-lg-6 mb-4 order-2 order-lg-1"
-          style="display: flex; align-items: center"
-        >
-          <h4 style="margin-bottom: 3px">Refine your search</h4>
-          <!-- <div
-              v-if="searchParams.search_term"
-              class="custom-checkbox"
-              style="flex: 1; margin-left: 1rem"
-            >
-              <input
-                id="search-exact_term"
-                type="checkbox"
-                class="form-check-input"
-                :checked="searchParams.exact_term"
-                @input="ev => (searchParams.exact_term = ev.target.checked)"
-              />
-              <label for="search-exact_term">Search exact terms</label>
-            </div> -->
+        <div class="col-md-6">
+          <h4 class="m-0">Refine your search</h4>
         </div>
-        <div
-          class="col-md-12 col-lg-6 mb-2 order-1 order-lg-2 text-right justify-content-between justify-content-lg-end align-items-center d-flex"
-        >
+        <div class="col-md-6 d-flex justify-content-end align-items-center">
           <button
             v-if="filterItems.length"
-            class="btn dam-btn-outline"
+            class="btn btn-gray apply-btn"
             type="button"
             @click="reset"
           >
@@ -87,177 +62,184 @@
           </button>
           <button
             type="button"
-            class="btn"
+            class="btn apply-btn"
             :class="{ 'btn-disable': !hasFilters }"
             :disabled="!hasFilters"
             @click="search()"
           >
             Apply Filters
           </button>
-          <a class="close-tags" @click="moreOptions = false">
-            <img src="~/assets/img/icon/close-icon.svg" />
+
+          <a class="filter-close" @click="moreOptions = false">
+            <img src="~/assets/img/close.svg" />
           </a>
         </div>
+        <div class="col-md-12 mt-4">
+          <transition-group tag="div" name="slide-right" class="tag-add-box">
+            <span
+              v-for="filterItem in filterItems"
+              :key="filterItem.key"
+              class="added-tag"
+            >
+              <label :inner-html.prop="filterItem.name"></label>
+              <span
+                ><img
+                  src="~/assets/img/close.svg"
+                  alt=""
+                  @click="removeFilter(filterItem)"
+              /></span>
+            </span>
+          </transition-group>
+        </div>
       </div>
-      <div class="inside-wrapper">
-        <div class="row">
-          <div class="col-md-12 mb-3">
-            <transition-group
-              tag="div"
-              name="slide-right"
-              class="popular-tags selected-tags"
-            >
-              <div
-                v-for="filterItem in filterItems"
-                :key="filterItem.key"
-                class="select-field"
-              >
-                <label
-                  :inner-html.prop="filterItem.name"
-                  style="display: inline-block"
-                ></label>
-                <span @click="removeFilter(filterItem)"></span>
-              </div>
-            </transition-group>
-          </div>
-          <div class="col-md-12 col-lg-6 col-xl mb-5 mb-xl-0">
-            <h6>Upload Date</h6>
+      <div class="filter-wrapper mt-3">
+        <div class="row big-gutters">
+          <div class="col-md-4 col-lg-3 col-xl">
+            <div class="filter-menu-inner">
+              <h5>Upload Date</h5>
+              <ul class="filter-option">
+                <li v-for="date in optionDates" :key="date.value">
+                  <input
+                    :id="`uploaddate-${date.value}`"
+                    :value="date.value"
+                    type="radio"
+                    :checked="searchParams.date == date.value"
+                    name="uploadDate"
+                    @click="selectDate"
+                  />
+                  <label :for="`uploaddate-${date.value}`" class="select-box">
+                    <span>{{ date.text }}</span>
+                  </label>
+                </li>
 
-            <div
-              v-for="date in optionDates"
-              :key="date.value"
-              class="select-field"
-            >
-              <input
-                :id="`uploaddate-${date.value}`"
-                :value="date.value"
-                type="radio"
-                :checked="searchParams.date == date.value"
-                name="uploadDate"
-                @click="selectDate"
-              />
-              <label :for="`uploaddate-${date.value}`">
-                {{ date.text }}
-              </label>
+                <li>
+                  <DateRangePicker
+                    v-if="!searchDataLoading"
+                    ref="dateRangePicker"
+                    class="daterange flatpickr-input"
+                    :start-date.sync="searchParams.start_date"
+                    :end-date.sync="searchParams.end_date"
+                    placeholder="Custom Date Range"
+                    display-format="MMM Do, YYYY"
+                    custom-event
+                    human
+                    @dateChanged="
+                      ;(searchParams.start_date || searchParams.end_date) &&
+                        (searchParams.date = '')
+                    "
+                  />
+                </li>
+              </ul>
             </div>
-            <div class="form-group">
-              <div class="input-group">
-                <DateRangePicker
-                  v-if="!searchDataLoading"
-                  ref="dateRangePicker"
-                  :class="{
-                    'dam-selected':
-                      searchParams.start_date || searchParams.end_date,
-                  }"
-                  class="form-control type-2"
-                  :start-date.sync="searchParams.start_date"
-                  :end-date.sync="searchParams.end_date"
-                  placeholder="Custom Date"
-                  opens="center"
-                  no-color
-                  parent=".daterange-loop"
-                  format="MMM Do, YYYY"
-                  @dateRangeUpdateDate="
-                    ;(searchParams.start_date || searchParams.end_date) &&
-                      (searchParams.date = '')
-                  "
-                />
+          </div>
+          <div class="col-md-4 col-lg-3 col-xl">
+            <div class="filter-menu-inner">
+              <h5>Popular File Types</h5>
+              <template v-if="fileTypes.length">
+                <ul class="filter-option">
+                  <li v-for="type in fileTypes" :key="type.id">
+                    <input
+                      :id="`file-type-${type.file_type}`"
+                      :value="type.file_type"
+                      :checked="
+                        searchParams.file_types.includes(type.file_type)
+                      "
+                      type="checkbox"
+                      name="file-type"
+                      @click="selectFileType"
+                    />
+                    <label
+                      class="select-box"
+                      :for="`file-type-${type.file_type}`"
+                    >
+                      <span>{{ type.file_type }}</span>
+                      <span>
+                        <b>{{
+                          Number(type.total_assets_count || 0).toLocaleString()
+                        }}</b>
+                      </span>
+                    </label>
+                  </li>
+                </ul>
+              </template>
+              <div v-else>No data available.</div>
+            </div>
+          </div>
+          <div class="col-md-4 col-lg-3 col-xl-5">
+            <div class="filter-menu-inner">
+              <h5>Popular Tags</h5>
+              <div v-if="popularTags.length" class="tag-box">
+                <div
+                  v-for="tag in popularTags"
+                  :key="tag.id"
+                  class="select-field"
+                >
+                  <input
+                    :id="`tags-${tag.tag_name}`"
+                    :value="tag.tag_name"
+                    type="checkbox"
+                    :checked="searchParams.tags.includes(tag.tag_name)"
+                    name="tags"
+                    @input="addTag"
+                  />
+                  <label :for="`tags-${tag.tag_name}`">
+                    {{ tag.tag_name }} ({{
+                      Number(tag.total_tag_count || 0).toLocaleString()
+                    }})
+                  </label>
+                </div>
+              </div>
+              <div class="search-tag w-100">
+                <div v-if="searchData.popular_tag_select" class="w-100">
+                  <Multiselect
+                    v-model="searchParams.other_tags"
+                    class="w-100"
+                    multiple
+                    :close-on-select="false"
+                    :options="
+                      searchData.popular_tag_select.map((item) => item.tag_name)
+                    "
+                    placeholder="Other Tags"
+                    custom-event
+                  />
+                </div>
               </div>
             </div>
           </div>
-          <div class="col-md-12 col-lg-6 col-xl mb-5 mb-xl-0">
-            <h6>Popular File Types</h6>
-            <template v-if="fileTypes.length">
-              <div
-                v-for="type in fileTypes"
-                :key="type.id"
-                class="select-field"
-              >
-                <input
-                  :id="`file-type-${type.file_type}`"
-                  :value="type.file_type"
-                  :checked="searchParams.file_types.includes(type.file_type)"
-                  type="checkbox"
-                  name="file-type"
-                  @click="selectFileType"
-                />
-                <label :for="`file-type-${type.file_type}`">
-                  <span>{{ type.file_type }}</span>
-                  <span>
-                    {{ Number(type.total_assets_count || 0).toLocaleString() }}
-                  </span>
-                </label>
-              </div>
-            </template>
-            <div v-else>No data available.</div>
-          </div>
-          <div class="col-md-12 col-lg-12 col-xl-4 mb-3 mb-xl-0">
-            <h6>Popular Tags</h6>
-            <div v-if="popularTags.length" class="popular-tags mb-3">
-              <div
-                v-for="tag in popularTags"
-                :key="tag.id"
-                class="select-field"
-              >
-                <input
-                  :id="`tags-${tag.tag_name}`"
-                  :value="tag.tag_name"
-                  type="checkbox"
-                  :checked="searchParams.tags.includes(tag.tag_name)"
-                  name="tags"
-                  @input="addTag"
-                />
-                <label :for="`tags-${tag.tag_name}`">
-                  {{ tag.tag_name }} ({{
-                    Number(tag.total_tag_count || 0).toLocaleString()
-                  }})
-                </label>
-              </div>
+          <div class="col-md-4 col-lg-3 col-xl">
+            <div class="filter-menu-inner">
+              <template v-if="searchData.orientation">
+                <h5>Orientation</h5>
+                <ul class="filter-option">
+                  <li
+                    v-for="orientation in orientations"
+                    :key="orientation.value"
+                  >
+                    <input
+                      :id="`orientation-${orientation.value}`"
+                      :value="orientation.value"
+                      :checked="searchParams.orientation == orientation.value"
+                      type="radio"
+                      name="orientation"
+                      @click="selectOrientation"
+                    />
+                    <label
+                      :for="`orientation-${orientation.value}`"
+                      class="select-box"
+                    >
+                      <span>{{ orientation.text }}</span>
+                      <span>
+                        {{
+                          Number(
+                            searchData.orientation[orientation.value] || 0
+                          ).toLocaleString()
+                        }}
+                      </span>
+                    </label>
+                  </li>
+                </ul>
+              </template>
             </div>
-            <div class="search-tag w-100">
-              <div v-if="searchData.popular_tag_select" class="w-100">
-                <Multiselect
-                  v-model="searchParams.other_tags"
-                  class="w-100"
-                  multiple
-                  :close-on-select="false"
-                  :options="
-                    searchData.popular_tag_select.map((item) => item.tag_name)
-                  "
-                  placeholder="Other Tags"
-                  custom-event
-                />
-              </div>
-            </div>
-          </div>
-          <div class="col-md-12 col-lg-12 col-xl mb-3 mb-xl-0">
-            <template v-if="searchData.orientation">
-              <h6>Orientation</h6>
-              <div
-                v-for="orientation in orientations"
-                :key="orientation.value"
-                class="select-field"
-              >
-                <input
-                  :id="`orientation-${orientation.value}`"
-                  :value="orientation.value"
-                  :checked="searchParams.orientation == orientation.value"
-                  type="radio"
-                  name="orientation"
-                  @click="selectOrientation"
-                />
-                <label :for="`orientation-${orientation.value}`">
-                  <span>{{ orientation.text }}</span>
-                  <span>
-                    {{
-                      Number(
-                        searchData.orientation[orientation.value] || 0
-                      ).toLocaleString()
-                    }}
-                  </span>
-                </label>
-              </div>
-            </template>
           </div>
         </div>
       </div>
@@ -578,6 +560,18 @@ export default {
           hasFilters: this.getHasFilters(),
           searchRequestBody: this.getRequestBody(),
           filterItems: this.filterItems,
+          removeFilterItem: (filterItem) => {
+            this.removeFilter(filterItem)
+            this.$nextTick(() => {
+              if (!this.hasFilters) {
+                this.$router.replace({
+                  name: 'brand_name-folders',
+                })
+                return
+              }
+              this.search()
+            })
+          },
         },
         hash: '#search',
         query: { searchId: Date.now() },
@@ -668,117 +662,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.daterange-wrapper .daterangepicker .ranges {
-  display: block !important;
-}
-.selected-tags {
-  flex-direction: row;
-  height: auto;
-  overflow: unset;
-}
-.tag-list .popular-tags,
-.toolbar .popular-tags {
-  flex-direction: row;
-  flex-wrap: wrap;
-  height: auto !important;
-  max-height: 100% !important;
-}
-.tag-list .select2 {
-  border: none;
-}
-.tag-list .select2-search__field {
-  width: auto !important;
-}
-.tag-list .select2-selection__choice p {
-  display: inline-block;
-}
-
-.tag-list .select2-container .select2-search--inline .select2-search__field {
-  margin-top: 0;
-}
-.tag-list .select2-selection__choice {
-  display: flex;
-  flex-direction: row-reverse;
-}
-.tag-list
-  .select2-container--default
-  .select2-selection--multiple
-  .select2-selection__choice__remove {
-  margin-left: 4px;
-  margin-right: 0;
-}
-
-.tag-list .select2-container--default .select2-selection--multiple {
-  width: 100% !important;
-  border: none;
-  border-radius: 4px;
-  display: flex;
-  padding: 3px;
-}
-.selected-tags .select-field {
-  height: 100%;
-}
-
-.select-field input + label {
-  transition: 240ms ease-out;
-}
-.selected-tags.popular-tags .select-field span {
-  background: url('~@/assets/img/icon/tag-close.svg') no-repeat ce;
-}
-.tag-list .form-control.type-2 {
-  height: 44px !important;
-}
-.selected-tags.popular-tags .select-field label,
-.select-field label,
-.tag-list .form-control.type-2,
-.popular-tags .select-field label {
-  transition: 240ms ease;
-  color: #212121;
-  outline: none;
-  border-radius: 4px;
-  background-color: white !important;
-  border: 2px solid transparent !important;
-  font-weight: 500 !important;
-  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.082) !important;
-}
-.selected-tags.popular-tags .select-field label:hover,
-.select-field label:hover,
-.popular-tags .select-field label:hover {
-  background-color: #f1f1f1 !important;
-}
-.selected-tags.popular-tags .select-field label {
-  font-size: 12px;
-  box-shadow: none !important;
-  padding: 2px 28px 2px 4px;
-}
-.selected-tags.popular-tags .select-field {
-  margin-bottom: 8px;
-}
-.selected-tags.popular-tags .select-field span {
-  top: calc(50% - 5px);
-  right: 12px;
-  line-height: 10px;
-  height: 10px;
-  width: 10px;
-  padding: 2px;
-}
-
-.tag-list .form-control.type-2.dam-selected,
-.select-field input:checked + label {
-  background-color: #e2e2e2 !important;
-  color: #483229;
-  box-shadow: none !important;
-}
-
-.search-btn.active img {
-  filter: invert(53%) sepia(84%) saturate(605%) hue-rotate(333deg)
-    brightness(99%) contrast(88%) !important;
-}
-
-.search-btn.btn-disable {
-  cursor: default;
-  opacity: 0.45;
-}
-</style>

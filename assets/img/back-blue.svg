@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+  <g id="Group_4468" data-name="Group 4468" transform="translate(-577 -181)">
+    <rect id="Rectangle_3007" data-name="Rectangle 3007" width="18" height="18" transform="translate(577 181)" opacity="0"/>
+    <g id="Group_4425" data-name="Group 4425" transform="translate(-514.168 -476.583)">
+      <path id="Icon_material-backspace" data-name="Icon material-backspace" d="M1107.668,659.833h-11.251a1.412,1.412,0,0,0-1.192.66l-4.057,6.09,4.057,6.082a1.419,1.419,0,0,0,1.192.668h11.251a1.505,1.505,0,0,0,1.5-1.5v-10.5A1.5,1.5,0,0,0,1107.668,659.833Z" fill="#0361cf"/>
+      <g id="Group_4424" data-name="Group 4424">
+        <g id="Group_4422" data-name="Group 4422">
+          <path id="Path_3527" data-name="Path 3527" d="M1099.668,669.833a.75.75,0,0,1-.53-1.28l5-5a.75.75,0,0,1,1.06,1.06l-5,5A.744.744,0,0,1,1099.668,669.833Z" fill="#fff"/>
+        </g>
+        <g id="Group_4423" data-name="Group 4423">
+          <path id="Path_3528" data-name="Path 3528" d="M1104.668,669.833a.744.744,0,0,1-.53-.22l-5-5a.75.75,0,1,1,1.06-1.06l5,5a.75.75,0,0,1-.53,1.28Z" fill="#fff"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,11 +1,5 @@
 <template>
-  <div style="min-height: 100vh; display: flex">
-    <div style="margin: auto; padding: 1rem; max-width: 740px">
-      <div style="text-align: center">
-        <component :is="page" :error="error"></component>
-      </div>
-    </div>
-  </div>
+  <component :is="page" :error="error"></component>
 </template>
 
 <script>

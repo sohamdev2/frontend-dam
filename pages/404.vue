@@ -1,25 +1,33 @@
 <template>
-  <div class="error-page">
-    <div class="error-text text-center">
-      <h1>
-        {{
-          (error.statusCode || error.code || error.status) == 404
-            ? 'Page not found'
-            : error.status || 'Oops'
-        }}
-      </h1>
-      <p>
-        {{
-          error.message ||
-          "Sorry, We didn't find the page you are looking for..."
-        }}
-      </p>
-    </div>
-    <div class="error-img mt-4">
-      <img src="~/assets/img/404-bg.png" alt class="img-responsive" />
-    </div>
-    <div class="error-text text-center mt-3">
-      <nuxt-link to="/">Back to Home</nuxt-link>
+  <div class="body-content page404">
+    <div class="sign-screen customscrollbar h-100 w-100">
+      <div class="sign-screen-dtable">
+        <div class="sign-screen-dtable-cell">
+          <div class="sign-screen-content">
+            <div class="sign-body">
+              <div class="error-text">
+                <h2>
+                  {{
+                    (error.statusCode || error.code || error.status) == 404
+                      ? 'Page not found'
+                      : error.status || 'Oops'
+                  }}
+                </h2>
+                <h4>
+                  {{
+                    error.message ||
+                    "Sorry, We didn't find the page you are looking for..."
+                  }}
+                </h4>
+                <nuxt-link to="/">Back to Home</nuxt-link>
+              </div>
+              <div class="error-img">
+                <img src="~/assets/img/404-bg.png" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>

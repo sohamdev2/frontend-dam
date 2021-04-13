@@ -31,41 +31,51 @@
       "
     >
       <div class="section-title">
-        <h2>Trending</h2>
+        <h4>Trending</h4>
       </div>
-      <client-only>
-        <carousel
-          :per-page="4"
-          class="resource-container row-resource"
-          navigation-enabled
-          navigation-next-label="›"
-          navigation-prev-label="‹"
-          :pagination-enabled="false"
-        >
-          <slide v-for="file in dashboardData.trending_data" :key="file.id">
-            <Resource
-              :file="file"
-              emit-share
-              hide-select
-              @share="onShareFile"
-            />
-          </slide>
-        </carousel>
-      </client-only>
+      <div class="trending-sec grid-tile resource-wrapper">
+        <div class="common-box bg-gray">
+          <div class="table-list-view">
+            <ul class="tbody">
+              <client-only>
+                <carousel
+                  :per-page="4"
+                  class="resource-container row-resource"
+                  navigation-enabled
+                  navigation-next-label="›"
+                  navigation-prev-label="‹"
+                  :pagination-enabled="false"
+                >
+                  <slide
+                    v-for="file in dashboardData.trending_data"
+                    :key="file.id"
+                  >
+                    <Resource
+                      :file="file"
+                      emit-share
+                      hide-select
+                      @share="onShareFile"
+                    />
+                  </slide>
+                </carousel>
+              </client-only>
+            </ul>
+          </div>
+        </div>
+      </div>
     </template>
     <div class="section-title">
-      <h2>Recent Uploads</h2>
+      <h4>Recent Uploads</h4>
     </div>
+
     <template v-if="dashboardData">
       <template v-for="(files, key) in dashboardData.recent_uploads">
         <template v-if="files.length">
           <div :key="key" class="mini-title">
-            <div class="custom-checkbox">
-              <!-- <input id="Images" type="checkbox" class="form-check-input" /> -->
-              <label for="Images" class="hide-select">{{
-                keytoTitle(key)
-              }}</label>
-            </div>
+            <!-- <input id="Images" type="checkbox" class="form-check-input" /> -->
+            <label for="Images" class="check-label">{{
+              keytoTitle(key)
+            }}</label>
             <nuxt-link
               :to="{
                 name: 'brand_name-folders',
@@ -80,25 +90,36 @@
               </span>
             </nuxt-link>
           </div>
-          <client-only :key="`files-${key}`">
-            <carousel
-              :per-page="4"
-              class="resource-container row-resource"
-              navigation-enabled
-              navigation-next-label="›"
-              navigation-prev-label="‹"
-              :pagination-enabled="false"
-            >
-              <slide v-for="file in files" :key="file.id">
-                <Resource
-                  :file="file"
-                  emit-share
-                  hide-select
-                  @share="onShareFile"
-                />
-              </slide>
-            </carousel>
-          </client-only>
+          <div
+            :key="`files-${key}`"
+            class="recentuploads-sec grid-tile resource-wrapper"
+          >
+            <div class="common-box bg-gray">
+              <div class="table-list-view">
+                <ul class="tbody">
+                  <client-only>
+                    <carousel
+                      :per-page="4"
+                      class="resource-container row-resource"
+                      navigation-enabled
+                      navigation-next-label="›"
+                      navigation-prev-label="‹"
+                      :pagination-enabled="false"
+                    >
+                      <slide v-for="file in files" :key="file.id">
+                        <Resource
+                          :file="file"
+                          emit-share
+                          hide-select
+                          @share="onShareFile"
+                        />
+                      </slide>
+                    </carousel>
+                  </client-only>
+                </ul>
+              </div>
+            </div>
+          </div>
         </template>
       </template>
     </template>
@@ -235,12 +256,5 @@ export default {
 }
 .VueCarousel-dot {
   margin: 0 !important;
-}
-.custom-checkbox label.hide-select {
-  padding-left: 0 !important;
-  cursor: default;
-}
-.custom-checkbox label.hide-select:before {
-  opacity: 0 !important;
 }
 </style>

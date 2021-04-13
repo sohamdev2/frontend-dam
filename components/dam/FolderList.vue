@@ -1,5 +1,5 @@
 <template>
-  <div class="dam-folder-list">
+  <div class="customscrollbar">
     <transition-group
       class="folder-list ec-list"
       name="slide-up"

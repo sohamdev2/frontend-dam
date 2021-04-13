@@ -1,28 +1,24 @@
 <template>
-  <div class="pagination-container">
-    <ul class="pagination">
-      <li v-if="page > 1" class="page-item" @click="page -= 1">
+  <div class="paggination">
+    <ul>
+      <li v-if="page > 1" @click="page -= 1">
         <a class="page-link">
-          <i class="fa fa-angle-left" aria-hidden="true"></i>
+          <img src="~/assets/img/arrow-left.svg" alt="" />
         </a>
       </li>
       <template v-for="link in links">
-        <li v-if="link.separator" :key="link.key" class="py-1 mb-2">
+        <li v-if="link.separator" :key="link.key">
           <span>...</span>
         </li>
-        <li
-          v-else
-          :key="link.index"
-          :class="{ active: page == link.index }"
-          class="page-item"
-          @click="page = link.index"
-        >
-          <a class="page-link">{{ link.index }}</a>
+        <li v-else :key="link.index" @click="page = link.index">
+          <a class="page-link" :class="{ active: page == link.index }">{{
+            link.index
+          }}</a>
         </li>
       </template>
-      <li v-if="page != lastPage" class="page-item" @click="page += 1">
+      <li v-if="page != lastPage" @click="page += 1">
         <a class="page-link">
-          <i class="fa fa-angle-right" aria-hidden="true"></i>
+          <img src="~/assets/img/arrow-right.svg" alt="" />
         </a>
       </li>
     </ul>
@@ -99,9 +95,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.pagination {
-  margin: 1rem 0px;
-}
-</style>

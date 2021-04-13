@@ -13,12 +13,11 @@
       :data-unique-id="id"
       @click="active = false"
     ></div>
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div
-        class="modal-content add-folder-popup"
-        :class="innerClass"
-        style="z-index: 1"
-      >
+    <div
+      class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
+      role="document"
+    >
+      <div class="modal-content bg-gray" :class="innerClass" style="z-index: 1">
         <slot></slot>
       </div>
     </div>

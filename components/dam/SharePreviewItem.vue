@@ -1,14 +1,19 @@
 <template>
-  <li style="position: relative">
-    <img :src="previewImage" height="18" :alt="file.display_file_name" />
-    <span class="file-name">
-      <span
-        v-tooltip="file.display_file_name"
-        :title="file.display_file_name"
-        >{{ file.display_file_name | shrinkString(46, 12) }}</span
-      >
-    </span>
-  </li>
+  <div class="share-wrapper">
+    <div class="share-box d-flex align-items-center">
+      <div
+        class="profile-bg flex-20"
+        style="background-image: url('img/dealer-logo1.jpg')"
+        :style="{ backgroundImage: `url('${previewImage}')` }"
+        title="Traveland Leisure Vehicles Ltd"
+      ></div>
+      <div class="share-name flex-80 pl-2">
+        <label v-tooltip="file.display_file_name">{{
+          file.display_file_name | shrinkString(46, 12)
+        }}</label>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

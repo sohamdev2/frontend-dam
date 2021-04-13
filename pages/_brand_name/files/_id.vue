@@ -1,287 +1,323 @@
 <!-- eslint-disable vue/no-v-html  -->
 <template>
-  <div class="row page-detail">
+  <div>
     <div
-      class="col-lg-6 col-xl-7 detail-left"
-      style="display: flex; flex-direction: column"
+      class="section-title dam-detail-title d-flex flex-column flex-lg-row align-items-center"
     >
-      <div>
-        <nuxt-link v-if="breadcrumb" class="back-link" :to="breadcrumb.url">
-          {{ breadcrumb.name }}
-        </nuxt-link>
-        <h2>
-          <div
-            v-tooltip="file.display_file_name"
-            style="display: inline"
-            :title="file.display_file_name"
-          >
-            {{ file.display_file_name | shrinkString(60, 15) }}
-          </div>
-        </h2>
-      </div>
       <div
-        class="detail-box"
-        style="display: flex; flex-direction: column; flex: 1; overflow: hidden"
+        class="sec-title-left d-flex justify-content-between justify-content-lg-start"
       >
-        <div
-          class="detail-img"
-          style="display: flex; align-items: center; flex: 1; overflow: hidden"
-        >
-          <iframe
-            v-if="isPdf"
-            type="application/pdf"
-            :src="__url + '#toolbar=0'"
-            width="100%"
-            height="100%"
-          ></iframe>
-          <video
-            v-else-if="isVideo"
-            ref="video"
-            :poster="videoThumbnail"
-            controlsList="nodownload"
-            controls
-          >
-            <source :src="__url" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          <iframe
-            v-else-if="isDoc"
-            :src="`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(
-              __url
-            )}`"
-            width="100%"
-            height="100%"
-            frameborder="0"
-          >
-            This is an embedded
-            <a target="_blank" href="http://office.com">Microsoft Office</a>
-            document, powered by
-            <a target="_blank" href="http://office.com/webapps">
-              Office Online </a
-            >.
-          </iframe>
-          <div v-else-if="isAudio">
-            <av-waveform
-              :audio-src="__url"
-              :canv-width="1200"
-              :canv-height="200"
-              :playtime-font-size="18"
-              :played-line-width="2"
-              :playtime-clickable="false"
-              :noplayed-line-width="1"
-              played-line-color="#ed703d"
-              noplayed-line-color="#1a1d2556"
-            />
-          </div>
-          <img
-            v-else-if="isImage"
-            class="img-fluid"
-            style="object-fit: contain"
-            :src="previewImage"
-            :alt="file.display_file_name"
-          />
-          <div v-else class="m-auto">
-            <img
-              class="img-fluid"
-              style="max-height: 128px; object-fit: contain"
-              :src="previewImage"
-              :alt="file.display_file_name"
-            />
-            <p class="mt-3">No preview available for this file.</p>
-          </div>
-        </div>
-        <div class="detail-controls">
-          <button
-            type="button"
-            class="btn btn-icon btn-icon-reverse"
-            :disabled="allButtonDisabled"
-            :class="{ 'btn-disable': allButtonDisabled }"
-            @click="downloadFile"
-          >
-            Download
-            <img src="@/assets/img/icon/btn-download.svg" alt="download" />
-          </button>
-          <button
-            type="button"
-            class="btn btn-icon btn-icon-reverse"
-            :disabled="allButtonDisabled"
-            :class="{ 'btn-disable': allButtonDisabled }"
-            @click="$refs.shareDialog.toggleModel()"
-          >
-            Share
-            <img src="@/assets/img/icon/select-share.svg" alt="share" />
-          </button>
-          <!-- <button
-            type="button"
-            class="btn btn-icon btn-icon-reverse"
-            :disabled="allButtonDisabled"
-            :class="{ 'btn-disable': allButtonDisabled }"
-          >
-            Embed
-            <img src="@/assets/img/icon/embed-Icon.svg" alt="embed" />
-          </button> -->
+        <!-- <div v-if="breadcrumb" class="breadcrumb-links">
+          <ul>
+            <li>
+              <nuxt-link :to="breadcrumb.url">
+                {{ breadcrumb.name }}
+              </nuxt-link>
+            </li>
+          </ul>
+        </div> -->
+        <nuxt-link
+          v-if="breadcrumbs"
+          class="home-icon"
+          :to="`/${$getBrandName()}`"
+          ><img src="~/assets/img/address.svg" alt=""
+        /></nuxt-link>
+        <div v-if="breadcrumbs" class="breadcrumb-links">
+          <ul>
+            <li>&nbsp;</li>
+            <li v-for="(crumb, i) in breadcrumbs" :key="i">
+              <component
+                :is="crumb.url ? 'nuxt-link' : 'span'"
+                v-tooltip="crumb.og || crumb.name"
+                :to="crumb.url"
+              >
+                {{ crumb.name }}
+              </component>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
-    <div v-if="ui.loading" class="col-lg-6 col-xl-5">loading...</div>
-    <div v-else class="col-lg-6 col-xl-5">
-      <div class="detail-right">
-        <ul class="nav nav-tabs list-unstyled">
-          <li class="nav-item" @click="ui.tab = 'overview'">
-            <a class="nav-link" :class="{ active: ui.tab === 'overview' }">
-              Overview
-            </a>
-          </li>
-          <li class="nav-item" @click="ui.tab = 'metadata'">
-            <a class="nav-link" :class="{ active: ui.tab === 'metadata' }">
-              Metadata
-            </a>
-          </li>
-          <li class="nav-item" @click="ui.tab = 'tags'">
-            <a class="nav-link" :class="{ active: ui.tab === 'tags' }">
-              Tags
-            </a>
-          </li>
-        </ul>
-        <div id="accordion" class="tab-content" style="position: relative">
-          <SpinLoading
-            v-if="ui.tab == 'metadata' && ui.exifLoading"
-            style="position: absolute; top: 1rem; right: 1rem"
-          />
-          <div class="tab-pane" :class="{ active: ui.tab === 'overview' }">
+    <div class="dam-detail">
+      <div class="row h-100">
+        <div class="col-lg-6 inner-detail-left col-xl-7 h-100">
+          <h2 v-tooltip="file.display_file_name" class="title">
+            {{ file.display_file_name | shrinkString(60, 15) }}
+          </h2>
+          <div class="common-box customscrollbar p0">
             <div
-              class="mob-tab-title collapsed"
-              data-toggle="collapse"
-              data-target="#tab1-in"
-              aria-expanded="true"
+              v-if="isPdf || isVideo || isDoc || isAudio || isImage"
+              class="asset-detail-img"
             >
-              Overview
-            </div>
-            <div id="tab1-in" class="collapse show" data-parent="#accordion">
-              <div class="tab-body overview-tab">
-                <p>{{ file.description }}</p>
-                <template v-if="file.category && file.category.length">
-                  <h5>Included in Folders</h5>
-                  <ul class="px-4 pt-3">
-                    <li v-for="folder in file.category" :key="folder.id">
-                      <nuxt-link
-                        :to="{
-                          name: 'brand_name-folders',
-                          params: { brand_name: $getBrandName() },
-                          hash: `#${folder.id}`,
-                        }"
-                      >
-                        {{ folder.category_name }}
-                      </nuxt-link>
-                    </li>
-                  </ul>
-                  <hr />
-                </template>
-                <table>
-                  <tr>
-                    <td>ID</td>
-                    <td>
-                      <span> : </span>
-                      <strong v-tooltip="(file.id || '').toString()">{{
-                        file.id
-                      }}</strong>
-                    </td>
-                  </tr>
-                  <tr v-if="parentFolder">
-                    <td>Parent folder</td>
-                    <td>
-                      <span> : </span>
-                      <strong v-tooltip="parentFolder.name">
-                        <nuxt-link :to="parentFolder.url" target="_blank">
-                          {{ parentFolder.name }}
-                          <i class="fa fa-external-link" aria-hidden="true"></i>
-                        </nuxt-link>
-                      </strong>
-                    </td>
-                  </tr>
-                  <template v-if="metaData">
-                    <tr
-                      v-for="(value, key) in filterMetaData(metaData)"
-                      :key="key"
-                    >
-                      <td>{{ $camelCaseToNormalCase(key) }}</td>
-                      <td>
-                        <span> : </span>
-                        <strong
-                          v-tooltip="
-                            $getFormattedMetaValue(value, key, true).toString()
-                          "
-                          :title="$getFormattedMetaValue(value, key, true)"
-                          :inner-html.prop="$getFormattedMetaValue(value, key)"
-                        >
-                        </strong>
-                      </td>
-                    </tr>
-                  </template>
-                </table>
+              <iframe
+                v-if="isPdf"
+                type="application/pdf"
+                :src="__url + '#toolbar=0'"
+                width="100%"
+                height="100%"
+              ></iframe>
+              <div v-else-if="isVideo" class="preview-video">
+                <video
+                  ref="video"
+                  :poster="videoThumbnail"
+                  controlsList="nodownload"
+                  controls
+                  class="thevideo"
+                >
+                  <source :src="__url" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
               </div>
+              <iframe
+                v-else-if="isDoc"
+                :src="`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(
+                  __url
+                )}`"
+                width="100%"
+                height="100%"
+                frameborder="0"
+              >
+                This is an embedded
+                <a target="_blank" href="http://office.com">Microsoft Office</a>
+                document, powered by
+                <a target="_blank" href="http://office.com/webapps">
+                  Office Online </a
+                >.
+              </iframe>
+              <av-waveform
+                v-else-if="isAudio"
+                :audio-src="__url"
+                :canv-width="1200"
+                :canv-height="200"
+                :playtime-font-size="18"
+                :played-line-width="2"
+                :playtime-clickable="false"
+                :noplayed-line-width="1"
+                played-line-color="#ed703d"
+                noplayed-line-color="#1a1d2556"
+              />
+              <img
+                v-else-if="isImage"
+                :src="previewImage"
+                :alt="file.display_file_name"
+              />
+              <!-- <div v-else class="m-auto">
+                <img
+                  class="img-fluid"
+                  style="max-height: 128px; object-fit: contain"
+                  :src="previewImage"
+                  :alt="file.display_file_name"
+                />
+                <p class="mt-3">No preview available for this file.</p>
+              </div> -->
+            </div>
+            <div v-else class="no-preview">
+              <div class="icons">
+                <img :src="previewImage" :alt="file.display_file_name" />
+                <p>No preview available for this file.</p>
+              </div>
+              <!-- <div class="pdf-preview">
+                        <iframe src="img/test.pdf" type="application/pdf" width="100%" height="100%"></iframe>
+                     </div> -->
             </div>
           </div>
-          <div class="tab-pane" :class="{ active: ui.tab === 'metadata' }">
-            <div class="tab-body metadata-tab">
-              <table>
-                <tbody>
-                  <tr
-                    v-for="(value, key) in {
-                      ...metaData,
-                      ...exif,
-                    }"
-                    :key="key"
+        </div>
+        <div
+          v-if="ui.loading"
+          class="col-lg-6 inner-detail-right col-xl-5 h-100"
+        >
+          loading...
+        </div>
+        <div v-else class="col-lg-6 inner-detail-right col-xl-5 h-100">
+          <div class="common-box detail-tabs p0">
+            <div class="tabs-view h-100">
+              <ul class="nav nav-left" role="tablist">
+                <li class="nav-item" @click="ui.tab = 'overview'">
+                  <a class="nav-link" :class="{ active: ui.tab === 'overview' }"
+                    >Overview</a
                   >
-                    <td>{{ $camelCaseToNormalCase(key) }}</td>
-                    <td>
-                      <span> : </span>
-                      <strong
-                        v-tooltip="$getFormattedMetaValue(value, key, true)"
-                        :title="$getFormattedMetaValue(value, key, true)"
-                        :inner-html.prop="$getFormattedMetaValue(value, key)"
-                      >
-                      </strong>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div class="tab-pane" :class="{ active: ui.tab === 'tags' }">
-            <div
-              class="mob-tab-title collapsed"
-              data-toggle="collapse"
-              data-target="#tab4-in"
-              aria-expanded="false"
-            >
-              Tags
-            </div>
-            <div id="tab4-in" class="collapse" data-parent="#accordion">
-              <div class="tab-body">
-                <div class="bulk-tags">
-                  <div class="bulk-box">
-                    <h3>Tags</h3>
-                    <span v-if="ui.loading">Loading...</span>
-                    <TagsInput
-                      v-else
-                      v-model="tags"
-                      placeholder="No Tags Provided"
-                      disabled
-                    />
+                </li>
+                <li class="nav-item" @click="ui.tab = 'metadata'">
+                  <a class="nav-link" :class="{ active: ui.tab === 'metadata' }"
+                    >Metadata</a
+                  >
+                </li>
+                <li class="nav-item" @click="ui.tab = 'tags'">
+                  <a class="nav-link" :class="{ active: ui.tab === 'tags' }"
+                    >Tags</a
+                  >
+                </li>
+              </ul>
+              <div class="tabbing-inner">
+                <div class="tab-content customscrollbar">
+                  <SpinLoading
+                    v-if="ui.tab == 'metadata' && ui.exifLoading"
+                    style="position: absolute; top: 1rem; right: 1rem"
+                  />
+                  <div
+                    id="overview"
+                    class="tab-pane"
+                    :class="{ active: ui.tab === 'overview' }"
+                  >
+                    <h4>{{ file.display_file_name | shrinkString(60, 15) }}</h4>
+                    <p>{{ file.description }}</p>
+                    <template v-if="file.category && file.category.length">
+                      <h5>Included in Folders</h5>
+                      <ul class="px-4 pt-3">
+                        <li v-for="folder in file.category" :key="folder.id">
+                          <nuxt-link
+                            :to="{
+                              name: 'brand_name-folders',
+                              params: { brand_name: $getBrandName() },
+                              hash: `#${folder.id}`,
+                            }"
+                          >
+                            {{ folder.category_name }}
+                          </nuxt-link>
+                        </li>
+                      </ul>
+                      <hr />
+                    </template>
+                    <ul class="overview-table">
+                      <li>
+                        <span class="flex30">ID</span
+                        ><span
+                          v-tooltip="(file.id || '').toString()"
+                          class="flex70"
+                          >: {{ file.id }}</span
+                        >
+                      </li>
+                      <li v-if="parentFolder">
+                        <span class="flex30">Parent folder</span
+                        ><span v-tooltip="parentFolder.name" class="flex70"
+                          ><nuxt-link :to="parentFolder.url" target="_blank">
+                            : {{ parentFolder.name }}
+                            <i
+                              class="fa fa-external-link"
+                              aria-hidden="true"
+                            ></i> </nuxt-link
+                        ></span>
+                      </li>
+                      <template v-if="metaData">
+                        <li
+                          v-for="(value, key) in filterMetaData(metaData)"
+                          :key="key"
+                        >
+                          <span class="flex30">{{
+                            $camelCaseToNormalCase(key)
+                          }}</span
+                          ><span
+                            v-tooltip="
+                              $getFormattedMetaValue(
+                                value,
+                                key,
+                                true
+                              ).toString()
+                            "
+                            class="flex70"
+                            :inner-html.prop="
+                              ':' + ' ' + $getFormattedMetaValue(value, key)
+                            "
+                          ></span>
+                        </li>
+                      </template>
+                    </ul>
                   </div>
+                  <div
+                    id="metadata"
+                    class="tab-pane"
+                    :class="{ active: ui.tab === 'metadata' }"
+                  >
+                    <ul class="overview-table">
+                      <li
+                        v-for="(value, key) in {
+                          ...metaData,
+                          ...exif,
+                        }"
+                        :key="key"
+                      >
+                        <span class="flex45">{{
+                          $camelCaseToNormalCase(key)
+                        }}</span
+                        ><span
+                          v-tooltip="$getFormattedMetaValue(value, key, true)"
+                          class="flex55"
+                          :inner-html.prop="
+                            ':' + ' ' + $getFormattedMetaValue(value, key)
+                          "
+                        ></span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div
+                    id="tags"
+                    class="tab-pane"
+                    :class="{ active: ui.tab === 'tags' }"
+                  >
+                    <div class="tag-add-box">
+                      <span v-if="ui.loading">Loading...</span>
+                      <!-- <TagsInput
+                        v-else
+                        v-model="tags"
+                        placeholder="No Tags Provided"
+                        disabled
+                      /> -->
+                      <span
+                        v-for="tag in tags"
+                        v-else
+                        :key="tag.id"
+                        class="added-tag"
+                        >{{ tag.tag_name }}</span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="detail-right-actions">
+                  <button
+                    type="button"
+                    class="btn btn-gray btn-icon"
+                    :disabled="allButtonDisabled"
+                    :class="{ 'btn-disable': allButtonDisabled }"
+                    @click="downloadFile"
+                  >
+                    <img src="@/assets/img/download.svg" alt="download" />
+                    Download
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-gray btn-icon"
+                    :disabled="allButtonDisabled"
+                    :class="{ 'btn-disable': allButtonDisabled }"
+                    @click="$refs.shareDialog.toggleModel()"
+                  >
+                    <img src="@/assets/img/share.svg" alt="share" />
+                    Share
+                  </button>
+                  <!-- <button
+            type="button"
+            class="btn btn-gray btn-icon"
+            :disabled="allButtonDisabled"
+            :class="{ 'btn-disable': allButtonDisabled }"
+          >
+          <img src="@/assets/img/embeded.svg" alt="embed" />
+            Embed
+            
+          </button> -->
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <client-only>
+          <ShareFile
+            ref="shareDialog"
+            :files="[file]"
+            type="folder"
+          ></ShareFile>
+        </client-only>
+        <DownloadingIndicator />
       </div>
     </div>
-    <client-only>
-      <ShareFile ref="shareDialog" :files="[file]" type="folder"></ShareFile>
-    </client-only>
-    <DownloadingIndicator />
   </div>
 </template>
 
@@ -315,6 +351,20 @@ function resizeCanvas() {
   const $container = window.$('.detail-img')
 
   $canvas.outerWidth($container.width())
+}
+const recursivePush = (item, array, workspaceId) => {
+  if (!item) return
+
+  array.push({
+    name: item.folder_name,
+    url: {
+      name: 'brand_name-folders',
+      // params: { brand_name: $getBrandName() },
+      hash: `#${item.id}`,
+    },
+  })
+
+  recursivePush(item.parent, array, workspaceId)
 }
 
 export default {
@@ -403,13 +453,45 @@ export default {
       return this.$route.params.id
     },
     parentFolder() {
+      const workspaceId = this.$getWorkspaceId()
+
       const breadcrumbs = []
-      return breadcrumbs[breadcrumbs.length - 1]
+      recursivePush(this.file.breadcrumb, breadcrumbs, workspaceId)
+
+      return breadcrumbs[0]
+      // return breadcrumbs[breadcrumbs.length - 1]
+    },
+    breadcrumbs() {
+      const breadcrumbs = [
+        {
+          name: this.$shrinkString(this.file.display_file_name, 60, 15),
+          og: this.file.display_file_name,
+        },
+      ]
+
+      // if (this.$route.params.is_coming_from_home) return breadcrumbs
+
+      const workspaceId = this.$getWorkspaceId()
+
+      // if (this.inCategory)
+      //   breadcrumbs.push({
+      //     name: 'All ' + this.category.text?.toLowerCase(),
+      //     url: {
+      //       name: 'workspace_id-dam-folders',
+      //       params: { workspace_id: workspaceId },
+      //       hash: `#${this.hashParam}`,
+      //     },
+      //   })
+      // else {
+
+      recursivePush(this.file.breadcrumb, breadcrumbs, workspaceId)
+
+      // }
+
+      return breadcrumbs.reverse()
     },
   },
-  updated() {
-    window.$('[data-toggle="tooltip"]').tooltip()
-  },
+
   asyncComputed: {
     async breadcrumb() {
       if (this.inCategory)
@@ -622,29 +704,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.detail-img img {
-  border-radius: 0 !important;
-}
-
-.detail-img audio {
-  width: 100%;
-}
-.detail-img video,
-.detail-img img {
-  height: auto;
-  width: 100%;
-  margin: auto;
-  max-width: 100%;
-  max-height: 100%;
-}
-.detail-img div > div {
-  display: flex;
-  flex-direction: column-reverse;
-}
-.cui-statusbar .cui-ctl,
-.cui-statusbar .cui-ctl-medium {
-  display: none !important;
-}
-</style>

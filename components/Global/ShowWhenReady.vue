@@ -7,12 +7,13 @@
       <div v-else class="preloader">
         <div class="loading">
           <img
-            src="@/assets/img/marcom_hq_2_1.svg"
+            src="~/assets/img/marcomhq-logo1.svg"
             alt="MarcomHQ"
             class="img-responsive"
           />
         </div>
       </div>
+      <div class="body-overlay"></div>
     </FadeTransition>
   </div>
 </template>

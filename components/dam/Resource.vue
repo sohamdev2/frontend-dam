@@ -1,8 +1,8 @@
 <template>
-  <div class="dam-res" :class="`mode-${mode}`">
+  <li :class="{ selected }">
     <div
-      class="resource-box"
-      :class="{ selected, video: isVideo, image: isImage }"
+      class="preview-img tb-column flex10"
+      :class="{ video: isVideo, image: isImage }"
       v-on="{
         ...(isVideo
           ? {
@@ -23,56 +23,185 @@
           : {}),
       }"
     >
-      <div v-if="!shareMode && !hideSelect" class="custom-checkbox">
-        <input :checked="selected" type="checkbox" class="form-check-input" />
-        <label @click="$emit('click:selected', file)"></label>
-      </div>
-      <div
-        class="preview-container"
-        @focus="$refs.video.play()"
-        @blur="$refs.video.pause()"
-      >
+      <label v-if="!shareMode && !hideSelect" class="check-label">
+        <input :checked="selected" type="checkbox" />
+        <label
+          class="check-span"
+          @click="$emit('click:selected', file)"
+        ></label>
+      </label>
+      <template @focus="$refs.video.play()" @blur="$refs.video.pause()">
         <div
           v-if="isVideo"
-          class="preview-images"
+          class="categary-image"
           :style="mode == 'column' ? { background: 'transparent' } : {}"
           :class="{ 'no-image': !videoThumbnail }"
         >
-          <img
-            class="preview-images preview"
-            :style="
-              videoThumbnail == previewImage
-                ? {
-                    maxWidth: `100px`,
+          <nuxt-link
+            :is="shareMode ? 'a' : 'nuxt-link'"
+            :style="{
+              cursor: shareMode ? 'default' : 'pointer',
+            }"
+            :event="selected || shareMode ? '' : 'click'"
+            :to="
+              shareMode
+                ? ''
+                : {
+                    name: 'brand_name-files-id',
+                    params: {
+                      id: file.id,
+                      brand_name: $getBrandName(),
+                      came_from_hash: hashParam,
+                      folder_name: $route.params.folder_name,
+                    },
                   }
-                : {}
             "
-            style="object-fit: contain !important"
-            :src="videoThumbnail"
-          />
-          <video
-            v-show="playingModel"
-            ref="video"
-            class="thevideo"
-            :data-video="file.display_file"
-            style="width: 100%; height: auto; object-fit: contain; margin: auto"
-            playsinline
-            muted
-            loop
           >
-            <source :src="file.display_file" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </div>
-        <div v-else class="preview-images" :class="{ 'no-image': !isImage }">
-          <div class="preview">
             <img
-              v-show="!imageLoading"
-              class="dam-image-preview m-auto"
-              :src="previewImage"
-              @load="imageLoading = false"
+              :style="
+                videoThumbnail == previewImage
+                  ? {
+                      maxWidth: `100px`,
+                    }
+                  : {}
+              "
+              style="object-fit: contain !important"
+              :src="videoThumbnail"
             />
+
+            <video
+              v-show="playingModel"
+              ref="video"
+              class="thevideo"
+              :data-video="file.display_file"
+              style="
+                width: 100%;
+                height: auto;
+                object-fit: contain;
+                margin: auto;
+              "
+              playsinline
+              muted
+              loop
+            >
+              <source :src="file.display_file" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </nuxt-link>
+          <div class="video-info">
+            <div class="upper-info">
+              <span :inner-html.prop="file.file_type || '&dash;'"></span>
+              <a
+                v-if="!shareMode"
+                @click="
+                  emitShare
+                    ? $emit('share', file)
+                    : $refs.shareDialog.toggleModel()
+                "
+              >
+                <img src="~/assets/img/share.svg" alt="" class="white-icon" />
+              </a>
+            </div>
+            <div class="down-info">
+              <template v-if="isVideo">
+                <a
+                  ref="expandButton"
+                  :href="`#file-video-${file.id}`"
+                  data-fancybox
+                ></a>
+                <video
+                  :id="`file-video-${file.id}`"
+                  width="640"
+                  height="320"
+                  controlsList="nodownload"
+                  controls
+                  :data-id="`file-${file.id}`"
+                  style="display: none"
+                >
+                  <source :src="__url" type="video/mp4" />
+                  Your browser doesn't support HTML5 video tag.
+                </video>
+              </template>
+
+              <template v-if="isVideo">
+                <a @click="paused = !paused">
+                  <img
+                    :src="
+                      require(paused
+                        ? '~/assets/img/play-icon.svg'
+                        : '~/assets/img/pause-icon.svg')
+                    "
+                    alt=""
+                  />
+                </a>
+                <a
+                  @click.stop="
+                    $refs.expandButton.click()
+                    setPlaytime()
+                  "
+                  ><img src="~/assets/img/expand-icon.svg" alt="" />
+                </a>
+              </template>
+              <component
+                :is="shareMode ? 'a' : 'nuxt-link'"
+                v-else-if="mode != 'column'"
+                :event="selected || shareMode ? '' : 'click'"
+                :style="{
+                  cursor: shareMode ? 'default' : 'pointer',
+                }"
+                :to="
+                  shareMode
+                    ? ''
+                    : {
+                        name: 'brand_name-files-id',
+                        params: {
+                          id: file.id,
+                          brand_name: $getBrandName(),
+                          came_from_hash: hashParam,
+                          folder_name: $route.params.folder_name,
+                        },
+                      }
+                "
+                class="btn btn-gray-invert view-btn"
+              >
+                View
+              </component>
+              <!-- <a class="action-btn download-link" @click="downloadFile">
+                  <DownloadIcon />
+                </a> -->
+            </div>
           </div>
+        </div>
+        <div v-else class="categary-image" :class="{ 'no-image': !isImage }">
+          <nuxt-link
+            :is="shareMode ? 'a' : 'nuxt-link'"
+            class="img-link"
+            :style="{
+              cursor: shareMode ? 'default' : 'pointer',
+            }"
+            :event="selected || shareMode ? '' : 'click'"
+            :to="
+              shareMode
+                ? ''
+                : {
+                    name: 'brand_name-files-id',
+                    params: {
+                      id: file.id,
+                      brand_name: $getBrandName(),
+                      came_from_hash: hashParam,
+                      folder_name: $route.params.folder_name,
+                    },
+                  }
+            "
+          >
+            <div :class="{ icons: !isImage }">
+              <img
+                v-show="!imageLoading"
+                :src="previewImage"
+                @load="imageLoading = false"
+              />
+            </div>
+          </nuxt-link>
           <client-only>
             <ContentLoader
               v-if="(isImage && imageLoading) || videoThumbnailFetching"
@@ -85,112 +214,76 @@
               <rect x="0" y="0" rx="2" ry="2" width="200" height="200" />
             </ContentLoader>
           </client-only>
+          <div class="video-info">
+            <div class="upper-info">
+              <span :inner-html.prop="file.file_type || '&dash;'"></span>
+              <a
+                v-if="!shareMode"
+                @click="
+                  emitShare
+                    ? $emit('share', file)
+                    : $refs.shareDialog.toggleModel()
+                "
+              >
+                <img src="~/assets/img/share.svg" alt="" class="white-icon" />
+              </a>
+            </div>
+            <div class="down-info">
+              <a
+                ref="expandButton"
+                style="display: none"
+                data-fancybox="image"
+                data-width="auto"
+                data-height="auto"
+                :data-href="__compressed_preview || __url"
+                :href="__compressed_preview || __url"
+              >
+              </a>
+
+              <a v-if="isImage" @click.stop="$refs.expandButton.click()"
+                ><img src="~/assets/img/expand-icon.svg" alt="" />
+              </a>
+              <component
+                :is="shareMode ? 'a' : 'nuxt-link'"
+                v-else-if="mode != 'column'"
+                :event="selected || shareMode ? '' : 'click'"
+                :style="{
+                  cursor: shareMode ? 'default' : 'pointer',
+                }"
+                :to="
+                  shareMode
+                    ? ''
+                    : {
+                        name: 'brand_name-files-id',
+                        params: {
+                          id: file.id,
+                          brand_name: $getBrandName(),
+                          came_from_hash: hashParam,
+                          folder_name: $route.params.folder_name,
+                        },
+                      }
+                "
+                class="btn btn-gray-invert view-btn"
+              >
+                View
+              </component>
+              <!-- <a class="action-btn download-link" @click="downloadFile">
+                  <DownloadIcon />
+                </a> -->
+            </div>
+          </div>
         </div>
-      </div>
-
-      <nuxt-link
-        :is="shareMode ? 'a' : 'nuxt-link'"
-        :style="{
-          cursor: shareMode ? 'default' : 'pointer',
-        }"
-        :event="selected || shareMode ? '' : 'click'"
-        :to="
-          shareMode
-            ? ''
-            : {
-                name: 'brand_name-files-id',
-                params: {
-                  id: file.id,
-                  brand_name: $getBrandName(),
-                  came_from_hash: hashParam,
-                  folder_name: $route.params.folder_name,
-                },
-              }
-        "
-        class="resource-title"
-      >
-        <span :title="file.display_file_name">
-          {{ file.display_file_name }}
-        </span>
-      </nuxt-link>
-      <div class="format-type">
-        <span :inner-html.prop="file.file_type || '&dash;'"></span>
-      </div>
-      <div class="date">
-        {{ $moment(file.updated_at).format('Do MMM, YYYY') }}
-      </div>
-      <div class="size">{{ $toHumanlySize(file.file_size) }}</div>
-
-      <div class="resource-info">
-        <a
-          v-if="!shareMode"
-          class="share-it action-btn"
-          @click="
-            emitShare ? $emit('share', file) : $refs.shareDialog.toggleModel()
-          "
-        >
-          <ShareIcon />
-        </a>
-        <template v-if="isVideo">
-          <a
-            ref="expandButton"
-            :href="`#file-video-${file.id}`"
-            data-fancybox
-          ></a>
-          <video
-            :id="`file-video-${file.id}`"
-            width="640"
-            height="320"
-            controlsList="nodownload"
-            controls
-            :data-id="`file-${file.id}`"
-            style="display: none"
-          >
-            <source :src="__url" type="video/mp4" />
-            Your browser doesn't support HTML5 video tag.
-          </video>
-        </template>
-        <a
-          v-else
-          ref="expandButton"
-          style="display: none"
-          data-fancybox="bigbuckbunny"
-          data-width="640"
-          data-height="360"
-          :data-href="__compressed_preview || __url"
-          :href="__compressed_preview || __url"
-        >
-        </a>
-        <template v-if="isVideo">
-          <a
-            class="expand"
-            @click.stop="
-              $refs.expandButton.click()
-              setPlaytime()
-            "
-          >
-          </a>
-          <a class="play-btn" @click="paused = !paused">
-            <img
-              :src="
-                require(paused
-                  ? '@/assets/img/icon/play-icon.svg'
-                  : '@/assets/img/icon/stop-btn.svg')
-              "
-              alt=""
-            />
-          </a>
-        </template>
-        <template v-else-if="isImage">
-          <a class="expand" @click.stop="$refs.expandButton.click()"> </a>
-        </template>
-        <component
+      </template>
+    </div>
+    <div class="categary-name tb-column flex27">
+      <div class="top-column">
+        <nuxt-link
           :is="shareMode ? 'a' : 'nuxt-link'"
-          v-else-if="mode != 'column'"
-          :event="selected || shareMode ? '' : 'click'"
+          v-tooltip="file.display_file_name"
           :style="{
             cursor: shareMode ? 'default' : 'pointer',
           }"
+          :event="selected || shareMode ? '' : 'click'"
           :to="
             shareMode
               ? ''
@@ -204,13 +297,42 @@
                   },
                 }
           "
-          class="btn bg-light-gray"
         >
-          View
-        </component>
-        <a class="action-btn download-link" @click="downloadFile">
-          <DownloadIcon />
-        </a>
+          {{ file.display_file_name }}
+        </nuxt-link>
+      </div>
+    </div>
+    <div class="assets tb-column flex18">
+      <div class="top-column">
+        <label :inner-html.prop="file.file_type || '&dash;'"></label>
+      </div>
+    </div>
+    <div class="update-date tb-column flex18">
+      <div class="top-column">
+        <label>{{ $moment(file.updated_at).format('Do MMM, YYYY') }}</label>
+      </div>
+    </div>
+    <div class="size tb-column flex12">
+      <div class="top-column">
+        <label>{{ $toHumanlySize(file.file_size) }}</label>
+      </div>
+    </div>
+    <div class="categary-action tb-column flex15">
+      <div class="top-column">
+        <div class="categary-actions text-right">
+          <a
+            v-if="!shareMode"
+            class="share-it action-btn"
+            @click="
+              emitShare ? $emit('share', file) : $refs.shareDialog.toggleModel()
+            "
+          >
+            <img src="~/assets/img/share.svg" alt="" />
+          </a>
+          <a @click="downloadFile">
+            <img src="~/assets/img/download.svg" alt="" />
+          </a>
+        </div>
       </div>
     </div>
     <client-only>
@@ -221,7 +343,7 @@
         type="folder"
       />
     </client-only>
-  </div>
+  </li>
 </template>
 
 <script>
@@ -282,7 +404,7 @@ export default {
 
   mounted() {
     this.$nextTick(() => {
-      window.$(this.$el).find('[data-toggle="tooltip"]').tooltip()
+      // window.$(this.$el).find('[data-toggle="tooltip"]').tooltip()
       this.imageLoading = this.isImage
 
       if (this.isVideo) {
@@ -357,60 +479,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.row-resource .resource-box.image .expand {
-  right: 15px;
-  background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4NCiAgPHBhdGggaWQ9Ikljb25fYXdlc29tZS1leHBhbmQiIGRhdGEtbmFtZT0iSWNvbiBhd2Vzb21lLWV4cGFuZCIgZD0iTTAsNy41MzZWMy4xMDdBLjg1NS44NTUsMCwwLDEsLjg1NywyLjI1SDUuMjg2YS40My40MywwLDAsMSwuNDI5LjQyOVY0LjEwN2EuNDMuNDMsMCwwLDEtLjQyOS40MjloLTN2M2EuNDMuNDMsMCwwLDEtLjQyOS40MjlILjQyOUEuNDMuNDMsMCwwLDEsMCw3LjUzNlpNMTAuMjg2LDIuNjc5VjQuMTA3YS40My40MywwLDAsMCwuNDI5LjQyOWgzdjNhLjQzLjQzLDAsMCwwLC40MjkuNDI5aDEuNDI5QS40My40MywwLDAsMCwxNiw3LjUzNlYzLjEwN2EuODU1Ljg1NSwwLDAsMC0uODU3LS44NTdIMTAuNzE0QS40My40MywwLDAsMCwxMC4yODYsMi42NzlabTUuMjg2LDkuODU3SDE0LjE0M2EuNDMuNDMsMCwwLDAtLjQyOS40Mjl2M2gtM2EuNDMuNDMsMCwwLDAtLjQyOS40Mjl2MS40MjlhLjQzLjQzLDAsMCwwLC40MjkuNDI5aDQuNDI5QS44NTUuODU1LDAsMCwwLDE2LDE3LjM5M1YxMi45NjRBLjQzLjQzLDAsMCwwLDE1LjU3MSwxMi41MzZaTTUuNzE0LDE3LjgyMVYxNi4zOTNhLjQzLjQzLDAsMCwwLS40MjktLjQyOWgtM3YtM2EuNDMuNDMsMCwwLDAtLjQyOS0uNDI5SC40MjlBLjQzLjQzLDAsMCwwLDAsMTIuOTY0djQuNDI5YS44NTUuODU1LDAsMCwwLC44NTcuODU3SDUuMjg2QS40My40MywwLDAsMCw1LjcxNCwxNy44MjFaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwIC0yLjI1KSIgZmlsbD0iI2ZmZiIvPg0KPC9zdmc+DQo=)
-    no-repeat center;
-  width: 16px;
-  height: 16px;
-}
-.row-resource .resource-box.image:hover .expand,
-.row-resource .resource-box.image:hover {
-  opacity: 1;
-}
-.row-resource .resource-box.image .expand,
-.row-resource .resource-box.image .play-btn {
-  position: absolute;
-  bottom: 78px;
-  z-index: 10;
-  opacity: 0;
-  transition: all 0.3s;
-  display: inline-block;
-  line-height: 0;
-}
-.dam-image-preview {
-  width: auto;
-  height: 100%;
-  object-fit: cover;
-}
-
-.dam-res .preview-images .preview {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  top: 0;
-  background-size: contain;
-  display: flex;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-/* .dam-res.mode-row .resource-box.video .preview-images {
-  margin: 2rem;
-  transform: translateX(-1rem) translateY(-1rem);
-} */
-.dam-res.mode-row .preview-images:not(.no-image) img {
-  object-fit: contain;
-}
-.dam-res:not(.mode-column) .preview-images.no-image img {
-  max-width: 100%;
-  max-height: 100px;
-  margin: auto;
-  object-fit: contain !important;
-}
-
-.resource-box.image .preview-images {
-  background: white !important;
-}
-</style>

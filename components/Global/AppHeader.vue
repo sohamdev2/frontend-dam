@@ -5,7 +5,7 @@
         <img
           :src="
             (user && user.instance && user.instance.logo) ||
-            require('@/assets/img/logo.svg')
+            require('~/assets/img/brand-logo.svg')
           "
           alt="Logo"
           height="24"
@@ -14,8 +14,18 @@
     </div>
     <div class="main-menu col-7">
       <ul>
-        <li v-for="link in headerLinks" :key="link.name">
-          <nuxt-link :to="link.to">{{ link.name }}</nuxt-link>
+        {{
+          $route.hash
+        }}
+        <li
+          v-for="link in headerLinks"
+          :key="link.name"
+          :class="{ active: $route.hash == link.tagName ? true : false }"
+        >
+          <nuxt-link :to="link.to"
+            ><span>{{ link.name }}</span
+            ><img :src="link.imageUrl" alt="icon"
+          /></nuxt-link>
         </li>
       </ul>
     </div>
@@ -28,6 +38,7 @@
             name: 'brand_name-profile',
             params: { brand_name: this.$getBrandName() },
           }"
+          class="login-name"
         >
           <div
             v-tooltip="user.name"
@@ -52,28 +63,14 @@
             :src="user.profile_image"
             :alt="user.name"
           />
-          <div
-            v-else
-            style="
-              position: relative;
-              text-transform: uppercase;
-              border-radius: 50%;
-            "
-            class="bg-light"
-          >
+          <div v-else>
             <img style="visibility: hidden" />
-            <span
-              style="
-                position: absolute;
-                left: 50%;
-                top: 50%;
-                transform: translateY(-50%) translateX(-50%);
-              "
-            >
+            <span>
               {{ (user.name || user.email || '').slice(0, 2) }}
             </span>
           </div>
         </a>
+
         <div class="dropdown-menu custom-dropdown">
           <nuxt-link
             class="dropdown-item"
@@ -121,6 +118,8 @@ export default {
             params: { brand_name: this.$getBrandName() },
             hash: '#image',
           },
+          imageUrl: require('~/assets/img/images.svg'),
+          tagName: '#image',
         },
         {
           name: 'Documents',
@@ -129,6 +128,8 @@ export default {
             params: { brand_name: this.$getBrandName() },
             hash: '#application',
           },
+          imageUrl: require('~/assets/img/document.svg'),
+          tagName: '#application',
         },
         {
           name: 'Audio',
@@ -137,6 +138,8 @@ export default {
             params: { brand_name: this.$getBrandName() },
             hash: '#audio',
           },
+          imageUrl: require('~/assets/img/audio.svg'),
+          tagName: '#audio',
         },
         {
           name: 'Videos',
@@ -145,6 +148,8 @@ export default {
             params: { brand_name: this.$getBrandName() },
             hash: '#video',
           },
+          imageUrl: require('~/assets/img/video.svg'),
+          tagName: '#video',
         },
       ],
     }
@@ -156,7 +161,6 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      window.$(this.$el).find('[data-toggle="tooltip"]').tooltip()
       window.$(this.$el).find('.dropdown-toggle').dropdown()
     })
   },

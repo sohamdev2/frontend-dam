@@ -1,55 +1,67 @@
 <template>
-  <tr>
-    <td class="name url-name">
-      <component
-        :is="revoked ? 'span' : 'a'"
-        :href="
-          (revoked ? '' : url.share_url) | normalizedUrl(url.generated_source)
-        "
-        :style="{ 'user-select': revoked ? 'none' : '' }"
-        target="__blank"
-      >
-        <component :is="revoked ? 's' : 'span'">
-          {{ url.share_url | normalizedUrl(url.generated_source) }}
-        </component>
-      </component>
-      <div
-        v-if="revoked"
-        v-tooltip="'URL has been revoked by admin'"
-        class="adjusted"
-      >
-        Revoked
+  <li>
+    <div class="share-url tb-column flex50">
+      <div class="top-column">
+        <label>
+          <component
+            :is="revoked ? 'span' : 'a'"
+            :href="
+              (revoked ? '' : url.share_url)
+                | normalizedUrl(url.generated_source)
+            "
+            :style="{ 'user-select': revoked ? 'none' : '' }"
+            target="__blank"
+          >
+            <component :is="revoked ? 's' : 'span'">
+              {{ url.share_url | normalizedUrl(url.generated_source) }}
+            </component>
+          </component>
+          <span
+            v-if="revoked"
+            v-tooltip="'URL has been revoked by admin'"
+            class="btn ml-3 revoked-label"
+            >Revoked</span
+          ></label
+        >
       </div>
-    </td>
-    <td class="project">
-      <span v-tooltip="$moment(url.updated_at).format('LL LT')">
-        {{ $moment(url.updated_at).format('Do, MMM YYYY') }}
-      </span>
-    </td>
-    <td class="work-type">
-      <span>{{ url.userName }}</span>
-    </td>
-    <td class="description">
-      <span>{{ url.generated_source | normalizedSource }}</span>
-    </td>
-    <td class="description text-center">
-      <a
-        class="visible-hidden delete-btn"
-        @click="$refs.deleteDialog.triggerModel()"
-      >
-        <img src="~/assets/img/icon/icon-bin.svg" alt="" />
-      </a>
-    </td>
+    </div>
+    <div class="generated-date tb-column flex15 m-sm-hide">
+      <div class="top-column">
+        <label v-tooltip="$moment(url.updated_at).format('LL LT')">{{
+          $moment(url.updated_at).format('Do, MMM YYYY')
+        }}</label>
+      </div>
+    </div>
+    <div class="generated-by tb-column flex15">
+      <div class="top-column">
+        <label>{{ url.userName }}</label>
+      </div>
+    </div>
+    <div class="generated-source tb-column flex15">
+      <div class="top-column">
+        <label>{{ url.generated_source | normalizedSource }}</label>
+      </div>
+    </div>
+    <div class="share-actions tb-column flex5 text-center">
+      <ul class="action justify-content-center">
+        <li>
+          <a @click="$refs.deleteDialog.triggerModel()"
+            ><img src="~/assets/img/delete.svg" alt=""
+          /></a>
+        </li>
+      </ul>
+    </div>
     <client-only>
       <DeleteDialog
         ref="deleteDialog"
         header-text="Delete Share URL"
         @click:confirm-button="deleteUrl()"
       >
-        Are you sure you want to delete <strong>shared URL</strong>?
+        <template slot="header">Delete Share URL</template>
+        Are you sure you want to delete the <strong>shared URL</strong>?
       </DeleteDialog>
     </client-only>
-  </tr>
+  </li>
 </template>
 
 <script>

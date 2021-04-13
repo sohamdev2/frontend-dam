@@ -1,7 +1,7 @@
 <template>
   <button
     :type="type"
-    class="btn btn-block cs-btn"
+    class="cs-btn-orange btn-block btn-spiner"
     :class="{ 'btn-disable': disabled }"
   >
     <template v-if="loading">

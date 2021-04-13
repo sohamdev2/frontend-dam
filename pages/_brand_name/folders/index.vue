@@ -7,6 +7,9 @@
       :mode.sync="mode"
       :sorting.sync="sorting.toolbar.value"
       :sorting-desc="sorting.toolbar.desc"
+      :breadcrumb="breadcrumb"
+      :file-count="totalApiAssets || files.length"
+      :subfolder-count="subFolders.length"
       @sort="(args) => args.forEach((arg) => sort(...arg))"
       @click:select-all="selectAll"
       @click:select-none="selectNone"
@@ -36,75 +39,79 @@
     </div>
     <template v-show="!loading">
       <div v-if="noData" key="no-data" class="no-data-found">
-        <img
-          src="@/assets/img/no-data-image.svg"
-          alt="No Data Found"
-          class="img-responsive"
-        />
-        <h4>No Data Found</h4>
+        <div class="inner w-100">
+          <img src="~/assets/img/icon/no-data-image.svg" alt="" />
+          <p>No Data Found</p>
+        </div>
       </div>
       <transition-group
         v-else
         key="folder-list"
-        class="resource-container"
-        :class="[`${mode}-resource`]"
+        class="resource-wrapper"
+        :class="[`${mode}` == 'row' ? 'grid-tile' : 'grid-list']"
         name="slide-up"
         mode="in-out"
         tag="div"
       >
-        <ListingHeader
-          v-if="!loading"
-          key="header"
-          :sorting.sync="sorting.toolbar.value"
-          @sort="(args) => args.forEach((arg) => sort(...arg))"
-        />
-        <template v-for="({ folder, file }, i) in items">
-          <Folder
-            v-if="folder"
-            :key="'folder-' + folder.id"
-            :folder="folder"
-            :mode="mode"
-            :style="{
-              'transition-delay': `${(i % 12) * 30}ms !important`,
-            }"
-            :selected="folderSelection[folder.id]"
-            @removeMe="removeFolders"
-            @click:selected="toggleFolderSelection"
-          />
-          <Resource
-            v-else-if="file"
-            :key="'file-' + file.id"
-            :file="file"
-            :style="{
-              'transition-delay': `${
-                ((subFolders.length + i) % 12) * 30
-              }ms !important`,
-            }"
-            :mode="mode"
-            :deleting="deleting"
-            :selected="selection[file.id]"
-            @click:selected="toggleSelection"
-          />
-        </template>
-        <Pagination
-          v-if="lastPage > 1 && !loading"
-          key="pagination"
-          class="pb-5"
-          :class="{ 'mb-5': mode == 'column' }"
-          :last-page="lastPage"
-          :current-page.sync="page"
-        />
-        <template v-else-if="!loading">
-          <infinite-loading
-            key="inf-loader"
-            :identifier="identifier"
-            @infinite="nextLocalPage"
-          >
-            <div slot="spinner"></div>
-            <div slot="no-more"></div>
-            <div slot="no-results"></div>
-          </infinite-loading>
-        </template>
+        <div key="header" class="common-box bg-gray">
+          <div class="table-list-view">
+            <ListingHeader
+              v-if="!loading"
+              key="header"
+              :sorting.sync="sorting.toolbar.value"
+              @sort="(args) => args.forEach((arg) => sort(...arg))"
+            />
+            <ul class="tbody">
+              <template v-for="({ folder, file }, i) in items">
+                <Folder
+                  v-if="folder"
+                  :key="'folder-' + folder.id"
+                  :folder="folder"
+                  :mode="mode"
+                  :style="{
+                    'transition-delay': `${(i % 12) * 30}ms !important`,
+                  }"
+                  :selected="folderSelection[folder.id]"
+                  @removeMe="removeFolders"
+                  @click:selected="toggleFolderSelection"
+                />
+                <Resource
+                  v-else-if="file"
+                  :key="'file-' + file.id"
+                  :file="file"
+                  :style="{
+                    'transition-delay': `${
+                      ((subFolders.length + i) % 12) * 30
+                    }ms !important`,
+                  }"
+                  :mode="mode"
+                  :deleting="deleting"
+                  :selected="selection[file.id]"
+                  @click:selected="toggleSelection"
+                />
+              </template>
+            </ul>
+            <Pagination
+              v-if="lastPage > 1 && !loading"
+              key="pagination"
+              class="pb-5"
+              :class="{ 'mb-5': mode == 'column' }"
+              :last-page="lastPage"
+              :current-page.sync="page"
+            />
+            <template v-else-if="!loading">
+              <infinite-loading
+                key="inf-loader"
+                :identifier="identifier"
+                @infinite="nextLocalPage"
+              >
+                <div slot="spinner"></div>
+                <div slot="no-more"></div>
+                <div slot="no-results"></div>
+              </infinite-loading>
+            </template>
+          </div>
+        </div>
       </transition-group>
     </template>
 
@@ -169,6 +176,7 @@ export default {
       totalApiAssets: null,
       localPage: 1,
       identifier: Date.now(),
+      breadcrumb: null,
     }
   },
   computed: {
@@ -325,9 +333,9 @@ export default {
       this.subFolders = []
       this.files = []
       this.selectNone()
-      document.querySelector(
-        '.center-part-view .center-part-view-body'
-      ).scrollTop = 0
+      // document.querySelector(
+      //   '.center-part-view .center-part-view-body'
+      // ).scrollTop = 0
 
       if (!this.hashParam) {
         if (!this.folderList.length) await this.getFolders()
@@ -405,9 +413,10 @@ export default {
         )
         .then(({ data }) => {
           if (this.hashParam !== hashParam) return
+          this.breadcrumb = data.breadcrumb
 
           this.subFolders = makeFolder(data.folder || [])
-          this.files = data.category_assets || []
+          this.files = data.category_assets.data || []
         })
         .catch((e) => {
           const message = this.$getErrorMessage(e)
@@ -426,37 +435,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.dam-res {
-  transition: all 200ms ease;
-}
-.folder-transition-move {
-  transition: transform 240ms cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-.folder-transition-enter {
-  transform: translateY(100%);
-  opacity: 0;
-}
-/* .folder-transition-leave-active,
-.folder-transition-enter-active {
-  position: absolute;
-  left: 0;
-  right: 0;
-} */
-.folder-transition-leave {
-  transform: translateY(0);
-  opacity: 1;
-}
-.folder-transition-leave-to {
-  transform: translateY(100%);
-  opacity: 0;
-}
-
-.folder-transition-leave-active {
-  transition: none;
-}
-.folder-transition-enter-active {
-  transition: transform 240ms cubic-bezier(0.165, 0.84, 0.44, 1) !important;
-}
-</style>

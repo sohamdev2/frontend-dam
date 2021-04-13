@@ -66,14 +66,14 @@
         </a>
       </div>
     </div>
-
-    <TagsInput
+    <!-- hitali -->
+    <!-- <TagsInput
       v-model="tags"
       class="tagsinput"
       :disabled="isFileBeingDeleted"
       @click:addTag="addTagToFile"
       @click:removeTag="removeTagFromFile"
-    />
+    /> -->
 
     <DeleteDialog ref="deleteDialog" @click:confirm-button="deleteFile">
       Are you sure you want to delete

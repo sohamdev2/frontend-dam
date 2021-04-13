@@ -1,46 +1,38 @@
 <template>
-  <div id="delete" class="modal fade d-dialog">
+  <div id="delete" class="modal fade">
     <div
-      class="modal-dialog modal-dialog-centered text-center"
-      style="max-width: 480px"
+      class="modal-dialog modal-small modal-dialog-scrollable modal-dialog-centered"
     >
       <div class="modal-content">
-        <div class="subtitle">
-          <h3 class="mt-3">
-            <slot name="header"> Are you sure? </slot>
-          </h3>
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <slot name="header"> </slot>
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true"
+              ><img src="~/assets/img/close.svg" alt=""
+            /></span>
+          </button>
         </div>
-        <div class="modal-body">
-          <form>
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="form-group">
-                  <p><slot>This action is irreversible.</slot></p>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12">
-                <button
-                  class="btn bg-light-gray"
-                  type="button"
-                  @click="triggerModel('hide')"
-                >
-                  No
-                </button>
-                <button
-                  class="btn"
-                  type="button"
-                  @click="
-                    triggerModel('hide')
-                    $emit('click:confirm-button')
-                  "
-                >
-                  Yes
-                </button>
-              </div>
-            </div>
-          </form>
+
+        <div class="modal-body text-center">
+          <p><slot>This action is irreversible.</slot></p>
+          <div class="btn-group">
+            <a class="btn btn-gray" @click="triggerModel('hide')">No</a>
+            <a
+              class="btn"
+              @click="
+                triggerModel('hide')
+                $emit('click:confirm-button')
+              "
+              >Yes</a
+            >
+          </div>
         </div>
       </div>
     </div>
@@ -56,9 +48,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.d-dialog .modal-content p {
-  word-break: break-word;
-}
-</style>

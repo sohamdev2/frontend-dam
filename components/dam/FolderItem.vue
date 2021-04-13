@@ -1,15 +1,19 @@
 <template>
-  <li :class="{ expanded: hasSubFolder, open: expanded }">
+  <li>
     <component
       :is="props.is"
       v-bind="props"
       class="folder-item"
-      :class="{ active: folder.id == ($route.hash || '').replace('#', '') }"
+      :class="{
+        active: folder.id == selection,
+        disabled: !multiple && _disabled,
+        'has-child': hasSubFolder,
+      }"
       v-on="listeners"
     >
       {{ folder.folder_name || folder.category_name }}
     </component>
-    <template v-if="hasSubFolder">
+    <!-- <template v-if="hasSubFolder">
       <i
         v-if="hasSubFolder"
         class="menu-expand"
@@ -26,7 +30,7 @@
           :folder="subFolder"
         />
       </transition-group>
-    </template>
+    </template> -->
   </li>
 </template>
 
@@ -121,28 +125,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.folder-item {
-  position: relative;
-}
-.folder-item::after {
-  content: '';
-  position: absolute;
-  top: 1px;
-  right: 1px;
-  left: 1px;
-  bottom: 1px;
-  border-top: 4px solid transparent;
-  border-radius: inherit;
-  transition: border 230ms ease-out;
-}
-
-.folder-item.active::after {
-  border-color: #ed703d;
-}
-
-.folder-list li.expanded.open > .menu-expand {
-  background-color: transparent !important;
-}
-</style>

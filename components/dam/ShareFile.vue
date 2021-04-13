@@ -1,94 +1,83 @@
 <template>
   <Model v-model="active" inner-class="share-popup">
-    <div class="modal-body">
-      <button
-        type="button"
-        class="close"
-        style="top: 1rem; right: 1rem"
-        @click="active = false"
-      >
-        <img
-          aria-hidden="true"
-          src="~/assets/img/icon/close-icon.svg"
-          alt="close image"
-        />
+    <div class="modal-header">
+      <h5 class="modal-title">Share selected files</h5>
+      <button type="button" class="close" @click="active = false">
+        <span aria-hidden="true"
+          ><img src="~/assets/img/close.svg" alt=""
+        /></span>
       </button>
-      <div class="subfolder-list sidebar fix-height">
-        <div class="add-folder">
-          <h4>Share selected files</h4>
-          <div v-if="shareUrl" class="search-folder mb-0">
-            <template>
-              <h4>Share Link</h4>
-              <div class="mt-3 align-items-center" style="display: flex">
-                <div style="flex: 1; padding-right: 1rem">
-                  <input
-                    type="text"
-                    :value="shareUrl"
-                    class="form-control m-0"
-                    spellcheck="false"
-                    readonly
-                    onClick="this.setSelectionRange(0, this.value.length)"
-                  />
-                </div>
-                <div>
-                  <button
-                    v-clipboard="shareUrl"
-                    v-clipboard:success="() => (copied = true)"
-                    v-clipboard:error="() => $toast.global.error('Copy failed')"
-                    type="button"
-                    class="btn copy-button"
-                    :class="{ copied, 'dam-btn-outline': !copied }"
-                    :disabled="copied"
-                  >
-                    {{ copied ? 'Copied!' : 'Copy' }}
-                  </button>
-                </div>
-              </div>
-            </template>
+    </div>
+    <div class="modal-body">
+      <template v-if="shareUrl">
+        <p>Share Link</p>
+        <div class="mt-3 align-items-center" style="display: flex">
+          <div style="flex: 1; padding-right: 1rem">
+            <input
+              type="text"
+              :value="shareUrl"
+              class="form-control"
+              spellcheck="false"
+              readonly
+              onClick="this.setSelectionRange(0, this.value.length)"
+            />
           </div>
-          <div v-else class="search-folder mb-0">
-            <h4>Create Share Link</h4>
-            <ul class="ml-4 mt-3 dam-share-file-list">
-              <li
-                v-for="folder in folders"
-                :key="folder.id"
-                class="share-folder-items"
-                style="position: relative"
-              >
-                <FolderIcon style="filter: brightness(0.5)" />
-                <span class="file-name">
-                  <span
-                    v-tooltip="folder.folder_name || folder.category_name"
-                    :title="folder.folder_name || folder.category_name"
-                  >
-                    {{
-                      (folder.folder_name || folder.category_name)
-                        | shrinkString(46, 12)
-                    }}
-                  </span>
-                </span>
-              </li>
-              <SharePreviewItem
-                v-for="file in files"
-                :key="file.id"
-                :file="file"
-              />
-            </ul>
-            <hr />
-            <div class="d-flex justify-content-end">
-              <button
-                type="button"
-                class="btn"
-                :class="{ 'btn-disabled': !creating }"
-                :disabled="creating"
-                @click="createShareUrl"
-              >
-                {{ creating ? 'Creating...' : 'Create link' }}
-              </button>
-            </div>
+          <div>
+            <button
+              v-clipboard="shareUrl"
+              v-clipboard:success="() => (copied = true)"
+              v-clipboard:error="() => $toast.global.error('Copy failed')"
+              type="button"
+              class="btn"
+              :class="{ copied, 'dam-btn-outline': !copied }"
+              :disabled="copied"
+            >
+              {{ copied ? 'Copied!' : 'Copy' }}
+            </button>
           </div>
         </div>
-      </div>
+      </template>
+      <template v-else class="search-folder mb-0">
+        <p>Create Share Link</p>
+        <div class="share-wrapper">
+          <div
+            v-for="folder in folders"
+            :key="folder.id"
+            class="share-box d-flex align-items-center"
+          >
+            <!-- <div
+              class="profile-bg flex-20"
+              style="background-image: url('img/dealer-logo1.jpg')"
+              title="Traveland Leisure Vehicles Ltd"
+            ></div> -->
+            <FolderIcon style="filter: brightness(0.5)" />
+            <div class="share-name flex-80 pl-2">
+              <label
+                v-tooltip="folder.folder_name || folder.category_name"
+                :title="folder.folder_name || folder.category_name"
+              >
+                {{
+                  (folder.folder_name || folder.category_name)
+                    | shrinkString(46, 12)
+                }}
+              </label>
+            </div>
+          </div>
+          <SharePreviewItem v-for="file in files" :key="file.id" :file="file" />
+        </div>
+
+        <div class="modal-footer justify-content-end p-0 pt-3">
+          <button
+            type="button"
+            class="btn"
+            :class="{ 'btn-disabled': !creating }"
+            :disabled="creating"
+            @click="createShareUrl"
+          >
+            {{ creating ? 'Creating...' : 'Create link' }}
+          </button>
+        </div>
+      </template>
     </div>
   </Model>
 </template>
@@ -165,40 +154,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.dam-share-file-list {
-  max-height: 50vh;
-  height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-  width: 100%;
-}
-.dam-share-file-list li {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  overflow: hidden;
-}
-.dam-share-file-list li .file-name {
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.dam-share-file-list li > img,
-.dam-share-file-list li > svg {
-  height: 18px;
-  width: 18px;
-  margin-right: 0.5rem;
-  object-fit: contain;
-}
-.copy-button {
-  transition: 250ms ease-in-out;
-  background-color: #0000 !important;
-}
-.copy-button.copied {
-  background-color: #ed703d !important;
-  color: white !important;
-}
-</style>

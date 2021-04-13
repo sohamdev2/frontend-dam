@@ -1,40 +1,95 @@
 <template>
-  <div class="overflow-auto w-100" style="height: 100vh">
-    <div class="container">
-      <h3 class="my-4">Shared File and folders</h3>
-      <div v-if="noData" key="no-data" class="no-data-found">
-        <img
-          src="@/assets/img/no-data-image.svg"
-          alt="No Data Found"
-          class="img-responsive"
-        />
-        <h4>No Data Found</h4>
+  <div class="body-content">
+    <div class="body-content-auto w-100">
+      <div class="common-box-header">
+        <h2 class="title">Shared File and folders</h2>
       </div>
-      <div v-else class="resource-container" :class="[`${mode}-resource`]">
-        <ListingHeader
-          v-if="!loading"
-          key="header"
-          :sorting.sync="sorting.toolbar.value"
-          @sort="(args) => args.forEach((arg) => sort(...arg))"
-        />
-        <Folder
-          v-for="folder in subFolders"
-          :key="'folder-' + folder.id"
-          :folder="folder"
-          :mode="mode"
-          share-mode
-          @click.capture.native="nextStack(folder.id)"
-        />
-        <Resource
-          v-for="file in files"
-          :key="'file-' + file.id"
-          :file="file"
-          :mode="mode"
-          share-mode
-        />
+      <div v-if="noData" key="no-data" class="no-data-found">
+        <div class="inner w-100">
+          <img src="~/assets/img/icon/no-data-image.svg" alt="" />
+          <p>No Data Found</p>
+        </div>
+      </div>
+      <div
+        v-else
+        class="resource-wrapper share-inner-table w-100"
+        :class="[`${mode}` == 'row' ? 'grid-tile' : 'grid-list']"
+      >
+        <div class="common-box bg-gray h-100">
+          <div class="table-list-view h-100">
+            <ListingHeaderSharedResource
+              v-if="!loading"
+              key="header"
+              :sorting.sync="sorting.toolbar.value"
+              @sort="(args) => args.forEach((arg) => sort(...arg))"
+            />
+            <ul class="tbody customscrollbar">
+              <SharedFolder
+                v-for="folder in subFolders"
+                :key="'folder-' + folder.id"
+                :folder="folder"
+                :mode="mode"
+                share-mode
+                @click.capture.native="nextStack(folder.id)"
+              />
+              <SharedResource
+                v-for="file in files"
+                :key="'file-' + file.id"
+                :file="file"
+                :mode="mode"
+                share-mode
+              />
+              <!-- <li>
+                <div class="categary-name tb-column flex52">
+                  <div class="media">
+                    <div class="media-left">
+                      <div class="categary-image">
+                        <img src="img/file/ai.svg" alt="Folder Icon" />
+                      </div>
+                    </div>
+                    <div class="media-body">
+                      <div class="top-column">
+                        <a
+                          href="javascript:void(0);"
+                          data-toggle="tooltip"
+                          title=""
+                          data-original-title="Ambulance Lead Times"
+                          >Ambulance Lead Times</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="assets tb-column flex15">
+                  <div class="top-column">
+                    <label>ai</label>
+                  </div>
+                </div>
+                <div class="update-date tb-column flex15">
+                  <div class="top-column">
+                    <label>27 Jul 2020</label>
+                  </div>
+                </div>
+                <div class="size tb-column flex10">
+                  <div class="top-column">
+                    <label>200 kb</label>
+                  </div>
+                </div>
+                <div class="categary-action tb-column flex8">
+                  <div class="top-column">
+                    <div class="categary-actions text-center">
+                      <a href="javascript:void(0);">
+                        <img src="img/download.svg" alt="" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </li> -->
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
-
     <DownloadingIndicator />
   </div>
 </template>
@@ -53,6 +108,7 @@ function makeFolder(array) {
 
 export default {
   mixins: [assetSorting],
+  layout: 'app-min-no-search',
   asyncData({ params, query, $axios, redirect, error, $getErrorMessage }) {
     return $axios
       .$get(`show-share-assets?type=${params.type}&status=${query.status}`)
@@ -151,16 +207,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.dam-preview {
-  width: auto;
-  height: 100%;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-.sorting {
-  cursor: pointer;
-}
-</style>

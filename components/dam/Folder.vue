@@ -1,87 +1,91 @@
 <template>
-  <div class="dam-res">
-    <div class="resource-box folder" :class="{ selected }">
-      <div v-if="!shareMode" class="custom-checkbox">
-        <input :checked="selected" type="checkbox" class="form-check-input" />
-        <label @click="$emit('click:selected', folder)"></label>
+  <li :class="{ selected }">
+    <div class="preview-img tb-column flex10">
+      <label v-if="!shareMode" class="check-label">
+        <input :checked="selected" type="checkbox" />
+        <label
+          class="check-span"
+          @click="$emit('click:selected', folder)"
+        ></label>
+      </label>
+      <div class="categary-image folder-image">
+        <span>
+          <img src="~/assets/img/folder-icon.svg" alt="Folder Icon" />
+          <b v-if="assetsCount"
+            >{{ assetsCount }} Asset<template v-if="assetsCount > 1"
+              >s</template
+            ></b
+          >
+          <b v-else>Empty Folder</b>
+        </span>
       </div>
-      <div class="preview-container">
-        <div class="preview-images">
-          <div class="folder-inside">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="220"
-              height="180"
-              viewBox="0 0 220 180"
-            >
-              <path
-                data-name="Icon feather-folder"
-                d="M223,164.5c0,11.046-9.85,20-22,20H25c-12.15,0-22-8.954-22-20V24.5c0-11.046,9.85-20,22-20H80l22,30h99c12.15,0,22,8.954,22,20Z"
-                transform="translate(-3 -4.5)"
-                fill="#edf0f5"
-              ></path>
-            </svg>
-            <span v-if="assetsCount">
-              {{ assetsCount }} Asset<template v-if="assetsCount > 1"
-                >s</template
-              >
-            </span>
-            <span v-else>Empty Folder</span>
-          </div>
-        </div>
+    </div>
+    <div class="categary-name tb-column flex27">
+      <div class="top-column">
+        <nuxt-link
+          :is="shareMode ? 'a' : 'nuxt-link'"
+          :event="selected || shareMode ? '' : 'click'"
+          :style="{
+            cursor: shareMode ? 'default' : 'pointer',
+          }"
+          :to="
+            shareMode
+              ? ''
+              : {
+                  name: 'brand_name-folders',
+                  params: {
+                    brand_name: $getBrandName(),
+                    folder_name: folder.folder_name || folder.category_name,
+                  },
+                  hash: `#${folder.id}`,
+                }
+          "
+        >
+          {{ folder.folder_name || folder.category_name }}
+        </nuxt-link>
       </div>
-      <nuxt-link
-        :is="shareMode ? 'a' : 'nuxt-link'"
-        :event="selected || shareMode ? '' : 'click'"
-        :style="{
-          cursor: shareMode ? 'default' : 'pointer',
-        }"
-        :to="
-          shareMode
-            ? ''
-            : {
-                name: 'brand_name-folders',
-                params: {
-                  brand_name: $getBrandName(),
-                  folder_name: folder.folder_name || folder.category_name,
-                },
-                hash: `#${folder.id}`,
-              }
-        "
-        class="resource-title"
-      >
-        <span>{{ folder.folder_name || folder.category_name }}</span>
-      </nuxt-link>
-      <div class="format-type">
-        <span style="text-transform: unset">
-          <template v-if="assetsCount"
+    </div>
+    <div class="assets tb-column flex18">
+      <div class="top-column">
+        <label
+          ><template v-if="assetsCount"
             >{{ assetsCount }} Asset<template v-if="assetsCount > 1"
               >s</template
             ></template
           >
-          <template v-else>Empty Folder</template>
-        </span>
+          <template v-else>Empty Folder</template></label
+        >
       </div>
-      <div class="date">
-        {{ $moment(folder.updated_at).format('Do MMM, YYYY') }}
+    </div>
+    <div class="update-date tb-column flex18">
+      <div class="top-column">
+        <label>{{ $moment(folder.updated_at).format('Do MMM, YYYY') }}</label>
       </div>
-      <div class="size">&dash;</div>
-      <div class="resource-info">
-        <template v-if="shareMode"> - </template>
-        <template v-else>
-          <a
-            class="share-it action-btn"
-            @click="$refs.shareDialog.toggleModel()"
-          >
-            <ShareIcon />
-          </a>
-        </template>
+    </div>
+    <div class="size tb-column flex12">
+      <div class="top-column">
+        <label>&dash;</label>
+      </div>
+    </div>
+    <div class="categary-action tb-column flex15">
+      <div class="top-column">
+        <div class="categary-actions">
+          <template v-if="shareMode"> - </template>
+          <template v-else>
+            <a
+              class="share-it action-btn"
+              @click="$refs.shareDialog.toggleModel()"
+            >
+              <img src="~/assets/img/share.svg" alt="" />
+            </a>
+          </template>
+        </div>
       </div>
     </div>
     <client-only>
       <ShareFile ref="shareDialog" :folders="[folder]" type="folder" />
     </client-only>
-  </div>
+  </li>
 </template>
 
 <script>

@@ -142,9 +142,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.no-remove [data-role='remove'] {
-  display: none !important;
-}
-</style>

@@ -1,17 +1,10 @@
 <template>
   <ShowWhenReady>
     <AppHeader />
-    <div class="main">
-      <div class="main-right-bodypart front-page">
-        <div class="center-part-view-main full-width-box boxes-part">
-          <div class="center-part-view">
-            <div class="center-part-view-body">
-              <SearchBar />
-              <nuxt></nuxt>
-            </div>
-          </div>
-        </div>
-      </div>
+
+    <div class="body-content">
+      <SearchBar />
+      <nuxt></nuxt>
     </div>
   </ShowWhenReady>
 </template>

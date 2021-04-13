@@ -1,33 +1,29 @@
 <template>
   <div
-    class="section-title d-flex flex-column flex-lg-row align-items-center toolbar"
+    :class="{
+      'section-title d-flex flex-column flex-lg-row align-items-center':
+        hashParam != 'search' ? true : false,
+    }"
   >
-    <div
-      class="d-flex sec-title-left justify-content-between justify-content-lg-start"
-    >
-      <div class="custom-checkbox">
-        <input
-          v-if="!!assetsCount"
-          id="toolbar-dam-select"
-          class="form-check-input"
-          type="checkbox"
-          :checked="selectedAll"
-          @input="
-            (ev) =>
-              $emit(`click:${ev.target.checked ? 'select-all' : 'select-none'}`)
-          "
-        />
-        <label
-          for="toolbar-dam-select"
-          :class="{ 'hide-select': !assetsCount }"
-        >
-          <span class="h2">
-            {{ title }}
-          </span>
-        </label>
+    <div class="sec-title-left d-flex align-items-center">
+      <nuxt-link
+        v-if="breadcrumbs"
+        class="home-icon"
+        :to="`/${$getBrandName()}`"
+        ><img src="~/assets/img/address.svg" alt=""
+      /></nuxt-link>
+      <div v-if="breadcrumbs" class="breadcrumb-links">
+        <ul>
+          <li>&nbsp;</li>
+          <li v-for="(crumb, i) in breadcrumbs" :key="i">
+            <component :is="crumb.url ? 'nuxt-link' : 'span'" :to="crumb.url">
+              {{ crumb.name }}
+            </component>
+          </li>
+        </ul>
       </div>
       <client-only>
-        <div v-if="showSelect" class="section-filter">
+        <div v-if="showSelect" class="search-by ml-3">
           <Select2
             class="select2-hidden-accessible"
             :value="hashParam"
@@ -37,93 +33,141 @@
           />
         </div>
       </client-only>
-      <div
-        v-if="hashParam == 'search' && $route.params.filterItems"
-        class="mt-2 ml-3"
-      >
-        <transition-group
-          tag="div"
-          name="slide-right"
-          class="popular-tags selected-tags"
-        >
-          <div
-            v-for="filterItem in $route.params.filterItems.slice(0, 2)"
-            :key="filterItem.key"
-            style="cursor: default"
-            class="select-field"
-          >
-            <label
-              style="display: inline-block"
-              :inner-html.prop="filterItem.name"
-            ></label>
-          </div>
-          <div
-            v-if="$route.params.filterItems.length > 2"
-            key="more"
-            class="select-field"
-            style="display: inline-flex; align-items: center"
-          >
-            <div class="mr-2">and</div>
-            <label
-              style="
-                display: inline-block;
-                cursor: pointer;
-                white-space: nowrap;
-              "
-              @click="openSearch"
-            >
-              {{ $route.params.filterItems.length - 2 }} more
-            </label>
-          </div>
-        </transition-group>
-      </div>
     </div>
     <div
-      v-if="assetsCount > 0"
-      class="sec-title-right flex-row justify-content-between justify-content-lg-end align-items-center ml-lg-auto d-flex"
+      v-if="hashParam == 'search' && $route.params.filterItems"
+      class="filter-result"
     >
-      <div>
-        <span class="file-counter">{{ assetsCount }} Assets</span>
+      <h2 v-if="assetsCount > 0">{{ assetsCount }} Assets found</h2>
+      <div class="filter-tags">
+        <transition-group tag="div" name="slide-right" class="tag-add-box">
+          <span
+            v-for="filterItem in $route.params.filterItems"
+            :key="filterItem.key"
+            class="added-tag"
+          >
+            <label :inner-html.prop="filterItem.name"></label>
+            <span @click="$route.params.removeFilterItem(filterItem)"
+              ><img src="~/assets/img/close.svg" alt="" />
+            </span>
+          </span>
+        </transition-group>
+        <a class="clear-filter" @click="removeAllFilterItem()">Clear Filters</a>
       </div>
-      <template>
-        <div class="file-sort">
-          <Select2
-            :value="sortingModel"
-            :options="sortingOptions"
-            :attrs="{ minimumResultsForSearch: -1 }"
-            @input="emitSortParamsArray"
-          />
+    </div>
+    <!-- <div
+      v-if="hashParam == 'search' && $route.params.filterItems"
+      class="mt-2 ml-3"
+    >
+      <transition-group
+        tag="div"
+        name="slide-right"
+        class="popular-tags selected-tags"
+      >
+        <div
+          v-for="filterItem in $route.params.filterItems.slice(0, 2)"
+          :key="filterItem.key"
+          style="cursor: default"
+          class="select-field"
+        >
+          <label
+            style="display: inline-block"
+            :inner-html.prop="filterItem.name"
+          ></label>
         </div>
         <div
-          v-if="sortingModel != 'Sort by'"
-          class="px-2 ml-3 mt-2"
-          style="cursor: poister"
-          @click="emitSortParamsArray()"
+          v-if="$route.params.filterItems.length > 2"
+          key="more"
+          class="select-field"
+          style="display: inline-flex; align-items: center"
         >
-          <img
-            height="18"
-            width="18"
-            src="@/assets/img/down-arrow.svg"
-            :style="{ transform: `rotate(${sortingDesc ? 180 : 0}deg)` }"
-          />
+          <div class="mr-2">and</div>
+          <label
+            style="display: inline-block; cursor: pointer; white-space: nowrap"
+            @click="openSearch"
+          >
+            {{ $route.params.filterItems.length - 2 }} more
+          </label>
         </div>
-      </template>
+      </transition-group>
+    </div> -->
 
-      <div class="file-grid">
-        <span
-          class="tile"
-          :class="{ active: mode == 'row' }"
-          @click="$emit('update:mode', 'row')"
-        >
-          <img src="@/assets/img/icon/grid-icon.svg" alt="" />
-        </span>
-        <span
-          class="list"
-          :class="{ active: mode == 'column' }"
-          @click="$emit('update:mode', 'column')"
-        >
-          <img src="@/assets/img/icon/list-icon.svg" alt="" />
-        </span>
+    <div
+      v-if="assetsCount > 0"
+      :class="{
+        'section-title d-flex flex-column flex-lg-row align-items-center':
+          hashParam == 'search' ? true : false,
+        'sec-title-right d-flex align-items-center ml-lg-auto':
+          hashParam != 'search' ? true : false,
+      }"
+    >
+      <div
+        :class="{
+          'sec-title-right flex-row justify-content-between justify-content-lg-end align-items-center ml-lg-auto d-flex':
+            hashParam == 'search' ? true : false,
+        }"
+      >
+        <div class="table-filter">
+          <ul>
+            <li>
+              <template v-if="subfolderCount > 0"
+                >{{ subfolderCount }} Folder<template v-if="subfolderCount > 1"
+                  >s</template
+                ></template
+              >
+              <template v-if="fileCount > 0"
+                >{{ fileCount }} Asset<template v-if="fileCount > 1"
+                  >s</template
+                ></template
+              >
+            </li>
+            <li>
+              <div class="search-by">
+                <Select2
+                  :value="sortingModel"
+                  :options="sortingOptions"
+                  :attrs="{ minimumResultsForSearch: -1 }"
+                  @input="emitSortParamsArray"
+                />
+              </div>
+            </li>
+            <li>
+              <template>
+                <div
+                  v-if="sortingModel != 'Sort by'"
+                  class="px-2 ml-3 mt-2"
+                  style="cursor: poister"
+                  @click="emitSortParamsArray()"
+                >
+                  <img
+                    height="18"
+                    width="18"
+                    src="@/assets/img/down-arrow.svg"
+                    :style="{
+                      transform: `rotate(${sortingDesc ? 180 : 0}deg)`,
+                    }"
+                  />
+                </div>
+              </template>
+            </li>
+            <li>
+              <div class="gried-view">
+                <span
+                  class="gridview"
+                  :class="{ active: mode == 'row' }"
+                  @click="$emit('update:mode', 'row')"
+                  ><img src="~/assets/img/tile-view.svg" alt=""
+                /></span>
+                <span
+                  class="listview"
+                  :class="{ active: mode == 'column' }"
+                  @click="$emit('update:mode', 'column')"
+                  ><img src="~/assets/img/list-view.svg" alt=""
+                /></span>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -140,6 +184,9 @@ export default {
     mode: { type: String, default: 'row' },
     sorting: { type: String, default: 'Sort by' },
     sortingDesc: { type: Boolean, default: false },
+    breadcrumb: { type: Object, default: null },
+    fileCount: { type: Number, default: 0 },
+    subfolderCount: { type: Number, default: 0 },
   },
   data() {
     return {
@@ -180,8 +227,57 @@ export default {
     title() {
       return this.getTitle()
     },
+    breadcrumbs() {
+      if (!this.hashParam || this.hashParam === 'search') return null
+
+      const breadcrumbs = []
+
+      switch (this.hashParam) {
+        case 'uncategorized':
+          breadcrumbs.push({
+            name: 'Uncategorized Assets',
+          })
+          break
+        default:
+          if (this.inCategory)
+            breadcrumbs.push({
+              name: 'All ' + this.category.text?.toLowerCase(),
+            })
+          else {
+            const recursivePush = (item, array) => {
+              if (!item) return
+
+              array.push({
+                name: item.folder_name,
+                url:
+                  item.id.toString() !== this.hashParam.toString()
+                    ? {
+                        name: 'brand_name-folders',
+                        params: { brand_name: this.$getBrandName() },
+                        hash: `#${item.id}`,
+                      }
+                    : null,
+              })
+
+              recursivePush(item.parent, array)
+            }
+
+            recursivePush(this.breadcrumb, breadcrumbs)
+          }
+      }
+
+      return breadcrumbs.reverse()
+    },
+
+    category() {
+      return this.categoriesObject.find(({ id }) => this.hashParam === id)
+    },
   },
   watch: {
+    $route() {
+      this.showDropdown = false
+      this.$nextTick(() => (this.showDropdown = true))
+    },
     sortingModel(sortingModel) {
       this.$emit('update:sorting', sortingModel)
     },
@@ -269,24 +365,18 @@ export default {
         if (toEmit) this.$emit('sort', toEmit)
       })
     },
+    removeAllFilterItem() {
+      if (this.$route.params.searchParams) {
+        this.$router.push({
+          name: 'brand_name-folders',
+          params: {
+            brand_name: this.$getBrandName(),
+            workspace_id: this.$getWorkspaceId(),
+          },
+        })
+        this.moreOptions = false
+      }
+    },
   },
 }
 </script>
-
-<style>
-.toolbar .popular-tags .select-field label {
-  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.082) !important;
-  padding-right: 8px;
-}
-
-.custom-checkbox label.hide-select {
-  padding-left: 0 !important;
-  cursor: default;
-}
-.select2-search.select2-search--dropdown {
-  display: none;
-}
-.custom-checkbox label.hide-select:before {
-  opacity: 0 !important;
-}
-</style>

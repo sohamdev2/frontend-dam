@@ -1,217 +1,158 @@
 <template>
   <input
-    class="form-control"
-    name="daterange"
-    :value="value"
-    :placeholder="placeholder"
     type="text"
-    :style="{ color: textColor }"
-    readonly
+    :placeholder="placeholder"
+    :style="dateStyle"
+    :class="classObj"
+    data-lpignore="true"
   />
 </template>
 
 <script>
+import flatpickr from 'flatpickr'
+import moment from 'moment-timezone'
 export default {
   name: 'DateRangePicker',
   props: {
-    startDate: { type: [String, Date], default: null },
-    endDate: { type: [String, Date], default: null },
-    format: { type: String, default: 'YYYY-MM-DD' },
-    noConditionalFormating: { type: Boolean, default: false },
-    drops: { type: String, default: null },
-    opens: { type: String, default: 'right' },
-    placeholder: { type: String, default: 'No Date selected' },
-    parent: { type: String, default: '.daterange-loop' },
-    noColor: { type: Boolean, default: false },
+    placeholder: {
+      type: [String],
+      default: 'Please select date',
+    },
+    displayFormat: {
+      type: [String],
+      default: 'MMM D, YYYY',
+    },
+    startDate: {
+      type: [String, Date],
+      default: null,
+    },
+    endDate: {
+      type: [String, Date],
+      default: null,
+    },
+    colorDate: {
+      type: Boolean,
+      default: false,
+    },
+    human: {
+      type: Boolean,
+      default: false,
+    },
+    customEvent: {
+      type: Boolean,
+      default: false,
+    },
+    disableDate: {
+      type: Array,
+      // eslint-disable-next-line vue/require-valid-default-prop
+      default() {
+        return []
+      },
+    },
+    classObj: { type: [String, Object], default: null },
+    disableMaxDate: { type: [Boolean], default: false },
+  },
+  data() {
+    return {
+      fp: null,
+      defaultDateColor: '#393939',
+      previousDateColor: 'red',
+      sameOrNextDateColor: 'green',
+      style: {},
+      formattedDate: null,
+      config: {
+        wrap: false, // set wrap to true only when using 'input-group'
+        altFormat: 'M	j, Y',
+        altInput: false,
+        dateFormat: 'Y-m-d',
+        monthSelectorType: 'static',
+        shorthandCurrentMonth: true,
+        locale: {
+          firstDayOfWeek: 1, // start week on Monday
+        },
+        formatDate: (date, format, locale) =>
+          this.dateFormat(date, format, locale),
+        onChange: (selectedDates, dateStr, instance) =>
+          this.onChange(selectedDates, dateStr, instance),
+      },
+    }
   },
   computed: {
-    textColor() {
-      if (!this.startDate || !this.endDate || this.noColor) return ''
+    dateStyle() {
+      const date = this.formattedDate
+      if (this.colorDate) {
+        if (this.$moment(date).isBefore(this.$moment(), 'day'))
+          return { color: this.previousDateColor }
 
-      switch (this.value) {
-        case 'Today':
-        case 'Tomorrow':
-          return '#08b505 ' // #00bf9c
-        case 'Yesterday':
-          return '#ed4758'
+        if (this.$moment(date).isSameOrAfter(this.$moment(), 'day'))
+          return { color: this.sameOrNextDateColor }
       }
 
-      const data = this.getDateObject()
-      if (data) {
-        const { normEndDate } = data
-        if (new Date(normEndDate).getTime() < Date.now()) return '#ed4758'
-      }
-
-      return '#555' // #555 #6f7782
-    },
-    value() {
-      if (!this.startDate || !this.endDate) return ''
-
-      const data = this.getDateObject()
-      if (!data) return ''
-
-      const { normEndDate, normStartDate, mStartDate, mEndDate } = data
-
-      if (this.noConditionalFormating) {
-        return `${this.$moment(mStartDate).format(
-          this.format
-        )} - ${this.$moment(mEndDate).format(this.format)}`
-      }
-
-      if (normEndDate === normStartDate)
-        return `${mStartDate.calendar(new Date(), {
-          sameDay: '[Today]',
-          nextDay: '[Tomorrow]',
-          nextWeek: 'dddd',
-          lastDay: '[Yesterday]',
-          lastWeek: this.format,
-          sameElse: this.format,
-        })}`
-
-      if (
-        mStartDate.format('YYYY') === mEndDate.format('YYYY') &&
-        mStartDate.format('YYYY') === this.$moment().format('YYYY')
-      ) {
-        if (mStartDate.format('MM') === mEndDate.format('MM')) {
-          return `${this.$moment(mStartDate).format('D')} - ${this.$moment(
-            mEndDate
-          ).format('D MMM')}`
-        } else {
-          return `${this.$moment(mStartDate).format('D MMM')} - ${this.$moment(
-            mEndDate
-          ).format('D MMM')}`
-        }
-      }
-
-      return `${this.$moment(mStartDate).format('D MMM YYYY')} - ${this.$moment(
-        mEndDate
-      ).format('D MMM YYYY')}`
+      return this.style
     },
   },
   watch: {
-    startDate(val) {
-      this.setDate('startDate')
+    startDate(newVal, OldVal) {
+      this.fp.setDate([newVal, this.endDate])
     },
-    endDate(val) {
-      this.setDate('endDate')
+    endDate(newVal, OldVal) {
+      this.formattedDate = newVal
+      this.fp.setDate([this.startDate, newVal])
+    },
+    disableDate(newVal, oldVal) {
+      if (newVal.length) this.fp.set('disable', newVal)
     },
   },
   mounted() {
-    this.$nextTick(() => this.init())
+    this.formattedDate = this.endDate
+    this.fp = flatpickr(this.$el, this.config)
+    this.fp.set('mode', 'range')
+    this.fp.setDate([this.startDate, this.endDate])
+
+    if (!this.disableMaxDate) {
+      this.fp.set('maxDate', new Date())
+    }
+
+    if (this.disableDate.length) this.fp.set('disable', this.disableDate)
   },
-  updated() {
-    this.$nextTick(() => this.init())
+  destroyed() {
+    this.fp.destroy()
   },
   methods: {
     getValueText() {
-      return this.value
+      return this.$el.value
     },
-    getDateObject() {
-      if (!this.startDate || !this.endDate) return null
-
-      let normStartDate = this.startDate
-      let normEndDate = this.endDate
-
-      if (typeof normStartDate === 'string')
-        normStartDate = this.$moment(normStartDate).local().format('YYYY-MM-DD')
-      if (typeof normEndDate === 'string')
-        normEndDate = this.$moment(normEndDate).local().format('YYYY-MM-DD')
-
-      if (
-        new Date(normStartDate) === 'Invalid Date' ||
-        new Date(normEndDate) === 'Invalid Date'
-      )
-        return null
-
-      const mStartDate = this.$moment(normStartDate)
-      const mEndDate = this.$moment(normEndDate)
-
-      return {
-        normEndDate,
-        normStartDate,
-        mStartDate,
-        mEndDate,
+    dateFormat(date, format, locale) {
+      if (this.human) {
+        return moment(date).calendar(null, {
+          sameDay: '[Today]',
+          nextDay: '[Tomorrow]',
+          nextWeek: `${this.displayFormat}`,
+          lastDay: '[Yesterday]',
+          lastWeek: `${this.displayFormat}`,
+          sameElse: `${this.displayFormat}`,
+        })
+      } else {
+        return moment(date).format(`${this.displayFormat}`)
       }
     },
-    init() {
-      const dateRangePicker = window.$(this.$el)
+    onChange(selectedDates, dateStr, instance) {
+      if (selectedDates[0] !== undefined && selectedDates[1] !== undefined) {
+        const startDate = this.$moment(new Date(selectedDates[0]))
+          .local()
+          .format('YYYY-MM-DD')
+        const endDate = this.$moment(new Date(selectedDates[1]))
+          .local()
+          .format('YYYY-MM-DD')
+        this.formattedDate = endDate
+        this.$emit('update:startDate', startDate)
+        this.$emit('update:endDate', endDate)
 
-      dateRangePicker
-        .daterangepicker({
-          opens: this.opens,
-          drops: this.drops || 'down',
-          parentEl: this.parent,
-          autoUpdateInput: false,
-          startDate: new Date(),
-          endDate: new Date(),
-          autoApply: true,
-          locale: {
-            cancelLabel: 'Clear',
-            // format: 'YYYY-MM-DD'
-            format: 'YYYY-MM-DD',
-          },
-        })
-        .on('apply.daterangepicker', (ev, picker) => {
-          this.$emit('update:startDate', picker.startDate.format('YYYY-MM-DD'))
-          this.$emit('update:endDate', picker.endDate.format('YYYY-MM-DD'))
-          this.$emit('dateRangeUpdateDate', picker)
-        })
-        .on('show.daterangepicker', (ev, picker) => {
-          if (!this.drops)
-            if (
-              picker.element.offset().top -
-                window.$(window).scrollTop() +
-                picker.container.outerHeight() >
-              window.$(window).height()
-            )
-              picker.drops = 'up'
-            else picker.drops = 'down'
-
-          window.$(this.$el).addClass('show')
-          picker.move()
-        })
-        .on('cancel.daterangepicker', (ev, picker) => {
-          this.$emit('update:startDate', null)
-          this.$emit('update:endDate', null)
-          this.$emit('dateRangeUpdateDate', picker)
-        })
-        .on('hide.daterangepicker', (ev, picker) =>
-          window.$(this.$el).removeClass('show')
-        )
-
-      this.$nextTick(() => {
-        this.setDate('startDate')
-        this.setDate('endDate')
-      })
-    },
-    setDate(date) {
-      if (!this.startDate || !this.endDate) return
-
-      if (
-        new Date(this.startDate) === 'Invalid Date' ||
-        new Date(this.endDate) === 'Invalid Date'
-      )
-        return
-
-      switch (date) {
-        case 'startDate':
-          window
-            .$(this.$el)
-            .data('daterangepicker')
-            .setStartDate(
-              this.$moment(this.startDate).local().format('YYYY-MM-DD')
-            )
-          break
-        case 'endDate':
-          window
-            .$(this.$el)
-            .data('daterangepicker')
-            .setEndDate(this.$moment(this.endDate).local().format('YYYY-MM-DD'))
-          break
-        default:
-          break
+        if (this.customEvent) this.$emit('dateChanged', { startDate, endDate })
       }
     },
   },
 }
 </script>
+
+<style scoped></style>
