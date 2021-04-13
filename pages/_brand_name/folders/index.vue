@@ -409,12 +409,23 @@ export default {
             this.$toQueryString({
               workspace_id: this.$getWorkspaceId(),
               category_id: this.hashParam,
+              page: this.page,
+              sort_value: this.apiSortValue(),
+              sort_by: this.apiSortOrder(),
             })
         )
         .then(({ data }) => {
           if (this.hashParam !== hashParam) return
-          this.breadcrumb = data.breadcrumb
 
+          if (data.category_assets.last_page < this.page) {
+            this.page = 1
+            return this.getData()
+          } else this.page = data.category_assets.current_page
+
+          this.totalApiAssets = data.category_assets.total
+
+          this.lastPage = data.category_assets.last_page
+          this.breadcrumb = data.breadcrumb
           this.subFolders = makeFolder(data.folder || [])
           this.files = data.category_assets.data || []
         })

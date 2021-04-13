@@ -15,7 +15,7 @@
 export default {
   computed: {
     show() {
-      return !!this.$store.state?.appData?.dashboardData
+      return !!this.$store.state?.appData?.status
     },
   },
   mounted() {

@@ -107,14 +107,17 @@ function makeFolder(array) {
 }
 
 export default {
-  mixins: [assetSorting],
   layout: 'app-min-no-search',
+  mixins: [assetSorting],
   asyncData({ params, query, $axios, redirect, error, $getErrorMessage }) {
     return $axios
       .$get(`show-share-assets?type=${params.type}&status=${query.status}`)
       .then(({ data }) => {
         if (!data.category.length && !data.assets.length)
-          return error({ status: 404 })
+          return error({
+            status: 404,
+            message: 'Requested files or folders were removed.',
+          })
         const subFolders = makeFolder(data.category || [])
         const files = data.assets || []
 

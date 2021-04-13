@@ -31,9 +31,9 @@ export default ({ app, $axios, store }, inject) => {
 
     await app.$auth.logout()
     // await app.$clearAuthCookies()
-    store.commit('appData/resetState')
 
     app.router.replace(`/${brandName}/login`).catch(() => {})
+    store.commit('appData/resetState')
   }
 
   // const clearAuthCookies = () => {
