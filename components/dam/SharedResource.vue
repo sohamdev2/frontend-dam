@@ -31,19 +31,8 @@
             :style="mode == 'column' ? { background: 'transparent' } : {}"
             :class="{ 'no-image': !videoThumbnail }"
           >
-            <img
-              class="preview-images preview"
-              :style="
-                videoThumbnail == previewImage
-                  ? {
-                      maxWidth: `100px`,
-                    }
-                  : {}
-              "
-              style="object-fit: contain !important"
-              :src="videoThumbnail"
-            />
-            <video
+            <img class="preview-images preview" :src="videoThumbnail" />
+            <!-- <video
               v-show="playingModel"
               ref="video"
               class="thevideo"
@@ -60,7 +49,7 @@
             >
               <source :src="file.display_file" type="video/mp4" />
               Your browser does not support the video tag.
-            </video>
+            </video> -->
           </div>
           <div v-else class="categary-image" :class="{ 'no-image': !isImage }">
             <img

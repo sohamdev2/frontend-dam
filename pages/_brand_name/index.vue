@@ -77,7 +77,15 @@
         </div>
       </template>
       <template v-if="dashboardData">
-        <div class="section-title">
+        <div
+          v-if="
+            dashboardData.recent_uploads.images.length ||
+            dashboardData.recent_uploads.documents.length ||
+            dashboardData.recent_uploads.videos.length ||
+            dashboardData.recent_uploads.audios.length
+          "
+          class="section-title"
+        >
           <h4>Recent Uploads</h4>
         </div>
 

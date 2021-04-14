@@ -57,29 +57,13 @@
                   }
             "
           >
-            <img
-              :style="
-                videoThumbnail == previewImage
-                  ? {
-                      maxWidth: `100px`,
-                    }
-                  : {}
-              "
-              style="object-fit: contain !important"
-              :src="videoThumbnail"
-            />
+            <img :src="videoThumbnail" />
 
             <video
               v-show="playingModel"
               ref="video"
               class="thevideo"
               :data-video="file.display_file"
-              style="
-                width: 100%;
-                height: auto;
-                object-fit: contain;
-                margin: auto;
-              "
               playsinline
               muted
               loop
@@ -88,6 +72,7 @@
               Your browser does not support the video tag.
             </video>
           </nuxt-link>
+
           <div class="video-info">
             <div class="upper-info">
               <span :inner-html.prop="file.file_type || '&dash;'"></span>
@@ -104,11 +89,6 @@
             </div>
             <div class="down-info">
               <template v-if="isVideo">
-                <a
-                  ref="expandButton"
-                  :href="`#file-video-${file.id}`"
-                  data-fancybox
-                ></a>
                 <video
                   :id="`file-video-${file.id}`"
                   width="640"
@@ -126,6 +106,7 @@
               <template v-if="isVideo">
                 <a @click="paused = !paused">
                   <img
+                    style="width: 20px"
                     :src="
                       require(paused
                         ? '~/assets/img/play-icon.svg'
@@ -135,10 +116,9 @@
                   />
                 </a>
                 <a
-                  @click.stop="
-                    $refs.expandButton.click()
-                    setPlaytime()
-                  "
+                  ref="expandButton"
+                  :href="`#file-video-${file.id}`"
+                  data-fancybox
                   ><img src="~/assets/img/expand-icon.svg" alt="" />
                 </a>
               </template>
@@ -169,13 +149,11 @@
             </div>
           </div>
         </div>
+
         <div v-else class="categary-image" :class="{ 'no-image': !isImage }">
           <nuxt-link
             :is="shareMode ? 'a' : 'nuxt-link'"
             class="img-link"
-            :style="{
-              cursor: shareMode ? 'default' : 'pointer',
-            }"
             :event="selected || shareMode ? '' : 'click'"
             :to="
               shareMode

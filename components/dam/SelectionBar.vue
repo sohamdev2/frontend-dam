@@ -25,7 +25,10 @@
         <div class="select-right">
           <ul>
             <li>
-              <a @click="$refs.shareDialog.toggleModel()">
+              <a
+                href="javascript:void(0);"
+                @click="$refs.shareDialog.toggleModel()"
+              >
                 Share
                 <img
                   src="@/assets/img/share.svg"
@@ -35,7 +38,7 @@
               </a>
             </li>
             <li>
-              <a @click="downloadSelectedFile">
+              <a href="javascript:void(0);" @click="downloadSelectedFile">
                 Download
                 <img
                   src="@/assets/img/download.svg"

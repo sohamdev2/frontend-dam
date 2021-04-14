@@ -3,9 +3,7 @@
     <div class="share-box d-flex align-items-center">
       <div
         class="profile-bg flex-20"
-        style="background-image: url('img/dealer-logo1.jpg')"
         :style="{ backgroundImage: `url('${previewImage}')` }"
-        title="Traveland Leisure Vehicles Ltd"
       ></div>
       <div class="share-name flex-80 pl-2">
         <label v-tooltip="file.display_file_name">{{

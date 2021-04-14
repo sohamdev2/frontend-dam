@@ -9,15 +9,33 @@
         ></label>
       </label>
       <div class="categary-image folder-image">
-        <span>
-          <img src="~/assets/img/folder-icon.svg" alt="Folder Icon" />
-          <b v-if="assetsCount"
-            >{{ assetsCount }} Asset<template v-if="assetsCount > 1"
-              >s</template
-            ></b
-          >
-          <b v-else>Empty Folder</b>
-        </span>
+        <nuxt-link
+          :is="shareMode ? 'a' : 'nuxt-link'"
+          :event="selected || shareMode ? '' : 'click'"
+          :to="
+            shareMode
+              ? ''
+              : {
+                  name: 'brand_name-folders',
+                  params: {
+                    brand_name: $getBrandName(),
+                    folder_name: folder.folder_name || folder.category_name,
+                  },
+                  hash: `#${folder.id}`,
+                }
+          "
+          class="img-link"
+        >
+          <span>
+            <img src="~/assets/img/folder-icon.svg" alt="Folder Icon" />
+            <b v-if="assetsCount"
+              >{{ assetsCount }} Asset<template v-if="assetsCount > 1"
+                >s</template
+              ></b
+            >
+            <b v-else>Empty Folder</b>
+          </span>
+        </nuxt-link>
       </div>
     </div>
     <div class="categary-name tb-column flex27">

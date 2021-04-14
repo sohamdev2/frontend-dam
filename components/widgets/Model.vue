@@ -6,18 +6,18 @@
     role="dialog"
     :data-unique-id="id"
   >
-    <div
+    <!-- <div
       class="modal-backdrop fade"
       :class="{ 'in show': show }"
       style="display: none; z-index: 0"
       :data-unique-id="id"
       @click="active = false"
-    ></div>
+    ></div> -->
     <div
       class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
       role="document"
     >
-      <div class="modal-content bg-gray" :class="innerClass" style="z-index: 1">
+      <div class="modal-content bg-gray">
         <slot></slot>
       </div>
     </div>
@@ -29,9 +29,7 @@ import ValueModel from '@/mixins/ValueModel'
 
 export default {
   mixins: [ValueModel],
-  props: {
-    innerClass: { type: String, default: '' },
-  },
+
   data() {
     return {
       show: false,

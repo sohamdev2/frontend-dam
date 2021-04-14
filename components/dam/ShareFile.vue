@@ -1,5 +1,5 @@
 <template>
-  <Model v-model="active" inner-class="share-popup">
+  <Model v-model="active">
     <div class="modal-header">
       <h5 class="modal-title">Share selected files</h5>
       <button type="button" class="close" @click="active = false">
@@ -52,10 +52,7 @@
             ></div> -->
             <FolderIcon style="filter: brightness(0.5)" />
             <div class="share-name flex-80 pl-2">
-              <label
-                v-tooltip="folder.folder_name || folder.category_name"
-                :title="folder.folder_name || folder.category_name"
-              >
+              <label v-tooltip="folder.folder_name || folder.category_name">
                 {{
                   (folder.folder_name || folder.category_name)
                     | shrinkString(46, 12)
