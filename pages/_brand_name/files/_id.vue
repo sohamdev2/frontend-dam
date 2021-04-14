@@ -7,15 +7,6 @@
       <div
         class="sec-title-left d-flex justify-content-between justify-content-lg-start"
       >
-        <!-- <div v-if="breadcrumb" class="breadcrumb-links">
-          <ul>
-            <li>
-              <nuxt-link :to="breadcrumb.url">
-                {{ breadcrumb.name }}
-              </nuxt-link>
-            </li>
-          </ul>
-        </div> -->
         <nuxt-link
           v-if="breadcrumbs"
           class="home-icon"
