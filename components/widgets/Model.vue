@@ -6,13 +6,13 @@
     role="dialog"
     :data-unique-id="id"
   >
-    <!-- <div
+    <div
       class="modal-backdrop fade"
       :class="{ 'in show': show }"
       style="display: none; z-index: 0"
       :data-unique-id="id"
       @click="active = false"
-    ></div> -->
+    ></div>
     <div
       class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
       role="document"

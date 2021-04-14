@@ -81,7 +81,7 @@ export default {
             userName: user?.name || '-',
             user,
           }))
-          .sort($sortBy('updated_at')),
+          .sort($sortBy('updated_at', true)),
       }))
       .catch((e) => error(e))
   },
@@ -90,7 +90,7 @@ export default {
       deleting: false,
       sorting: {
         value: 'updated_at',
-        desc: false,
+        desc: true,
       },
       sortDesc: false,
     }

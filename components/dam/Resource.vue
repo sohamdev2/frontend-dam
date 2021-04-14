@@ -34,7 +34,6 @@
         <div
           v-if="isVideo"
           class="categary-image"
-          :style="mode == 'column' ? { background: 'transparent' } : {}"
           :class="{ 'no-image': !videoThumbnail }"
         >
           <nuxt-link
@@ -58,9 +57,8 @@
             "
           >
             <img :src="videoThumbnail" />
-
+            <!-- hitali  v-show="playingModel" -->
             <video
-              v-show="playingModel"
               ref="video"
               class="thevideo"
               :data-video="file.display_file"
