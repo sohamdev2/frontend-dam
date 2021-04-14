@@ -55,10 +55,10 @@ $(document).ready(function(){
 	// 		container.removeClass('show');
 	// 	}
 	// });
-	$(document).on('click','.filter-icon, .filter-close, .body-overlay',function (){
-		$('.filter-menu').toggleClass('show');
-		$('body').toggleClass('show-overly');
-	});
+	// $(document).on('click','.filter-icon, .filter-close, .body-overlay',function (){
+	// 	$('.filter-menu').toggleClass('show');
+	// 	$('body').toggleClass('show-overly');
+	// });
 	
 	
 	// Recent Uploads Mini Title

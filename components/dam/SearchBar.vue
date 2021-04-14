@@ -46,7 +46,7 @@
         <img src="~/assets/img/filter-icon.svg" alt="search" />
       </button>
     </div>
-    <div class="filter-menu customscrollbar">
+    <div class="filter-menu customscrollbar" :class="{ show: moreOptions }">
       <div class="row align-items-center">
         <div class="col-md-6">
           <h4 class="m-0">Refine your search</h4>
@@ -464,12 +464,14 @@ export default {
     },
     moreOptions(moreOptions) {
       if (moreOptions) {
-        // document.addEventListener('keyup', this.keyEvent)
+        this.$forceUpdate()
+        window.$('body').addClass('show-overly')
+      } else window.$('body').removeClass('show-overly')
 
-        this.$nextTick(() => {
-          this.$forceUpdate()
-        })
-      } else {
+      if (moreOptions) document.addEventListener('keyup', this.keyEvent)
+      else {
+        document.removeEventListener('keyup', this.keyEvent)
+
         const query = { ...this.$route.query }
 
         if (query.moreOptions) {
@@ -483,9 +485,6 @@ export default {
             })
             .catch(() => {})
         }
-
-        // window.$(".daterangepicker").remove();
-        // document.removeEventListener('keyup', this.keyEvent)
       }
     },
   },
@@ -497,6 +496,7 @@ export default {
           filterOptions.find(({ id }) => this.hashParam === id)?.id || 'all'
     })
     this.getSearchData()
+    this.loadJs()
   },
   destroyed() {
     if (this.moreOptions) document.removeEventListener('keyup', this.keyEvent)
@@ -515,6 +515,11 @@ export default {
       }
 
       this.searchParams = new SearchParams()
+    },
+    loadJs() {
+      window.$('.body-overlay').click(() => {
+        this.moreOptions = false
+      })
     },
     getHasFilters() {
       return this.hasFilters
