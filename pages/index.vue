@@ -7,9 +7,9 @@
             <div class="sign-heading-text text-center">
               <nuxt-link to="/">
                 <img
+                  class="logo"
                   src="~/assets/img/marcom_hq_2_1.svg"
-                  alt=""
-                  class="img-responsive img-center"
+                  alt="MarComHQ"
                 />
               </nuxt-link>
             </div>
@@ -32,14 +32,10 @@
                         class="form-control"
                         placeholder
                         autofocus
-                        data-lpignore="true"
                       />
                       <div v-if="$v.brandName.$error" class="input-error">
                         <template v-if="!$v.brandName.required">
                           Please provide a url.
-                        </template>
-                        <template v-else-if="!$v.brandName.hasUrl">
-                          There is no instance with url "{{ brandName }}"
                         </template>
                       </div>
                       <div
@@ -72,30 +68,12 @@
               </form>
             </div>
           </div>
-          <div
-            v-else
-            class="input-error text-info"
-            style="color: #17a2b8 !important"
-          >
-            <template v-if="!brandName">eg.</template>
-            {{ $config.baseUrl }}/<strong v-if="brandName">{{
-              brandName
-            }}</strong
-            ><strong v-else>&lt;Brand_URL&gt;</strong>
+          <div class="bottom-fix-link-center">
+            <a href="javascript:void(0);">Term of use.</a>
+            <a href="javascript:void(0);">Privacy policy</a>
           </div>
         </div>
-        <div style="text-align: center">
-          <button
-            class="btn"
-            type="submit"
-            :disabled="$v.brandName.$error || loading || !canGo"
-          >
-            <SpinLoading v-if="loading" style="margin-left: 0" />
-            <template v-else-if="brandName"> Go to {{ brandName }} </template>
-            <template v-else>Enter your brand url</template>
-          </button>
-        </div>
-      </form>
+      </div>
     </div>
   </div>
 </template>
@@ -124,7 +102,8 @@ export default {
           url: this.brandName,
         })
         .then((response) => {
-          this.$toast.global.success(response.message)
+          console.log(response)
+          this.$toast.global.success(response.data.message)
           this.$router.push({
             name: 'brand_name',
             params: {
