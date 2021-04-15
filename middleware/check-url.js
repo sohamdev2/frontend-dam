@@ -5,6 +5,7 @@ export default async function ({
   app,
   $auth,
   redirect,
+  store,
 }) {
   if ($auth.loggedIn) {
     const { brand_name: brandName } = app.context.route.params
@@ -20,7 +21,10 @@ export default async function ({
         .post('verify-domain', {
           url: $getBrandName(),
         })
-        .then(({ data: { code } }) => code === 200)
+        .then(({ data }) => {
+          store.dispatch('appData/assignLogo', data.data.logo)
+          return data.code === 200
+        })
 
       if (!isValid) {
         if ($getBrandName() === 'login') {
