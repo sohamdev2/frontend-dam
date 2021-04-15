@@ -65,7 +65,7 @@
 <script>
 export default {
   layout: 'app-min-no-search',
-  middleware: ['check-auth', 'check-url'],
+  middleware: ['check-auth', 'check-url', 'can-access'],
   data() {
     return {
       form: {
