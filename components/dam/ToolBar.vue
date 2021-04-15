@@ -85,15 +85,14 @@
                 ></template
               >
             </li>
-            <li>
+            <li v-if="hashParam">
               <div class="search-by small-wd">
-                <select>
-                  <option>12</option>
-                  <option>20</option>
-                  <option>40</option>
-                  <option>80</option>
-                  <option>100</option>
-                </select>
+                <Select2
+                  :value="intialCount"
+                  :options="assetCountOptions"
+                  :attrs="{ minimumResultsForSearch: -1 }"
+                  @input="emitSortAssetCount"
+                />
               </div>
             </li>
             <li>
@@ -162,15 +161,24 @@ export default {
     breadcrumb: { type: Object, default: null },
     fileCount: { type: Number, default: 0 },
     subfolderCount: { type: Number, default: 0 },
+    assetCount: { type: String, default: '12' },
   },
   data() {
     return {
       sortingModel: this.sorting || 'Sort by',
+      intialCount: this.assetCount || '12',
       sortingOptions: [
         { text: 'Name', id: 'display_file_name' },
         { text: 'Date', id: 'updated_at' },
         { text: 'Size', id: 'file_size' },
         { text: 'Type', id: 'file_type' },
+      ],
+      assetCountOptions: [
+        { text: '12', id: '12' },
+        { text: '20', id: '20' },
+        { text: '40', id: '40' },
+        { text: '80', id: '80' },
+        { text: '100', id: '100' },
       ],
       categoriesObject: [
         { text: 'Folders', id: '' },
@@ -262,8 +270,17 @@ export default {
     title(title) {
       this.$setPageTitle(title + ' | Digital Asset Manager')
     },
+    intialCount(intialCount) {
+      this.$emit('update:assetCount', intialCount)
+    },
+    assetCount(assetCount) {
+      this.intialCount = assetCount || '12'
+    },
   },
   methods: {
+    emitSortAssetCount(data) {
+      this.$emit('emitAssetCount', data)
+    },
     openSearch() {
       this.$router.replace({
         params: this.$route.params,
