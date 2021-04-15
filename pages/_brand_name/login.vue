@@ -16,7 +16,7 @@
                 <img
                   :src="logo ? logo : require('~/assets/img/logo.svg')"
                   alt=""
-                  class="img-responsive img-center logo-size"
+                  class="img-responsive img-center"
                 />
               </div>
               <div class="sign-body bg-white">
@@ -146,10 +146,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-.logo-size {
-  height: 200px;
-  width: 300px;
-}
-</style>
