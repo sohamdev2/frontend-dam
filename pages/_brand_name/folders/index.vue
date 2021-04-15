@@ -1,6 +1,6 @@
 <template>
   <div class="body-content two-part">
-    <div class="body-content-left" v-if="folderList.length">
+    <div v-if="folderList.length" class="body-content-left">
       <div class="category-list common-box bg-gray">
         <h4
           v-if="
@@ -42,9 +42,11 @@
         :breadcrumb="breadcrumb"
         :file-count="totalApiAssets || files.length"
         :subfolder-count="subFolders.length"
+        :asset-count.sync="sorting.totalAssetCount"
         @sort="(args) => args.forEach((arg) => sort(...arg))"
         @click:select-all="selectAll"
         @click:select-none="selectNone"
+        @emitAssetCount="changeEmitAssetCount"
       />
       <div
         v-if="loading"
@@ -438,15 +440,19 @@ export default {
     async getCategoryItems() {
       const hashParam = this.hashParam
       const body = {
-        workspace_id: this.$getWorkspaceId(),
-        type: this.hashParam,
         page: this.page,
         sort_value: this.apiSortValue(),
         sort_by: this.apiSortOrder(),
+        workspace_id: this.$getWorkspaceId(),
+        type: this.hashParam,
+        total_record: this.sorting.totalAssetCount,
       }
 
       await this.$axios
-        .$post('digital/view-all-assets-by-type', body)
+        .$post(
+          'digital/view-all-assets-by-type?' + this.$toQueryString(body),
+          body
+        )
         .then(({ data }) => {
           if (this.hashParam !== hashParam) return
           if (data.last_page < this.page) {
@@ -481,32 +487,50 @@ export default {
     },
     async getFolderData() {
       const hashParam = this.hashParam
+      const body = {
+        page: this.page,
+        sort_value: this.apiSortValue(),
+        sort_by: this.apiSortOrder(),
+        workspace_id: this.$getWorkspaceId(),
+        category_id: this.hashParam,
+        total_record: this.sorting.totalAssetCount,
+      }
 
       await this.$axios
         .$get(
-          'digital/view-files-with-category?' +
-            this.$toQueryString({
-              workspace_id: this.$getWorkspaceId(),
-              category_id: this.hashParam,
-              page: this.page,
-              sort_value: this.apiSortValue(),
-              sort_by: this.apiSortOrder(),
-            })
+          'digital/view-files-with-category?' + this.$toQueryString(body),
+          body
         )
         .then(({ data }) => {
+          // if (this.hashParam !== hashParam) return
+
+          // if (data.category_assets.last_page < this.page) {
+          //   this.page = 1
+          //   return this.getData()
+          // } else this.page = data.category_assets.current_page
+
+          // this.totalApiAssets = data.category_assets.total
+
+          // this.lastPage = data.category_assets.last_page
+          // this.breadcrumb = data.breadcrumb
+          // this.subFolders = makeFolder(data.folder || [])
+          // this.files = data.category_assets.data || []
+
           if (this.hashParam !== hashParam) return
-
-          if (data.category_assets.last_page < this.page) {
-            this.page = 1
-            return this.getData()
-          } else this.page = data.category_assets.current_page
-
-          this.totalApiAssets = data.category_assets.total
+          this.breadcrumb = data.breadcrumb
 
           this.lastPage = data.category_assets.last_page
-          this.breadcrumb = data.breadcrumb
-          this.subFolders = makeFolder(data.folder || [])
+          this.totalApiAssets = data.category_assets.total
+
           this.files = data.category_assets.data || []
+          // this.subFolders = makeFolder(data.folder || [])
+
+          if (this.page > data.category_assets.last_page) {
+            this.page = data.category_assets.last_page
+            return
+          }
+
+          this.page = data.category_assets.current_page
         })
         .catch((e) => {
           const message = this.$getErrorMessage(e)

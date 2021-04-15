@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-v-html  -->
 <template>
-  <div>
+  <div class="h-100">
     <div
       class="section-title dam-detail-title d-flex flex-column flex-lg-row align-items-center"
     >
@@ -17,11 +17,7 @@
           <ul>
             <li>&nbsp;</li>
             <li v-for="(crumb, i) in breadcrumbs" :key="i">
-              <component
-                :is="crumb.url ? 'nuxt-link' : 'span'"
-                v-tooltip="crumb.og || crumb.name"
-                :to="crumb.url"
-              >
+              <component :is="crumb.url ? 'nuxt-link' : 'span'" :to="crumb.url">
                 {{ crumb.name }}
               </component>
             </li>
@@ -32,13 +28,22 @@
     <div class="dam-detail">
       <div class="row h-100">
         <div class="col-lg-6 inner-detail-left col-xl-7 h-100">
-          <h2 v-tooltip="file.display_file_name" class="title">
+          <h2 class="title">
             {{ file.display_file_name | shrinkString(60, 15) }}
           </h2>
-          <div class="common-box customscrollbar p0">
+          <div
+            class="common-box customscrollbar p0"
+            style="display: flex; flex-direction: column"
+          >
             <div
               v-if="isPdf || isVideo || isDoc || isAudio || isImage"
               class="asset-detail-img"
+              style="
+                display: flex;
+                flex-direction: column;
+                flex: 1 1 0%;
+                overflow: hidden;
+              "
             >
               <iframe
                 v-if="isPdf"
@@ -172,15 +177,11 @@
                     <ul class="overview-table">
                       <li>
                         <span class="flex30">ID</span
-                        ><span
-                          v-tooltip="(file.id || '').toString()"
-                          class="flex70"
-                          >: {{ file.id }}</span
-                        >
+                        ><span class="flex70">: {{ file.id }}</span>
                       </li>
                       <li v-if="parentFolder">
                         <span class="flex30">Parent folder</span
-                        ><span v-tooltip="parentFolder.name" class="flex70"
+                        ><span class="flex70"
                           ><nuxt-link :to="parentFolder.url" target="_blank">
                             : {{ parentFolder.name }}
                             <i
@@ -198,13 +199,6 @@
                             $camelCaseToNormalCase(key)
                           }}</span
                           ><span
-                            v-tooltip="
-                              $getFormattedMetaValue(
-                                value,
-                                key,
-                                true
-                              ).toString()
-                            "
                             class="flex70"
                             :inner-html.prop="
                               ':' + ' ' + $getFormattedMetaValue(value, key)
@@ -231,7 +225,6 @@
                           $camelCaseToNormalCase(key)
                         }}</span
                         ><span
-                          v-tooltip="$getFormattedMetaValue(value, key, true)"
                           class="flex55"
                           :inner-html.prop="
                             ':' + ' ' + $getFormattedMetaValue(value, key)

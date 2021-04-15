@@ -47,7 +47,6 @@
                 :key="url.id"
                 v-bind="{ url }"
                 :style="`transition-delay: ${i * 25}ms`"
-                :deleting.sync="deleting"
                 @deleted="urls = urls.filter(({ id }) => id !== $event)"
               />
             </transition-group>
