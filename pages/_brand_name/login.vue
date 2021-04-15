@@ -5,11 +5,18 @@
         <div class="sign-screen-dtable">
           <div class="sign-screen-dtable-cell">
             <div class="sign-screen-content">
+              <!-- <div class="sign-heading-text text-center">
+                <img
+                  :src="logo"
+                  alt=""
+                  class="img-responsive img-center logo-size"
+                />
+              </div> -->
               <div class="sign-heading-text text-center">
                 <img
-                  src="~/assets/img/logo.svg"
+                  :src="logo ? logo : require('~/assets/img/logo.svg')"
                   alt=""
-                  class="img-responsive img-center"
+                  class="img-responsive img-center logo-size"
                 />
               </div>
               <div class="sign-body bg-white">
@@ -111,7 +118,11 @@ export default {
         password: null,
         type: 'sub_doamin',
       },
+      logo: '',
     }
+  },
+  created() {
+    this.logo = this.$store.state.appData.logo
   },
   methods: {
     async login(e) {
@@ -135,3 +146,10 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.logo-size {
+  height: 200px;
+  width: 300px;
+}
+</style>
