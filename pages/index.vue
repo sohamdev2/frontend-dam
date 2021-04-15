@@ -102,7 +102,6 @@ export default {
           url: this.brandName,
         })
         .then((response) => {
-          console.log(response)
           this.$toast.global.success(response.data.message)
           this.$router.push({
             name: 'brand_name',
