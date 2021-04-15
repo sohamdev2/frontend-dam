@@ -36,22 +36,11 @@
           }"
           class="login-name"
         >
-          <div
-            v-if="user.is_backend_user === 1"
-            class="login-name"
-            style="cursor: default"
-            :title="user.name"
-          >
+          <div v-if="user.is_backend_user === 1" class="login-name">
             {{ user.name || user.email }}
           </div>
 
-          <div
-            v-else
-            class="login-name"
-            style="cursor: pointer"
-            :title="user.name"
-            @click="navigate"
-          >
+          <div v-else class="login-name">
             {{ user.name || user.email }}
           </div>
         </nuxt-link>
