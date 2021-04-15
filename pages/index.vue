@@ -27,8 +27,6 @@
                 <div class="row">
                   <div class="col-sm-12">
                     <div class="form-group required">
-                      <!-- <label class="control-label">Email</label> -->
-
                       <input
                         v-model.trim="brandName"
                         class="form-control"
