@@ -52,7 +52,7 @@
             :alt="user.name"
           />
           <span v-else>
-            {{ (user.name || user.email || '').slice(0, 1) }}
+            {{ (user.name || user.email || '').slice(0, 2) }}
           </span>
         </a>
 
