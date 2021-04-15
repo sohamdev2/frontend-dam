@@ -89,7 +89,6 @@ export default {
   },
   methods: {
     async deleteUrl() {
-      console.log(this.deletingModel)
       if (this.deletingModel) return
 
       this.deletingModel = true
@@ -102,7 +101,6 @@ export default {
         .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
 
       this.deletingModel = false
-      console.log(this.deletingModel)
     },
   },
 }
