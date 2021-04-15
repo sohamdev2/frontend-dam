@@ -31,10 +31,19 @@
           <h2 class="title">
             {{ file.display_file_name | shrinkString(60, 15) }}
           </h2>
-          <div class="common-box customscrollbar p0">
+          <div
+            class="common-box customscrollbar p0"
+            style="display: flex; flex-direction: column"
+          >
             <div
               v-if="isPdf || isVideo || isDoc || isAudio || isImage"
               class="asset-detail-img"
+              style="
+                display: flex;
+                flex-direction: column;
+                flex: 1 1 0%;
+                overflow: hidden;
+              "
             >
               <iframe
                 v-if="isPdf"
