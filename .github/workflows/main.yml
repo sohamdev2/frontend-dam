@@ -2,8 +2,8 @@ on:
   push:
     branches:
       - 'dev-*'
-      - 'master'
-      - 'staging'
+      - 'master*'
+      - 'staging*'
 name: SonarQube Scan
 jobs:
   build:
