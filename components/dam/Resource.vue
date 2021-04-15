@@ -38,9 +38,6 @@
         >
           <nuxt-link
             :is="shareMode ? 'a' : 'nuxt-link'"
-            :style="{
-              cursor: shareMode ? 'default' : 'pointer',
-            }"
             :event="selected || shareMode ? '' : 'click'"
             :to="
               shareMode
@@ -56,7 +53,9 @@
                   }
             "
           >
-            <img :src="videoThumbnail" />
+            <div :class="{ icons: videoThumbnail == previewImage }">
+              <img :src="videoThumbnail" />
+            </div>
             <!-- hitali  v-show="playingModel" -->
             <video
               ref="video"
@@ -124,9 +123,6 @@
                 :is="shareMode ? 'a' : 'nuxt-link'"
                 v-else-if="mode != 'column'"
                 :event="selected || shareMode ? '' : 'click'"
-                :style="{
-                  cursor: shareMode ? 'default' : 'pointer',
-                }"
                 :to="
                   shareMode
                     ? ''
@@ -220,9 +216,6 @@
                 :is="shareMode ? 'a' : 'nuxt-link'"
                 v-else-if="mode != 'column'"
                 :event="selected || shareMode ? '' : 'click'"
-                :style="{
-                  cursor: shareMode ? 'default' : 'pointer',
-                }"
                 :to="
                   shareMode
                     ? ''
@@ -250,9 +243,6 @@
         <nuxt-link
           :is="shareMode ? 'a' : 'nuxt-link'"
           v-tooltip="file.display_file_name"
-          :style="{
-            cursor: shareMode ? 'default' : 'pointer',
-          }"
           :event="selected || shareMode ? '' : 'click'"
           :to="
             shareMode

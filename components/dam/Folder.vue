@@ -43,9 +43,6 @@
         <nuxt-link
           :is="shareMode ? 'a' : 'nuxt-link'"
           :event="selected || shareMode ? '' : 'click'"
-          :style="{
-            cursor: shareMode ? 'default' : 'pointer',
-          }"
           :to="
             shareMode
               ? ''

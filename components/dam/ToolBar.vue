@@ -111,7 +111,7 @@
                 <div
                   v-if="sortingModel != 'Sort by'"
                   class="px-2 ml-3 mt-2"
-                  style="cursor: poister"
+                  style="cursor: pointer"
                   @click="emitSortParamsArray()"
                 >
                   <img

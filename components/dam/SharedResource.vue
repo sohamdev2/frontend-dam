@@ -25,13 +25,10 @@
     >
       <div class="media">
         <div class="media-left">
-          <div
-            v-if="isVideo"
-            class="categary-image"
-            :style="mode == 'column' ? { background: 'transparent' } : {}"
-            :class="{ 'no-image': !videoThumbnail }"
-          >
-            <img class="preview-images preview" :src="videoThumbnail" />
+          <div v-if="isVideo" class="categary-image">
+            <div :class="{ icons: !videoThumbnail }">
+              <img :src="videoThumbnail" />
+            </div>
             <!-- <video
               v-show="playingModel"
               ref="video"
@@ -51,10 +48,9 @@
               Your browser does not support the video tag.
             </video> -->
           </div>
-          <div v-else class="categary-image" :class="{ 'no-image': !isImage }">
+          <div v-else class="categary-image">
             <img
               v-show="!imageLoading"
-              class="dam-image-preview m-auto"
               :src="previewImage"
               @load="imageLoading = false"
             />
@@ -65,9 +61,6 @@
             <nuxt-link
               :is="shareMode ? 'a' : 'nuxt-link'"
               v-tooltip="file.display_file_name"
-              :style="{
-                cursor: shareMode ? 'default' : 'pointer',
-              }"
               :event="selected || shareMode ? '' : 'click'"
               :to="
                 shareMode

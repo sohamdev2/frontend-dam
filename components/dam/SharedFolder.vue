@@ -13,9 +13,6 @@
               :is="shareMode ? 'a' : 'nuxt-link'"
               v-tooltip="folder.folder_name || folder.category_name"
               :event="selected || shareMode ? '' : 'click'"
-              :style="{
-                cursor: shareMode ? 'default' : 'pointer',
-              }"
               :to="
                 shareMode
                   ? ''

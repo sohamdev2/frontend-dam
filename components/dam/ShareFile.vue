@@ -45,11 +45,6 @@
             :key="folder.id"
             class="share-box d-flex align-items-center"
           >
-            <!-- <div
-              class="profile-bg flex-20"
-              style="background-image: url('img/dealer-logo1.jpg')"
-              title="Traveland Leisure Vehicles Ltd"
-            ></div> -->
             <FolderIcon style="filter: brightness(0.5)" />
             <div class="share-name flex-80 pl-2">
               <label v-tooltip="folder.folder_name || folder.category_name">

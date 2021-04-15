@@ -1,7 +1,7 @@
 <template>
   <div>
     <transition name="slide-up">
-      <div v-if="!!count" class="select-bar" style="display: flex">
+      <div v-if="!!count" class="select-bar">
         <div class="select-left">
           <div class="select-all">
             <span>Select</span>
