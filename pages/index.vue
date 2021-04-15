@@ -72,12 +72,30 @@
               </form>
             </div>
           </div>
-          <div class="bottom-fix-link-center">
-            <a href="javascript:void(0);">Term of use.</a>
-            <a href="javascript:void(0);">Privacy policy</a>
+          <div
+            v-else
+            class="input-error text-info"
+            style="color: #17a2b8 !important"
+          >
+            <template v-if="!brandName">eg.</template>
+            {{ $config.baseUrl }}/<strong v-if="brandName">{{
+              brandName
+            }}</strong
+            ><strong v-else>&lt;Brand_URL&gt;</strong>
           </div>
         </div>
-      </div>
+        <div style="text-align: center">
+          <button
+            class="btn"
+            type="submit"
+            :disabled="$v.brandName.$error || loading || !canGo"
+          >
+            <SpinLoading v-if="loading" style="margin-left: 0" />
+            <template v-else-if="brandName"> Go to {{ brandName }} </template>
+            <template v-else>Enter your brand url</template>
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </template>
@@ -95,36 +113,34 @@ export default {
     }
   },
   methods: {
-    submitHandler() {
+    async submitHandler() {
       if ((this.$v.$touch(), this.$v.$invalid)) return
 
-      this.$router.push({
-        name: 'brand_name',
-        params: {
-          brand_name: this.brandName,
-        },
-      })
+      this.loading = true
+      this.canGo = false
+
+      await this.$axios
+        .post('verify-domain', {
+          url: this.brandName,
+        })
+        .then((response) => {
+          this.$toast.global.success(response.message)
+          this.$router.push({
+            name: 'brand_name',
+            params: {
+              brand_name: this.brandName,
+            },
+          })
+        })
+        .catch((err) => {
+          this.$toast.error(this.$getErrorMessage(err))
+          this.canGo = true
+          this.loading = false
+        })
     },
   },
   validations: {
     brandName: {
-      async hasUrl(value) {
-        if (value === '') return true
-
-        this.loading = true
-        this.canGo = false
-
-        return await this.$axios
-          .post('verify-domain', {
-            url: value,
-          })
-          .then(({ data: { code } }) => {
-            this.canGo = true
-            return code === 200
-          })
-          .catch(() => {})
-          .finally(() => (this.loading = false))
-      },
       required,
     },
   },
