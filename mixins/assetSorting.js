@@ -11,6 +11,7 @@ const initialSortingData = () => ({
     reverse: true,
   },
   toolbar: { value: 'updated_at', desc: true },
+  totalAssetCount: '12',
 })
 
 export default {
@@ -21,6 +22,10 @@ export default {
   },
 
   methods: {
+    changeEmitAssetCount(data) {
+      this.sorting.totalAssetCount = data
+      return this.prefetch()
+    },
     apiSortValue() {
       return this.sorting.toolbar.value === 'Sort by'
         ? 'updated_at'
