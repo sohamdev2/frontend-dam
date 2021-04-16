@@ -6,6 +6,15 @@
     }"
   >
     <div class="sec-title-left d-flex align-items-center">
+      <nuxt-link v-if="!hashParam" class="home-icon" :to="`/${$getBrandName()}`"
+        ><img src="~/assets/img/address.svg" alt=""
+      /></nuxt-link>
+      <div v-if="!hashParam" class="breadcrumb-links">
+        <ul>
+          <li>&nbsp;</li>
+          <li><span>All Folders</span></li>
+        </ul>
+      </div>
       <nuxt-link
         v-if="breadcrumbs"
         class="home-icon"
@@ -217,6 +226,9 @@ export default {
     },
     title() {
       return this.getTitle()
+    },
+    inCategory() {
+      return categories.includes(this.hashParam)
     },
     breadcrumbs() {
       if (!this.hashParam || this.hashParam === 'search') return null

@@ -1,5 +1,5 @@
 <template>
-  <div class="body-content page404">
+  <div class="body-content page404 p0">
     <div class="sign-screen customscrollbar h-100 w-100">
       <div class="sign-screen-dtable">
         <div class="sign-screen-dtable-cell">
