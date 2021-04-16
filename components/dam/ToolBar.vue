@@ -85,7 +85,15 @@
                 ></template
               >
             </li>
-            <li v-if="hashParam">
+            <li
+              v-if="
+                hashParam !== ''
+                  ? hashParam === 'search'
+                    ? false
+                    : true
+                  : false
+              "
+            >
               <div class="search-by small-wd">
                 <Select2
                   :value="intialCount"
