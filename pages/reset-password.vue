@@ -1,113 +1,121 @@
 <template>
-  <div class="single-screen choose-work choose-email">
-    <div class="sign-screen-dtable">
-      <div v-if="error" class="sign-screen-dtable-cell">
-        <div class="sign-screen-right-content cs-form-group">
-          <div class="sign-heading-text text-center signin-with-title">
-            <nuxt-link to="/login">
-              <img
-                class="logo"
-                src="~/assets/img/marcom_hq_2_1.svg"
-                alt="MarComHQ"
-              />
-            </nuxt-link>
-            <h2>{{ message }}</h2>
-            <h4 class="text-center">
-              This URL is not valid to reset Password.
-            </h4>
+  <div class="body-content login">
+    <div class="sign-screen customscrollbar h-100">
+      <div class="sign-screen-dtable">
+        <div v-if="error" class="sign-screen-dtable-cell">
+          <div class="sign-screen-content">
+            <div class="sign-heading-text text-center">
+              <nuxt-link to="/">
+                <img
+                  :src="
+                    form.logo ? form.logo : require('~/assets/img/logo.svg')
+                  "
+                  alt=""
+                  class="img-responsive img-center"
+                />
+              </nuxt-link>
+              <h2>{{ message }}</h2>
+              <h4 class="text-center">
+                This URL is not valid to reset Password.
+              </h4>
+            </div>
           </div>
         </div>
-      </div>
-
-      <div v-else class="sign-screen-dtable-cell">
-        <div class="sign-screen-right-content cs-form-group">
-          <div class="sign-heading-text text-center signin-with-title">
-            <img
-              class="logo"
-              src="~/assets/img/marcom_hq_2_1.svg"
-              alt="MarComHQ"
-              @click="loginPage"
-            />
-            <p>Reset Password</p>
-          </div>
-          <div class="body-text mb-25 text-center">
-            <p>You’re resetting password for {{ form.email }}</p>
-          </div>
-          <form @submit.prevent="handleSubmit">
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="form-group">
-                  <label>Password *</label>
-                  <input
-                    v-model="$v.form.password.$model"
-                    type="password"
-                    class="form-control"
-                    placeholder="Password"
-                    autofocus
-                  />
-                  <div
-                    v-if="$v.form.password.$error && !$v.form.password.required"
-                    class="input-error"
-                  >
-                    Password is required
+        <div v-else class="sign-screen-dtable-cell">
+          <div class="sign-screen-content">
+            <div class="sign-heading-text text-center">
+              <nuxt-link to="/">
+                <img
+                  :src="
+                    form.logo ? form.logo : require('~/assets/img/logo.svg')
+                  "
+                  alt=""
+                  class="img-responsive img-center"
+                />
+              </nuxt-link>
+            </div>
+            <div class="sign-body bg-white">
+              <h4>Reset Password</h4>
+              <p>You’re resetting password for {{ form.email }}</p>
+              <form class="form" @submit.prevent="handleSubmit">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="form-group required">
+                      <label class="control-label">Password</label>
+                      <input
+                        v-model="$v.form.password.$model"
+                        type="password"
+                        class="form-control"
+                        placeholder="Password"
+                        autofocus
+                        data-lpignore="true"
+                      />
+                      <div
+                        v-if="
+                          $v.form.password.$error && !$v.form.password.required
+                        "
+                        class="input-error"
+                      >
+                        Password is required
+                      </div>
+                      <div
+                        v-if="
+                          $v.form.password.$error && !$v.form.password.minLength
+                        "
+                        class="input-error"
+                      >
+                        Password must be at least 6 characters
+                      </div>
+                    </div>
                   </div>
-                  <div
-                    v-if="
-                      $v.form.password.$error && !$v.form.password.minLength
-                    "
-                    class="input-error"
-                  >
-                    Password must be at least 6 characters
+                  <div class="col-sm-12">
+                    <div class="form-group required">
+                      <label class="control-label">Confirm Password</label>
+                      <input
+                        v-model="$v.form.confirm_password.$model"
+                        type="password"
+                        class="form-control"
+                        placeholder="Confirm Password"
+                        data-lpignore="true"
+                      />
+                      <div
+                        v-if="
+                          $v.form.confirm_password.$error &&
+                          !$v.form.confirm_password.required
+                        "
+                        class="input-error"
+                      >
+                        Confirm Password is required
+                      </div>
+                      <div
+                        v-else-if="
+                          $v.form.confirm_password.$error &&
+                          !$v.form.confirm_password.sameAsPassword
+                        "
+                        class="input-error"
+                      >
+                        Password and Confirm Password did not match.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-12">
+                    <AppButton
+                      :disabled="loading || $v.$invalid"
+                      :loading="loading"
+                      type="submit"
+                    >
+                      Submit
+                      <template #loading>Submiting</template>
+                    </AppButton>
                   </div>
                 </div>
-              </div>
-              <div class="col-sm-12">
-                <div class="form-group">
-                  <label>Confirm Password *</label>
-                  <input
-                    v-model="$v.form.confirm_password.$model"
-                    type="password"
-                    class="form-control"
-                    placeholder="Confirm Password"
-                  />
-                  <div
-                    v-if="
-                      $v.form.confirm_password.$error &&
-                      !$v.form.confirm_password.required
-                    "
-                    class="input-error"
-                  >
-                    Confirm Password is required
-                  </div>
-                  <div
-                    v-else-if="
-                      $v.form.confirm_password.$error &&
-                      !$v.form.confirm_password.sameAsPassword
-                    "
-                    class="input-error"
-                  >
-                    Password and Confirm Password did not match.
-                  </div>
-                </div>
-              </div>
+              </form>
             </div>
-            <div class="row mt-25">
-              <div class="col-sm-12">
-                <AppButton
-                  :disabled="loading || $v.$invalid"
-                  :loading="loading"
-                  type="submit"
-                >
-                  Submit
-                  <template #loading>Submiting</template>
-                </AppButton>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="bottom-fix-link-center">
-          <a href="javascript:void(0);">Term of use.</a>
-          <a href="javascript:void(0);">Privacy policy</a>
+          </div>
+          <div class="bottom-fix-link-center">
+            <a href="javascript:void(0);">Term of use.</a>
+            <a href="javascript:void(0);">Privacy policy</a>
+          </div>
         </div>
       </div>
     </div>
@@ -146,6 +154,7 @@ export default {
       loading: false,
     }
   },
+
   methods: {
     loginPage() {
       this.$router.push('/')
