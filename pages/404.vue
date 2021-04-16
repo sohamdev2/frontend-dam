@@ -19,7 +19,11 @@
                     "Sorry, We didn't find the page you are looking for..."
                   }}
                 </h4>
-                <nuxt-link to="/">Back to Home</nuxt-link>
+                <nuxt-link
+                  v-if="error.message != 'Shared URL is not available.'"
+                  to="/"
+                  >Back to Home</nuxt-link
+                >
               </div>
               <div class="error-img">
                 <img src="~/assets/img/404-bg.png" alt="" />
