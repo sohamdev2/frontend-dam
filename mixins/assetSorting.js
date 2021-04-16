@@ -3,14 +3,14 @@
 const initialSortingData = () => ({
   initialData: true,
   files: {
-    field: 'updated_at',
-    reverse: true,
+    field: 'display_file_name',
+    reverse: false,
   },
   subFolders: {
-    field: 'updated_at',
-    reverse: true,
+    field: 'display_file_name',
+    reverse: false,
   },
-  toolbar: { value: 'updated_at', desc: true },
+  toolbar: { value: 'display_file_name', desc: false },
   totalAssetCount: '12',
 })
 
@@ -49,7 +49,7 @@ export default {
       const primer = _primer || ((v) => v)
       const hasPages = this.lastPage > 1
 
-      const toReverse = false
+      const toReverse = true
       // field_name === 'date' || field_name === 'updated_at'
       // console.log({ [field_name]: toReverse });
       this.sorting[path].reverse =

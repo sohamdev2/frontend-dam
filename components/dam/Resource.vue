@@ -201,7 +201,7 @@
               <a
                 ref="expandButton"
                 style="display: none"
-                data-fancybox="image"
+                data-fancybox="image-preview"
                 data-width="auto"
                 data-height="auto"
                 :data-href="__compressed_preview || __url"
