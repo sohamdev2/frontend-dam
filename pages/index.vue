@@ -32,6 +32,7 @@
                         class="form-control"
                         placeholder
                         autofocus
+                        data-lpignore="true"
                       />
                       <div v-if="$v.brandName.$error" class="input-error">
                         <template v-if="!$v.brandName.required">

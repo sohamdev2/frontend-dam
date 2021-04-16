@@ -7,7 +7,7 @@
             <div class="sign-heading-text text-center">
               <nuxt-link to="/">
                 <img
-                  src="~/assets/img/logo.svg"
+                  :src="logo ? logo : require('~/assets/img/logo.svg')"
                   alt=""
                   class="img-responsive img-center"
                 />
@@ -74,8 +74,12 @@ export default {
   data() {
     return {
       form: { email: null, url: null },
+      logo: '',
       loading: false,
     }
+  },
+  created() {
+    this.logo = this.$store.state.appData.logo
   },
   methods: {
     async submit(e) {
