@@ -1,9 +1,6 @@
 <template>
   <li :class="{ selected }">
-    <div
-      class="preview-img tb-column flex10"
-      :class="{ video: isVideo, image: isImage }"
-      v-on="{
+    <!-- v-on="{
         ...(isVideo
           ? {
               mouseenter: () =>
@@ -19,6 +16,17 @@
                   playingModel = false
                   $refs.video.pause()
                 }),
+            }
+          : {}),
+      }" -->
+    <div
+      class="preview-img tb-column flex10"
+      :class="{ video: isVideo, image: isImage }"
+      v-on="{
+        ...(isVideo
+          ? {
+              mouseenter: playVideo,
+              mouseleave: pauseVideo,
             }
           : {}),
       }"
@@ -335,20 +343,6 @@ export default {
     hashParam() {
       return (this.$route.hash || '').replace('#', '')
     },
-    isPlaying() {
-      if (!this.isVideo) return false
-
-      const video = this.$refs.video
-      if (!video) return false
-
-      return (
-        (video.currentTime > 0 &&
-          !video.paused &&
-          !video.ended &&
-          video.readyState > 2) ||
-        this.playingModel
-      )
-    },
     workspaceId() {
       return this.$getWorkspaceId()
     },
@@ -357,8 +351,8 @@ export default {
     paused(paused) {
       const video = this.$refs.video
       if (!video) return
-      if (paused) video.pause()
-      else if (!this.isPlaying) video.play()
+      if (paused) this.pauseVideo()
+      else if (!this.isPlaying()) this.playVideo()
     },
   },
 
@@ -397,6 +391,39 @@ export default {
     })
   },
   methods: {
+    isPlaying() {
+      if (!this.isVideo) return false
+
+      const video = this.$refs.video
+      if (!video) return false
+
+      return (
+        (video.currentTime > 0 &&
+          !video.paused &&
+          !video.ended &&
+          video.readyState > 2) ||
+        this.playingModel
+      )
+    },
+    pauseVideo() {
+      if (this.videoError || !this.isPlaying) return
+      const video = this.$refs.video
+
+      this.$suppressError(() => {
+        this.playtime = video.currentTime
+        video.pause()
+      })
+    },
+    playVideo() {
+      if (this.paused || this.videoError) return
+
+      const video = this.$refs.video
+      this.$suppressError(() => {
+        video.play()?.catch(() => {
+          this.videoError = true
+        })
+      })
+    },
     setPlaytime() {
       setTimeout(() => {
         try {
