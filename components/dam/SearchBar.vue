@@ -17,9 +17,9 @@
         class="form-control search-field"
         aria-label="Text input with dropdown button"
         placeholder="Search assets"
+        data-lpignore="true"
         @keyup.enter="search()"
         @keyup.esc="moreOptions = false"
-        data-lpignore="true"
       />
       <div class="search-more">
         <span v-if="dashboardData">

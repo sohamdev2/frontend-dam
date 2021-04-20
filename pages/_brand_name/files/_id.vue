@@ -489,7 +489,7 @@ export default {
       )
 
       if (!folder && this.$route.params.folder_name)
-        folder = { folder_name: this.$route.params.folder_name }
+        folder = { folder: this.$route.params.folder_name }
       else
         await this.$axios
           .$post('digital/view-category', {
