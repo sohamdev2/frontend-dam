@@ -240,7 +240,8 @@ export default {
       ]
     },
     items() {
-      return [...this.allItems].slice(0, this.localPage * 12)
+      // return [...this.allItems].slice(0, this.localPage * 12)
+      return [...this.allItems]
     },
     totalAssets() {
       return this.totalApiAssets || this.files.length + this.subFolders.length
@@ -336,8 +337,10 @@ export default {
     prefetch() {
       this.identifier += 1
       this.page = 1
+      this.localPage = 1
       this.lastPage = -1
       this.totalApiAssets = null
+      this.deleting = false
       this.getData()
     },
     getFolders() {
