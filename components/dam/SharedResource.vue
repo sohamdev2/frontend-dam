@@ -71,7 +71,7 @@
                         id: file.id,
                         brand_name: $getBrandName(),
                         came_from_hash: hashParam,
-                        folder_name: $route.params.folder_name,
+                        folder: $route.params.folder_name,
                       },
                     }
               "

@@ -96,8 +96,8 @@
             </li>
             <li
               v-if="
-                hashParam !== ''
-                  ? hashParam === 'search'
+                hashParam
+                  ? hashParam === 'search' || isInteger || ''
                     ? false
                     : true
                   : false
@@ -207,6 +207,9 @@ export default {
     }
   },
   computed: {
+    isInteger() {
+      return Number.isInteger(parseInt(this.hashParam))
+    },
     hashParam() {
       return (this.$route.hash || '').replace('#', '')
     },
