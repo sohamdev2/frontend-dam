@@ -64,6 +64,7 @@
             <div :class="{ icons: videoThumbnail == previewImage }">
               <img :src="videoThumbnail" />
             </div>
+            <!-- hitali  v-show="playingModel" -->
             <video
               ref="video"
               class="thevideo"
@@ -75,80 +76,80 @@
               <source :src="file.display_file" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
-
-            <div class="video-info">
-              <div class="upper-info">
-                <span :inner-html.prop="file.file_type || '&dash;'"></span>
-                <a
-                  v-if="!shareMode"
-                  @click="
-                    emitShare
-                      ? $emit('share', file)
-                      : $refs.shareDialog.toggleModel()
-                  "
-                >
-                  <img src="~/assets/img/share.svg" alt="" class="white-icon" />
-                </a>
-              </div>
-              <div class="down-info">
-                <template v-if="isVideo">
-                  <video
-                    :id="`file-video-${file.id}`"
-                    width="640"
-                    height="320"
-                    controlsList="nodownload"
-                    controls
-                    :data-id="`file-${file.id}`"
-                    style="display: none"
-                  >
-                    <source :src="__url" type="video/mp4" />
-                    Your browser doesn't support HTML5 video tag.
-                  </video>
-                </template>
-
-                <template v-if="isVideo">
-                  <a @click="paused = !paused">
-                    <img
-                      style="width: 20px"
-                      :src="
-                        require(paused
-                          ? '~/assets/img/play-icon.svg'
-                          : '~/assets/img/pause-icon.svg')
-                      "
-                      alt=""
-                    />
-                  </a>
-                  <a
-                    ref="expandButton"
-                    :href="`#file-video-${file.id}`"
-                    data-fancybox
-                    ><img src="~/assets/img/expand-icon.svg" alt="" />
-                  </a>
-                </template>
-                <component
-                  :is="shareMode ? 'a' : 'nuxt-link'"
-                  v-else-if="mode != 'column'"
-                  :event="selected || shareMode ? '' : 'click'"
-                  :to="
-                    shareMode
-                      ? ''
-                      : {
-                          name: 'brand_name-files-id',
-                          params: {
-                            id: file.id,
-                            brand_name: $getBrandName(),
-                            came_from_hash: hashParam,
-                            folder: $route.params.folder_name,
-                          },
-                        }
-                  "
-                  class="btn btn-gray-invert view-btn"
-                >
-                  View
-                </component>
-              </div>
-            </div>
           </nuxt-link>
+
+          <div class="video-info">
+            <div class="upper-info">
+              <span :inner-html.prop="file.file_type || '&dash;'"></span>
+              <a
+                v-if="!shareMode"
+                @click="
+                  emitShare
+                    ? $emit('share', file)
+                    : $refs.shareDialog.toggleModel()
+                "
+              >
+                <img src="~/assets/img/share.svg" alt="" class="white-icon" />
+              </a>
+            </div>
+            <div class="down-info">
+              <template v-if="isVideo">
+                <video
+                  :id="`file-video-${file.id}`"
+                  width="640"
+                  height="320"
+                  controlsList="nodownload"
+                  controls
+                  :data-id="`file-${file.id}`"
+                  style="display: none"
+                >
+                  <source :src="__url" type="video/mp4" />
+                  Your browser doesn't support HTML5 video tag.
+                </video>
+              </template>
+
+              <template v-if="isVideo">
+                <a @click="paused = !paused">
+                  <img
+                    style="width: 20px"
+                    :src="
+                      require(paused
+                        ? '~/assets/img/play-icon.svg'
+                        : '~/assets/img/pause-icon.svg')
+                    "
+                    alt=""
+                  />
+                </a>
+                <a
+                  ref="expandButton"
+                  :href="`#file-video-${file.id}`"
+                  data-fancybox
+                  ><img src="~/assets/img/expand-icon.svg" alt="" />
+                </a>
+              </template>
+              <component
+                :is="shareMode ? 'a' : 'nuxt-link'"
+                v-else-if="mode != 'column'"
+                :event="selected || shareMode ? '' : 'click'"
+                :to="
+                  shareMode
+                    ? ''
+                    : {
+                        name: 'brand_name-files-id',
+                        params: {
+                          id: file.id,
+                          brand_name: $getBrandName(),
+                          came_from_hash: hashParam,
+                          folder: $route.params.folder_name,
+                        },
+                      }
+                "
+                class="btn btn-gray-invert view-btn"
+              >
+                View
+              </component>
+            </div>
+          </div>
         </div>
 
         <div v-else class="categary-image" :class="{ 'no-image': !isImage }">
