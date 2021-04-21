@@ -331,7 +331,7 @@ header.header-sec {position: fixed;left: 0;right: 0;top: 0;padding: 0 14px;backg
 .table-list-view .tbody > li:hover .preview-img.video video {opacity: 1;}
 .table-list-view .tbody > li .top-column label {color: #737B88;}
 .table-list-view .tbody > li .assets .top-column span {background-color: rgba(239, 241, 243, 0.5);text-transform: uppercase;padding: 5px 10px;border-radius: 4px;font-weight: 600 !important;font-size: 13px;color: #737B88;}
-.table-list-view .tbody .VueCarousel-slide {padding: 0 5px;margin-bottom: 0;}
+.table-list-view .tbody .VueCarousel-slide {padding: 0 5px;margin-bottom: 0;width: 25%;}
 .table-list-view .tbody .VueCarousel-slide li {position: relative;border-radius: 4px;display: flex;flex-wrap: wrap;align-items: center;box-shadow: 0px 1px 2px rgb(0 0 0 / 7%);-webkit-box-shadow: 0px 1px 2px rgb(0 0 0 / 7%);background-color: #ffffff;}
 .recentuploads-sec.grid-tile .table-list-view .tbody > li, .trending-sec.grid-tile .table-list-view .tbody > li{margin-bottom: 0 !important;}
 .recentuploads-sec.grid-tile .categary-name a, .trending-sec.grid-tile .categary-name a {padding: 20px 20px 20px 20px !important;}

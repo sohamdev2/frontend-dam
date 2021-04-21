@@ -46,6 +46,7 @@
         >
           <nuxt-link
             :is="shareMode ? 'a' : 'nuxt-link'"
+            class="img-link"
             :event="selected || shareMode ? '' : 'click'"
             :to="
               shareMode
@@ -64,7 +65,6 @@
             <div :class="{ icons: videoThumbnail == previewImage }">
               <img :src="videoThumbnail" />
             </div>
-            <!-- hitali  v-show="playingModel" -->
             <video
               ref="video"
               class="thevideo"
