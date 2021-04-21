@@ -334,7 +334,7 @@ header.header-sec {position: fixed;left: 0;right: 0;top: 0;padding: 0 14px;backg
 .table-list-view .tbody .VueCarousel-slide {padding: 0 5px;margin-bottom: 0;}
 .table-list-view .tbody .VueCarousel-slide li {position: relative;border-radius: 4px;display: flex;flex-wrap: wrap;align-items: center;box-shadow: 0px 1px 2px rgb(0 0 0 / 7%);-webkit-box-shadow: 0px 1px 2px rgb(0 0 0 / 7%);background-color: #ffffff;}
 .recentuploads-sec.grid-tile .table-list-view .tbody > li, .trending-sec.grid-tile .table-list-view .tbody > li{margin-bottom: 0 !important;}
-.recentuploads-sec.grid-tile .categary-name, .trending-sec.grid-tile .categary-name {padding: 20px 20px 20px 20px !important;}
+.recentuploads-sec.grid-tile .categary-name a, .trending-sec.grid-tile .categary-name a {padding: 20px 20px 20px 20px !important;}
 .table-list-view .tbody li .categary-image .img-link{position: absolute;left: 0;right: 0;top: 0;bottom: 0;z-index: 2;transition: all 0.3s;}
 .grid-tile .table-list-view .tbody li .categary-image .img-link:before {position: absolute;content: '';top: 0;right: 0;left: 0;bottom: 0;z-index: 2;background-color: rgba(0,0,0,0.3);opacity: 0;visibility: hidden;transition: all 0.3s;}
 .grid-tile .table-list-view .tbody li:hover .categary-image .img-link:before {opacity: 1;visibility: visible;}
@@ -377,8 +377,8 @@ header.header-sec {position: fixed;left: 0;right: 0;top: 0;padding: 0 14px;backg
 .grid-tile .tbody li:hover .video-info {opacity: 1;visibility: visible;}
 .grid-tile .categary-image .video-info img {position:static;width: auto;}
 .grid-tile .categary-image span b {position: absolute;bottom: 15px;right: 15px;font-size: 13px;line-height: 20px;font-weight: 600;color: #606F7B;}
-.grid-tile .categary-name {flex:0 0 100%;max-width: 100%;width: 100%;padding: 20px 40px 20px 20px !important;text-overflow: ellipsis;overflow: hidden;}
-.grid-tile .categary-name a {color: #333333;font-weight: 500;font-size: 15px;line-height: 22px;width: 100%;}
+.grid-tile .categary-name {flex:0 0 100%;max-width: 100%;width: 100%;text-overflow: ellipsis;overflow: hidden;}
+.grid-tile .categary-name a {display: block;padding: 20px 40px 20px 20px !important;color: #333333;font-weight: 500;font-size: 15px;line-height: 22px;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
 .grid-tile li .check-label {padding-left: 15px;position: absolute;bottom: 22px;right: 20px;z-index: 2;}
 .grid-tile .table-list-view .tbody  {height: auto;display: flex;flex-wrap: wrap;margin: 0 -5px;}
 .grid-tile .categary-image.folder-image span {top: 0;left: 0;bottom: 0;right: 0;margin: auto;position: absolute;width: 160px;height: 130px;z-index: 5;}
