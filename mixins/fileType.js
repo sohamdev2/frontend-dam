@@ -47,9 +47,9 @@ export default {
     ) {
       if (!ext) return GENERAL_ICON
 
-      if (this.$isPdf(ext))
-        return require('@/assets/img/icon/file/pdf-icon-red.svg')
-      else if (this.$isAudio(ext))
+      if (this.$isPdf(ext)) {
+        return require('@/assets/img/icon/file/pdf.svg')
+      } else if (this.$isAudio(ext))
         return require('@/assets/img/icon/file/audio.svg')
       else if (this.$isImage(ext)) return imageThumb || compressedImage || url
       else
