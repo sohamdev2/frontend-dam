@@ -22,7 +22,7 @@
           /></nuxt-link>
           {{ $refs.folderList.getCurrentFolderName() }}
         </h4>
-        <h4 v-else class="title">Categories</h4>
+        <h4 v-else class="title">Folders</h4>
         <FolderList
           ref="folderList"
           :value="hashParam"
