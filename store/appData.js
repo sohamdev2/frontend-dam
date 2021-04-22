@@ -95,21 +95,21 @@ export const actions = {
 
     commit('loading.dashboard', false)
   },
-  fetchFolders({ commit }) {
+  async fetchFolders({ commit }) {
     if (!this.$auth.loggedIn) return
 
     commit('loading.folders', true)
 
-    // const data = await this.$axios
-    //   .$get(`/digital/category-list?workspace_id=${this.$getWorkspaceId()}`)
-    //   .then(({ data }) => data)
-    //   .catch(this.$showErrorToast)
+    const data = await this.$axios
+      .$get(`/digital/category-list?workspace_id=${this.$getWorkspaceId()}`)
+      .then(({ data }) => data)
+      .catch(this.$showErrorToast)
 
-    // if (data) {
-    //   const dataSort = data.sort(this.$sortBy('folder_name', false, null, true))
-    //   commit('folders', dataSort)
-    //   return data
-    // }
+    if (data) {
+      const dataSort = data.sort(this.$sortBy('folder_name', false, null, true))
+      commit('folders', dataSort)
+      return data
+    }
 
     commit('loading.folders', false)
   },
