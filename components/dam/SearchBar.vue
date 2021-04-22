@@ -517,6 +517,18 @@ export default {
 
       this.searchParams = new SearchParams()
     },
+    removeFilterItem(filterItem) {
+      this.removeFilter(filterItem)
+      this.$nextTick(() => {
+        if (!this.hasFilters) {
+          this.$router.replace({
+            name: 'brand_name-folders',
+          })
+          return
+        }
+        this.search()
+      })
+    },
     loadJs() {
       window.$('.body-overlay').click(() => {
         this.moreOptions = false
@@ -524,6 +536,9 @@ export default {
     },
     getHasFilters() {
       return this.hasFilters
+    },
+    getFilterItems() {
+      return this.filterItems
     },
     getRequestBody() {
       let start_date = null
@@ -567,18 +582,18 @@ export default {
           hasFilters: this.getHasFilters(),
           searchRequestBody: this.getRequestBody(),
           filterItems: this.filterItems,
-          removeFilterItem: (filterItem) => {
-            this.removeFilter(filterItem)
-            this.$nextTick(() => {
-              if (!this.hasFilters) {
-                this.$router.replace({
-                  name: 'brand_name-folders',
-                })
-                return
-              }
-              this.search()
-            })
-          },
+          // removeFilterItem: (filterItem) => {
+          //   this.removeFilter(filterItem)
+          //   this.$nextTick(() => {
+          //     if (!this.hasFilters) {
+          //       this.$router.replace({
+          //         name: 'brand_name-folders',
+          //       })
+          //       return
+          //     }
+          //     this.search()
+          //   })
+          // },
         },
         hash: '#search',
         query: { searchId: Date.now() },

@@ -43,27 +43,32 @@
         </div>
       </client-only>
     </div>
-    <div
-      v-if="hashParam == 'search' && $route.params.filterItems"
-      class="filter-result"
-    >
-      <h2 v-if="assetsCount > 0">{{ assetsCount }} Assets found</h2>
-      <div class="filter-tags">
-        <transition-group tag="div" name="slide-right" class="tag-add-box">
-          <span
-            v-for="filterItem in $route.params.filterItems"
-            :key="filterItem.key"
-            class="added-tag"
-          >
-            <label :inner-html.prop="filterItem.name"></label>
-            <span @click="$route.params.removeFilterItem(filterItem)"
-              ><img src="~/assets/img/close.svg" alt="" />
+
+    <template v-if="searchbar">
+      <div
+        v-if="hashParam == 'search' && searchbar.getFilterItems()"
+        class="filter-result"
+      >
+        <h2 v-if="assetsCount > 0">{{ assetsCount }} Assets found</h2>
+        <div class="filter-tags">
+          <transition-group tag="div" name="slide-right" class="tag-add-box">
+            <span
+              v-for="filterItem in searchbar.getFilterItems()"
+              :key="filterItem.key"
+              class="added-tag"
+            >
+              <label :inner-html.prop="filterItem.name"></label>
+              <span @click="searchbar.removeFilterItem(filterItem)"
+                ><img src="~/assets/img/close.svg" alt="" />
+              </span>
             </span>
-          </span>
-        </transition-group>
-        <a class="clear-filter" @click="removeAllFilterItem()">Clear Filters</a>
+          </transition-group>
+          <a class="clear-filter" @click="removeAllFilterItem()"
+            >Clear Filters</a
+          >
+        </div>
       </div>
-    </div>
+    </template>
 
     <div
       v-if="assetsCount > 0"
@@ -179,6 +184,7 @@ export default {
     fileCount: { type: Number, default: 0 },
     subfolderCount: { type: Number, default: 0 },
     assetCount: { type: String, default: '12' },
+    searchbar: { type: Object, default: null },
   },
   data() {
     return {
