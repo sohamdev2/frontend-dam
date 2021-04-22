@@ -102,7 +102,7 @@ export const actions = {
 
     const data = await this.$axios
       .$get(`/digital/category-list?workspace_id=${this.$getWorkspaceId()}`)
-      .then(({ data }) => data)
+      .then(({ data }) => {})
       .catch(this.$showErrorToast)
 
     if (data) {

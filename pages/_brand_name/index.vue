@@ -2,7 +2,7 @@
   <div class="body-content two-part">
     <div v-if="folderList.length" class="body-content-left">
       <div class="category-list common-box bg-gray">
-        <h4 class="title">Categories</h4>
+        <h4 class="title">Folders</h4>
         <FolderList></FolderList>
       </div>
     </div>

@@ -22,7 +22,7 @@
           /></nuxt-link>
           {{ $refs.folderList.getCurrentFolderName() }}
         </h4>
-        <h4 v-else class="title">Categories</h4>
+        <h4 v-else class="title">Folders</h4>
         <FolderList
           ref="folderList"
           :value="hashParam"
@@ -31,7 +31,7 @@
       </div>
     </div>
     <div class="body-content-right customscrollbar">
-      <SearchBar />
+      <SearchBar ref="searchbar" />
       <ToolBar
         :folder="currentFolder"
         :assets-count="totalAssets"
@@ -43,6 +43,7 @@
         :file-count="totalApiAssets || files.length"
         :subfolder-count="subFolders.length"
         :asset-count.sync="sorting.totalAssetCount"
+        :searchbar="$refs.searchbar"
         @sort="(args) => args.forEach((arg) => sort(...arg))"
         @click:select-all="selectAll"
         @click:select-none="selectNone"
