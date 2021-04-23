@@ -102,12 +102,13 @@ export const actions = {
 
     const data = await this.$axios
       .$get(`/digital/category-list?workspace_id=${this.$getWorkspaceId()}`)
-      .then(({ data }) => {})
+      .then(({ data }) => data)
       .catch(this.$showErrorToast)
 
     if (data) {
       const dataSort = data.sort(this.$sortBy('folder_name', false, null, true))
       commit('folders', dataSort)
+
       return data
     }
 

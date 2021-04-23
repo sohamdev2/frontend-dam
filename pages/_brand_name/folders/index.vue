@@ -361,7 +361,10 @@ export default {
       await this.$nextTick()
 
       if (this.isFolder) {
-        folderToTraverse = this.currentFolder.sub_category_data || []
+        folderToTraverse =
+          this.currentFolder.sub_category_data.sort(
+            this.$sortBy('folder_name', false, null, true)
+          ) || []
       } else if (!this.hashParam) folderToTraverse = this.folderList
       else return
 
