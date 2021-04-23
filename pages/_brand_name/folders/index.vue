@@ -241,8 +241,14 @@ export default {
       ]
     },
     items() {
-      // return [...this.allItems].slice(0, this.localPage * 12)
-      return [...this.allItems]
+      return [...this.allItems].slice(
+        0,
+        this.localPage * this.sorting.totalAssetCount
+      )
+      // return [...this.allItems]
+    },
+    localTotalPages() {
+      return Math.ceil(this.allItems.length / 12)
     },
     totalAssets() {
       return this.totalApiAssets || this.files.length + this.subFolders.length
