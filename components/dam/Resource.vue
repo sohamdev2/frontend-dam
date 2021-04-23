@@ -1,5 +1,15 @@
 <template>
-  <li :class="{ selected }">
+  <li
+    :class="{ selected, video: isVideo, image: isImage }"
+    v-on="{
+      ...(isVideo
+        ? {
+            mouseenter: playVideo,
+            mouseleave: pauseVideo,
+          }
+        : {}),
+    }"
+  >
     <!-- v-on="{
         ...(isVideo
           ? {
@@ -22,14 +32,6 @@
     <div
       class="preview-img tb-column flex10"
       :class="{ video: isVideo, image: isImage }"
-      v-on="{
-        ...(isVideo
-          ? {
-              mouseenter: playVideo,
-              mouseleave: pauseVideo,
-            }
-          : {}),
-      }"
     >
       <label v-if="!shareMode && !hideSelect" class="check-label">
         <input :checked="selected" type="checkbox" />
@@ -351,8 +353,8 @@ export default {
     paused(paused) {
       const video = this.$refs.video
       if (!video) return
-      if (paused) this.pauseVideo()
-      else if (!this.isPlaying()) this.playVideo()
+      if (paused) video.pause()
+      else video.play()
     },
   },
 
@@ -405,24 +407,29 @@ export default {
         this.playingModel
       )
     },
-    pauseVideo() {
-      if (this.videoError || !this.isPlaying) return
-      const video = this.$refs.video
 
-      this.$suppressError(() => {
-        this.playtime = video.currentTime
-        video.pause()
-      })
+    pauseVideo() {
+      if (!this.paused && this.isPlaying) {
+        const video = this.$refs.video
+
+        this.$suppressError(() => {
+          this.playingModel = false
+          // this.playtime = video.currentTime
+          video.pause()
+        })
+      }
     },
     playVideo() {
-      if (this.paused || this.videoError) return
-
-      const video = this.$refs.video
-      this.$suppressError(() => {
-        video.play()?.catch(() => {
-          this.videoError = true
+      if (!this.paused) {
+        const video = this.$refs.video
+        this.$suppressError(() => {
+          this.playingModel = true
+          video.play()
+          // video.play()?.catch(() => {
+          //   this.videoError = true
+          // })
         })
-      })
+      }
     },
     setPlaytime() {
       setTimeout(() => {
