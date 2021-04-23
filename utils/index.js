@@ -228,7 +228,7 @@ export const videoExtensions = [
   'mov',
   'mpeg-4',
   'mov',
-  'avi',
+  // 'avi',
   '3gp',
 ]
 export const pdfExtensions = ['pdf']
