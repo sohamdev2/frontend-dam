@@ -283,7 +283,8 @@ export default {
             folder = data
             // this.$store.commit("dam/setFolderItem", data);
           })
-          .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
+          .catch()
+      // .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
       // .finally(() => (this.loading = false));
 
       return folder || null
