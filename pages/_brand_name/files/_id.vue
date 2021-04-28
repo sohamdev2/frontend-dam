@@ -101,7 +101,13 @@
             <div v-else class="no-preview">
               <div class="icons">
                 <img :src="previewImage" :alt="file.display_file_name" />
-                <p>No preview available for this file.</p>
+                <p>
+                  {{
+                    ui.videoError
+                      ? 'We cannot play this video, yet...'
+                      : 'No preview available for this file.'
+                  }}
+                </p>
               </div>
             </div>
           </div>
@@ -548,6 +554,8 @@ export default {
           })
         })
       })
+    } else if (this.file.file_type === 'avi') {
+      this.ui.videoError = true
     }
   },
   methods: {
