@@ -168,6 +168,24 @@
                         ><span class="flex70">: {{ file.id }}</span>
                       </li>
                       <li v-if="parentFolder">
+                        <span class="flex30">Parent Folder</span>
+                        <span class="flex70"
+                          >:
+                          <div class="breadcrumb-links">
+                            <ul>
+                              <li v-for="(crumb, i) in breadcrumbs" :key="i">
+                                <component
+                                  :is="crumb.url ? 'nuxt-link' : 'span'"
+                                  :to="crumb.url"
+                                >
+                                  {{ crumb.name }}
+                                </component>
+                              </li>
+                            </ul>
+                          </div>
+                        </span>
+                      </li>
+                      <!-- <li v-if="parentFolder">
                         <span class="flex30">Parent folder</span
                         ><span class="flex70"
                           ><nuxt-link :to="parentFolder.url" target="_blank">
@@ -177,7 +195,7 @@
                               aria-hidden="true"
                             ></i> </nuxt-link
                         ></span>
-                      </li>
+                      </li> -->
                       <template v-if="metaData">
                         <li
                           v-for="(value, key) in filterMetaData(metaData)"

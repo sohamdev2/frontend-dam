@@ -533,6 +533,7 @@ header.header-sec {position: fixed;left: 0;right: 0;top: 0;padding: 0 14px;backg
 .breadcrumb-links ul li + li {padding-left: 26px;}
 .breadcrumb-links ul li + li::before {position: absolute;content: '';left: 0;display: inline-block;vertical-align: top;width: 26px;height: 20px;background-image: url(../img/arrow-right.svg);background-size: 13px;background-position: center;background-repeat: no-repeat;top: 1px;}
 .breadcrumb-links ul li a {display: inline-block;vertical-align: top;color: #737B88;}
+.breadcrumb-links ul li a:hover {color: #FF8A01;}
 .breadcrumb-links ul li span {vertical-align: top;color: #172B4D;font-weight: 600;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;word-break: break-word;-webkit-line-clamp: 1;}
 
 .paggination {padding:30px 0;}
@@ -565,6 +566,9 @@ header.header-sec {position: fixed;left: 0;right: 0;top: 0;padding: 0 14px;backg
 .overview-table li + li {margin-top: 15px;}
 .overview-table li > span {color: #737B88;font-weight: 400;}
 .overview-table li > span + span {color: #172B4D;font-weight: 600;}
+.overview-table .breadcrumb-links ul li{margin: 0;}
+.overview-table .breadcrumb-links ul li + li {padding-left: 20px;}
+.overview-table .breadcrumb-links ul li + li::before {width: 20px;}
 .tabbing-inner .tag-add-box {border: 1px solid #D8DCE2;border-radius: 4px;padding: 7px;min-height: 254px;}
 .tabbing-inner .added-tag {margin: 4px;display: inline-block;vertical-align: top;border: 1px solid #D8DCE2;border-radius: 4px;position: relative;padding: 5px 14px;font-size: 13px;font-weight: 500;background-color: #ffffff;}
 .detail-right-actions {padding: 20px;background-color: #fff;border-top: 1px solid rgba(112,112,112,0.2);border-radius:  0 0 4px 4px;}
