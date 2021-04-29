@@ -31,28 +31,55 @@
           <h2 class="title">
             {{ file.display_file_name | shrinkString(60, 15) }}
           </h2>
-          <div
-            class="common-box customscrollbar p0"
-            style="display: flex; flex-direction: column"
-          >
-            <div
-              v-if="isPdf || isVideo || isDoc || isAudio || isImage"
-              class="asset-detail-img"
-              style="
-                display: flex;
-                flex-direction: column;
-                flex: 1 1 0%;
-                overflow: hidden;
-              "
-            >
-              <iframe
-                v-if="isPdf"
-                type="application/pdf"
-                :src="__url + '#toolbar=0'"
-                width="100%"
-                height="100%"
-              ></iframe>
-              <div v-else-if="isVideo" class="preview-video">
+          <div class="common-box customscrollbar p0">
+            <div v-if="isPdf || isDoc" class="doc-wapper">
+              <div class="doc-preview">
+                <iframe
+                  v-if="isPdf"
+                  type="application/pdf"
+                  :src="__url + '#toolbar=0'"
+                  width="100%"
+                  height="100%"
+                >
+                </iframe>
+
+                <iframe
+                  v-else-if="isDoc"
+                  :src="`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(
+                    __url
+                  )}`"
+                  width="100%"
+                  height="100%"
+                  frameborder="0"
+                >
+                  This is an embedded
+                  <a target="_blank" href="http://office.com"
+                    >Microsoft Office</a
+                  >
+                  document, powered by
+                  <a target="_blank" href="http://office.com/webapps">
+                    Office Online </a
+                  >.
+                </iframe>
+              </div>
+            </div>
+            <div v-else-if="isAudio" class="audio-wapper">
+              <div class="audio-preview">
+                <av-waveform
+                  :audio-src="__url"
+                  :canv-width="1200"
+                  :canv-height="200"
+                  :playtime-font-size="18"
+                  :played-line-width="2"
+                  :playtime-clickable="false"
+                  :noplayed-line-width="1"
+                  played-line-color="#ed703d"
+                  noplayed-line-color="#1a1d2556"
+                />
+              </div>
+            </div>
+            <div v-else-if="isVideo || isImage" class="asset-detail-img">
+              <div v-if="isVideo" class="preview-video">
                 <video
                   ref="video"
                   :poster="videoThumbnail"
@@ -64,57 +91,24 @@
                   Your browser does not support the video tag.
                 </video>
               </div>
-              <iframe
-                v-else-if="isDoc"
-                :src="`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(
-                  __url
-                )}`"
-                width="100%"
-                height="100%"
-                frameborder="0"
-              >
-                This is an embedded
-                <a target="_blank" href="http://office.com">Microsoft Office</a>
-                document, powered by
-                <a target="_blank" href="http://office.com/webapps">
-                  Office Online </a
-                >.
-              </iframe>
-              <av-waveform
-                v-else-if="isAudio"
-                :audio-src="__url"
-                :canv-width="1200"
-                :canv-height="200"
-                :playtime-font-size="18"
-                :played-line-width="2"
-                :playtime-clickable="false"
-                :noplayed-line-width="1"
-                played-line-color="#ed703d"
-                noplayed-line-color="#1a1d2556"
-              />
+
               <img
                 v-else-if="isImage"
                 :src="previewImage"
                 :alt="file.display_file_name"
               />
-              <!-- <div v-else class="m-auto">
-                <img
-                  class="img-fluid"
-                  style="max-height: 128px; object-fit: contain"
-                  :src="previewImage"
-                  :alt="file.display_file_name"
-                />
-                <p class="mt-3">No preview available for this file.</p>
-              </div> -->
             </div>
             <div v-else class="no-preview">
               <div class="icons">
                 <img :src="previewImage" :alt="file.display_file_name" />
-                <p>No preview available for this file.</p>
+                <p>
+                  {{
+                    ui.videoError
+                      ? 'We cannot play this video, yet...'
+                      : 'No preview available for this file.'
+                  }}
+                </p>
               </div>
-              <!-- <div class="pdf-preview">
-                        <iframe src="img/test.pdf" type="application/pdf" width="100%" height="100%"></iframe>
-                     </div> -->
             </div>
           </div>
         </div>
@@ -180,6 +174,24 @@
                         ><span class="flex70">: {{ file.id }}</span>
                       </li>
                       <li v-if="parentFolder">
+                        <span class="flex30">Parent Folder</span>
+                        <span class="flex70"
+                          >:
+                          <div class="breadcrumb-links">
+                            <ul>
+                              <li v-for="(crumb, i) in breadcrumbs" :key="i">
+                                <component
+                                  :is="crumb.url ? 'nuxt-link' : 'span'"
+                                  :to="crumb.url"
+                                >
+                                  {{ crumb.name }}
+                                </component>
+                              </li>
+                            </ul>
+                          </div>
+                        </span>
+                      </li>
+                      <!-- <li v-if="parentFolder">
                         <span class="flex30">Parent folder</span
                         ><span class="flex70"
                           ><nuxt-link :to="parentFolder.url" target="_blank">
@@ -189,7 +201,7 @@
                               aria-hidden="true"
                             ></i> </nuxt-link
                         ></span>
-                      </li>
+                      </li> -->
                       <template v-if="metaData">
                         <li
                           v-for="(value, key) in filterMetaData(metaData)"
@@ -501,7 +513,7 @@ export default {
       )
 
       if (!folder && this.$route.params.folder_name)
-        folder = { folder_name: this.$route.params.folder_name }
+        folder = { folder: this.$route.params.folder_name }
       else
         await this.$axios
           .$post('digital/view-category', {
@@ -512,7 +524,8 @@ export default {
             folder = data
             // this.$store.commit("dam/setFolderItem", data);
           })
-          .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
+          .catch()
+      // .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
       // .finally(() => (this.loading = false));
 
       if (folder)
@@ -541,6 +554,8 @@ export default {
           })
         })
       })
+    } else if (this.file.file_type === 'avi') {
+      this.ui.videoError = true
     }
   },
   methods: {

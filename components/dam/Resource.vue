@@ -1,9 +1,16 @@
 <template>
-  <li :class="{ selected }">
-    <div
-      class="preview-img tb-column flex10"
-      :class="{ video: isVideo, image: isImage }"
-      v-on="{
+  <li
+    :class="{ selected, video: isVideo, image: isImage }"
+    v-on="{
+      ...(isVideo
+        ? {
+            mouseenter: playVideo,
+            mouseleave: pauseVideo,
+          }
+        : {}),
+    }"
+  >
+    <!-- v-on="{
         ...(isVideo
           ? {
               mouseenter: () =>
@@ -21,7 +28,10 @@
                 }),
             }
           : {}),
-      }"
+      }" -->
+    <div
+      class="preview-img tb-column flex10"
+      :class="{ video: isVideo, image: isImage }"
     >
       <label v-if="!shareMode && !hideSelect" class="check-label">
         <input :checked="selected" type="checkbox" />
@@ -38,6 +48,7 @@
         >
           <nuxt-link
             :is="shareMode ? 'a' : 'nuxt-link'"
+            class="img-link"
             :event="selected || shareMode ? '' : 'click'"
             :to="
               shareMode
@@ -48,7 +59,7 @@
                       id: file.id,
                       brand_name: $getBrandName(),
                       came_from_hash: hashParam,
-                      folder_name: $route.params.folder_name,
+                      folder: $route.params.folder_name,
                     },
                   }
             "
@@ -56,7 +67,6 @@
             <div :class="{ icons: videoThumbnail == previewImage }">
               <img :src="videoThumbnail" />
             </div>
-            <!-- hitali  v-show="playingModel" -->
             <video
               ref="video"
               class="thevideo"
@@ -132,7 +142,7 @@
                           id: file.id,
                           brand_name: $getBrandName(),
                           came_from_hash: hashParam,
-                          folder_name: $route.params.folder_name,
+                          folder: $route.params.folder_name,
                         },
                       }
                 "
@@ -158,7 +168,7 @@
                       id: file.id,
                       brand_name: $getBrandName(),
                       came_from_hash: hashParam,
-                      folder_name: $route.params.folder_name,
+                      folder: $route.params.folder_name,
                     },
                   }
             "
@@ -201,7 +211,7 @@
               <a
                 ref="expandButton"
                 style="display: none"
-                data-fancybox="image"
+                data-fancybox="image-preview"
                 data-width="auto"
                 data-height="auto"
                 :data-href="__compressed_preview || __url"
@@ -225,7 +235,7 @@
                           id: file.id,
                           brand_name: $getBrandName(),
                           came_from_hash: hashParam,
-                          folder_name: $route.params.folder_name,
+                          folder: $route.params.folder_name,
                         },
                       }
                 "
@@ -253,7 +263,7 @@
                     id: file.id,
                     brand_name: $getBrandName(),
                     came_from_hash: hashParam,
-                    folder_name: $route.params.folder_name,
+                    folder: $route.params.folder_name,
                   },
                 }
           "
@@ -335,20 +345,6 @@ export default {
     hashParam() {
       return (this.$route.hash || '').replace('#', '')
     },
-    isPlaying() {
-      if (!this.isVideo) return false
-
-      const video = this.$refs.video
-      if (!video) return false
-
-      return (
-        (video.currentTime > 0 &&
-          !video.paused &&
-          !video.ended &&
-          video.readyState > 2) ||
-        this.playingModel
-      )
-    },
     workspaceId() {
       return this.$getWorkspaceId()
     },
@@ -358,7 +354,7 @@ export default {
       const video = this.$refs.video
       if (!video) return
       if (paused) video.pause()
-      else if (!this.isPlaying) video.play()
+      else video.play()
     },
   },
 
@@ -397,6 +393,44 @@ export default {
     })
   },
   methods: {
+    isPlaying() {
+      if (!this.isVideo) return false
+
+      const video = this.$refs.video
+      if (!video) return false
+
+      return (
+        (video.currentTime > 0 &&
+          !video.paused &&
+          !video.ended &&
+          video.readyState > 2) ||
+        this.playingModel
+      )
+    },
+
+    pauseVideo() {
+      if (!this.paused && this.isPlaying) {
+        const video = this.$refs.video
+
+        this.$suppressError(() => {
+          this.playingModel = false
+          // this.playtime = video.currentTime
+          video.pause()
+        })
+      }
+    },
+    playVideo() {
+      if (!this.paused) {
+        const video = this.$refs.video
+        this.$suppressError(() => {
+          this.playingModel = true
+          video.play()
+          // video.play()?.catch(() => {
+          //   this.videoError = true
+          // })
+        })
+      }
+    },
     setPlaytime() {
       setTimeout(() => {
         try {

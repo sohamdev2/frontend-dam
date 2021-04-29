@@ -22,7 +22,7 @@
           /></nuxt-link>
           {{ $refs.folderList.getCurrentFolderName() }}
         </h4>
-        <h4 v-else class="title">Categories</h4>
+        <h4 v-else class="title">Folders</h4>
         <FolderList
           ref="folderList"
           :value="hashParam"
@@ -31,7 +31,7 @@
       </div>
     </div>
     <div class="body-content-right customscrollbar">
-      <SearchBar />
+      <SearchBar ref="searchbar" />
       <ToolBar
         :folder="currentFolder"
         :assets-count="totalAssets"
@@ -43,6 +43,7 @@
         :file-count="totalApiAssets || files.length"
         :subfolder-count="subFolders.length"
         :asset-count.sync="sorting.totalAssetCount"
+        :searchbar="$refs.searchbar"
         @sort="(args) => args.forEach((arg) => sort(...arg))"
         @click:select-all="selectAll"
         @click:select-none="selectNone"
@@ -97,14 +98,14 @@
                   @sort="(args) => args.forEach((arg) => sort(...arg))"
                 />
                 <ul class="tbody">
-                  <template v-for="({ folder, file }, i) in items">
+                  <template v-for="{ folder, file } in items">
                     <Folder
                       v-if="folder"
                       :key="'folder-' + folder.id"
                       :folder="folder"
                       :mode="mode"
                       :style="{
-                        'transition-delay': `${(i % 12) * 30}ms !important`,
+                        // 'transition-delay': `${(i % 12) * 30}ms !important`,
                       }"
                       :selected="folderSelection[folder.id]"
                       @removeMe="removeFolders"
@@ -115,9 +116,9 @@
                       :key="'file-' + file.id"
                       :file="file"
                       :style="{
-                        'transition-delay': `${
-                          ((subFolders.length + i) % 12) * 30
-                        }ms !important`,
+                        //'transition-delay': `${
+                        // ((subFolders.length + i) % 12) * 30
+                        //}ms !important`,
                       }"
                       :mode="mode"
                       :deleting="deleting"
@@ -240,7 +241,14 @@ export default {
       ]
     },
     items() {
-      return [...this.allItems].slice(0, this.localPage * 12)
+      return [...this.allItems].slice(
+        0,
+        this.localPage * this.sorting.totalAssetCount
+      )
+      // return [...this.allItems]
+    },
+    localTotalPages() {
+      return Math.ceil(this.allItems.length / 12)
     },
     totalAssets() {
       return this.totalApiAssets || this.files.length + this.subFolders.length
@@ -264,7 +272,7 @@ export default {
       )
 
       if (!folder && this.$route.params.folder_name)
-        folder = { folder_name: this.$route.params.folder_name }
+        folder = { folder: this.$route.params.folder_name }
       else
         await this.$axios
           .$post('digital/view-category', {
@@ -275,7 +283,8 @@ export default {
             folder = data
             // this.$store.commit("dam/setFolderItem", data);
           })
-          .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
+          .catch()
+      // .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
       // .finally(() => (this.loading = false));
 
       return folder || null
@@ -336,8 +345,10 @@ export default {
     prefetch() {
       this.identifier += 1
       this.page = 1
+      this.localPage = 1
       this.lastPage = -1
       this.totalApiAssets = null
+      this.deleting = false
       this.getData()
     },
     getFolders() {
@@ -357,7 +368,10 @@ export default {
       await this.$nextTick()
 
       if (this.isFolder) {
-        folderToTraverse = this.parentFolder.sub_category_data || []
+        folderToTraverse =
+          this.currentFolder.sub_category_data.sort(
+            this.$sortBy('folder_name', false, null, true)
+          ) || []
       } else if (!this.hashParam) folderToTraverse = this.folderList
       else return
 
@@ -470,7 +484,13 @@ export default {
     async getSearchResult() {
       await this.$axios
         .$post('digital/search-assets', this.$route.params.searchRequestBody)
-        .then(({ data }) => (this.files = data.category_assets || []))
+        .then(
+          ({ data }) =>
+            (this.files =
+              data.category_assets.sort(
+                this.$sortBy('display_file_name', false, null, true)
+              ) || [])
+        )
         .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
     },
     async getPopularTagFiles() {
@@ -502,7 +522,7 @@ export default {
           body
         )
         .then(({ data }) => {
-          // if (this.hashParam !== hashParam) return
+          if (this.hashParam !== hashParam) return
 
           // if (data.category_assets.last_page < this.page) {
           //   this.page = 1
@@ -512,25 +532,31 @@ export default {
           // this.totalApiAssets = data.category_assets.total
 
           // this.lastPage = data.category_assets.last_page
-          // this.breadcrumb = data.breadcrumb
-          // this.subFolders = makeFolder(data.folder || [])
-          // this.files = data.category_assets.data || []
-
-          if (this.hashParam !== hashParam) return
           this.breadcrumb = data.breadcrumb
+          this.subFolders = makeFolder(
+            data.folder.sort(this.$sortBy('folder_name', false, null, true)) ||
+              []
+          )
+          this.files =
+            data.category_assets.sort(
+              this.$sortBy('display_file_name', false, null, true)
+            ) || []
 
-          this.lastPage = data.category_assets.last_page
-          this.totalApiAssets = data.category_assets.total
+          // if (this.hashParam !== hashParam) return
+          // this.breadcrumb = data.breadcrumb
 
-          this.files = data.category_assets.data || []
-          // this.subFolders = makeFolder(data.folder || [])
+          // this.lastPage = data.category_assets.last_page
+          // this.totalApiAssets = data.category_assets.total
 
-          if (this.page > data.category_assets.last_page) {
-            this.page = data.category_assets.last_page
-            return
-          }
+          // this.files = data.category_assets.data || []
+          // // this.subFolders = makeFolder(data.folder || [])
 
-          this.page = data.category_assets.current_page
+          // if (this.page > data.category_assets.last_page) {
+          //   this.page = data.category_assets.last_page
+          //   return
+          // }
+
+          // this.page = data.category_assets.current_page
         })
         .catch((e) => {
           const message = this.$getErrorMessage(e)

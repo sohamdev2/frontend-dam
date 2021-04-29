@@ -106,7 +106,8 @@ export const actions = {
       .catch(this.$showErrorToast)
 
     if (data) {
-      commit('folders', data)
+      const dataSort = data.sort(this.$sortBy('folder_name', false, null, true))
+      commit('folders', dataSort)
 
       return data
     }

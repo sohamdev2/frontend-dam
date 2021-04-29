@@ -227,6 +227,7 @@ export default {
     userPlaceHolderImg: process.env.USER_PLACEHOLDER_IMG,
     googleAuthUrl: process.env.GOOGLE_AUTH_URL,
     bugherdKey: process.env.BUGHERD_KEY,
+    damBackendBaseUrl: process.env.MARCOM_URL,
   },
   privateRuntimeConfig: {},
 }
