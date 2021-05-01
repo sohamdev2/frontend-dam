@@ -26,74 +26,97 @@
         </li>
       </ul>
     </div>
-    <div class="login-info col">
-      <div class="btn-group">
-        <nuxt-link
-          v-if="user"
-          :to="{
-            name: 'brand_name-profile',
-            params: { brand_name: this.$getBrandName() },
-          }"
-          class="login-name"
-        >
-          <div v-if="user.is_backend_user === 1" class="login-name">
-            {{ user.name || user.email }}
-          </div>
-
-          <div v-else class="login-name">
-            {{ user.name || user.email }}
-          </div>
-        </nuxt-link>
+    <div class="col d-flex align-items-center justify-content-end">
+      <div class="dropdown user-dropdown">
         <a
+          id="profileDropdown"
+          class="dropdown-toggle"
+          href="javascript:void(0);"
           role="button"
-          class="dropdown-toggle dropdown-toggle-split"
           data-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false"
         >
-          <img
+          <span>{{ user.name || user.email }}</span>
+          <img src="~/assets/img/arrow-down.svg" alt="" />
+          <div
             v-if="user.profile_image"
-            class="bg-light"
-            :src="user.profile_image"
-            :alt="user.name"
-          />
-          <span v-else>
+            :title="user.name"
+            class="profile-bg"
+            :style="{
+              backgroundImage: `url(${user.profile_image})`,
+            }"
+          ></div>
+          <div v-else class="profile-char" :title="user.name">
             {{ (user.name || user.email || '').slice(0, 2) }}
-          </span>
+          </div>
         </a>
-
-        <div class="dropdown-menu custom-dropdown">
-          <nuxt-link
-            v-if="!user.is_backend_user"
-            class="dropdown-item"
-            :to="{
-              name: 'brand_name-profile',
-              params: { brand_name: this.$getBrandName() },
-            }"
-          >
-            Profile
-          </nuxt-link>
-          <nuxt-link
-            v-if="!user.is_backend_user"
-            class="dropdown-item"
-            :to="{
-              name: 'brand_name-shared-urls',
-              params: { brand_name: this.$getBrandName() },
-            }"
-          >
-            Shared Urls
-          </nuxt-link>
-          <nuxt-link
-            v-if="!user.is_backend_user"
-            class="dropdown-item"
-            :to="{
-              name: 'brand_name-support',
-              params: { brand_name: this.$getBrandName() },
-            }"
-          >
-            Support
-          </nuxt-link>
-          <a class="dropdown-item" @click="$logout"> Sign out </a>
+        <div class="dropdown-menu">
+          <ul class="workspace-menu customscrollbar">
+            <li
+              v-for="instance in accessibleIntances"
+              :key="instance.instance_id"
+            >
+              <a
+                class="dropdown-item"
+                href="javascript:void(0);"
+                @click="changeInstance(instance)"
+                ><img
+                  src="~/assets/img/workspace-icon.svg"
+                  :alt="instance.brand_name" /><span>{{
+                  instance.brand_name
+                }}</span
+                ><img
+                  v-if="
+                    parseInt(auth.instance_id) ===
+                    parseInt(instance.instance_id)
+                  "
+                  src="~/assets/img/check-workspace.svg"
+                  class="check-workspace"
+                  :alt="instance.brand_name"
+              /></a>
+            </li>
+          </ul>
+          <ul class="user-menu">
+            <li>
+              <nuxt-link
+                v-if="!user.is_backend_user"
+                class="dropdown-item"
+                to="/profile"
+              >
+                <img src="~/assets/img/user.svg" alt="" />User Profile
+              </nuxt-link>
+            </li>
+            <li>
+              <nuxt-link
+                v-if="!user.is_backend_user"
+                class="dropdown-item"
+                :to="{
+                  name: 'brand_name-shared-urls',
+                  params: { brand_name: this.$getBrandName() },
+                }"
+              >
+                <img src="~/assets/img/share.svg" alt="" />Shared URL
+              </nuxt-link>
+            </li>
+            <li>
+              <nuxt-link
+                v-if="!user.is_backend_user"
+                class="dropdown-item"
+                :to="{
+                  name: 'brand_name-support',
+                  params: { brand_name: this.$getBrandName() },
+                }"
+              >
+                <img src="~/assets/img/support.svg" alt="" />Support
+              </nuxt-link>
+            </li>
+            <li>
+              <a class="dropdown-item" @click="$logout">
+                <img src="~/assets/img/logout.svg" alt="" />Logout
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -146,17 +169,34 @@ export default {
           tagName: '#video',
         },
       ],
+      auth: this.$_auth(),
     }
   },
   computed: {
     user() {
       return this.$auth.user
     },
+    accessibleIntances() {
+      return this.$auth.user.accessibleInstances
+    },
+  },
+  watch: {
+    '$route.params'() {
+      this.auth = this.$_auth()
+    },
   },
   mounted() {
     this.$nextTick(() => {
       window.$(this.$el).find('.dropdown-toggle').dropdown()
     })
+  },
+  methods: {
+    changeInstance(instance) {
+      this.$setCurrentWorkspace(instance.workspace_id)
+      this.auth = this.$_auth()
+      // redirect then to the appropriate dashboard
+      this.$router.push(`/${this.auth.url}`)
+    },
   },
 }
 </script>

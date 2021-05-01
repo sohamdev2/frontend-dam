@@ -1,27 +1,27 @@
 <template>
-  <div class="body-content login">
-    <div class="sign-screen customscrollbar h-100">
+  <div v-if="error" class="body-content expireLink">
+    <div class="sign-screen customscrollbar h-100 w-100">
       <div class="sign-screen-dtable">
-        <div v-if="error" class="sign-screen-dtable-cell">
+        <div class="sign-screen-dtable-cell">
           <div class="sign-screen-content">
-            <div class="sign-heading-text text-center">
+            <div class="sign-body">
               <nuxt-link to="/">
-                <img
-                  :src="
-                    form.logo ? form.logo : require('~/assets/img/logo.svg')
-                  "
-                  alt=""
-                  class="img-responsive img-center"
-                />
+                <img :src="require('~/assets/img/marcomhq-logo.svg')" alt="" />
               </nuxt-link>
-              <h2>{{ message }}</h2>
-              <h4 class="text-center">
-                This URL is not valid to reset Password.
-              </h4>
+              <div class="error-text">
+                <h2>{{ message }}</h2>
+                <h4>This URL is not valid to reset Password.</h4>
+              </div>
             </div>
           </div>
         </div>
-        <div v-else class="sign-screen-dtable-cell">
+      </div>
+    </div>
+  </div>
+  <div v-else class="body-content login">
+    <div class="sign-screen customscrollbar h-100">
+      <div class="sign-screen-dtable">
+        <div class="sign-screen-dtable-cell">
           <div class="sign-screen-content">
             <div class="sign-heading-text text-center">
               <nuxt-link to="/">
@@ -194,6 +194,7 @@ export default {
           email_token: this.form.reset_token,
           token: this.form.invitation_token,
           password: this.form.password,
+          name: this.form.name,
         })
         .then(
           ({
