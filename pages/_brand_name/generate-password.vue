@@ -6,7 +6,7 @@
           <div class="sign-screen-content">
             <div class="sign-body">
               <nuxt-link to="/">
-                <img :src="require('~/assets/img/marcomhq-logo.svg')" alt="" />
+                <img :src="require('~/assets/img/logo.svg')" alt="" />
               </nuxt-link>
               <div class="error-text">
                 <h2>{{ message }}</h2>
@@ -143,8 +143,11 @@
 <script>
 import { required, minLength, sameAs } from 'vuelidate/lib/validators'
 import moment from 'moment-timezone'
+import storeBrandName from '~/mixins/storeBrandName'
 
 export default {
+  mixins: [storeBrandName],
+  middleware: ['check-url'],
   async asyncData({ $guestAxios, query, $showErrorToast, redirect, error }) {
     const { invitation_token } = query
 
@@ -178,6 +181,11 @@ export default {
   data() {
     return {
       loading: false,
+    }
+  },
+  created() {
+    if (!this.error) {
+      this.form.logo = this.$store.state.appData.logo
     }
   },
   methods: {
