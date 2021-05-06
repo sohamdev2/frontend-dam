@@ -6,6 +6,15 @@
     }"
   >
     <div class="sec-title-left d-flex align-items-center">
+      <nuxt-link v-if="!hashParam" class="home-icon" :to="`/${$getBrandName()}`"
+        ><img src="~/assets/img/address.svg" alt=""
+      /></nuxt-link>
+      <div v-if="!hashParam" class="breadcrumb-links">
+        <ul>
+          <li>&nbsp;</li>
+          <li><span>All Folders</span></li>
+        </ul>
+      </div>
       <nuxt-link
         v-if="breadcrumbs"
         class="home-icon"
@@ -34,27 +43,32 @@
         </div>
       </client-only>
     </div>
-    <div
-      v-if="hashParam == 'search' && $route.params.filterItems"
-      class="filter-result"
-    >
-      <h2 v-if="assetsCount > 0">{{ assetsCount }} Assets found</h2>
-      <div class="filter-tags">
-        <transition-group tag="div" name="slide-right" class="tag-add-box">
-          <span
-            v-for="filterItem in $route.params.filterItems"
-            :key="filterItem.key"
-            class="added-tag"
-          >
-            <label :inner-html.prop="filterItem.name"></label>
-            <span @click="$route.params.removeFilterItem(filterItem)"
-              ><img src="~/assets/img/close.svg" alt="" />
+
+    <template v-if="searchbar">
+      <div
+        v-if="hashParam == 'search' && searchbar.getFilterItems()"
+        class="filter-result"
+      >
+        <h2 v-if="assetsCount > 0">{{ assetsCount }} Assets found</h2>
+        <div class="filter-tags">
+          <transition-group tag="div" name="slide-right" class="tag-add-box">
+            <span
+              v-for="filterItem in searchbar.getFilterItems()"
+              :key="filterItem.key"
+              class="added-tag"
+            >
+              <label :inner-html.prop="filterItem.name"></label>
+              <span @click="searchbar.removeFilterItem(filterItem)"
+                ><img src="~/assets/img/close.svg" alt="" />
+              </span>
             </span>
-          </span>
-        </transition-group>
-        <a class="clear-filter" @click="removeAllFilterItem()">Clear Filters</a>
+          </transition-group>
+          <a class="clear-filter" @click="removeAllFilterItem()"
+            >Clear Filters</a
+          >
+        </div>
       </div>
-    </div>
+    </template>
 
     <div
       v-if="assetsCount > 0"
@@ -85,15 +99,22 @@
                 ></template
               >
             </li>
-            <li>
+            <li
+              v-if="
+                hashParam
+                  ? hashParam === 'search' || isInteger || ''
+                    ? false
+                    : true
+                  : false
+              "
+            >
               <div class="search-by small-wd">
-                <select>
-                  <option>12</option>
-                  <option>20</option>
-                  <option>40</option>
-                  <option>80</option>
-                  <option>100</option>
-                </select>
+                <Select2
+                  :value="intialCount"
+                  :options="assetCountOptions"
+                  :attrs="{ minimumResultsForSearch: -1 }"
+                  @input="emitSortAssetCount"
+                />
               </div>
             </li>
             <li>
@@ -162,15 +183,25 @@ export default {
     breadcrumb: { type: Object, default: null },
     fileCount: { type: Number, default: 0 },
     subfolderCount: { type: Number, default: 0 },
+    assetCount: { type: String, default: '12' },
+    searchbar: { type: Object, default: null },
   },
   data() {
     return {
       sortingModel: this.sorting || 'Sort by',
+      intialCount: this.assetCount || '12',
       sortingOptions: [
         { text: 'Name', id: 'display_file_name' },
         { text: 'Date', id: 'updated_at' },
         { text: 'Size', id: 'file_size' },
         { text: 'Type', id: 'file_type' },
+      ],
+      assetCountOptions: [
+        { text: '12', id: '12' },
+        { text: '20', id: '20' },
+        { text: '40', id: '40' },
+        { text: '80', id: '80' },
+        { text: '100', id: '100' },
       ],
       categoriesObject: [
         { text: 'Folders', id: '' },
@@ -182,6 +213,9 @@ export default {
     }
   },
   computed: {
+    isInteger() {
+      return Number.isInteger(parseInt(this.hashParam))
+    },
     hashParam() {
       return (this.$route.hash || '').replace('#', '')
     },
@@ -201,6 +235,9 @@ export default {
     },
     title() {
       return this.getTitle()
+    },
+    inCategory() {
+      return categories.includes(this.hashParam)
     },
     breadcrumbs() {
       if (!this.hashParam || this.hashParam === 'search') return null
@@ -262,8 +299,17 @@ export default {
     title(title) {
       this.$setPageTitle(title + ' | Digital Asset Manager')
     },
+    intialCount(intialCount) {
+      this.$emit('update:assetCount', intialCount)
+    },
+    assetCount(assetCount) {
+      this.intialCount = assetCount || '12'
+    },
   },
   methods: {
+    emitSortAssetCount(data) {
+      this.$emit('emitAssetCount', data)
+    },
     openSearch() {
       this.$router.replace({
         params: this.$route.params,

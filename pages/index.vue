@@ -7,18 +7,18 @@
             <div class="sign-heading-text text-center">
               <nuxt-link to="/">
                 <img
+                  class="logo"
                   src="~/assets/img/marcom_hq_2_1.svg"
-                  alt=""
-                  class="img-responsive img-center"
+                  alt="MarComHQ"
                 />
               </nuxt-link>
             </div>
             <div class="sign-body bg-white">
               <p class="small">
                 Please visit
-                <a href="https://dev-marcom3.herokuapp.com/">MarComHQ</a> in
-                order to create a Digital Asset Manger (DAM) instance or contact
-                our team if you need any help to setup a DAM instance.
+                <a :href="`${$config.damBackendBaseUrl}`">MarComHQ</a> in order
+                to create a Digital Asset Manger (DAM) instance or contact our
+                team if you need any help to setup a DAM instance.
               </p>
               <p class="small">
                 Already have an instance? Enter your brand url endpoint below.
@@ -27,8 +27,6 @@
                 <div class="row">
                   <div class="col-sm-12">
                     <div class="form-group required">
-                      <!-- <label class="control-label">Email</label> -->
-
                       <input
                         v-model.trim="brandName"
                         class="form-control"
@@ -39,9 +37,6 @@
                       <div v-if="$v.brandName.$error" class="input-error">
                         <template v-if="!$v.brandName.required">
                           Please provide a url.
-                        </template>
-                        <template v-else-if="!$v.brandName.hasUrl">
-                          There is no instance with url "{{ brandName }}"
                         </template>
                       </div>
                       <div
@@ -97,36 +92,34 @@ export default {
     }
   },
   methods: {
-    submitHandler() {
+    async submitHandler() {
       if ((this.$v.$touch(), this.$v.$invalid)) return
 
-      this.$router.push({
-        name: 'brand_name',
-        params: {
-          brand_name: this.brandName,
-        },
-      })
+      this.loading = true
+      this.canGo = false
+
+      await this.$axios
+        .post('verify-domain', {
+          url: this.brandName,
+        })
+        .then((response) => {
+          this.$toast.global.success(response.data.message)
+          this.$router.push({
+            name: 'brand_name',
+            params: {
+              brand_name: this.brandName,
+            },
+          })
+        })
+        .catch((err) => {
+          this.$toast.error(this.$getErrorMessage(err))
+          this.canGo = true
+          this.loading = false
+        })
     },
   },
   validations: {
     brandName: {
-      async hasUrl(value) {
-        if (value === '') return true
-
-        this.loading = true
-        this.canGo = false
-
-        return await this.$axios
-          .post('verify-domain', {
-            url: value,
-          })
-          .then(({ data: { code } }) => {
-            this.canGo = true
-            return code === 200
-          })
-          .catch(() => {})
-          .finally(() => (this.loading = false))
-      },
       required,
     },
   },

@@ -2,7 +2,7 @@
   <div class="body-content two-part">
     <div v-if="folderList.length" class="body-content-left">
       <div class="category-list common-box bg-gray">
-        <h4 class="title">Categories</h4>
+        <h4 class="title">Folders</h4>
         <FolderList></FolderList>
       </div>
     </div>
@@ -12,18 +12,12 @@
         <client-only>
           <carousel
             :per-page="1"
-            class="owl-stage-outer"
             autoplay
             navigation-enabled
             loop
-            navigation-next-label="›"
-            navigation-prev-label="‹"
+            :pagination-enabled="false"
           >
-            <slide
-              v-for="banner in bannerData"
-              :key="banner.id"
-              class="owl-item"
-            >
+            <slide v-for="banner in bannerData" :key="banner.id">
               <div
                 class="banner-item"
                 :title="banner.title"
@@ -52,10 +46,7 @@
                 <client-only>
                   <carousel
                     :per-page="4"
-                    class="resource-container row-resource"
                     navigation-enabled
-                    navigation-next-label="›"
-                    navigation-prev-label="‹"
                     :pagination-enabled="false"
                   >
                     <slide
@@ -120,10 +111,7 @@
                     <client-only>
                       <carousel
                         :per-page="4"
-                        class="resource-container row-resource"
                         navigation-enabled
-                        navigation-next-label="›"
-                        navigation-prev-label="‹"
                         :pagination-enabled="false"
                       >
                         <slide v-for="file in files" :key="file.id">
@@ -213,87 +201,3 @@ export default {
   },
 }
 </script>
-
-<style lang="css">
-.banner-item {
-  width: 100%;
-  height: 320px;
-  object-fit: scale-down;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-.VueCarousel-pagination {
-  position: absolute;
-  z-index: 2;
-  bottom: 0;
-}
-.VueCarousel-dot-container {
-  margin: 0.125rem 0 !important;
-}
-
-.VueCarousel.resource-container.row-resource > div {
-  flex: 1;
-  max-width: unset !important;
-  padding: 0 !important;
-  margin-bottom: 0 !important;
-}
-.VueCarousel button {
-  outline: none !important;
-}
-
-.VueCarousel.resource-container .VueCarousel-slide {
-  max-width: 25%;
-  padding: 0 15px;
-  margin-bottom: 30px;
-}
-
-.VueCarousel:hover .VueCarousel-pagination,
-.VueCarousel:hover .VueCarousel-navigation-prev,
-.VueCarousel:hover .VueCarousel-navigation-next {
-  background: #0000003e !important;
-}
-
-.VueCarousel .VueCarousel-pagination,
-.VueCarousel .VueCarousel-navigation-prev,
-.VueCarousel .VueCarousel-navigation-next {
-  background: transparent !important;
-  transition: all 250ms ease !important;
-}
-
-.VueCarousel-navigation-button {
-  font-size: 32px !important;
-  color: rgba(255, 255, 255, 0.789) !important;
-  margin: 0 !important;
-  top: 30% !important;
-  bottom: calc(30% + 34px);
-  width: 48px;
-  z-index: 2;
-  line-height: 1;
-  align-items: center;
-  display: flex;
-  opacity: 1;
-  padding-bottom: 16px !important;
-  justify-content: center;
-  transform: translateY(0%) !important;
-}
-.VueCarousel-navigation--disabled {
-  opacity: 0 !important;
-  pointer-events: none;
-}
-.VueCarousel-navigation-prev {
-  left: 0px !important;
-}
-.VueCarousel-navigation-next {
-  right: 0px !important;
-}
-.resource-container .VueCarousel-navigation-prev {
-  left: 15px !important;
-}
-.resource-container .VueCarousel-navigation-next {
-  right: 15px !important;
-}
-.VueCarousel-dot {
-  margin: 0 !important;
-}
-</style>

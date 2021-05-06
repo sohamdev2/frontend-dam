@@ -47,7 +47,6 @@
                 :key="url.id"
                 v-bind="{ url }"
                 :style="`transition-delay: ${i * 25}ms`"
-                :deleting.sync="deleting"
                 @deleted="urls = urls.filter(({ id }) => id !== $event)"
               />
             </transition-group>
@@ -69,7 +68,7 @@ import SharedURLItem from '~/components/dam/SharedURLItem'
 
 export default {
   components: { SharedURLItem },
-  middleware: ['check-auth', 'check-url'],
+  middleware: ['check-auth', 'check-url', 'can-access'],
   layout: 'app-min-no-search',
   asyncData({ $axios, $getWorkspaceId, error, $sortBy }) {
     return $axios

@@ -12,10 +12,9 @@
     </client-only>
     <transition-group v-else-if="folderList.length" name="slide-up" tag="ul">
       <FolderItem
-        v-for="(folder, i) in folders"
+        v-for="folder in folders"
         :key="folder.id"
         :selection="value"
-        :style="{ transitionDelay: `${(i % 12) * 50}ms` }"
         :folder="folder"
       />
     </transition-group>

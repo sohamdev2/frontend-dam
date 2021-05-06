@@ -123,6 +123,33 @@ export default {
           },
         },
       },
+      passwordLess: {
+        scheme: 'local',
+        token: {
+          property: 'data.access_token',
+          required: true,
+          type: 'Bearer',
+        },
+        user: {
+          property: 'data.user',
+        },
+        endpoints: {
+          login: {
+            url: 'login-with-id',
+            method: 'post',
+            propertyName: 'data.access_token',
+          },
+          user: {
+            url: 'user',
+            method: 'get',
+            propertyName: 'data.user',
+          },
+          logout: {
+            url: 'logout',
+            method: 'post',
+          },
+        },
+      },
     },
     cookie: {
       options: {
@@ -200,6 +227,7 @@ export default {
     userPlaceHolderImg: process.env.USER_PLACEHOLDER_IMG,
     googleAuthUrl: process.env.GOOGLE_AUTH_URL,
     bugherdKey: process.env.BUGHERD_KEY,
+    damBackendBaseUrl: process.env.MARCOM_URL,
   },
   privateRuntimeConfig: {},
 }

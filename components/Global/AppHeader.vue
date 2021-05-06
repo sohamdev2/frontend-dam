@@ -36,7 +36,13 @@
           }"
           class="login-name"
         >
-          {{ user.name || user.email }}
+          <div v-if="user.is_backend_user === 1" class="login-name">
+            {{ user.name || user.email }}
+          </div>
+
+          <div v-else class="login-name">
+            {{ user.name || user.email }}
+          </div>
         </nuxt-link>
         <a
           role="button"
@@ -52,12 +58,13 @@
             :alt="user.name"
           />
           <span v-else>
-            {{ (user.name || user.email || '').slice(0, 1) }}
+            {{ (user.name || user.email || '').slice(0, 2) }}
           </span>
         </a>
 
         <div class="dropdown-menu custom-dropdown">
           <nuxt-link
+            v-if="!user.is_backend_user"
             class="dropdown-item"
             :to="{
               name: 'brand_name-profile',
@@ -67,6 +74,7 @@
             Profile
           </nuxt-link>
           <nuxt-link
+            v-if="!user.is_backend_user"
             class="dropdown-item"
             :to="{
               name: 'brand_name-shared-urls',
@@ -76,6 +84,7 @@
             Shared Urls
           </nuxt-link>
           <nuxt-link
+            v-if="!user.is_backend_user"
             class="dropdown-item"
             :to="{
               name: 'brand_name-support',

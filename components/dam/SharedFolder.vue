@@ -20,7 +20,7 @@
                       name: 'brand_name-folders',
                       params: {
                         brand_name: $getBrandName(),
-                        folder_name: folder.folder_name || folder.category_name,
+                        folder: folder.folder_name || folder.category_name,
                       },
                       hash: `#${folder.id}`,
                     }
@@ -35,9 +35,18 @@
     <div class="assets tb-column flex15">
       <div class="top-column">
         <span
-          ><template v-if="assetsCount"
-            >{{ assetsCount }} Asset<template v-if="assetsCount > 1"
-              >s</template
+          ><template v-if="assetsCount">
+            <template v-if="folder.sub_category_count > 0"
+              >{{ folder.sub_category_count }} Folder<template
+                v-if="folder.sub_category_count > 1"
+                >s</template
+              ></template
+            >
+            <template v-if="folder.total_assets > 0"
+              >{{ folder.total_assets }} Asset<template
+                v-if="folder.total_assets > 1"
+                >s</template
+              ></template
             ></template
           >
           <template v-else>Empty Folder</template></span

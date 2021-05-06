@@ -8,6 +8,7 @@ const _state = () => ({
     dashboard: true,
     folders: true,
   },
+  logo: '',
 })
 
 export { _state as state }
@@ -17,8 +18,10 @@ export const mutations = {
     'dashboardData',
     'folders',
     'loading.dashboard',
-    'loading.folders'
+    'loading.folders',
+    'logo'
   ),
+
   setFolderItem(state, item) {
     // let temp = [...state.folders];
     if (!state.folders.length) return
@@ -71,6 +74,9 @@ export const mutations = {
 }
 
 export const actions = {
+  assignLogo({ commit }, item) {
+    commit('logo', item)
+  },
   async fetchDashboardData({ commit }) {
     if (!this.$auth.loggedIn) return
 
@@ -100,7 +106,8 @@ export const actions = {
       .catch(this.$showErrorToast)
 
     if (data) {
-      commit('folders', data)
+      const dataSort = data.sort(this.$sortBy('folder_name', false, null, true))
+      commit('folders', dataSort)
 
       return data
     }
