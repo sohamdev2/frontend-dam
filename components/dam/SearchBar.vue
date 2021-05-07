@@ -465,6 +465,7 @@ export default {
     },
     moreOptions(moreOptions) {
       if (moreOptions) {
+        this.getSearchData()
         this.$forceUpdate()
         window.$('body').addClass('show-overly')
       } else window.$('body').removeClass('show-overly')
