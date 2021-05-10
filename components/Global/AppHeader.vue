@@ -109,7 +109,6 @@
 export default {
   data() {
     return {
-      logo: '',
       headerLinks: [
         {
           name: 'Images',
@@ -159,11 +158,7 @@ export default {
       return this.$auth.user
     },
   },
-  created() {
-    this.logo = this.$store.state.appData.logo
-  },
   mounted() {
-    console.log(this.$auth.user)
     this.$nextTick(() => {
       window.$(this.$el).find('.dropdown-toggle').dropdown()
     })
