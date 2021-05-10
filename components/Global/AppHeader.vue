@@ -2,11 +2,16 @@
   <header class="header-sec row no-gutters">
     <div class="main-logo col">
       <nuxt-link :to="`/${$getBrandName()}`">
-        <img
+        <!-- <img
           :src="
             (user && user.instance && user.instance.logo) ||
             require('~/assets/img/logo.svg')
           "
+          alt="Logo"
+          height="24"
+        /> -->
+        <img
+          :src="user.default_logo || require('~/assets/img/logo.svg')"
           alt="Logo"
           height="24"
         />
@@ -104,6 +109,7 @@
 export default {
   data() {
     return {
+      logo: '',
       headerLinks: [
         {
           name: 'Images',
@@ -153,7 +159,11 @@ export default {
       return this.$auth.user
     },
   },
+  created() {
+    this.logo = this.$store.state.appData.logo
+  },
   mounted() {
+    console.log(this.$auth.user)
     this.$nextTick(() => {
       window.$(this.$el).find('.dropdown-toggle').dropdown()
     })
