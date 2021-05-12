@@ -1,5 +1,4 @@
-const MARCOM_URL =
-  process.env.MARCOM_URL || 'https://dev-marcom3.herokuapp.com/'
+const MARCOM_URL = process.env.MARCOM_URL
 
 let currentSource = ''
 if (process.client) currentSource = window.location.origin

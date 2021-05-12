@@ -70,12 +70,12 @@
             <video
               ref="video"
               class="thevideo"
-              :data-video="file.display_file"
+              :src="file.display_file + '#t=0,5'"
               playsinline
               muted
-              loop
+              preload="metadata"
             >
-              <source :src="file.display_file" type="video/mp4" />
+              <!-- <source :src="file.display_file" type="video/mp4" /> -->
               Your browser does not support the video tag.
             </video>
           </nuxt-link>
@@ -422,6 +422,16 @@ export default {
     playVideo() {
       if (!this.paused) {
         const video = this.$refs.video
+        video.ontimeupdate = function () {
+          if (video.currentTime >= 5) {
+            const tmp_src = video.src
+
+            video.src = ''
+            video.src = tmp_src
+            video.currentTime = 0
+            video.play()
+          }
+        }
         this.$suppressError(() => {
           this.playingModel = true
           video.play()

@@ -465,6 +465,7 @@ export default {
     },
     moreOptions(moreOptions) {
       if (moreOptions) {
+        this.getSearchData()
         this.$forceUpdate()
         window.$('body').addClass('show-overly')
       } else window.$('body').removeClass('show-overly')
@@ -616,7 +617,21 @@ export default {
           '/digital/all-popular-data?' +
             this.$toQueryString({ workspace_id: this.$getWorkspaceId() })
         )
-        .then(({ data }) => (this.searchData = data))
+        .then(({ data }) => {
+          data.popular_tag_select = data.popular_tag_select.sort((a, b) => {
+            const fa = a.tag_name.toLowerCase()
+            const fb = b.tag_name.toLowerCase()
+
+            if (fa < fb) {
+              return -1
+            }
+            if (fa > fb) {
+              return 1
+            }
+            return 0
+          })
+          this.searchData = data
+        })
         .catch()
       this.searchDataLoading = false
     },
