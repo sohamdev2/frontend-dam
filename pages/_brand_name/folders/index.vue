@@ -327,6 +327,8 @@ export default {
     // },
   },
   mounted() {
+    this.$store.dispatch('appData/fetchDashboardData')
+    this.$store.dispatch('appData/fetchFolders')
     this.getData()
   },
   methods: {
