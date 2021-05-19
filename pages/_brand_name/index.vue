@@ -182,6 +182,10 @@ export default {
       return this.$store.state.appData.dashboardData
     },
   },
+  mounted() {
+    this.$store.dispatch('appData/fetchDashboardData')
+    this.$store.dispatch('appData/fetchFolders')
+  },
   methods: {
     onShareFile(file) {
       this.shareFile = file
