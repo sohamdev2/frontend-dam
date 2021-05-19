@@ -26,7 +26,6 @@ export default ({ app, $axios, store }, inject) => {
     const workspace = app.$auth.user.accessibleInstances.find(
       ({ workspace_id }) => parseInt(workspace_id) === parseInt(workspaceId)
     )
-    console.log(workspace)
     app.$auth.$storage.setCookie('currentWorkspace', workspace)
   }
   const _auth = () => {
@@ -48,6 +47,7 @@ export default ({ app, $axios, store }, inject) => {
   }
 
   const clearAuthCookies = () => {
+    app.$auth.$storage.removeUniversal('currentWorkspace')
     if (process.client) {
       window.localStorage.clear()
       window.sessionStorage.clear()
