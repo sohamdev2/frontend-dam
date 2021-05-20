@@ -14,8 +14,10 @@ export default {
 
     await $marcomAxios
       .$get(downloadURL)
-      .then((data) => redirect(303, data))
-      /* .then((data) => redirect(data)) */
+      .then((data) => {
+        console.log(data)
+        redirect(data)
+      })
       .catch(({ response, message }) => {
         const { status, data } = response || {}
 
