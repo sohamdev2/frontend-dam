@@ -45,6 +45,49 @@
             <b v-else>Empty Folder</b>
           </span>
         </nuxt-link>
+        <div class="video-info">
+          <div class="upper-info">
+            <div class="d-flex align-items-center">
+              <div class="dropdown more-options">
+                <button
+                  type="button"
+                  class="dropdown-toggle"
+                  data-toggle="dropdown"
+                >
+                  <img src="~/assets/img/menu-option.svg" alt="" />
+                </button>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      data-toggle="modal"
+                      data-target="#sharePopup"
+                      @click.capture.stop="selectFromDrop(folder, 'share')"
+                      ><span class="dropdown-item-icon"
+                        ><img
+                          src="~/assets/img/share.svg"
+                          alt=""
+                          class="img-responsive" /></span
+                      >Share</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      @click.capture.stop="selectFromDrop(folder, 'download')"
+                      ><span class="dropdown-item-icon"
+                        ><img
+                          src="~/assets/img/download.svg"
+                          alt=""
+                          class="img-responsive" /></span
+                      >Download</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="categary-name tb-column flex27">
@@ -111,6 +154,9 @@
             >
               <img src="~/assets/img/share.svg" alt="" />
             </a>
+            <a @click="downloadFile">
+              <img src="~/assets/img/download.svg" alt="" />
+            </a>
           </template>
         </div>
       </div>
@@ -136,6 +182,22 @@ export default {
       return (
         (this.folder.total_assets || 0) + (this.folder.sub_category_count || 0)
       )
+    },
+  },
+  methods: {
+    selectFromDrop(folder, type) {
+      if (type === 'share') {
+        this.$refs.shareDialog.toggleModel()
+      } else if (type === 'download') {
+        this.downloadFile()
+      }
+    },
+    downloadFile() {
+      let selectedFolder = []
+      selectedFolder = [this.folder]
+      this.$store.dispatch('downloadIndicator/downloadMultipleFiles', {
+        folders: selectedFolder.map(({ id }) => id),
+      })
     },
   },
 }

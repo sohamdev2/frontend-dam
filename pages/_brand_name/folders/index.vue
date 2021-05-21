@@ -155,6 +155,7 @@
       <DownloadingIndicator />
 
       <SelectionBar
+        ref="selectionbar"
         :selected-files="selectedFiles"
         :selected-folders="selectedFolders"
         :selected-all="selectedAll"
