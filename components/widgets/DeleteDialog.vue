@@ -1,7 +1,9 @@
 <template>
   <div id="delete" class="modal fade">
     <div
-      class="modal-dialog modal-small modal-dialog-scrollable modal-dialog-centered"
+      class="
+        modal-dialog modal-small modal-dialog-scrollable modal-dialog-centered
+      "
     >
       <div class="modal-content">
         <div class="modal-header">

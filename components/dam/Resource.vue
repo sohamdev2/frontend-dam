@@ -501,9 +501,8 @@ export default {
     setPlaytime() {
       setTimeout(() => {
         try {
-          window.$(
-            `[data-id="file-${this.file.id}"]`
-          )[0].currentTime = this.$refs.video.currentTime
+          window.$(`[data-id="file-${this.file.id}"]`)[0].currentTime =
+            this.$refs.video.currentTime
         } catch {
           //
         }
