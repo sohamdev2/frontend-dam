@@ -48,7 +48,10 @@
         <div class="video-info">
           <div class="upper-info">
             <div class="d-flex align-items-center">
-              <div class="dropdown more-options">
+              <div
+                class="dropdown more-options"
+                :class="{ show: dropDownList }"
+              >
                 <button
                   type="button"
                   class="dropdown-toggle"
@@ -56,7 +59,7 @@
                 >
                   <img src="~/assets/img/menu-option.svg" alt="" />
                 </button>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu" :class="{ show: dropDownList }">
                   <li>
                     <a
                       class="dropdown-item"
@@ -174,6 +177,11 @@ export default {
     selected: { type: Boolean, default: false },
     shareMode: { type: Boolean, default: false },
   },
+  data() {
+    return {
+      dropDownList: false,
+    }
+  },
   computed: {
     workspaceId() {
       return this.$getWorkspaceId()
@@ -185,12 +193,19 @@ export default {
     },
   },
   methods: {
+    // dropdown feature
     selectFromDrop(folder, type) {
+      this.dropDown()
       if (type === 'share') {
-        this.$refs.shareDialog.toggleModel()
+        this.$nextTick(() => this.$refs.shareDialog.toggleModel())
       } else if (type === 'download') {
         this.downloadFile()
       }
+      this.$emit('selectedDrop', folder, type, 'folder')
+    },
+    // display of dropdown menu
+    dropDown() {
+      this.dropDownList = !this.dropDownList
     },
     downloadFile() {
       let selectedFolder = []
