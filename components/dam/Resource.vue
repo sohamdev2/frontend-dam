@@ -83,7 +83,7 @@
           <div class="video-info">
             <div class="upper-info">
               <span :inner-html.prop="file.file_type || '&dash;'"></span>
-              <a
+              <!-- <a
                 v-if="!shareMode"
                 @click="
                   emitShare
@@ -92,7 +92,50 @@
                 "
               >
                 <img src="~/assets/img/share.svg" alt="" class="white-icon" />
-              </a>
+              </a> -->
+              <div class="d-flex align-items-center">
+                <div
+                  class="dropdown more-options"
+                  :class="{ show: dropDownList }"
+                >
+                  <button
+                    type="button"
+                    class="dropdown-toggle"
+                    data-toggle="dropdown"
+                    @click.capture.stop="dropDown()"
+                  >
+                    <img src="~/assets/img/menu-option.svg" alt="" />
+                  </button>
+                  <ul class="dropdown-menu" :class="{ show: dropDownList }">
+                    <li v-if="!shareMode">
+                      <a
+                        class="dropdown-item"
+                        data-toggle="modal"
+                        data-target="#sharePopup"
+                        @click.capture.stop="selectFromDrop(file, 'share')"
+                        ><span class="dropdown-item-icon"
+                          ><img
+                            src="~/assets/img/share.svg"
+                            alt=""
+                            class="img-responsive" /></span
+                        >Share</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item"
+                        @click.capture.stop="selectFromDrop(file, 'download')"
+                        ><span class="dropdown-item-icon"
+                          ><img
+                            src="~/assets/img/download.svg"
+                            alt=""
+                            class="img-responsive" /></span
+                        >Download</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
             <div class="down-info">
               <template v-if="isVideo">
@@ -220,7 +263,7 @@
                     <img src="~/assets/img/menu-option.svg" alt="" />
                   </button>
                   <ul class="dropdown-menu" :class="{ show: dropDownList }">
-                    <li>
+                    <li v-if="!shareMode">
                       <a
                         class="dropdown-item"
                         data-toggle="modal"
@@ -439,12 +482,17 @@ export default {
   methods: {
     // dropdown feature
     selectFromDrop(file, type) {
+      this.dropDown()
       if (type === 'share') {
-        this.$refs.shareDialog.toggleModel()
+        if (this.emitShare) {
+          this.$emit('share', file)
+        } else {
+          this.$nextTick(() => this.$refs.shareDialog.toggleModel())
+        }
       } else if (type === 'download') {
-        // this.$emit('selectedDrop', file, type, 'file')
         this.downloadFile()
       }
+      this.$emit('selectedDrop', file, type, 'file')
     },
     // display of dropdown menu
     dropDown() {
@@ -501,8 +549,9 @@ export default {
     setPlaytime() {
       setTimeout(() => {
         try {
-          window.$(`[data-id="file-${this.file.id}"]`)[0].currentTime =
-            this.$refs.video.currentTime
+          window.$(
+            `[data-id="file-${this.file.id}"]`
+          )[0].currentTime = this.$refs.video.currentTime
         } catch {
           //
         }

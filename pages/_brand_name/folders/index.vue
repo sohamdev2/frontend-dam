@@ -110,6 +110,7 @@
                       :selected="folderSelection[folder.id]"
                       @removeMe="removeFolders"
                       @click:selected="toggleFolderSelection"
+                      @selectedDrop="dropDown"
                     />
                     <Resource
                       v-else-if="file"
@@ -124,6 +125,7 @@
                       :deleting="deleting"
                       :selected="selection[file.id]"
                       @click:selected="toggleSelection"
+                      @selectedDrop="dropDown"
                     />
                   </template>
                 </ul>
@@ -333,6 +335,11 @@ export default {
     this.getData()
   },
   methods: {
+    // dropdown functionality
+    dropDown(file, type, resourceType) {
+      this.selectedFiles = []
+      this.selectedFolders = []
+    },
     nextLocalPage($state) {
       if (this.localPage > this.localTotalPages) {
         $state.complete()
