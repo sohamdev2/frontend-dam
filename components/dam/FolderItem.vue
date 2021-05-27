@@ -13,11 +13,20 @@
       >
         {{ folder.folder_name || folder.category_name }}
       </component>
-      <div v-if="!selectionMode && !multiple" class="dropdown more-options">
-        <button type="button" class="dropdown-toggle" data-toggle="dropdown">
+      <div
+        v-if="!selectionMode && !multiple"
+        class="dropdown more-options"
+        :class="{ show: dropDownList }"
+      >
+        <button
+          type="button"
+          class="dropdown-toggle"
+          data-toggle="dropdown"
+          @click.stop="dropDown()"
+        >
           <img src="~/assets/img/menu-option.svg" alt="" />
         </button>
-        <ul class="dropdown-menu">
+        <ul class="dropdown-menu" :class="{ show: dropDownList }">
           <li>
             <a
               class="dropdown-item"
@@ -86,6 +95,11 @@ export default {
     routeFolder: { type: [String, Number], default: null },
     disabled: { type: Boolean, default: null },
     multipleSelection: { type: Array, default: () => [] },
+  },
+  data() {
+    return {
+      dropDownList: false,
+    }
   },
   computed: {
     _disabled() {
@@ -166,3 +180,13 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.dropdown-menu.show {
+  will-change: transform;
+  position: absolute;
+  transform: translate3d(-94px, 38px, 0px);
+  top: 0px;
+  left: 0px;
+}
+</style>
