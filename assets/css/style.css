@@ -1360,6 +1360,10 @@ header.header-sec {
   z-index: 10;
   height: 62px;
 }
+header.header-sec .main-logo img {
+  min-height: 45px;
+  max-height: 45px;
+}
 .main-logo a {
   display: inline-block;
   vertical-align: top;
@@ -1716,21 +1720,38 @@ header .user-dropdown.show .dropdown-toggle img {
 .category-list .customscrollbar {
   height: calc(100% - 30px);
 }
+
+/*
+.category-list ul {margin: 0;}
+.category-list ul li {list-style: none;}
+.category-list ul li + li {margin-top: 8px;}
+.category-list ul li a {background-image: url(../img/category.svg);display: block;padding: 10px 10px 10px 40px;border-radius: 4px;background-color: #ffffff;background-repeat: no-repeat;background-position: 10px center;font-size: 14px;line-height: 20px;color: #737B88;font-weight: 500;white-space:nowrap;text-overflow: ellipsis;overflow: hidden;}
+.category-list ul li a:hover {box-shadow:0px 8px 18px rgb(0 0 0 / 14%);}
+.category-list ul li a.active,
+.category-list ul li.active a {background-color: rgba(190, 197, 203, 1);color: #172B4D;}
+.category-list ul li a.has-child {background-image: url(../img/subcategory.svg);}
+
+*/
 .category-list ul {
   margin: 0;
 }
-.category-list ul li {
+.category-list ul li.folder-list {
   list-style: none;
+  position: relative;
 }
-.category-list ul li + li {
+.category-list ul li.folder-list:hover,
+.category-list ul li.folder-list.active-rename {
+  box-shadow: 0px 8px 18px rgb(0 0 0 / 14%);
+}
+.category-list ul li.folder-list + li {
   margin-top: 8px;
 }
-.category-list ul li a {
-  background-image: url(../img/category.svg);
+.category-list ul li.folder-list .rename-text > a {
   display: block;
   padding: 10px 10px 10px 40px;
   border-radius: 4px;
-  background-color: #ffffff;
+  background-color: #fff;
+  background-image: url(../img/category.svg);
   background-repeat: no-repeat;
   background-position: 10px center;
   font-size: 14px;
@@ -1741,17 +1762,39 @@ header .user-dropdown.show .dropdown-toggle img {
   text-overflow: ellipsis;
   overflow: hidden;
 }
-.category-list ul li a:hover {
-  box-shadow: 0px 8px 18px rgb(0 0 0 / 14%);
-}
-.category-list ul li a.active,
-.category-list ul li.active a {
+.category-list ul li.folder-list .rename-text > a.active,
+.category-list ul li.folder-list.active .rename-text > a {
   background-color: rgba(190, 197, 203, 1);
   color: #172b4d;
 }
-.category-list ul li a.has-child {
+.category-list ul li.folder-list .rename-text a.has-child {
   background-image: url(../img/subcategory.svg);
 }
+.category-list ul li.folder-list .rename-text .more-options {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+}
+.category-list ul li.folder-list .rename-text .more-options .dropdown-toggle {
+  width: 38px;
+  height: 38px;
+  background-color: transparent;
+}
+.category-list
+  ul
+  li.folder-list
+  .rename-text
+  .more-options
+  .dropdown-toggle
+  img {
+  height: auto;
+  position: relative;
+  top: 2px;
+}
+.category-list ul li.folder-list .rename-input .form-control {
+  border: none;
+}
+
 .category-list.modal-body ul li {
   margin-top: 8px;
 }
@@ -2804,6 +2847,9 @@ header .user-dropdown.show .dropdown-toggle img {
 .categary-image .icons img {
   max-height: 40%;
   z-index: 4;
+}
+.grid-list .categary-image .icons img {
+  max-height: 96%;
 }
 .video .categary-image {
   position: relative;
@@ -4479,12 +4525,8 @@ header .user-dropdown.show .dropdown-toggle img {
 }
 .more-options .dropdown-menu {
   box-shadow: 0 6px 16px rgb(0 0 0 / 16%);
-  padding: 3px 0;
-  min-width: 140px;
-  right: 0;
-  top: 27px !important;
-  left: auto !important;
-  transform: initial !important;
+  padding: 3px 0 !important;
+  min-width: 128px;
   border: none;
 }
 .more-options .dropdown-menu li .dropdown-item {
@@ -4518,6 +4560,12 @@ header .user-dropdown.show .dropdown-toggle img {
 .more-options .dropdown-menu li .dropdown-item:hover .dropdown-item-icon img {
   filter: invert(39%) sepia(26%) saturate(7254%) hue-rotate(360deg)
     brightness(100%) contrast(109%);
+}
+.preview-img .more-options .dropdown-menu {
+  right: 0;
+  top: 27px !important;
+  left: auto !important;
+  transform: initial !important;
 }
 
 .my-collection-body {
