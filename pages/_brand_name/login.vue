@@ -132,7 +132,12 @@ export default {
 
       await this.$auth
         .loginWith('local', { data: { ...this.form, url: this.brandName } })
-        .then(() => this.$router.push(`/${this.brandName}`))
+        .then(() => {
+          // set current workspace
+          this.$auth.user.workspace_id &&
+            this.$setCurrentWorkspace(this.$auth.user.workspace_id)
+          this.$router.push(`/${this.brandName}`)
+        })
         .catch(this.$showErrorToast)
 
       this.loading = false
