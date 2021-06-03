@@ -292,7 +292,7 @@
           >
           <img src="@/assets/img/embeded.svg" alt="embed" />
             Embed
-            
+
           </button> -->
                 </div>
               </div>

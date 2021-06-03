@@ -21,27 +21,38 @@ export default ({ app, $axios, store }, inject) => {
     app.$toast?.global?.error(getErrorMessage(e))
   }
 
-  const getBrandName = () =>
-    app.$auth?.user?.url || app.context.route.params.brand_name
+  const getBrandName = () => _auth()?.url || app.context.route.params.brand_name
+  const setCurrentWorkspace = (workspaceId) => {
+    const workspace = app.$auth.user.accessibleInstances.find(
+      ({ workspace_id }) => parseInt(workspace_id) === parseInt(workspaceId)
+    )
+    app.$auth.$storage.setCookie('currentWorkspace', workspace)
+  }
+  const _auth = () => {
+    if (app.$auth.loggedIn)
+      return app.$auth.$storage.getCookie('currentWorkspace')
+    else return null
+  }
 
-  const getWorkspaceId = () => app.$auth?.user?.workspace_id
+  const getWorkspaceId = () => _auth()?.workspace_id
 
   const logout = async () => {
     const brandName = getBrandName()
 
     await app.$auth.logout()
-    // await app.$clearAuthCookies()
+    await app.$clearAuthCookies()
 
     app.router.replace(`/${brandName}/login`).catch(() => {})
     store.commit('appData/resetState')
   }
 
-  // const clearAuthCookies = () => {
-  //   if (process.client) {
-  //     window.localStorage.clear()
-  //     window.sessionStorage.clear()
-  //   }
-  // }
+  const clearAuthCookies = () => {
+    app.$auth.$storage.removeUniversal('currentWorkspace')
+    if (process.client) {
+      window.localStorage.clear()
+      window.sessionStorage.clear()
+    }
+  }
 
   // const isMobileDevice = () =>
   //    app.$device.isMobile
@@ -64,9 +75,11 @@ export default ({ app, $axios, store }, inject) => {
   inject('getErrorMessage', getErrorMessage)
   inject('showErrorToast', showErrorToast)
   inject('getWorkspaceId', getWorkspaceId)
+  inject('_auth', _auth)
+  inject('setCurrentWorkspace', setCurrentWorkspace)
   inject('getBrandName', getBrandName)
 
   inject('logout', logout)
-  // inject('clearAuthCookies', clearAuthCookies)
+  inject('clearAuthCookies', clearAuthCookies)
   // inject('isMobileDevice', isMobileDevice)
 }
