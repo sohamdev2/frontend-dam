@@ -18,9 +18,13 @@
   .multiselect__tag-icon:hover:after {
     color: white !important;
   }
-  
+
   .multiselect__tag-icon:focus,
   .multiselect__tag-icon:hover {
     background: #aaa !important;
   }
-  
+
+.modal-open .table-list-view .tbody > li:hover,
+.modal-open .table-list-view .tbody > li.active {
+  z-index: unset;
+}
