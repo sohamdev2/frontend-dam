@@ -13,7 +13,7 @@
               </div>
               <div
                 :class="[
-                  'generated-date sorting flex15 m-sm-hide sortarrow',
+                  'generated-date sorting flex15 sortarrow',
                   sortingClass('updated_at'),
                 ]"
               >
@@ -21,7 +21,7 @@
               </div>
               <div
                 :class="[
-                  'generated-by sorting flex15 m-sm-hide sortarrow',
+                  'generated-by sorting flex15  sortarrow',
                   sortingClass('user_name'),
                 ]"
               >
@@ -29,7 +29,7 @@
               </div>
               <div
                 :class="[
-                  'generated-source sorting flex15 m-sm-hide sortarrow',
+                  'generated-source sorting flex15 sortarrow',
                   sortingClass('generated_source'),
                 ]"
               >
