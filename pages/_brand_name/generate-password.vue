@@ -36,7 +36,7 @@
             </div>
             <div class="sign-body bg-white">
               <h4>Generate Password</h4>
-              <p>You’re generate password for {{ form.email }}</p>
+              <p>You’re generating password for {{ form.email }}</p>
               <form class="form" @submit.prevent="handleSubmit">
                 <div class="row">
                   <div class="col-sm-12">

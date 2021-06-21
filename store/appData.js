@@ -81,6 +81,7 @@ export const actions = {
     if (!this.$auth.loggedIn) return
 
     commit('loading.dashboard', true)
+    commit('dashboardData', null)
 
     const data = await this.$axios
       .$get(`/digital/common-data?workspace_id=${this.$getWorkspaceId()}`)

@@ -32,7 +32,23 @@
           :disabled="!hasFilters"
           @click="search"
         >
-          <img src="~/assets/img/search.svg" alt="filter" />
+          <svg
+            id="Layer_1"
+            class="search-icon white"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px"
+            y="0px"
+            viewBox="0 0 18 18"
+            xml:space="preserve"
+          >
+            <path
+              id="Icon_ionic-ios-search"
+              class="fill-color"
+              d="M17.8,16.7l-5-5.1c2.5-3.1,1.9-7.6-1.1-10.1C8.5-0.9,4-0.4,1.6,2.7c-2.5,3.1-1.9,7.6,1.1,10.1c2.6,2.1,6.4,2.1,9,0l5,5c0.3,0.3,0.8,0.3,1.1,0.1C18.1,17.5,18.1,17,17.8,16.7C17.8,16.7,17.8,16.7,17.8,16.7L17.8,16.7z M7.1,12.8c-3.1,0-5.7-2.5-5.7-5.7S4,1.5,7.1,1.5c3.1,0,5.7,2.5,5.7,5.7c0,1.5-0.6,2.9-1.7,4C10.1,12.2,8.6,12.8,7.1,12.8L7.1,12.8z"
+            ></path>
+          </svg>
         </a>
       </div>
     </div>
@@ -44,7 +60,23 @@
         @click="moreOptions = !moreOptions"
       >
         Refine
-        <img src="~/assets/img/filter-icon.svg" alt="search" />
+        <svg
+          id="Layer_1"
+          class="filter-icon h-orange"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          x="0px"
+          y="0px"
+          viewBox="0 0 18 18"
+          xml:space="preserve"
+        >
+          <path
+            id="Path_3228"
+            class="fill-color"
+            d="M0,9c0-0.4,0.3-0.7,0.7-0.7l0,0H4V6.6c0-0.4,0.3-0.7,0.7-0.7c0.4,0,0.7,0.3,0.7,0.7c0,0,0,0,0,0v4.8c0,0.4-0.3,0.7-0.7,0.7c-0.4,0-0.7-0.3-0.7-0.7c0,0,0,0,0,0V9.7H0.7C0.3,9.7,0,9.4,0,9z M17.3,8.3H7.1C6.7,8.3,6.3,8.6,6.4,9c0,0.4,0.3,0.7,0.7,0.7h10.2C17.7,9.7,18,9.4,18,9C18,8.6,17.7,8.3,17.3,8.3C17.3,8.3,17.3,8.3,17.3,8.3L17.3,8.3z M0.7,3.9h9.2c0.4,0,0.7-0.4,0.7-0.7c0-0.4-0.3-0.7-0.7-0.7H0.7C0.3,2.4,0,2.7,0,3.1C0,3.5,0.3,3.9,0.7,3.9C0.7,3.9,0.7,3.9,0.7,3.9z M17.3,2.4h-4.4V0.7c0-0.4-0.3-0.7-0.7-0.7c-0.4,0-0.7,0.3-0.7,0.7v4.8c0,0.4,0.3,0.7,0.7,0.7c0.4,0,0.7-0.3,0.7-0.7l0,0V3.9h4.4c0.4,0,0.7-0.3,0.7-0.7C18,2.8,17.7,2.4,17.3,2.4C17.3,2.4,17.3,2.4,17.3,2.4L17.3,2.4z M17.3,14.1H9.7c-0.4,0-0.7,0.3-0.7,0.7c0,0.4,0.3,0.7,0.7,0.7c0,0,0,0,0.1,0h7.6c0.4,0,0.7-0.3,0.7-0.7C18,14.5,17.7,14.1,17.3,14.1C17.3,14.1,17.3,14.1,17.3,14.1zM7.3,11.7c-0.4,0-0.7,0.3-0.7,0.7v1.7H0.7c-0.4,0-0.7,0.3-0.7,0.7c0,0.4,0.3,0.7,0.7,0.7c0,0,0,0,0.1,0h5.9v1.7c0,0.4,0.3,0.7,0.7,0.7c0.4,0,0.7-0.3,0.7-0.7l0,0v-4.8C8.1,12,7.8,11.7,7.3,11.7C7.4,11.7,7.3,11.7,7.3,11.7L7.3,11.7z"
+          ></path>
+        </svg>
       </button>
     </div>
     <div class="filter-menu customscrollbar" :class="{ show: moreOptions }">
@@ -72,7 +104,30 @@
           </button>
 
           <a class="filter-close" @click="moreOptions = false">
-            <img src="~/assets/img/close.svg" />
+            <svg
+              id="Layer_1"
+              class="close-icon h-red"
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              x="0px"
+              y="0px"
+              viewBox="0 0 18 18"
+              xml:space="preserve"
+            >
+              <g id="Group_4358" transform="translate(-69.745 -317.549)">
+                <path
+                  id="Path_3424"
+                  class="fill-color"
+                  d="M70.5,335.5c-0.4,0-0.8-0.4-0.8-0.8c0-0.2,0.1-0.4,0.2-0.6l16.4-16.4c0.3-0.3,0.8-0.3,1.1,0c0.3,0.3,0.3,0.8,0,1.1c0,0,0,0,0,0l-16.4,16.4C70.9,335.5,70.7,335.5,70.5,335.5z"
+                ></path>
+                <path
+                  id="Path_3425"
+                  class="fill-color"
+                  d="M87,335.5c-0.2,0-0.4-0.1-0.6-0.2L70,318.9c-0.3-0.3-0.3-0.8,0-1.1c0.3-0.3,0.8-0.3,1.1,0l16.4,16.4c0.3,0.3,0.3,0.8,0,1.1C87.4,335.5,87.2,335.5,87,335.5z"
+                ></path>
+              </g>
+            </svg>
           </a>
         </div>
         <div class="col-md-12 mt-4">
@@ -83,12 +138,32 @@
               class="added-tag"
             >
               <label :inner-html.prop="filterItem.name"></label>
-              <span
-                ><img
-                  src="~/assets/img/close.svg"
-                  alt=""
+              <span>
+                <svg
+                  id="Layer_1"
+                  class="close-icon h-red"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  x="0px"
+                  y="0px"
+                  viewBox="0 0 18 18"
+                  xml:space="preserve"
                   @click="removeFilter(filterItem)"
-              /></span>
+                >
+                  <g id="Group_4358" transform="translate(-69.745 -317.549)">
+                    <path
+                      id="Path_3424"
+                      class="fill-color"
+                      d="M70.5,335.5c-0.4,0-0.8-0.4-0.8-0.8c0-0.2,0.1-0.4,0.2-0.6l16.4-16.4c0.3-0.3,0.8-0.3,1.1,0c0.3,0.3,0.3,0.8,0,1.1c0,0,0,0,0,0l-16.4,16.4C70.9,335.5,70.7,335.5,70.5,335.5z"
+                    ></path>
+                    <path
+                      id="Path_3425"
+                      class="fill-color"
+                      d="M87,335.5c-0.2,0-0.4-0.1-0.6-0.2L70,318.9c-0.3-0.3-0.3-0.8,0-1.1c0.3-0.3,0.8-0.3,1.1,0l16.4,16.4c0.3,0.3,0.3,0.8,0,1.1C87.4,335.5,87.2,335.5,87,335.5z"
+                    ></path>
+                  </g></svg
+              ></span>
             </span>
           </transition-group>
         </div>
