@@ -758,7 +758,6 @@ header .user-dropdown.show .dropdown-toggle{color: #ffffff;}
 .collection-box.open .collection-move:after,
 .collection-box.open .collection-move:before {visibility: visible;opacity: 1;-webkit-transform: translate3d(-50%,0,0);transform: translate3d(-50%,0,0);}
 
-.more-options{}
 .more-options .dropdown-toggle {background-color: #ffffff;outline: none;outline-offset: 0;border: none;box-shadow: none;height: 26px;padding: 4px;border-radius: 2px;display: flex;align-items: center;position: relative;z-index: 2;}
 .more-options .dropdown-toggle:after{display: none;}
 .more-options .dropdown-toggle svg{height: 16px;}
@@ -805,8 +804,6 @@ header .user-dropdown.show .dropdown-toggle{color: #ffffff;}
 @media (min-width: 1400px){
   .grid-tile .table-list-view.collection-table .tbody>li {flex: 0 0 calc(20% - 10px);max-width: calc(20% - 10px);}
 }
-
-
 
 .btn-icon svg {display: inline-flex;height: 13px;margin-left: -4px;margin-bottom: -1px;margin-right: 6px;}
 .btn-icon svg .fill-color{fill: #ffffff;transition: ease-in-out all 0.3s;-webkit-transition: ease-in-out all 0.3s;-ms-transition: ease-in-out all 0.3s;-o-transition: ease-in-out all 0.3s;}
