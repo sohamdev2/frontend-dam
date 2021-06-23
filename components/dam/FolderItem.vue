@@ -321,6 +321,13 @@ export default {
       return listeners
     },
   },
+  mounted() {
+    this.$bus.$on('closeDropDown', () => {
+      if (this.dropDownList === true) {
+        this.dropDownList = false
+      }
+    })
+  },
   methods: {
     // dropdown feature for left panel
     selectFromPanel(folder, type) {

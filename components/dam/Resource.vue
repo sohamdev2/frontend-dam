@@ -758,6 +758,11 @@ export default {
   },
 
   mounted() {
+    this.$bus.$on('closeDropDown', () => {
+      if (this.dropDownList === true) {
+        this.dropDownList = false
+      }
+    })
     this.loadJS()
     this.$nextTick(() => {
       // window.$(this.$el).find('[data-toggle="tooltip"]').tooltip()
@@ -869,8 +874,9 @@ export default {
     setPlaytime() {
       setTimeout(() => {
         try {
-          window.$(`[data-id="file-${this.file.id}"]`)[0].currentTime =
-            this.$refs.video.currentTime
+          window.$(
+            `[data-id="file-${this.file.id}"]`
+          )[0].currentTime = this.$refs.video.currentTime
         } catch {
           //
         }

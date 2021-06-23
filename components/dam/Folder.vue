@@ -350,6 +350,11 @@ export default {
     },
   },
   mounted() {
+    this.$bus.$on('closeDropDown', () => {
+      if (this.dropDownList === true) {
+        this.dropDownList = false
+      }
+    })
     this.loadJS()
   },
   updated() {
