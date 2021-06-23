@@ -11,8 +11,34 @@
           v-if="breadcrumbs"
           class="home-icon"
           :to="`/${$getBrandName()}`"
-          ><img src="~/assets/img/address.svg" alt=""
-        /></nuxt-link>
+          ><svg
+            id="Layer_1"
+            class="home-icon orange"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px"
+            y="0px"
+            viewBox="0 0 16.2 18"
+            xml:space="preserve"
+          >
+            <g id="Group_4409" transform="translate(-871.194 -659.595)">
+              <g id="Path_3470">
+                <path
+                  id="Path_3514"
+                  class="fill-color"
+                  d="M879.3,661.5l6.6,5.1v9.2c0,0.2-0.1,0.3-0.3,0.3H873c-0.2,0-0.3-0.1-0.3-0.3v-9.2L879.3,661.5M879.3,659.6l-8.1,6.3v9.9c0,1,0.8,1.8,1.8,1.8h12.6c1,0,1.8-0.8,1.8-1.8v-9.9L879.3,659.6z"
+                ></path>
+              </g>
+              <g id="Path_3471">
+                <path
+                  id="Path_3515"
+                  class="fill-color"
+                  d="M882,677.3c-0.4,0-0.8-0.3-0.8-0.8v-7.2h-3.9v7.2c0,0.4-0.3,0.8-0.8,0.8s-0.8-0.3-0.8-0.8v-8c0-0.4,0.3-0.8,0.8-0.8h5.4c0.4,0,0.8,0.3,0.8,0.8v8C882.7,677,882.4,677.3,882,677.3z"
+                ></path>
+              </g>
+            </g></svg
+        ></nuxt-link>
         <div v-if="breadcrumbs" class="breadcrumb-links">
           <ul>
             <li>&nbsp;</li>
@@ -271,7 +297,38 @@
                     :class="{ 'btn-disable': allButtonDisabled }"
                     @click="downloadFile"
                   >
-                    <img src="@/assets/img/download.svg" alt="download" />
+                    <svg
+                      id="Layer_1"
+                      class="download-icon"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                      x="0px"
+                      y="0px"
+                      viewBox="0 0 18 18"
+                      xml:space="preserve"
+                    >
+                      <g
+                        id="Group_4359"
+                        transform="translate(-153.745 -317.549)"
+                      >
+                        <path
+                          id="Path_3427"
+                          class="fill-color"
+                          d="M156.4,335.5c-1.4,0-2.6-1.2-2.6-2.6v-3.7c0-0.4,0.4-0.8,0.8-0.8c0.4,0,0.7,0.3,0.8,0.8v3.7c0,0.6,0.5,1,1,1h12.8c0.6,0,1-0.5,1-1v-3.7c0-0.4,0.4-0.8,0.8-0.8c0.4,0,0.8,0.4,0.8,0.8v3.7c0,1.4-1.2,2.6-2.6,2.6H156.4z"
+                        ></path>
+                        <path
+                          id="Path_3428"
+                          class="fill-color"
+                          d="M157.6,325.3c-0.3-0.3-0.3-0.8,0-1.1c0.3-0.3,0.8-0.3,1.1,0l4,4l4-4c0.3-0.3,0.8-0.3,1.1,0s0.3,0.8,0,1.1l-5.1,5.1L157.6,325.3z"
+                        ></path>
+                        <path
+                          id="Path_3429"
+                          class="fill-color"
+                          d="M162.7,330.1c-0.4,0-0.8-0.4-0.8-0.8v-11c0-0.4,0.3-0.8,0.8-0.8c0.4,0,0.8,0.3,0.8,0.8c0,0,0,0,0,0.1v11C163.5,329.7,163.2,330.1,162.7,330.1z"
+                        ></path>
+                      </g>
+                    </svg>
                     Download
                   </button>
                   <button
@@ -281,7 +338,33 @@
                     :class="{ 'btn-disable': allButtonDisabled }"
                     @click="$refs.shareDialog.toggleModel()"
                   >
-                    <img src="@/assets/img/share.svg" alt="share" />
+                    <svg
+                      id="Layer_1"
+                      class="share-icon"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                      x="0px"
+                      y="0px"
+                      viewBox="0 0 18 18"
+                      xml:space="preserve"
+                    >
+                      <g id="Group_4473" transform="translate(-871 -230)">
+                        <rect
+                          id="Rectangle_3012"
+                          x="871"
+                          y="230"
+                          class="fill-hide"
+                          width="18"
+                          height="18"
+                        ></rect>
+                        <path
+                          id="Icon_open-share"
+                          class="fill-color"
+                          d="M883.9,234.4l3.2,3.1l-3.2,3.4v-2.3h-3.8c-2.1,0-4.3,0.5-6.1,1.6c1.4-2,3.9-3.2,8.4-3.2h1.5L883.9,234.4 M883.1,231.8c-0.4,0-0.7,0.3-0.7,0.7c0,0,0,0,0,0v3c-8.8,0-11.2,4.3-11.4,10.6c0,0.1,0,0.1,0.1,0.1c0.1,0,0.1,0,0.1-0.1c1.4-4,4.6-6,8.9-6h2.3v2.9c0,0.4,0.3,0.7,0.7,0.7c0,0,0,0,0,0c0.2,0,0.4-0.1,0.5-0.2l5.2-5.5c0.3-0.3,0.2-0.7,0-1c0,0,0,0,0,0l-5.2-4.9C883.4,231.9,883.3,231.8,883.1,231.8L883.1,231.8z"
+                        ></path>
+                      </g>
+                    </svg>
                     Share
                   </button>
                   <!-- <button
@@ -290,7 +373,7 @@
             :disabled="allButtonDisabled"
             :class="{ 'btn-disable': allButtonDisabled }"
           >
-          <img src="@/assets/img/embeded.svg" alt="embed" />
+          <svg class="embed-icon" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 18 18" xml:space="preserve"><g id="Group_4474" transform="translate(-871 -325)"><rect id="Rectangle_2993" x="871" y="325" class="fill-hide" width="18" height="18"/><g id="Group_4360" transform="translate(671.255 7.338)"><path id="Path_3430" class="fill-color" d="M204,330.9c-0.2,0-0.4-0.1-0.5-0.2l-3.5-3.5c-0.3-0.3-0.3-0.8,0-1.1l3.5-3.5c0.3-0.3,0.8-0.3,1.1,0c0.3,0.3,0.3,0.8,0,1.1l-2.9,3l2.9,3c0.3,0.3,0.3,0.8,0,1.1C204.5,330.8,204.3,330.9,204,330.9L204,330.9z"/><path id="Path_3431" class="fill-color" d="M213.4,330.9c-0.4,0-0.8-0.3-0.8-0.8c0-0.2,0.1-0.4,0.2-0.5l2.9-3l-2.9-3c-0.3-0.3-0.3-0.8,0-1.1s0.8-0.3,1.1,0c0,0,0,0,0,0l3.5,3.5c0.3,0.3,0.3,0.8,0,1.1c0,0,0,0,0,0l-3.5,3.5C213.8,330.8,213.7,330.9,213.4,330.9z"/><path id="Path_3432" class="fill-color" d="M207,331.4c-0.4,0-0.8-0.3-0.8-0.8c0-0.1,0-0.2,0.1-0.3l3.4-8.2c0.2-0.4,0.6-0.6,1-0.4c0.4,0.2,0.6,0.6,0.4,1l0,0l-3.4,8.2C207.6,331.3,207.4,331.4,207,331.4z"/></g></g></svg>
             Embed
 
           </button> -->

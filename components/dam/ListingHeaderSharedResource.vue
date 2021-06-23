@@ -60,7 +60,7 @@
         >Size</span
       >
     </div>
-    <div class="categary-action sorting text-center flex8">
+    <div class="categary-action sorting text-right flex8">
       <span>Action</span>
     </div>
   </ListingHeaderTemplate>
