@@ -818,6 +818,7 @@ header .user-dropdown.show .dropdown-toggle{color: #ffffff;}
 
 .infinite-loading-container svg,
 .searh-result-body svg{height: auto;}
+.infinite-loading-container .btn svg{height: 13px;}
 
 svg{height: 18px;outline: none;outline-offset: 0;}
 svg .fill-color{fill: #757A85;}
