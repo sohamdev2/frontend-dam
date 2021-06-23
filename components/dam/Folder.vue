@@ -62,7 +62,7 @@
                 >
                   <svg
                     id="Layer_1"
-                    class="menu-option-icon"
+                    class="menu-option-icon h-orange"
                     version="1.1"
                     xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink"
