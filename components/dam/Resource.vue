@@ -446,6 +446,11 @@ export default {
   },
 
   mounted() {
+    this.$bus.$on('closeDropDown', () => {
+      if (this.dropDownList === true) {
+        this.dropDownList = false
+      }
+    })
     this.$nextTick(() => {
       // window.$(this.$el).find('[data-toggle="tooltip"]').tooltip()
       this.imageLoading = this.isImage
