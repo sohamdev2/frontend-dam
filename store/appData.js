@@ -82,9 +82,17 @@ export const actions = {
 
     commit('loading.dashboard', true)
     commit('dashboardData', null)
+    const workspace = this.$auth.user.accessibleInstances.find(
+      ({ workspace_id }) =>
+        parseInt(workspace_id) === parseInt(this.$getWorkspaceId())
+    )
 
     const data = await this.$axios
-      .$get(`/digital/common-data?workspace_id=${this.$getWorkspaceId()}`)
+      .$get(
+        `/digital/common-data?workspace_id=${this.$getWorkspaceId()}&instance_id=${
+          workspace.instance_id
+        }`
+      )
       .then(({ data }) => data)
       .catch(this.$showErrorToast)
 
