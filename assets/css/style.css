@@ -816,6 +816,7 @@ header .user-dropdown.show .dropdown-toggle{color: #ffffff;}
 .btn-icon:hover svg .fill-color{fill: #FF8A01;}
 .btn-icon.btn-gray:hover svg .fill-color{fill: #757A85;}
 
+.normalLoader,
 .infinite-loading-container svg,
 .searh-result-body svg{height: auto;}
 .infinite-loading-container .btn svg{height: 13px;}
