@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @click="closeMoreOptions">
     <div v-if="showModel">
       <slot></slot>
     </div>
@@ -45,6 +45,11 @@ export default {
   },
   updated() {
     this.$nextTick(() => (this.showModel = this.loaded))
+  },
+  methods: {
+    closeMoreOptions() {
+      this.$bus.$emit('closeDropDown')
+    },
   },
 }
 </script>

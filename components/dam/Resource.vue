@@ -106,7 +106,7 @@
                   >
                     <svg
                       id="Layer_1"
-                      class="menu-option-icon"
+                      class="menu-option-icon h-orange"
                       version="1.1"
                       xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -371,6 +371,7 @@
               :width="200"
               :height="200"
               :animate="true"
+              class="normalLoader"
             >
               <rect x="0" y="0" rx="2" ry="2" width="200" height="200" />
             </ContentLoader>
@@ -401,7 +402,7 @@
                   >
                     <svg
                       id="Layer_1"
-                      class="menu-option-icon"
+                      class="menu-option-icon h-orange"
                       version="1.1"
                       xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -758,6 +759,11 @@ export default {
   },
 
   mounted() {
+    this.$bus.$on('closeDropDown', () => {
+      if (this.dropDownList === true) {
+        this.dropDownList = false
+      }
+    })
     this.loadJS()
     this.$nextTick(() => {
       // window.$(this.$el).find('[data-toggle="tooltip"]').tooltip()
