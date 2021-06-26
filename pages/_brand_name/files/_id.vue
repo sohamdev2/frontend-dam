@@ -73,7 +73,7 @@
                 <iframe
                   v-if="isPdf"
                   type="application/pdf"
-                  :src="__url + '#toolbar=0'"
+                  :src="__url + '#toolbar=0?transparent=0'"
                   width="100%"
                   height="100%"
                 >
