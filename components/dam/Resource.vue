@@ -1,6 +1,11 @@
 <template>
   <li
-    :class="{ selected, video: isVideo, image: isImage }"
+    :class="{
+      selected,
+      video: isVideo,
+      image: isImage,
+      'assets-private': file.is_public === 0,
+    }"
     v-on="{
       ...(isVideo
         ? {
