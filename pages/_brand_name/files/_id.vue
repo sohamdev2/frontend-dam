@@ -2,20 +2,10 @@
 <template>
   <div class="h-100">
     <div
-      class="
-        section-title
-        dam-detail-title
-        d-flex
-        flex-column flex-lg-row
-        align-items-center
-      "
+      class="section-title dam-detail-title d-flex flex-column flex-lg-row align-items-center"
     >
       <div
-        class="
-          sec-title-left
-          d-flex
-          justify-content-between justify-content-lg-start
-        "
+        class="sec-title-left d-flex justify-content-between justify-content-lg-start"
       >
         <nuxt-link
           v-if="breadcrumbs"
@@ -254,6 +244,24 @@
                           ></span>
                         </li>
                       </template>
+                      <li>
+                        <span class="flex30"
+                          >Permission
+                          <i
+                            v-tooltip="
+                              'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
+                            "
+                            class="fa fa-info-circle"
+                            aria-hidden="true"
+                            data-toggle="tooltip"
+                          ></i></span
+                        ><span class="flex70"
+                          >:
+                          {{
+                            file.is_public === 0 ? 'Private' : 'Public'
+                          }}</span
+                        >
+                      </li>
                     </ul>
                   </div>
                   <div
@@ -342,6 +350,7 @@
                     Download
                   </button>
                   <button
+                    v-if="file.is_public === 1"
                     type="button"
                     class="btn btn-gray btn-icon"
                     :disabled="allButtonDisabled"
