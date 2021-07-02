@@ -159,7 +159,7 @@
                     </svg>
                   </button>
                   <ul class="dropdown-menu" :class="{ show: dropDownList }">
-                    <li v-if="!shareMode">
+                    <li v-if="!shareMode && file.is_public === 1">
                       <a
                         class="dropdown-item"
                         data-toggle="modal"
@@ -455,7 +455,7 @@
                     </svg>
                   </button>
                   <ul class="dropdown-menu" :class="{ show: dropDownList }">
-                    <li v-if="!shareMode">
+                    <li v-if="!shareMode && file.is_public === 1">
                       <a
                         class="dropdown-item"
                         data-toggle="modal"
