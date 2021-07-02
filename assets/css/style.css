@@ -2489,15 +2489,35 @@ header .user-dropdown.show .dropdown-toggle {
   padding: 20px 20px 20px 20px !important;
 }
 
-.grid-tile .table-list-view .tbody > li.assets-private .categary-name {
+.grid-tile .table-list-view .tbody > li.assets-private .categary-name,
+.grid-tile
+  .table-list-view
+  .tbody
+  .VueCarousel-slide
+  > li.assets-private
+  .categary-name {
   position: relative;
 }
-.grid-tile .table-list-view .tbody > li.assets-private .categary-name a {
+.grid-tile .table-list-view .tbody > li.assets-private .categary-name a,
+.grid-tile
+  .table-list-view
+  .tbody
+  .VueCarousel-slide
+  > li.assets-private
+  .categary-name
+  a {
   padding-left: 40px !important;
 }
 .grid-tile
   .table-list-view
   .tbody
+  > li.assets-private
+  .categary-name
+  .locked-icon,
+.grid-tile
+  .table-list-view
+  .tbody
+  .VueCarousel-slide
   > li.assets-private
   .categary-name
   .locked-icon {
@@ -2511,6 +2531,13 @@ header .user-dropdown.show .dropdown-toggle {
 .grid-list
   .table-list-view
   .tbody
+  > li.assets-private
+  .categary-name
+  .locked-icon,
+.grid-list
+  .table-list-view
+  .tbody
+  .VueCarousel-slide
   > li.assets-private
   .categary-name
   .locked-icon {
