@@ -248,9 +248,17 @@
                         <span class="flex30"
                           >Permission
                           <i
-                            v-tooltip="
-                              'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
-                            "
+                            v-tooltip="{
+                              html: true,
+                              content: `<ul>
+                                    <li>
+                                      <strong>PUBLIC:</strong> This image can be used per the brand’s licensing guidelines and shared publicly as needed.
+                                    </li>
+                                    <li>
+                                        <strong>PRIVATE:</strong> This image is for internal use only and may require credit per the brand’s licensing guidelines and may not be shared without specific permissions.
+                                    </li>
+                                        </ul>`,
+                            }"
                             class="fa fa-info-circle"
                             aria-hidden="true"
                             data-toggle="tooltip"
