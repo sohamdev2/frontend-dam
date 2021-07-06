@@ -11,7 +11,7 @@
           height="24"
         /> -->
         <img
-          :src="user.default_logo || require('~/assets/img/logo.svg')"
+          :src="userLogo || require('~/assets/img/logo.svg')"
           alt="Logo"
           height="24"
         />
@@ -371,6 +371,7 @@ export default {
         },
       ],
       auth: this.$_auth(),
+      userLogo: null,
     }
   },
   computed: {
@@ -390,11 +391,21 @@ export default {
     this.$nextTick(() => {
       window.$(this.$el).find('.dropdown-toggle').dropdown()
     })
+    const workspace = this.$auth.user.accessibleInstances.find(
+      ({ workspace_id }) =>
+        parseInt(workspace_id) === parseInt(this.$getWorkspaceId())
+    )
+    this.userLogo = workspace.logo
   },
   methods: {
     changeInstance(instance) {
       this.$setCurrentWorkspace(instance.workspace_id)
       this.auth = this.$_auth()
+      const workspace = this.$auth.user.accessibleInstances.find(
+        ({ workspace_id }) =>
+          parseInt(workspace_id) === parseInt(instance.workspace_id)
+      )
+      this.userLogo = workspace.logo
       // redirect then to the appropriate dashboard
       this.$router.push(`/${this.auth.url}`)
     },

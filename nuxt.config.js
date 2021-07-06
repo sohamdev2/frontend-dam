@@ -56,6 +56,7 @@ export default {
     '~/plugins/vue-infinite-loading.js',
     { src: '~/plugins/vue-audio-visual.js', mode: 'client' },
     { src: '~/plugins/vue-carousel.js', mode: 'client' },
+    { src: '~/plugins/bus' },
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
