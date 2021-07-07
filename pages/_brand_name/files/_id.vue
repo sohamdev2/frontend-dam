@@ -270,7 +270,7 @@
                           }}</span
                         >
                       </li>
-                      <li v-if="file.is_editorial_use !== 0">
+                      <!-- <li v-if="file.is_editorial_use !== 0">
                         <span class="flex30"
                           >Licensing
                           <i
@@ -282,7 +282,7 @@
                           ></i
                         ></span>
                         <span class="flex70">: Editorial Use Only</span>
-                      </li>
+                      </li> -->
                     </ul>
                   </div>
                   <div
