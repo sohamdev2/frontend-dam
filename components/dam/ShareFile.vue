@@ -79,6 +79,12 @@
           </div>
           <SharePreviewItem v-for="file in files" :key="file.id" :file="file" />
         </div>
+        <div v-if="isPrivate.length" class="notes">
+          <p>
+            <strong>Note : </strong>Some of the assets you have selected are
+            private assets, which are available for internal use only.
+          </p>
+        </div>
 
         <div class="modal-footer justify-content-end p-0 pt-3">
           <button
@@ -129,6 +135,14 @@ export default {
     //     })
     //   );
     // },
+    isPrivate() {
+      let privateAssets = null
+      privateAssets = this.files.filter((item) => {
+        return item.is_public === 0
+      })
+      console.log(privateAssets)
+      return privateAssets
+    },
   },
   watch: {
     files() {
