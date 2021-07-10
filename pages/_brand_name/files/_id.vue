@@ -2,20 +2,10 @@
 <template>
   <div class="h-100">
     <div
-      class="
-        section-title
-        dam-detail-title
-        d-flex
-        flex-column flex-lg-row
-        align-items-center
-      "
+      class="section-title dam-detail-title d-flex flex-column flex-lg-row align-items-center"
     >
       <div
-        class="
-          sec-title-left
-          d-flex
-          justify-content-between justify-content-lg-start
-        "
+        class="sec-title-left d-flex justify-content-between justify-content-lg-start"
       >
         <nuxt-link
           v-if="breadcrumbs"
@@ -73,7 +63,7 @@
                 <iframe
                   v-if="isPdf"
                   type="application/pdf"
-                  :src="__url + '#toolbar=0'"
+                  :src="__url + '#toolbar=0?transparent=0'"
                   width="100%"
                   height="100%"
                 >
@@ -254,6 +244,45 @@
                           ></span>
                         </li>
                       </template>
+                      <li>
+                        <span class="flex30"
+                          >Permission
+                          <i
+                            v-tooltip="{
+                              html: true,
+                              content: `<ul>
+                                    <li>
+                                      <strong>PUBLIC:</strong> This image can be used per the brand’s licensing guidelines and shared publicly as needed.
+                                    </li>
+                                    <li>
+                                        <strong>PRIVATE:</strong> This image is for internal use only and may require credit per the brand’s licensing guidelines and may not be shared without specific permissions.
+                                    </li>
+                                        </ul>`,
+                            }"
+                            class="fa fa-info-circle"
+                            aria-hidden="true"
+                            data-toggle="tooltip"
+                          ></i></span
+                        ><span class="flex70"
+                          >:
+                          {{
+                            file.is_public === 0 ? 'Private' : 'Public'
+                          }}</span
+                        >
+                      </li>
+                      <!-- <li v-if="file.is_editorial_use !== 0">
+                        <span class="flex30"
+                          >Licensing
+                          <i
+                            v-tooltip="
+                              'This For Editorial Use Only image can be used editorially to accompany internal presentations, news articles, blog or social media posts (Facebook, Instagram, Twitter, etc.) where the purpose is solely to inform, educate or entertain and not to promote a product or service.'
+                            "
+                            class="fa fa-info-circle"
+                            aria-hidden="true"
+                          ></i
+                        ></span>
+                        <span class="flex70">: Editorial Use Only</span>
+                      </li> -->
                     </ul>
                   </div>
                   <div
@@ -342,6 +371,7 @@
                     Download
                   </button>
                   <button
+                    v-if="file.is_public === 1"
                     type="button"
                     class="btn btn-gray btn-icon"
                     :disabled="allButtonDisabled"

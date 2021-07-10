@@ -2,7 +2,13 @@
   <div class="customscrollbar">
     <client-only v-if="foldersLoading">
       <div>
-        <ContentLoader :speed="1" :width="240" :height="400" :animate="true">
+        <ContentLoader
+          :speed="1"
+          :width="240"
+          :height="400"
+          :animate="true"
+          class="normalLoader"
+        >
           <rect x="10" y="5" rx="2" ry="2" width="220" height="24" />
           <rect x="10" y="40" rx="2" ry="2" width="220" height="24" />
           <rect x="10" y="75" rx="2" ry="2" width="220" height="24" />
