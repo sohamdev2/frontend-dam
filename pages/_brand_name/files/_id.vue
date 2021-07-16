@@ -270,19 +270,23 @@
                           }}</span
                         >
                       </li>
-                      <!-- <li v-if="file.is_editorial_use !== 0">
+                      <li v-if="file.is_editorial_use !== 0">
                         <span class="flex30"
                           >Licensing
                           <i
-                            v-tooltip="
-                              'This For Editorial Use Only image can be used editorially to accompany internal presentations, news articles, blog or social media posts (Facebook, Instagram, Twitter, etc.) where the purpose is solely to inform, educate or entertain and not to promote a product or service.'
-                            "
+                            v-tooltip="{
+                              html: true,
+                              content: `<ul>
+                                <li>This <strong>For Editorial Use Only</strong> image can be used editorially to accompany internal presentations, news articles, blog or social media posts (Facebook, Instagram, Twitter, etc.) where the purpose is solely to inform, educate or entertain and not to promote a product or service.
+                                  </li>
+                                  </ul>`,
+                            }"
                             class="fa fa-info-circle"
                             aria-hidden="true"
                           ></i
                         ></span>
                         <span class="flex70">: Editorial Use Only</span>
-                      </li> -->
+                      </li>
                     </ul>
                   </div>
                   <div
