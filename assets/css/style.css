@@ -3274,6 +3274,7 @@ header .user-dropdown.show .dropdown-toggle {
   margin: 0 auto;
 }
 .share-box {
+  position: relative;
   background-color: #fff;
   box-shadow: 0px 1px 2px rgb(0 0 0 / 7%);
   border-radius: 4px;
@@ -3281,6 +3282,20 @@ header .user-dropdown.show .dropdown-toggle {
 }
 .share-box + .share-box {
   margin-top: 10px;
+}
+.share-box .share-name label {
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  white-space: normal;
+  padding-right: 50px;
+}
+.share-box .locked-icon {
+  position: absolute;
+  right: 15px;
 }
 
 .mini-title {
@@ -3698,10 +3713,10 @@ header .user-dropdown.show .dropdown-toggle {
   margin-left: 20px;
 }
 .tabs-view .nav li a {
-  padding: 0px 5px;
+  padding: 3px;
+  border-bottom: 2px solid transparent;
   background-color: transparent;
   color: #79808d;
-  border: none;
   border-radius: 4px;
   font-size: 15px;
   line-height: 20px;
@@ -3711,10 +3726,11 @@ header .user-dropdown.show .dropdown-toggle {
   -o-transition: ease-in-out all 0s;
 }
 .tabs-view .nav li a.active {
-  color: #1f3253;
-  font-size: 16px;
+  color: #172b4d;
   font-weight: 600;
   background-color: transparent;
+  border-color: #0361cf;
+  border-radius: 0;
 }
 .detail-tabs {
   height: 100%;
@@ -3729,7 +3745,7 @@ header .user-dropdown.show .dropdown-toggle {
   background-color: #ffffff;
   border-radius: 4px 4px 0 0;
   padding: 10px;
-  height: calc(100% - 80px);
+  height: calc(100% - 73px);
 }
 .detail-tabs .tab-content h4 {
   font-weight: 600;
