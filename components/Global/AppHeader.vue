@@ -3,7 +3,7 @@
     <div class="main-logo col">
       <nuxt-link :to="`/${$getBrandName()}`">
         <img
-          :src="userLogo || require('~/assets/img/lariat-logo.svg')"
+          :src="userLogo || require('~/assets/img/Lariat-logo.svg')"
           alt="Logo"
           height="24"
         />
