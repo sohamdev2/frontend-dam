@@ -6,7 +6,7 @@
     <div v-if="!showModel" class="preloader">
       <div class="loading">
         <img
-          src="~/assets/img/marcomhq-logo1.svg"
+          src="~/assets/img/lariat-loader.svg"
           alt="MarcomHQ"
           class="img-responsive"
         />

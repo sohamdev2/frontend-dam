@@ -8,7 +8,9 @@
               <nuxt-link to="/">
                 <img
                   :src="
-                    form.logo ? form.logo : require('~/assets/img/logo.svg')
+                    form.logo
+                      ? form.logo
+                      : require('~/assets/img/lariat-marketing-hub.svg')
                   "
                   alt=""
                   class="img-responsive img-center"
@@ -27,7 +29,9 @@
               <nuxt-link to="/">
                 <img
                   :src="
-                    form.logo ? form.logo : require('~/assets/img/logo.svg')
+                    form.logo
+                      ? form.logo
+                      : require('~/assets/img/lariat-marketing-hub.svg')
                   "
                   alt=""
                   class="img-responsive img-center"

@@ -595,12 +595,12 @@
       <div class="top-column">
         <svg
           v-if="mode === 'row' && file.is_public === 0"
+          id="_x31__x2C_5"
           class="locked-icon h-orange"
           data-toggle="tooltip"
           title=""
           data-original-title="For internal use only"
           version="1.1"
-          id="_x31__x2C_5"
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
           x="0px"
@@ -673,9 +673,9 @@
           >
             <svg
               v-if="mode === 'column' && file.is_public === 0"
+              id="_x31__x2C_5"
               class="locked-icon h-orange"
               version="1.1"
-              id="_x31__x2C_5"
               xmlns="http://www.w3.org/2000/svg"
               xmlns:xlink="http://www.w3.org/1999/xlink"
               x="0px"
@@ -948,9 +948,8 @@ export default {
     setPlaytime() {
       setTimeout(() => {
         try {
-          window.$(
-            `[data-id="file-${this.file.id}"]`
-          )[0].currentTime = this.$refs.video.currentTime
+          window.$(`[data-id="file-${this.file.id}"]`)[0].currentTime =
+            this.$refs.video.currentTime
         } catch {
           //
         }
