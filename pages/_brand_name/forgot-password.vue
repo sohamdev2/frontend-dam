@@ -7,7 +7,11 @@
             <div class="sign-heading-text text-center">
               <nuxt-link to="/">
                 <img
-                  :src="logo ? logo : require('~/assets/img/logo.svg')"
+                  :src="
+                    logo
+                      ? logo
+                      : require('~/assets/img/lariat-marketing-hub.svg')
+                  "
                   alt=""
                   class="img-responsive img-center"
                 />
