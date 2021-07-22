@@ -8,7 +8,7 @@
               <nuxt-link to="/">
                 <img
                   class="logo"
-                  src="~/assets/img/marcom_hq_2_1.svg"
+                  src="~/assets/img/lariat-marketing-hub.svg"
                   alt="MarComHQ"
                 />
               </nuxt-link>

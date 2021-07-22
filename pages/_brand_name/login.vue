@@ -13,7 +13,9 @@
               </div> -->
             <div class="sign-heading-text text-center">
               <img
-                :src="logo ? logo : require('~/assets/img/logo.svg')"
+                :src="
+                  logo ? logo : require('~/assets/img/lariat-marketing-hub.svg')
+                "
                 alt=""
                 class="img-responsive img-center"
               />
