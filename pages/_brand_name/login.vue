@@ -75,7 +75,7 @@
                       :loading="loading"
                     >
                       <template #loading> Signing in... </template>
-                      Login to Lariat
+                      Login to Lariat Marketing Hub
                     </AppButton>
                   </div>
                   <div class="col-sm-12">
