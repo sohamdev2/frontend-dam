@@ -7,7 +7,7 @@
       <div class="loading">
         <img
           src="~/assets/img/lariat-loader.svg"
-          alt="MarcomHQ"
+          alt="Lariat"
           class="img-responsive"
         />
       </div>
