@@ -1302,10 +1302,7 @@ header.header-sec {
   z-index: 10;
   height: 62px;
 }
-header.header-sec .main-logo img {
-  min-height: 45px;
-  max-height: 45px;
-}
+header.header-sec .main-logo img{max-height: 45px;max-width: 350px;}
 .main-logo a {
   display: inline-block;
   vertical-align: top;
@@ -2819,18 +2816,7 @@ header .user-dropdown.show .dropdown-toggle {
   backface-visibility: hidden;
 }
 .categary-image img,
-.preview-img.video video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  margin: auto;
-  height: 100%;
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: cover;
-}
+.preview-img.video video {position: absolute;top: 0;left: 0;bottom: 0;right: 0;margin: auto;max-width: 100%;max-height: 100%;object-fit: cover;}
 .preview-img.video video {
   background-color: #000;
   opacity: 0;
