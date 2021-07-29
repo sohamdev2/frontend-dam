@@ -242,6 +242,7 @@ export const docExtensions = [
   'dotx',
 ]
 export const audioExtensions = ['mp3', 'wav', 'wma', 'aac']
+export const txtExtensions = ['txt']
 
 export function isPdf(ext) {
   return !!ext && pdfExtensions.includes(ext.toLowerCase())
@@ -253,6 +254,10 @@ export function isImage(ext) {
 
 export function isVideo(ext) {
   return !!ext && videoExtensions.includes(ext.toLowerCase())
+}
+
+export function isTxt(ext) {
+  return !!ext && txtExtensions.includes(ext.toLowerCase())
 }
 
 export function isDoc(ext) {
