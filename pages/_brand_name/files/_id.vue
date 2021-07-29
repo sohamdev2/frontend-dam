@@ -196,12 +196,11 @@
                     </template>
                     <ul class="overview-table">
                       <li>
-                        <span class="flex30">ID</span
-                        ><span class="flex70">: {{ file.id }}</span>
+                        <span>ID</span><span>: {{ file.id }}</span>
                       </li>
                       <li v-if="parentFolder">
-                        <span class="flex30">Parent Folder</span>
-                        <span class="flex70"
+                        <span>Parent Folder</span>
+                        <span
                           >:
                           <div class="breadcrumb-links">
                             <ul>
@@ -233,11 +232,8 @@
                           v-for="(value, key) in filterMetaData(metaData)"
                           :key="key"
                         >
-                          <span class="flex30">{{
-                            $camelCaseToNormalCase(key)
-                          }}</span
+                          <span>{{ $camelCaseToNormalCase(key) }}</span
                           ><span
-                            class="flex70"
                             :inner-html.prop="
                               ':' + ' ' + $getFormattedMetaValue(value, key)
                             "
@@ -245,7 +241,7 @@
                         </li>
                       </template>
                       <li>
-                        <span class="flex30"
+                        <span
                           >Permission
                           <i
                             v-tooltip="{
@@ -263,7 +259,7 @@
                             aria-hidden="true"
                             data-toggle="tooltip"
                           ></i></span
-                        ><span class="flex70"
+                        ><span
                           >:
                           {{
                             file.is_public === 0 ? 'Private' : 'Public'
@@ -271,7 +267,7 @@
                         >
                       </li>
                       <li v-if="file.is_editorial_use !== 0">
-                        <span class="flex30"
+                        <span
                           >Licensing
                           <i
                             v-tooltip="{
@@ -285,7 +281,7 @@
                             aria-hidden="true"
                           ></i
                         ></span>
-                        <span class="flex70">: Editorial Use Only</span>
+                        <span>: Editorial Use Only</span>
                       </li>
                     </ul>
                   </div>
@@ -302,11 +298,8 @@
                         }"
                         :key="key"
                       >
-                        <span class="flex45">{{
-                          $camelCaseToNormalCase(key)
-                        }}</span
+                        <span>{{ $camelCaseToNormalCase(key) }}</span
                         ><span
-                          class="flex55"
                           :inner-html.prop="
                             ':' + ' ' + $getFormattedMetaValue(value, key)
                           "
