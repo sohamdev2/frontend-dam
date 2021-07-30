@@ -2,10 +2,20 @@
 <template>
   <div class="h-100">
     <div
-      class="section-title dam-detail-title d-flex flex-column flex-lg-row align-items-center"
+      class="
+        section-title
+        dam-detail-title
+        d-flex
+        flex-column flex-lg-row
+        align-items-center
+      "
     >
       <div
-        class="sec-title-left d-flex justify-content-between justify-content-lg-start"
+        class="
+          sec-title-left
+          d-flex
+          justify-content-between justify-content-lg-start
+        "
       >
         <nuxt-link
           v-if="breadcrumbs"
@@ -58,7 +68,7 @@
             {{ file.display_file_name | shrinkString(60, 15) }}
           </h2>
           <div class="common-box customscrollbar p0">
-            <div v-if="isPdf || isDoc" class="doc-wapper">
+            <div v-if="isPdf || isDoc || isTxt" class="doc-wapper">
               <div class="doc-preview">
                 <iframe
                   v-if="isPdf"
@@ -68,7 +78,13 @@
                   height="100%"
                 >
                 </iframe>
-
+                <iframe
+                  v-else-if="isTxt"
+                  type="application/txt"
+                  :src="__url"
+                  width="100%"
+                  height="100%"
+                ></iframe>
                 <iframe
                   v-else-if="isDoc"
                   :src="`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(
@@ -196,12 +212,11 @@
                     </template>
                     <ul class="overview-table">
                       <li>
-                        <span class="flex30">ID</span
-                        ><span class="flex70">: {{ file.id }}</span>
+                        <span>ID</span><span>: {{ file.id }}</span>
                       </li>
                       <li v-if="parentFolder">
-                        <span class="flex30">Parent Folder</span>
-                        <span class="flex70"
+                        <span>Parent Folder</span>
+                        <span
                           >:
                           <div class="breadcrumb-links">
                             <ul>
@@ -233,11 +248,8 @@
                           v-for="(value, key) in filterMetaData(metaData)"
                           :key="key"
                         >
-                          <span class="flex30">{{
-                            $camelCaseToNormalCase(key)
-                          }}</span
+                          <span>{{ $camelCaseToNormalCase(key) }}</span
                           ><span
-                            class="flex70"
                             :inner-html.prop="
                               ':' + ' ' + $getFormattedMetaValue(value, key)
                             "
@@ -245,7 +257,7 @@
                         </li>
                       </template>
                       <li>
-                        <span class="flex30"
+                        <span
                           >Permission
                           <i
                             v-tooltip="{
@@ -263,26 +275,30 @@
                             aria-hidden="true"
                             data-toggle="tooltip"
                           ></i></span
-                        ><span class="flex70"
+                        ><span
                           >:
                           {{
                             file.is_public === 0 ? 'Private' : 'Public'
                           }}</span
                         >
                       </li>
-                      <!-- <li v-if="file.is_editorial_use !== 0">
-                        <span class="flex30"
+                      <li v-if="file.is_editorial_use !== 0">
+                        <span
                           >Licensing
                           <i
-                            v-tooltip="
-                              'This For Editorial Use Only image can be used editorially to accompany internal presentations, news articles, blog or social media posts (Facebook, Instagram, Twitter, etc.) where the purpose is solely to inform, educate or entertain and not to promote a product or service.'
-                            "
+                            v-tooltip="{
+                              html: true,
+                              content: `<ul>
+                                <li>This <strong>For Editorial Use Only</strong> image can be used editorially to accompany internal presentations, news articles, blog or social media posts (Facebook, Instagram, Twitter, etc.) where the purpose is solely to inform, educate or entertain and not to promote a product or service.
+                                  </li>
+                                  </ul>`,
+                            }"
                             class="fa fa-info-circle"
                             aria-hidden="true"
                           ></i
                         ></span>
-                        <span class="flex70">: Editorial Use Only</span>
-                      </li> -->
+                        <span>: Editorial Use Only</span>
+                      </li>
                     </ul>
                   </div>
                   <div
@@ -298,11 +314,8 @@
                         }"
                         :key="key"
                       >
-                        <span class="flex45">{{
-                          $camelCaseToNormalCase(key)
-                        }}</span
+                        <span>{{ $camelCaseToNormalCase(key) }}</span
                         ><span
-                          class="flex55"
                           :inner-html.prop="
                             ':' + ' ' + $getFormattedMetaValue(value, key)
                           "

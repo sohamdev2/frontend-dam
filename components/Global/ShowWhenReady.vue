@@ -6,8 +6,8 @@
     <div v-if="!showModel" class="preloader">
       <div class="loading">
         <img
-          src="~/assets/img/marcomhq-logo1.svg"
-          alt="MarcomHQ"
+          src="~/assets/img/lariat-loader.svg"
+          alt="Lariat"
           class="img-responsive"
         />
       </div>

@@ -49,6 +49,7 @@
         <div
           v-if="isVideo"
           class="categary-image"
+          style="overflow: hidden !important"
           :class="{ 'no-image': !videoThumbnail }"
         >
           <nuxt-link
@@ -84,6 +85,19 @@
               Your browser does not support the video tag.
             </video>
           </nuxt-link>
+          <client-only>
+            <ContentLoader
+              v-if="(isImage && imageLoading) || videoThumbnailFetching"
+              style="position: absolute; top: 0; right: 0; left: 0; bottom: 0"
+              :speed="1"
+              :width="200"
+              :height="200"
+              :animate="true"
+              class="normalLoader"
+            >
+              <rect x="0" y="0" rx="2" ry="2" width="200" height="200" />
+            </ContentLoader>
+          </client-only>
 
           <div class="video-info">
             <div class="upper-info">
@@ -341,7 +355,12 @@
           </div>
         </div>
 
-        <div v-else class="categary-image" :class="{ 'no-image': !isImage }">
+        <div
+          v-else
+          class="categary-image"
+          style="overflow: hidden !important"
+          :class="{ 'no-image': !isImage }"
+        >
           <nuxt-link
             :is="shareMode ? 'a' : 'nuxt-link'"
             class="img-link"
@@ -595,12 +614,12 @@
       <div class="top-column">
         <svg
           v-if="mode === 'row' && file.is_public === 0"
+          id="_x31__x2C_5"
           class="locked-icon h-orange"
           data-toggle="tooltip"
           title=""
           data-original-title="For internal use only"
           version="1.1"
-          id="_x31__x2C_5"
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
           x="0px"
@@ -673,9 +692,9 @@
           >
             <svg
               v-if="mode === 'column' && file.is_public === 0"
+              id="_x31__x2C_5"
               class="locked-icon h-orange"
               version="1.1"
-              id="_x31__x2C_5"
               xmlns="http://www.w3.org/2000/svg"
               xmlns:xlink="http://www.w3.org/1999/xlink"
               x="0px"
@@ -948,9 +967,8 @@ export default {
     setPlaytime() {
       setTimeout(() => {
         try {
-          window.$(
-            `[data-id="file-${this.file.id}"]`
-          )[0].currentTime = this.$refs.video.currentTime
+          window.$(`[data-id="file-${this.file.id}"]`)[0].currentTime =
+            this.$refs.video.currentTime
         } catch {
           //
         }
