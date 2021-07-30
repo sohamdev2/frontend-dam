@@ -58,7 +58,7 @@
             {{ file.display_file_name | shrinkString(60, 15) }}
           </h2>
           <div class="common-box customscrollbar p0">
-            <div v-if="isPdf || isDoc" class="doc-wapper">
+            <div v-if="isPdf || isDoc || isTxt" class="doc-wapper">
               <div class="doc-preview">
                 <iframe
                   v-if="isPdf"
@@ -68,7 +68,13 @@
                   height="100%"
                 >
                 </iframe>
-
+                <iframe
+                  v-else-if="isTxt"
+                  type="application/txt"
+                  :src="__url"
+                  width="100%"
+                  height="100%"
+                ></iframe>
                 <iframe
                   v-else-if="isDoc"
                   :src="`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(

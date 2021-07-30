@@ -27,6 +27,9 @@ export default {
     isVideo() {
       return this.$isVideo(this.__file_ext)
     },
+    isTxt() {
+      return this.$isTxt(this.__file_ext)
+    },
     isDoc() {
       return this.$isDoc(this.__file_ext)
     },
