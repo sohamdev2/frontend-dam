@@ -13,7 +13,9 @@
               </div> -->
             <div class="sign-heading-text text-center">
               <img
-                :src="logo ? logo : require('~/assets/img/logo.svg')"
+                :src="
+                  logo ? logo : require('~/assets/img/lariat-marketing-hub.svg')
+                "
                 alt=""
                 class="img-responsive img-center"
               />
@@ -73,7 +75,7 @@
                       :loading="loading"
                     >
                       <template #loading> Signing in... </template>
-                      Login to MarComHQ
+                      Login to Lariat Marketing Hub
                     </AppButton>
                   </div>
                   <div class="col-sm-12">

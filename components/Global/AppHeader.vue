@@ -2,16 +2,8 @@
   <header class="header-sec row no-gutters">
     <div class="main-logo col">
       <nuxt-link :to="`/${$getBrandName()}`">
-        <!-- <img
-          :src="
-            (user && user.instance && user.instance.logo) ||
-            require('~/assets/img/logo.svg')
-          "
-          alt="Logo"
-          height="24"
-        /> -->
         <img
-          :src="userLogo || require('~/assets/img/logo.svg')"
+          :src="userLogo || require('~/assets/img/lariat-logo.svg')"
           alt="Logo"
           height="24"
         />

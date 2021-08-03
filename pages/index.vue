@@ -8,17 +8,17 @@
               <nuxt-link to="/">
                 <img
                   class="logo"
-                  src="~/assets/img/marcom_hq_2_1.svg"
-                  alt="MarComHQ"
+                  src="~/assets/img/lariat-marketing-hub.svg"
+                  alt="Lariat"
                 />
               </nuxt-link>
             </div>
             <div class="sign-body bg-white">
               <p class="small">
                 Please visit
-                <a :href="`${$config.damBackendBaseUrl}`">MarComHQ</a> in order
-                to create a Digital Asset Manger (DAM) instance or contact our
-                team if you need any help to setup a DAM instance.
+                <a :href="`${$config.damBackendBaseUrl}`">Lariat</a> in order to
+                create a Digital Asset Manger (DAM) instance or contact our team
+                if you need any help to setup a DAM instance.
               </p>
               <p class="small">
                 Already have an instance? Enter your brand url endpoint below.

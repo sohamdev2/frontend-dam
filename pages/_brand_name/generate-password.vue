@@ -6,7 +6,10 @@
           <div class="sign-screen-content">
             <div class="sign-body">
               <nuxt-link to="/">
-                <img :src="require('~/assets/img/logo.svg')" alt="" />
+                <img
+                  :src="require('~/assets/img/lariat-marketing-hub.svg')"
+                  alt=""
+                />
               </nuxt-link>
               <div class="error-text">
                 <h2>{{ message }}</h2>
@@ -27,7 +30,9 @@
               <nuxt-link to="/">
                 <img
                   :src="
-                    form.logo ? form.logo : require('~/assets/img/logo.svg')
+                    form.logo
+                      ? form.logo
+                      : require('~/assets/img/lariat-marketing-hub.svg')
                   "
                   alt=""
                   class="img-responsive img-center"
