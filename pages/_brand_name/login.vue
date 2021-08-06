@@ -148,5 +148,8 @@ export default {
       password: { required },
     },
   },
+  head() {
+    return { title: 'Digital Asset Manager' }
+  },
 }
 </script>

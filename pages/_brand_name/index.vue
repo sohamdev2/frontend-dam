@@ -226,7 +226,7 @@ export default {
     },
   },
   head() {
-    return { title: this.$getBrandName() }
+    return { title: this.$brandName() }
   },
 }
 </script>

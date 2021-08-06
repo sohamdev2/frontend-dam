@@ -2,20 +2,10 @@
 <template>
   <div class="h-100">
     <div
-      class="
-        section-title
-        dam-detail-title
-        d-flex
-        flex-column flex-lg-row
-        align-items-center
-      "
+      class="section-title dam-detail-title d-flex flex-column flex-lg-row align-items-center"
     >
       <div
-        class="
-          sec-title-left
-          d-flex
-          justify-content-between justify-content-lg-start
-        "
+        class="sec-title-left d-flex justify-content-between justify-content-lg-start"
       >
         <nuxt-link
           v-if="breadcrumbs"
@@ -676,7 +666,7 @@ export default {
     },
   },
   mounted() {
-    this.$setPageTitle(this.file.display_file_name || 'Digital Asset Manager')
+    this.$setPageTitle(this.file.display_file_name + ' | ' + this.$brandName())
     this.getExif()
     if (this.isVideo) this.$nextTick(() => this.getThumbnail())
     else if (this.isAudio) {
