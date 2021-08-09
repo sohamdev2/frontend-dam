@@ -470,7 +470,7 @@ export default {
       this.sortingModel = sorting || 'Sort by'
     },
     title(title) {
-      this.$setPageTitle(title + ' | Digital Asset Manager')
+      this.$setPageTitle(title + ' | ' + this.$brandName())
     },
     intialCount(intialCount) {
       this.$emit('update:assetCount', intialCount)
@@ -478,6 +478,16 @@ export default {
     assetCount(assetCount) {
       this.intialCount = assetCount || '12'
     },
+  },
+  mounted() {
+    this.$setPageTitle(
+      'All ' +
+        this.categoriesObject
+          .find(({ id }) => this.hashParam === id)
+          ?.text?.toLowerCase() +
+        ' | ' +
+        this.$brandName()
+    )
   },
   methods: {
     emitSortAssetCount(data) {

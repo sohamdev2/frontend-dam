@@ -121,7 +121,8 @@
           </template>
         </ContentLoader>
       </div>
-      <template v-show="!loading">
+      <template>
+        <!-- <template v-show="!loading"> -->
         <div v-if="noData" key="no-data" class="no-data-found">
           <div class="inner w-100">
             <svg
@@ -654,8 +655,8 @@ export default {
         })
     },
   },
-  head: {
-    title: 'Folders | Digital Asset Manager',
-  },
+  // head() {
+  //   return { title: 'Folders | ' + this.$brandName() }
+  // },
 }
 </script>
