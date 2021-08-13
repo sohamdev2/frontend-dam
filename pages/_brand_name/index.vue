@@ -226,7 +226,16 @@ export default {
     },
   },
   head() {
-    return { title: this.$brandName() }
+    return {
+      title: this.$brandName(),
+      link: [
+        {
+          rel: 'icon',
+          type: 'image/x-icon',
+          href: this.$_auth() === null ? '/favicon.png' : this.$_auth().favicon,
+        },
+      ],
+    }
   },
 }
 </script>
