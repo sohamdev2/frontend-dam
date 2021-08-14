@@ -249,7 +249,7 @@
           <template v-else>
             <a
               class="share-it action-btn"
-              @click="$refs.shareDialog.toggleModel()"
+              @click="selectFromDrop(folder, 'share')"
             >
               <svg
                 id="Layer_1"
