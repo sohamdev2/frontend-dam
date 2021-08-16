@@ -24,9 +24,9 @@ export const mutations = {
     'brand'
   ),
 
-  brandDetails(state, item) {
-    state.brand = item
-  },
+  // brandDetails(state, item) {
+  //   state.brand = item
+  // },
 
   setFolderItem(state, item) {
     // let temp = [...state.folders];

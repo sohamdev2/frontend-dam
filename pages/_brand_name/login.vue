@@ -148,23 +148,23 @@ export default {
       password: { required },
     },
   },
-  head() {
-    return {
-      title:
-        this.$store.state.appData.brand === null
-          ? 'Digital Asset Manager'
-          : this.$store.state.appData.brand.brand_name,
-      link: [
-        {
-          rel: 'icon',
-          type: 'image/x-icon',
-          href:
-            this.$store.state.appData.brand === null
-              ? '/favicon.png'
-              : this.$store.state.appData.brand.favicon,
-        },
-      ],
-    }
-  },
+  // head() {
+  //   return {
+  //     title:
+  //       this.$store.state.appData.brand === null
+  //         ? 'Digital Asset Manager'
+  //         : this.$store.state.appData.brand.brand_name,
+  //     link: [
+  //       {
+  //         rel: 'icon',
+  //         type: 'image/x-icon',
+  //         href:
+  //           this.$store.state.appData.brand === null
+  //             ? '/favicon.png'
+  //             : this.$store.state.appData.brand.favicon,
+  //       },
+  //     ],
+  //   }
+  // },
 }
 </script>
