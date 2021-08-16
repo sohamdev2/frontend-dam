@@ -655,8 +655,8 @@ export default {
         })
     },
   },
-  // head() {
-  //   return { title: 'Folders | ' + this.$brandName() }
-  // },
+  head() {
+    return { title: 'Folders | ' + this.$brandName() }
+  },
 }
 </script>
