@@ -20,7 +20,8 @@ export const mutations = {
     'folders',
     'loading.dashboard',
     'loading.folders',
-    'logo'
+    'logo',
+    'brand'
   ),
 
   brandDetails(state, item) {
