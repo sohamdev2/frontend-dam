@@ -20,7 +20,8 @@ export const mutations = {
     'folders',
     'loading.dashboard',
     'loading.folders',
-    'logo'
+    'logo',
+    'brand'
   ),
 
   brandDetails(state, item) {
@@ -83,7 +84,7 @@ export const actions = {
     commit('logo', item)
   },
   brandDetails({ commit }, item) {
-    commit('brandDetails', item)
+    return commit('brand', item)
   },
   async fetchDashboardData({ commit }) {
     if (!this.$auth.loggedIn) return
