@@ -84,7 +84,7 @@ export const actions = {
     commit('logo', item)
   },
   brandDetails({ commit }, item) {
-    commit('brandDetails', item)
+    commit('brand', item)
   },
   async fetchDashboardData({ commit }) {
     if (!this.$auth.loggedIn) return
