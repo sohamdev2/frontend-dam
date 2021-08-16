@@ -225,17 +225,17 @@ export default {
       return key.slice(0, key.length - 1)
     },
   },
-  head() {
-    return {
-      title: this.$brandName(),
-      link: [
-        {
-          rel: 'icon',
-          type: 'image/x-icon',
-          href: this.$_auth() === null ? '/favicon.png' : this.$_auth().favicon,
-        },
-      ],
-    }
-  },
+  // head() {
+  //   return {
+  //     title: this.$brandName(),
+  //     link: [
+  //       {
+  //         rel: 'icon',
+  //         type: 'image/x-icon',
+  //         href: this.$_auth() === null ? '/favicon.png' : this.$_auth().favicon,
+  //       },
+  //     ],
+  //   }
+  // },
 }
 </script>
