@@ -23,8 +23,9 @@ export default async function ({
         })
         .then(({ data }) => {
           store.dispatch('appData/assignLogo', data.data.logo)
-          store.dispatch('appData/brandDetails', data.data)
-          return data.code === 200
+          store.dispatch('appData/brandDetails', data.data).then(() => {
+            return data.code === 200
+          })
         })
 
       if (!isValid) {
