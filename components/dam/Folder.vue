@@ -337,7 +337,7 @@ export default {
   data() {
     return {
       dropDownList: false,
-      shareAble: [],
+      shareAble: {},
     }
   },
   computed: {
