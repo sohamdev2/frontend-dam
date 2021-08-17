@@ -142,7 +142,8 @@ export default {
             category_ids: folderIds,
           })
           .then(({ data }) => {
-            this.shareAble = this.selectedFolders
+            this.shareAble = [...this.selectedFolders]
+
             for (const key in data) {
               for (const folder of this.shareAble) {
                 if (folder.id === parseInt(key)) {
@@ -155,6 +156,7 @@ export default {
             })
           })
       } else {
+        this.shareAble = [...this.selectedFolders]
         this.$refs.shareDialog.toggleModel()
       }
     },
