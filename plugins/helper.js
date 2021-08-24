@@ -25,6 +25,9 @@ export default ({ app, $axios, store }, inject) => {
 
   const brandName = () =>
     _auth()?.brand_name || app.context.route.params.brand_name
+
+  const brandDetail = () => store.state.appData.brand
+
   const setCurrentWorkspace = (workspaceId) => {
     const workspace = app.$auth.user.accessibleInstances.find(
       ({ workspace_id }) => parseInt(workspace_id) === parseInt(workspaceId)
@@ -82,6 +85,7 @@ export default ({ app, $axios, store }, inject) => {
   inject('setCurrentWorkspace', setCurrentWorkspace)
   inject('getBrandName', getBrandName)
   inject('brandName', brandName)
+  inject('brandDetail', brandDetail)
 
   inject('logout', logout)
   inject('clearAuthCookies', clearAuthCookies)

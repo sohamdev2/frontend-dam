@@ -239,7 +239,7 @@
     </template> -->
     </div>
 
-    <ShareFile ref="shareDialog" :folders="[folder]" type="folder" />
+    <ShareFile ref="shareDialog" :folders="[shareAble]" type="folder" />
   </li>
 </template>
 
@@ -263,6 +263,7 @@ export default {
   data() {
     return {
       dropDownList: false,
+      shareAble: [],
     }
   },
   computed: {
@@ -333,7 +334,23 @@ export default {
     selectFromPanel(folder, type) {
       this.dropDown()
       if (type === 'share') {
-        this.$nextTick(() => this.$refs.shareDialog.toggleModel())
+        const folderId = this.folder.id
+        this.$axios
+          .$post(`digital/check-private-assets`, {
+            workspace_id: this.$getWorkspaceId(),
+            category_ids: [folderId],
+          })
+          .then(({ data }) => {
+            this.shareAble = this.folder
+            for (const key in data) {
+              if (this.shareAble.id === parseInt(key)) {
+                this.shareAble.is_public = data[key]
+              }
+            }
+            this.$nextTick(() => {
+              this.$refs.shareDialog.toggleModel()
+            })
+          })
       } else if (type === 'download') {
         this.downloadFile()
       }

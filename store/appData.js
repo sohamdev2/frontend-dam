@@ -9,6 +9,7 @@ const _state = () => ({
     folders: true,
   },
   logo: '',
+  brand: null,
 })
 
 export { _state as state }
@@ -19,8 +20,13 @@ export const mutations = {
     'folders',
     'loading.dashboard',
     'loading.folders',
-    'logo'
+    'logo',
+    'brand'
   ),
+
+  // brandDetails(state, item) {
+  //   state.brand = item
+  // },
 
   setFolderItem(state, item) {
     // let temp = [...state.folders];
@@ -76,6 +82,9 @@ export const mutations = {
 export const actions = {
   assignLogo({ commit }, item) {
     commit('logo', item)
+  },
+  brandDetails({ commit }, item) {
+    return commit('brand', item)
   },
   async fetchDashboardData({ commit }) {
     if (!this.$auth.loggedIn) return
