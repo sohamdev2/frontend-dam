@@ -980,6 +980,9 @@ h2.title {
 }
 
 /* Tooltip ----------------*/
+.tooltip {
+  z-index: 99999 !important;
+}
 .tooltip.show {
   opacity: 1;
   padding: 6px 0;
@@ -2379,6 +2382,17 @@ header .user-dropdown.show .dropdown-toggle {
   color: #1f3253;
   font-weight: 600;
 }
+.collection-header .home-icon {
+  display: flex;
+  align-items: center;
+}
+.collection-header .breadcrumb-links li:before {
+  height: 35px;
+}
+.collection-header .breadcrumb-links li h2.title {
+  line-height: 35px;
+  padding-left: 0;
+}
 .table-list-view .thead {
   height: 28px;
   padding-left: 10px;
@@ -2918,6 +2932,7 @@ header .user-dropdown.show .dropdown-toggle {
   text-align: center;
   margin: 0 auto;
   display: block;
+  width: 100%;
 }
 .no-data-found p {
   color: #737b88;
@@ -4370,32 +4385,36 @@ header .user-dropdown.show .dropdown-toggle {
   overflow: hidden;
   text-overflow: ellipsis;
   display: inline-block;
-  line-height: 1.55;
 }
 .mycollection.dropdown .dropdown-menu .dropdown-item .label {
-  position: relative;
-  float: right;
+  position: absolute;
+  right: 0;
   display: inline-block;
   font-size: 12px;
   font-weight: 500;
   background-color: #d6d6d6;
   vertical-align: middle;
-  transition-property: margin-right, opacity;
-  transition-duration: 0.15s;
-  transition-timing-function: ease;
   border-radius: 10px;
   padding: 1px 8px 2px;
   color: #172b4d;
   opacity: 0;
   margin-top: 1px;
-  margin-right: -40px;
+  transition: ease-in-out all 0.2s;
+  -webkit-transition: ease-in-out all 0.2s;
+  -ms-transition: ease-in-out all 0.2s;
+  -o-transition: ease-in-out all 0.2s;
 }
 .mycollection.dropdown .dropdown-menu .dropdown-item:hover .label {
-  margin-right: -30px;
+  right: 10px;
   opacity: 1;
 }
+.mycollection.dropdown .dropdown-menu .dropdown-item.active {
+  background-color: #ffffff;
+}
 .mycollection.dropdown .dropdown-menu .dropdown-item:hover,
-.mycollection.dropdown .dropdown-menu .dropdown-item:focus {
+.mycollection.dropdown .dropdown-menu .dropdown-item.active:hover,
+.mycollection.dropdown .dropdown-menu .dropdown-item:focus,
+.mycollection.dropdown .dropdown-menu .dropdown-item.active:focus {
   color: #ff8a01;
   background-color: #eff1f3;
 }
@@ -4705,9 +4724,6 @@ header .user-dropdown.show .dropdown-toggle {
   color: #172b4d;
 }
 
-.my-collection .tbody li {
-  cursor: pointer;
-}
 .my-collection .tbody li .top-column label {
   font-size: 14px !important;
 }

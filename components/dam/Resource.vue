@@ -629,7 +629,7 @@
     <div class="categary-name tb-column flex27">
       <div class="top-column">
         <svg
-          v-if="mode === 'row' && file.is_public === 0"
+          v-if="(mode === 'row' || 'tile') && file.is_public === 0"
           id="_x31__x2C_5"
           class="locked-icon h-orange"
           data-toggle="tooltip"
@@ -678,7 +678,7 @@
                 }
           "
         >
-          {{ file.display_file_name }}
+          {{ file.display_file_name }} {{ mode }}
         </nuxt-link>
       </div>
     </div>
@@ -707,7 +707,7 @@
             data-original-title="For internal use only"
           >
             <svg
-              v-if="mode === 'column' && file.is_public === 0"
+              v-if="(mode === 'column' || 'list') && file.is_public === 0"
               id="_x31__x2C_5"
               class="locked-icon h-orange"
               version="1.1"
@@ -745,7 +745,7 @@
           >
             <svg
               id="Layer_1"
-              data-original-title="Share Folder"
+              data-original-title="Share File"
               class="share-icon h-orange"
               data-toggle="tooltip"
               title=""
@@ -778,7 +778,7 @@
           <a @click="downloadFile">
             <svg
               id="Layer_1"
-              data-original-title="Download Folder"
+              data-original-title="Download File"
               class="download-icon h-orange"
               data-toggle="tooltip"
               title=""
