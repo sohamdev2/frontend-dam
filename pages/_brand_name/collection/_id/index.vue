@@ -333,6 +333,8 @@ export default {
           this.files = response.data.assets.sort(
             this.$sortBy('display_file_name', false, null, true)
           )
+          this.$setPageTitle(this.assetList.name + ' | ' + this.$brandName())
+
           this.loading = false
         })
         .catch((error) =>
