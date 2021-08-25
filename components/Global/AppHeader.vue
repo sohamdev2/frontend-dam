@@ -24,6 +24,109 @@
       </ul>
     </div>
     <div class="col d-flex align-items-center justify-content-end">
+      <div class="dropdown mycollection">
+        <button type="button" class="dropdown-toggle" data-toggle="dropdown">
+          <svg
+            class="collection-icon"
+            version="1.1"
+            id="Layer_1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px"
+            y="0px"
+            viewBox="0 0 14 14"
+            xml:space="preserve"
+          >
+            <desc>Created with Sketch.</desc>
+            <g id="Phased-Approach">
+              <g id="icon_boards">
+                <rect
+                  id="Rectangle-path"
+                  class="fill-color"
+                  width="11"
+                  height="11"
+                ></rect>
+                <polygon
+                  id="Shape"
+                  class="fill-color"
+                  points="14,14 3,14 3,11.9 12,11.9 12,3 14,3"
+                ></polygon>
+              </g>
+            </g>
+          </svg>
+          <span>Collection</span>
+          <svg
+            class="arrow-down-icon"
+            version="1.1"
+            id="Layer_1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px"
+            y="0px"
+            viewBox="0 0 18 18"
+            xml:space="preserve"
+          >
+            <g id="Group_4477" transform="translate(-871 -467)">
+              <rect
+                id="Rectangle_3015"
+                x="871"
+                y="467"
+                class="fill-hide"
+                width="18"
+                height="18"
+              ></rect>
+              <g
+                id="Icon_feather-chevron-down-3"
+                transform="translate(506.256 149.451)"
+              >
+                <path
+                  id="Path_3435"
+                  class="fill-color"
+                  d="M373.7,330.8c-0.2,0-0.4-0.1-0.5-0.2l-7-7c-0.3-0.3-0.3-0.8,0-1.1c0.3-0.3,0.8-0.3,1,0l6.5,6.5l6.5-6.5c0.3-0.3,0.8-0.3,1.1,0c0.3,0.3,0.3,0.8,0,1l-7,7C374.1,330.7,373.9,330.8,373.7,330.8z"
+                ></path>
+              </g>
+            </g>
+          </svg>
+        </button>
+        <div v-if="collectionList.length === 0" class="dropdown-menu">
+          <span>Recent Collection</span>
+          <p>No collection available.</p>
+        </div>
+        <div v-else class="dropdown-menu">
+          <span>Recent Collection</span>
+          <ul class="collection-folder">
+            <li v-for="collection in collectionList" :key="collection.id">
+              <nuxt-link
+                class="dropdown-item"
+                :to="{
+                  name: 'brand_name-collection-id',
+                  params: {
+                    brand_name: $getBrandName(),
+                    id: collection.id,
+                  },
+                }"
+              >
+                <span class="collection-title">{{ collection.name }}</span>
+                <span class="label">{{ collection.assets_count }}</span>
+              </nuxt-link>
+            </li>
+          </ul>
+          <div class="rectangle"></div>
+          <ul class="collection">
+            <li>
+              <nuxt-link
+                :to="{
+                  name: 'brand_name-collection',
+                  params: { brand_name: $getBrandName() },
+                }"
+                class="dropdown-item"
+              >
+                View all Collection
+              </nuxt-link>
+            </li>
+          </ul>
+        </div>
+      </div>
       <div class="dropdown user-dropdown">
         <a
           id="profileDropdown"
@@ -364,6 +467,7 @@ export default {
       ],
       auth: this.$_auth(),
       userLogo: null,
+      collectionList: [],
     }
   },
   computed: {
@@ -379,6 +483,9 @@ export default {
       this.auth = this.$_auth()
     },
   },
+  created() {
+    this.loadCollection()
+  },
   mounted() {
     this.$nextTick(() => {
       window.$(this.$el).find('.dropdown-toggle').dropdown()
@@ -390,6 +497,15 @@ export default {
     this.userLogo = workspace.logo
   },
   methods: {
+    async loadCollection() {
+      await this.$axios
+        .$get(
+          `/digital/collection/get-all?url_workspace_id=${this.$getWorkspaceId()}`
+        )
+        .then(({ data }) => {
+          this.collectionList = data.splice(0, 4)
+        })
+    },
     changeInstance(instance) {
       this.$setCurrentWorkspace(instance.workspace_id)
       this.auth = this.$_auth()
@@ -404,3 +520,10 @@ export default {
   },
 }
 </script>
+
+<style>
+a.noClick {
+  pointer-events: none;
+  opacity: 0.6;
+}
+</style>

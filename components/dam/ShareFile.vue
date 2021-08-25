@@ -110,7 +110,12 @@
               ></path>
             </svg>
           </div>
-          <SharePreviewItem v-for="file in files" :key="file.id" :file="file" />
+          <SharePreviewItem
+            v-for="file in files"
+            :key="file.id"
+            :file="file"
+            :collection="collection"
+          />
         </div>
         <div v-if="isPrivate.length && !shareMessage" class="notes">
           <p>
@@ -137,7 +142,7 @@
             class="btn"
             :class="{ 'btn-disabled': !creating }"
             :disabled="creating"
-            @click="createShareUrl"
+            @click="collection ? createCollectionUrl() : createShareUrl()"
           >
             {{ creating ? 'Creating...' : 'Create link' }}
           </button>
@@ -157,6 +162,7 @@ export default {
     files: { type: Array, default: () => [] },
     folders: { type: Array, default: () => [] },
     type: { type: String, required: true, default: 'file' },
+    collection: { type: Boolean, default: false },
   },
   data() {
     return {
@@ -214,6 +220,28 @@ export default {
     if (this.copyBtnResetTimer) clearTimeout(this.copyBtnResetTimer)
   },
   methods: {
+    async createCollectionUrl() {
+      this.creating = true
+      await this.$axios
+        .$get(
+          `/digital/collection/${
+            this.files[0].id
+          }/generate-share-url?url_workspace_id=${this.$getWorkspaceId()}`,
+          {
+            workspace_id: this.$getWorkspaceId(),
+          }
+        )
+        .then(({ data }) => {
+          // eslint-disable-next-line prefer-const
+          let [type, status] = data.share_url.split('?').pop().split('&')
+          type = type.replace('type=', '')
+          this.shareUrl =
+            window.location.origin + '/shared-assets/' + type + '?' + status
+        })
+        .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
+
+      this.creating = false
+    },
     async createShareUrl() {
       this.creating = true
       await this.$axios

@@ -3,15 +3,15 @@
 const initialSortingData = () => ({
   initialData: true,
   files: {
-    field: 'display_file_name',
+    field: 'name',
     reverse: false,
   },
   subFolders: {
-    field: 'display_file_name',
+    field: 'name',
     reverse: false,
   },
-  toolbar: { value: 'display_file_name', desc: false },
-  totalAssetCount: '12',
+  toolbar: { value: 'name', desc: false },
+  // totalAssetCount: '12',
 })
 
 export default {
@@ -22,10 +22,10 @@ export default {
   },
 
   methods: {
-    changeEmitAssetCount(data) {
-      this.sorting.totalAssetCount = data
-      return this.prefetch()
-    },
+    // changeEmitAssetCount(data) {
+    //   this.sorting.totalAssetCount = data
+    //   return this.prefetch()
+    // },
     apiSortValue() {
       return this.sorting.toolbar.value === 'Sort by'
         ? 'updated_at'
@@ -45,23 +45,19 @@ export default {
     },
     sort(path, field_name, _primer) {
       if (!field_name) return
-
+      const primer = _primer || ((v) => v)
       let tst = null
-      if (
-        this.$route.name.search('collection') ||
-        this.$route.name.search('analytics') > -1
-      ) {
+      if (this.$route.name.search('collection') > -1) {
         if (path === 'subFolders') {
           tst = 2
-          return
         } else {
           tst = -1
         }
       } else {
         tst = this.lastPage
       }
-      const primer = _primer || ((v) => v)
       const hasPages = tst > 1
+
       const toReverse = true
       // field_name === 'date' || field_name === 'updated_at'
       // console.log({ [field_name]: toReverse });
