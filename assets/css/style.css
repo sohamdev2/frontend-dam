@@ -2386,6 +2386,9 @@ header .user-dropdown.show .dropdown-toggle {
   display: flex;
   align-items: center;
 }
+.collection-header .breadcrumb-links li {
+  line-height: 35px;
+}
 .collection-header .breadcrumb-links li:before {
   height: 35px;
 }
