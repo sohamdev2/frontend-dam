@@ -189,8 +189,14 @@ h2.title {
 .mb0 {
   margin-bottom: 0px !important;
 }
+.mt-18 {
+  margin-top: 18px;
+}
 .mt-25 {
   margin-top: 25px;
+}
+.mt-35 {
+  margin-top: 35px;
 }
 
 .flex1 {
@@ -2386,15 +2392,10 @@ header .user-dropdown.show .dropdown-toggle {
   display: flex;
   align-items: center;
 }
-.collection-header .breadcrumb-links li {
-  line-height: 35px;
-}
-.collection-header .breadcrumb-links li:before {
-  height: 35px;
-}
-.collection-header .breadcrumb-links li h2.title {
-  line-height: 35px;
-  padding-left: 0;
+.collection-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .table-list-view .thead {
   height: 28px;
@@ -3553,6 +3554,30 @@ header .user-dropdown.show .dropdown-toggle {
   padding: 0;
 }
 
+.loginPage {
+  background-color: #ffffff;
+}
+.loginPage .sign-body {
+  border: 1px solid #ebebeb;
+  padding: 40px;
+  background-color: #f6f8f9;
+  max-width: 430px;
+}
+.loginPage .sign-body > p {
+  font-size: 20px;
+}
+.loginPage .forgotPass {
+  color: #445ea7;
+  text-decoration: none;
+}
+.loginPage .forgotPass:hover {
+  color: #0f2052;
+}
+.loginPage .signin-with {
+  max-width: 430px;
+  margin: 4.2em auto 0em;
+}
+
 .expireLink {
   padding: 0;
 }
@@ -4693,38 +4718,14 @@ header .user-dropdown.show .dropdown-toggle {
 }
 
 .collection-tabs {
-  background-color: rgba(239, 241, 243, 0.5);
-  display: flex;
-  padding: 10px 15px 10px 0;
+  padding: 10px 10px 0px;
+  position: relative;
 }
-.collection-tabs ul {
-  display: flex;
-  align-items: center;
+.collection-tabs .nav-tabs .nav-item a {
+  padding: 12px 20px;
 }
-.collection-tabs ul li {
-  width: 10em;
-}
-.collection-tabs ul li a {
-  display: block;
-  text-align: center;
-}
-.collection-tabs ul li span {
-  font-size: 13px;
-  line-height: 1;
-  font-weight: 500;
-  color: #737b88;
-}
-.collection-tabs ul li strong {
-  display: block;
-  font-size: 19px;
-  font-weight: 500;
-  line-height: 1;
-  color: #737b88;
-}
-.collection-tabs ul li a.active span,
-.collection-tabs ul li a.active strong {
-  font-weight: 600;
-  color: #172b4d;
+.collection-tabs .nav-tabs .active {
+  color: #14aaf5;
 }
 
 .my-collection .tbody li .top-column label {

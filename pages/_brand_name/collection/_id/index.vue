@@ -5,6 +5,7 @@
     >
       <div class="sec-title-left d-flex align-items-center">
         <nuxt-link
+          v-if="!loading"
           :to="{
             name: 'brand_name',
             params: { brand_name: $getBrandName() },
@@ -40,11 +41,20 @@
             </g>
           </svg>
         </nuxt-link>
-        <div class="breadcrumb-links">
+        <div v-if="!loading" class="breadcrumb-links">
           <ul>
             <li>&nbsp;</li>
             <li>
-              <h2 class="title">{{ assetList.name }}</h2>
+              <nuxt-link
+                :to="{
+                  name: 'brand_name-collection',
+                  params: { brand_name: $getBrandName() },
+                }"
+                >Collection</nuxt-link
+              >
+            </li>
+            <li>
+              <span class="title">{{ assetList.name }}</span>
             </li>
           </ul>
         </div>
@@ -52,7 +62,12 @@
       <div class="sec-title-right d-flex align-items-center ml-lg-auto">
         <div class="table-filter">
           <ul>
-            <li>{{ assetList.assets_count }}</li>
+            <li v-if="!loading">
+              {{ assetList.assets_count }} Asset<template
+                v-if="assetList.assets_count > 1"
+                >s</template
+              >
+            </li>
             <li>
               <div class="gried-view">
                 <span
