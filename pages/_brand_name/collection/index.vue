@@ -1,22 +1,13 @@
 <template>
   <div class="body-content my-collection-body">
     <div class="collection-tabs">
-      <div class="row no-gutters w-100 align-items-center">
-        <div class="col-md-6">
-          <ul class="nav" role="tablist">
-            <li class="nav-item">
-              <a
-                href="#my-collection"
-                class="nav-link active"
-                data-toggle="tab"
-              >
-                <strong>{{ files.length }}</strong>
-                <span>My Collection</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+          <a href="#my-collection" class="nav-link active" data-toggle="tab">
+            <span>Collection ({{ files.length }})</span>
+          </a>
+        </li>
+      </ul>
     </div>
     <div class="tab-content">
       <div id="my-collection" class="tab-pane active h-100">
@@ -63,7 +54,7 @@
             <div class="breadcrumb-links">
               <ul>
                 <li>&nbsp;</li>
-                <li><h2 class="title">My Collection</h2></li>
+                <li><span> Collection</span></li>
               </ul>
             </div>
           </div>
