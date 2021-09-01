@@ -480,14 +480,29 @@ export default {
     },
   },
   mounted() {
-    this.$setPageTitle(
-      'All ' +
-        this.categoriesObject
-          .find(({ id }) => this.hashParam === id)
-          ?.text?.toLowerCase() +
-        ' | ' +
-        this.$brandName()
-    )
+    if (this.hashParam !== 'search') {
+      this.$setPageTitle(
+        'All ' +
+          this.categoriesObject
+            .find(({ id }) => this.hashParam === id)
+            ?.text?.toLowerCase() +
+          ' | ' +
+          this.$brandName()
+      )
+    } else {
+      switch (this.hashParam) {
+        case 'search':
+          this.$setPageTitle('Showing result of' + ' | ' + this.$brandName())
+          break
+        case 'popular':
+          this.$setPageTitle(
+            'Showing result of Popular Tag: ' +
+              this.$route.query.tag +
+              ' | ' +
+              this.$brandName()
+          )
+      }
+    }
   },
   methods: {
     emitSortAssetCount(data) {
@@ -581,6 +596,17 @@ export default {
         this.moreOptions = false
       }
     },
+  },
+  head() {
+    return {
+      link: [
+        {
+          rel: 'icon',
+          type: 'image/x-icon',
+          href: this.$_auth()?.favicon || '/favicon.png',
+        },
+      ],
+    }
   },
 }
 </script>

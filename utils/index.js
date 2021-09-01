@@ -40,9 +40,9 @@ export const shrinkString = (originStr, maxChars, trailingCharCount) => {
   let shrinkedStr = originStr
   const shrinkedLength = maxChars - trailingCharCount - 3
 
-  if (maxChars + trailingCharCount + 3 > shrinkedStr.length) return shrinkedStr
+  if (maxChars + trailingCharCount + 3 > shrinkedStr?.length) return shrinkedStr
 
-  if (originStr.length > shrinkedLength) {
+  if (originStr?.length > shrinkedLength) {
     const front = originStr.substr(0, shrinkedLength)
     const mid = '...'
     const end = originStr.substr(-trailingCharCount)

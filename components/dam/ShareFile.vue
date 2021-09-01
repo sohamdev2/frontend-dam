@@ -77,12 +77,13 @@
               </label>
             </div>
             <svg
-              v-if="false"
+              v-if="folder.is_public === 1"
               id="_x31__x2C_5"
+              v-tooltip="
+                `Folder contains some private assets and will not be shared`
+              "
               class="locked-icon h-orange"
-              data-toggle="tooltip"
               title=""
-              data-original-title="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
               version="1.1"
               xmlns="http://www.w3.org/2000/svg"
               xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -111,10 +112,22 @@
           </div>
           <SharePreviewItem v-for="file in files" :key="file.id" :file="file" />
         </div>
-        <div v-if="isPrivate.length" class="notes">
+        <div v-if="isPrivate.length && !shareMessage" class="notes">
           <p>
             <strong>Note : </strong>Some of the assets you have selected are
             private assets, which are available for internal use only.
+          </p>
+        </div>
+        <div v-if="isFolderPrivate.length && !shareMessage" class="notes">
+          <p>
+            <strong>Note : </strong>Some of the folders that you have selected
+            contains private assets, which are available for internal use only.
+          </p>
+        </div>
+        <div v-if="shareMessage" class="notes">
+          <p>
+            <strong>Note : </strong>Selection contains private assets, which are
+            available for internal use only.
           </p>
         </div>
 
@@ -167,6 +180,16 @@ export default {
     //     })
     //   );
     // },
+    shareMessage() {
+      return this.isFolderPrivate.length >= 1 && this.isPrivate.length >= 1
+    },
+    isFolderPrivate() {
+      let privateAssets = null
+      privateAssets = this.folders.filter((item) => {
+        return item.is_public === 1
+      })
+      return privateAssets
+    },
     isPrivate() {
       let privateAssets = null
       privateAssets = this.files.filter((item) => {

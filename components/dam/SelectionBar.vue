@@ -25,10 +25,7 @@
         <div class="select-right">
           <ul>
             <li>
-              <a
-                href="javascript:void(0);"
-                @click="$refs.shareDialog.toggleModel()"
-              >
+              <a href="javascript:void(0);" @click="showShare">
                 Share
                 <svg
                   id="Layer_1"
@@ -101,7 +98,7 @@
       <ShareFile
         ref="shareDialog"
         :files="[...selectedFiles]"
-        :folders="[...selectedFolders]"
+        :folders="[...shareAble]"
         type="folder"
       ></ShareFile>
     </client-only>
@@ -114,6 +111,11 @@ export default {
     selectedFiles: { type: Array, default: () => [] },
     selectedFolders: { type: Array, default: () => [] },
     selectedAll: { type: Boolean, default: false },
+  },
+  data() {
+    return {
+      shareAble: [],
+    }
   },
   computed: {
     count() {
@@ -130,6 +132,34 @@ export default {
     window.$('body').removeClass('selectBaractive')
   },
   methods: {
+    showShare() {
+      if (this.selectedFolders.length) {
+        const folderIds = this.selectedFolders.map(({ id }) => id)
+
+        this.$axios
+          .$post(`digital/check-private-assets`, {
+            workspace_id: this.$getWorkspaceId(),
+            category_ids: folderIds,
+          })
+          .then(({ data }) => {
+            this.shareAble = [...this.selectedFolders]
+
+            for (const key in data) {
+              for (const folder of this.shareAble) {
+                if (folder.id === parseInt(key)) {
+                  folder.is_public = data[key]
+                }
+              }
+            }
+            this.$nextTick(() => {
+              this.$refs.shareDialog.toggleModel()
+            })
+          })
+      } else {
+        this.shareAble = [...this.selectedFolders]
+        this.$refs.shareDialog.toggleModel()
+      }
+    },
     downloadSelectedFile() {
       if (this.selectedFiles.length === 1 && !this.selectedFolders.length) {
         const [file] = this.selectedFiles
