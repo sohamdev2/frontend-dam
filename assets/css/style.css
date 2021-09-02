@@ -189,8 +189,14 @@ h2.title {
 .mb0 {
   margin-bottom: 0px !important;
 }
+.mt-18 {
+  margin-top: 18px;
+}
 .mt-25 {
   margin-top: 25px;
+}
+.mt-35 {
+  margin-top: 35px;
 }
 
 .flex1 {
@@ -980,6 +986,9 @@ h2.title {
 }
 
 /* Tooltip ----------------*/
+.tooltip {
+  z-index: 99999 !important;
+}
 .tooltip.show {
   opacity: 1;
   padding: 6px 0;
@@ -2379,6 +2388,15 @@ header .user-dropdown.show .dropdown-toggle {
   color: #1f3253;
   font-weight: 600;
 }
+.collection-header .home-icon {
+  display: flex;
+  align-items: center;
+}
+.collection-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 .table-list-view .thead {
   height: 28px;
   padding-left: 10px;
@@ -2918,6 +2936,7 @@ header .user-dropdown.show .dropdown-toggle {
   text-align: center;
   margin: 0 auto;
   display: block;
+  width: 100%;
 }
 .no-data-found p {
   color: #737b88;
@@ -3533,6 +3552,30 @@ header .user-dropdown.show .dropdown-toggle {
   max-width: 900px;
   text-align: center;
   padding: 0;
+}
+
+.loginPage {
+  background-color: #ffffff;
+}
+.loginPage .sign-body {
+  border: 1px solid #ebebeb;
+  padding: 40px;
+  background-color: #f6f8f9;
+  max-width: 430px;
+}
+.loginPage .sign-body > p {
+  font-size: 20px;
+}
+.loginPage .forgotPass {
+  color: #445ea7;
+  text-decoration: none;
+}
+.loginPage .forgotPass:hover {
+  color: #0f2052;
+}
+.loginPage .signin-with {
+  max-width: 430px;
+  margin: 4.2em auto 0em;
 }
 
 .expireLink {
@@ -4370,32 +4413,36 @@ header .user-dropdown.show .dropdown-toggle {
   overflow: hidden;
   text-overflow: ellipsis;
   display: inline-block;
-  line-height: 1.55;
 }
 .mycollection.dropdown .dropdown-menu .dropdown-item .label {
-  position: relative;
-  float: right;
+  position: absolute;
+  right: 0;
   display: inline-block;
   font-size: 12px;
   font-weight: 500;
   background-color: #d6d6d6;
   vertical-align: middle;
-  transition-property: margin-right, opacity;
-  transition-duration: 0.15s;
-  transition-timing-function: ease;
   border-radius: 10px;
   padding: 1px 8px 2px;
   color: #172b4d;
   opacity: 0;
   margin-top: 1px;
-  margin-right: -40px;
+  transition: ease-in-out all 0.2s;
+  -webkit-transition: ease-in-out all 0.2s;
+  -ms-transition: ease-in-out all 0.2s;
+  -o-transition: ease-in-out all 0.2s;
 }
 .mycollection.dropdown .dropdown-menu .dropdown-item:hover .label {
-  margin-right: -30px;
+  right: 10px;
   opacity: 1;
 }
+.mycollection.dropdown .dropdown-menu .dropdown-item.active {
+  background-color: #ffffff;
+}
 .mycollection.dropdown .dropdown-menu .dropdown-item:hover,
-.mycollection.dropdown .dropdown-menu .dropdown-item:focus {
+.mycollection.dropdown .dropdown-menu .dropdown-item.active:hover,
+.mycollection.dropdown .dropdown-menu .dropdown-item:focus,
+.mycollection.dropdown .dropdown-menu .dropdown-item.active:focus {
   color: #ff8a01;
   background-color: #eff1f3;
 }
@@ -4671,43 +4718,16 @@ header .user-dropdown.show .dropdown-toggle {
 }
 
 .collection-tabs {
-  background-color: rgba(239, 241, 243, 0.5);
-  display: flex;
-  padding: 10px 15px 10px 0;
+  padding: 10px 10px 0px;
+  position: relative;
 }
-.collection-tabs ul {
-  display: flex;
-  align-items: center;
+.collection-tabs .nav-tabs .nav-item a {
+  padding: 12px 20px;
 }
-.collection-tabs ul li {
-  width: 10em;
-}
-.collection-tabs ul li a {
-  display: block;
-  text-align: center;
-}
-.collection-tabs ul li span {
-  font-size: 13px;
-  line-height: 1;
-  font-weight: 500;
-  color: #737b88;
-}
-.collection-tabs ul li strong {
-  display: block;
-  font-size: 19px;
-  font-weight: 500;
-  line-height: 1;
-  color: #737b88;
-}
-.collection-tabs ul li a.active span,
-.collection-tabs ul li a.active strong {
-  font-weight: 600;
-  color: #172b4d;
+.collection-tabs .nav-tabs .active {
+  color: #14aaf5;
 }
 
-.my-collection .tbody li {
-  cursor: pointer;
-}
 .my-collection .tbody li .top-column label {
   font-size: 14px !important;
 }
