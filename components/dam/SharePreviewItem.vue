@@ -16,10 +16,11 @@
     <svg
       v-if="file.is_public === 0"
       id="_x31__x2C_5"
+      v-tooltip="{
+        html: false,
+        content: toolMsg,
+      }"
       class="locked-icon h-orange"
-      data-toggle="tooltip"
-      title=""
-      data-original-title="For internal use only and will not be shared."
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -56,6 +57,17 @@ export default {
   props: {
     file: { type: Object, required: true },
     collection: { type: Boolean, default: false },
+  },
+  computed: {
+    toolMsg() {
+      let msg = null
+      if (this.file.is_public === 0 && this.collection) {
+        msg = 'Collection contains some private assets'
+      } else {
+        msg = 'For internal use only'
+      }
+      return msg
+    },
   },
 }
 </script>
