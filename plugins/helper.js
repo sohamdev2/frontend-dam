@@ -21,7 +21,13 @@ export default ({ app, $axios, store }, inject) => {
     app.$toast?.global?.error(getErrorMessage(e))
   }
 
-  const getBrandName = () => _auth()?.url || app.context.route.params.brand_name
+  const getBrandName = () => {
+    if (_auth()?.is_domain === 1) {
+      return _auth()?.workspace_id || app.context.route.params.brand_name
+    } else {
+      return _auth()?.url || app.context.route.params.brand_name
+    }
+  }
 
   const brandName = () =>
     _auth()?.brand_name || app.context.route.params.brand_name
