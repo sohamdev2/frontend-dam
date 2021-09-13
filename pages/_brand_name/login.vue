@@ -1,6 +1,6 @@
 <template>
   <div class="body-content login">
-    <div class="sign-screen customscrollbar h-100">
+    <div class="sign-screen loginPage customscrollbar h-100">
       <div class="sign-screen-dtable">
         <div class="sign-screen-dtable-cell">
           <div class="sign-screen-content">
@@ -20,7 +20,7 @@
                 class="img-responsive img-center"
               />
             </div>
-            <div class="sign-body bg-white">
+            <div class="sign-body">
               <p>Please login to your account</p>
               <form class="form" @submit.prevent="login">
                 <div class="row">
@@ -75,7 +75,7 @@
                       :loading="loading"
                     >
                       <template #loading> Signing in... </template>
-                      Login to Lariat Marketing Hub
+                      Login
                     </AppButton>
                   </div>
                   <div class="col-sm-12">
