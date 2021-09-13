@@ -35,14 +35,16 @@
           <a
             data-toggle="modal"
             data-target="#sharePopup"
-            @click.capture.stop="$refs.shareDialog.toggleModel()"
+            :class="{ isEmpty: file.assets_count === 0 }"
+            @click.capture.stop="shareCollection"
           >
             <svg
               id="Layer_1"
+              v-tooltip="{
+                html: false,
+                content: isEmpty,
+              }"
               class="share-icon h-orange"
-              data-toggle="tooltip"
-              title=""
-              data-original-title="Share Collection"
               version="1.1"
               xmlns="http://www.w3.org/2000/svg"
               xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -82,6 +84,13 @@ export default {
   props: {
     file: { type: Object, default: () => ({}) },
   },
+  computed: {
+    isEmpty() {
+      return this.file.assets_count > 0
+        ? 'Share Collection'
+        : 'Collection is empty'
+    },
+  },
   methods: {
     collectionDetails() {
       this.$router.push({
@@ -92,6 +101,17 @@ export default {
         },
       })
     },
+    shareCollection() {
+      if (this.file.assets_count > 0) {
+        this.$refs.shareDialog.toggleModel()
+      }
+    },
   },
 }
 </script>
+
+<style scoped>
+.isEmpty {
+  opacity: 0.4;
+}
+</style>
