@@ -29,14 +29,13 @@ export default async function ({
         domainUrl = domainUrl.substring(0, findIndex)
       }
 
-      await $axios.post('verify-domain', {
-        url: domainUrl,
-      })
-      // .then(({ data }) => {
-      //   redirect(
-      //     `${hostName}/${data.data.workspace.url_slug}/login?custom=true`
-      //   )
-      // })
+      await $axios
+        .post('verify-domain', {
+          url: domainUrl,
+        })
+        .then(({ data }) => {
+          redirect(`/${data.data.workspace.url_slug}/login?custom=true`)
+        })
     }
   } else {
     const brandName = $auth.loggedIn && $getBrandName()
