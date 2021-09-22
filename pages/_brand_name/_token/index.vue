@@ -18,7 +18,6 @@ export default {
     if (!url.includes(hostName)) {
       let domainUrl = hostName
       const findIndex = domainUrl.search(':')
-      console.log(findIndex)
       if (findIndex !== -1) {
         domainUrl = domainUrl.substring(0, findIndex)
       }

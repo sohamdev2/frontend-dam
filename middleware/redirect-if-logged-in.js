@@ -23,9 +23,7 @@ export default async function ({
     } else {
       let domainUrl = hostName
       const findIndex = domainUrl.search(':')
-      console.log(findIndex, hostName)
       if (findIndex !== -1) {
-        console.log('if')
         domainUrl = domainUrl.substring(0, findIndex)
       }
 
