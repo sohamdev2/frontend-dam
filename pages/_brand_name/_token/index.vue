@@ -13,7 +13,10 @@ export default {
     if (!url.includes(hostName)) {
       let domainUrl = hostName
       const findIndex = domainUrl.search(':')
-      domainUrl = domainUrl.substring(0, findIndex)
+      console.log(findIndex)
+      if (findIndex !== -1) {
+        domainUrl = domainUrl.substring(0, findIndex)
+      }
       hostName = domainUrl
     } else {
       hostName = brand_name

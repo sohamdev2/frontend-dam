@@ -35,7 +35,10 @@ export default async function ({
         const hostName = process.server ? req.headers.host : location.host
         let domainUrl = hostName
         const findIndex = domainUrl.search(':')
-        domainUrl = domainUrl.substring(0, findIndex)
+        console.log(findIndex)
+        if (findIndex !== -1) {
+          domainUrl = domainUrl.substring(0, findIndex)
+        }
 
         isValid = await $axios
           .post('verify-domain', {
