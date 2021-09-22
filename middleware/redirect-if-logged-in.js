@@ -23,7 +23,10 @@ export default async function ({
     } else {
       let domainUrl = hostName
       const findIndex = domainUrl.search(':')
-      domainUrl = domainUrl.substring(0, findIndex)
+      console.log(findIndex)
+      if (findIndex !== -1) {
+        domainUrl = domainUrl.substring(0, findIndex)
+      }
 
       await $axios
         .post('verify-domain', {
