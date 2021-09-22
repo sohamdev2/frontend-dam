@@ -23,16 +23,16 @@ export default async function ({
     } else {
       let domainUrl = hostName
       const findIndex = domainUrl.search(':')
-      domainUrl = domainUrl.substring(0, findIndex)
+      if (findIndex !== -1) {
+        domainUrl = domainUrl.substring(0, findIndex)
+      }
 
       await $axios
         .post('verify-domain', {
           url: domainUrl,
         })
         .then(({ data }) => {
-          redirect(
-            `${hostName}/${data.data.workspace.url_slug}/login?custom=true`
-          )
+          redirect(`/${data.data.workspace.url_slug}/login?custom=true`)
         })
     }
   } else {
