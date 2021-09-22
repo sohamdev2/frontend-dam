@@ -23,7 +23,6 @@ export default async function ({
     } else {
       let domainUrl = hostName
       const findIndex = domainUrl.search(':')
-      console.log(findIndex)
       if (findIndex !== -1) {
         domainUrl = domainUrl.substring(0, findIndex)
       }
@@ -33,9 +32,7 @@ export default async function ({
           url: domainUrl,
         })
         .then(({ data }) => {
-          redirect(
-            `${hostName}/${data.data.workspace.url_slug}/login?custom=true`
-          )
+          redirect(`/${data.data.workspace.url_slug}/login?custom=true`)
         })
     }
   } else {

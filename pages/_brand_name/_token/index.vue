@@ -8,12 +8,16 @@ export default {
     $setCurrentWorkspace,
     req,
   }) {
-    const url = ['localhost:3001', 'dam-dev3.herokuapp.com']
+    const url = [
+      'localhost:3001',
+      'dam-dev3.herokuapp.com',
+      'dam-staging3.herokuapp.com',
+      'dam.marketinghub.com',
+    ]
     let hostName = process.server ? req.headers.host : location.host
     if (!url.includes(hostName)) {
       let domainUrl = hostName
       const findIndex = domainUrl.search(':')
-      console.log(findIndex)
       if (findIndex !== -1) {
         domainUrl = domainUrl.substring(0, findIndex)
       }
