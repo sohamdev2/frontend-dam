@@ -23,20 +23,20 @@ export default async function ({
     } else {
       let domainUrl = hostName
       const findIndex = domainUrl.search(':')
-      console.log(findIndex)
+      console.log(findIndex, hostName)
       if (findIndex !== -1) {
+        console.log('if')
         domainUrl = domainUrl.substring(0, findIndex)
       }
 
-      await $axios
-        .post('verify-domain', {
-          url: domainUrl,
-        })
-        .then(({ data }) => {
-          redirect(
-            `${hostName}/${data.data.workspace.url_slug}/login?custom=true`
-          )
-        })
+      await $axios.post('verify-domain', {
+        url: domainUrl,
+      })
+      // .then(({ data }) => {
+      //   redirect(
+      //     `${hostName}/${data.data.workspace.url_slug}/login?custom=true`
+      //   )
+      // })
     }
   } else {
     const brandName = $auth.loggedIn && $getBrandName()
