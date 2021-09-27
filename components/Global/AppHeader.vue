@@ -507,15 +507,22 @@ export default {
         })
     },
     changeInstance(instance) {
-      this.$setCurrentWorkspace(instance.workspace_id)
       this.auth = this.$_auth()
       const workspace = this.$auth.user.accessibleInstances.find(
         ({ workspace_id }) =>
           parseInt(workspace_id) === parseInt(instance.workspace_id)
       )
-      this.userLogo = workspace.logo
       // redirect then to the appropriate dashboard
-      this.$router.push(`/${this.auth.url}`)
+      if (workspace.is_domain === 1) {
+        window.location.replace(
+          'https://' + `${workspace.url}/${workspace.workspace_id}`
+        )
+      } else {
+        this.$setCurrentWorkspace(instance.workspace_id)
+        this.userLogo = workspace.logo
+
+        this.$router.replace(`/${this.auth.url}`)
+      }
     },
   },
 }
