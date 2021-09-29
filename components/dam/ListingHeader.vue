@@ -2,7 +2,7 @@
   <ListingHeaderTemplate>
     <div class="preview-img sorting sortarrow flex10"></div>
     <div
-      class="categary-name sorting sortarrow flex27"
+      class="categary-name sorting flex27"
       :class="sortingClass('display_file_name')"
     >
       <span
@@ -16,10 +16,7 @@
         >Name</span
       >
     </div>
-    <div
-      class="assets sorting sortarrow flex18"
-      :class="sortingClass('file_type')"
-    >
+    <div class="assets sorting flex18" :class="sortingClass('file_type')">
       <span
         @click="
           sortingModel = 'file_type'
@@ -31,10 +28,7 @@
         >Assets</span
       >
     </div>
-    <div
-      class="update-date sorting sortarrow flex18"
-      :class="sortingClass('updated_at')"
-    >
+    <div class="update-date sorting flex18" :class="sortingClass('updated_at')">
       <span
         @click="
           sortingModel = 'updated_at'
@@ -46,10 +40,7 @@
         >Date</span
       >
     </div>
-    <div
-      class="size sorting sortarrow flex12"
-      :class="sortingClass('file_size')"
-    >
+    <div class="size sorting flex12" :class="sortingClass('file_size')">
       <span
         @click="
           sortingModel = 'file_size'

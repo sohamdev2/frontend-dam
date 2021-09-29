@@ -6,9 +6,27 @@ export default {
     redirect,
     error,
     $setCurrentWorkspace,
+    req,
   }) {
+    const url = [
+      'localhost:3001',
+      'dam-dev3.herokuapp.com',
+      'dam-staging3.herokuapp.com',
+      'dam.marketinghub.com',
+    ]
+    let hostName = process.server ? req.headers.host : location.host
+    if (!url.includes(hostName)) {
+      let domainUrl = hostName
+      const findIndex = domainUrl.search(':')
+      if (findIndex !== -1) {
+        domainUrl = domainUrl.substring(0, findIndex)
+      }
+      hostName = domainUrl
+    } else {
+      hostName = brand_name
+    }
     await $auth
-      .loginWith('passwordLess', { data: { url: brand_name, token } })
+      .loginWith('passwordLess', { data: { url: hostName, token } })
       .then(() => {
         // set current workspace
         $auth.user.workspace_id && $setCurrentWorkspace($auth.user.workspace_id)
@@ -16,7 +34,9 @@ export default {
           name: 'brand_name',
         })
       })
-      .catch(error)
+      .catch((e) => {
+        console.log(e)
+      })
   },
 }
 </script>

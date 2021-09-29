@@ -110,24 +110,82 @@
               ></path>
             </svg>
           </div>
-          <SharePreviewItem v-for="file in files" :key="file.id" :file="file" />
+          <SharePreviewItem
+            v-for="file in files"
+            :key="file.id"
+            :file="file"
+            :collection="collection"
+          />
         </div>
-        <div v-if="isPrivate.length && !shareMessage" class="notes">
+        <div
+          v-if="isPrivate.length && !shareMessage && !collection"
+          class="notes"
+        >
           <p>
-            <strong>Note : </strong>Some of the assets you have selected are
-            private assets, which are available for internal use only.
+            <strong>Note : </strong
+            ><span
+              v-if="
+                isPrivate.length > 1 &&
+                files.length > 1 &&
+                isPrivate.length === files.length
+              "
+              >All the assets that you have selected are private assets, which
+              are available for internal use only.</span
+            >
+            <span
+              v-else-if="
+                isPrivate.length > 1 ||
+                (isPrivate.length === 1 && files.length > 1)
+              "
+              >Some of the assets that you have selected are private assets,
+              which are available for internal use only.</span
+            >
+            <span v-else-if="isPrivate.length === 1 && files.length === 1"
+              >Selected asset is a private asset, which is available for
+              internal use only.
+            </span>
           </p>
         </div>
-        <div v-if="isFolderPrivate.length && !shareMessage" class="notes">
+        <div
+          v-if="isFolderPrivate.length && !shareMessage && !collection"
+          class="notes"
+        >
           <p>
-            <strong>Note : </strong>Some of the folders that you have selected
-            contains private assets, which are available for internal use only.
+            <strong>Note : </strong>
+            <span
+              v-if="
+                isFolderPrivate.length > 1 &&
+                folders.length > 1 &&
+                isFolderPrivate.length === folders.length
+              "
+              >All the selected folder contains private assets, which are
+              available for internal use only.</span
+            >
+            <span
+              v-else-if="
+                isFolderPrivate.length > 1 ||
+                (isFolderPrivate.length === 1 && folders.length > 1)
+              "
+              >Some of the folders that you have selected contains private
+              assets, which are available for internal use only.</span
+            >
+            <span
+              v-else-if="isFolderPrivate.length === 1 && folders.length === 1"
+              >Selected folder contains private assets, which are available for
+              internal use only.</span
+            >
           </p>
         </div>
         <div v-if="shareMessage" class="notes">
           <p>
             <strong>Note : </strong>Selection contains private assets, which are
             available for internal use only.
+          </p>
+        </div>
+        <div v-if="collection && isPrivate.length" class="notes">
+          <p>
+            <strong>Note : </strong>Collection contains private assets, which
+            are available for internal use only.
           </p>
         </div>
 
@@ -137,7 +195,7 @@
             class="btn"
             :class="{ 'btn-disabled': !creating }"
             :disabled="creating"
-            @click="createShareUrl"
+            @click="collection ? createCollectionUrl() : createShareUrl()"
           >
             {{ creating ? 'Creating...' : 'Create link' }}
           </button>
@@ -157,6 +215,7 @@ export default {
     files: { type: Array, default: () => [] },
     folders: { type: Array, default: () => [] },
     type: { type: String, required: true, default: 'file' },
+    collection: { type: Boolean, default: false },
   },
   data() {
     return {
@@ -214,6 +273,28 @@ export default {
     if (this.copyBtnResetTimer) clearTimeout(this.copyBtnResetTimer)
   },
   methods: {
+    async createCollectionUrl() {
+      this.creating = true
+      await this.$axios
+        .$get(
+          `/digital/collection/${
+            this.files[0].id
+          }/generate-share-url?url_workspace_id=${this.$getWorkspaceId()}`,
+          {
+            workspace_id: this.$getWorkspaceId(),
+          }
+        )
+        .then(({ data }) => {
+          // eslint-disable-next-line prefer-const
+          let [type, status] = data.share_url.split('?').pop().split('&')
+          type = type.replace('type=', '')
+          this.shareUrl =
+            window.location.origin + '/shared-assets/' + type + '?' + status
+        })
+        .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
+
+      this.creating = false
+    },
     async createShareUrl() {
       this.creating = true
       await this.$axios

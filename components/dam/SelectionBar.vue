@@ -25,7 +25,7 @@
         <div class="select-right">
           <ul>
             <li>
-              <a href="javascript:void(0);" @click="showShare">
+              <a @click="showShare">
                 Share
                 <svg
                   id="Layer_1"
@@ -106,11 +106,15 @@
 </template>
 
 <script>
+import ShareFile from '~/components/dam/ShareFile'
 export default {
   props: {
     selectedFiles: { type: Array, default: () => [] },
     selectedFolders: { type: Array, default: () => [] },
     selectedAll: { type: Boolean, default: false },
+  },
+  components: {
+    ShareFile,
   },
   data() {
     return {
@@ -157,7 +161,7 @@ export default {
           })
       } else {
         this.shareAble = [...this.selectedFolders]
-        this.$refs.shareDialog.toggleModel()
+        this.$nextTick(() => this.$refs.shareDialog.toggleModel())
       }
     },
     downloadSelectedFile() {
