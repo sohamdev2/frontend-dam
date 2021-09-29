@@ -81,7 +81,7 @@
                           />
                         </div>
                       </div>
-                      <div class="col-sm-12">
+                      <!-- <div class="col-sm-12">
                         <div class="form-group">
                           <ul class="choose-workspce">
                             <li class="media">
@@ -130,7 +130,7 @@
                             </li>
                           </ul>
                         </div>
-                      </div>
+                      </div> -->
                       <div class="col-sm-12">
                         <button
                           class="btn"
@@ -417,12 +417,12 @@ export default {
   },
   head() {
     return {
-      title: this.$brandDetail()?.brand_name || 'Digital Asset Manager',
+      title: this.$brandName() || 'Digital Asset Manager',
       link: [
         {
           rel: 'icon',
           type: 'image/x-icon',
-          href: this.$brandDetail()?.favicon || '/favicon.png',
+          href: this.$_auth()?.favicon || '/favicon.png',
         },
       ],
     }
