@@ -523,7 +523,7 @@ export default {
         if (workspace.is_domain === 1) {
           await this.$logout()
           window.location.replace(
-            'http://' + `${workspace.url}:3001/${workspace.workspace_id}`
+            'http://' + `${workspace.url}/${workspace.workspace_id}`
           )
         } else {
           console.log('soham')
@@ -548,7 +548,7 @@ export default {
         if (workspace.is_domain === 1) {
           await this.$logout()
           window.location.replace(
-            'http://' + `${workspace.url}:3001/${workspace.workspace_id}`
+            'http://' + `${workspace.url}/${workspace.workspace_id}`
           )
         } else {
           await this.$logout()
