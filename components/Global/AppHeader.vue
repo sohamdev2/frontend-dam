@@ -468,6 +468,7 @@ export default {
       auth: this.$_auth(),
       userLogo: null,
       collectionList: [],
+      userModel: { ...this.$auth.user },
     }
   },
   computed: {
@@ -498,24 +499,74 @@ export default {
   },
   methods: {
     async loadCollection() {
-      await this.$axios
-        .$get(
-          `/digital/collection/get-all?url_workspace_id=${this.$getWorkspaceId()}`
-        )
-        .then(({ data }) => {
-          this.collectionList = data.splice(0, 4)
-        })
+      const workspace = this.$getWorkspaceId()
+      if (!workspace) {
+        this.$logout()
+      } else {
+        await this.$axios
+          .$get(`/digital/collection/get-all?url_workspace_id=${workspace}`)
+          .then(({ data }) => {
+            this.collectionList = data.splice(0, 4)
+          })
+      }
     },
-    changeInstance(instance) {
-      this.$setCurrentWorkspace(instance.workspace_id)
+    async changeInstance(instance) {
       this.auth = this.$_auth()
+
       const workspace = this.$auth.user.accessibleInstances.find(
         ({ workspace_id }) =>
           parseInt(workspace_id) === parseInt(instance.workspace_id)
       )
-      this.userLogo = workspace.logo
       // redirect then to the appropriate dashboard
-      this.$router.push(`/${this.auth.url}`)
+      if (this.auth.is_domain === workspace.is_domain) {
+        console.log('if')
+        if (workspace.is_domain === 1) {
+          await this.$logout()
+          window.location.replace(
+            'http://' + `${workspace.url}:3001/${workspace.workspace_id}`
+          )
+        } else {
+          console.log('soham')
+          const formData = new FormData()
+          formData.append('id', this.user.id)
+          formData.append('instance_id', instance.instance_id)
+          formData.append('name', this.userModel.name)
+          formData.append('phone', this.userModel.phone)
+
+          await this.$axios
+            .$post('digital/instance/update-user', formData)
+            .then(async () => {
+              this.$auth.fetchUser()
+              await this.$setCurrentWorkspace(instance.workspace_id)
+              this.userLogo = workspace.logo
+
+              this.$router.replace(`/${instance.url}`)
+            })
+        }
+      } else if (this.auth.is_domain !== workspace.is_domain) {
+        console.log('elseif')
+        if (workspace.is_domain === 1) {
+          await this.$logout()
+          window.location.replace(
+            'http://' + `${workspace.url}:3001/${workspace.workspace_id}`
+          )
+        } else {
+          await this.$logout()
+          window.location.replace(
+            this.$config.baseUrl + '/' + `${workspace.url}`
+          )
+        }
+      }
+      // if (workspace.is_domain === 1) {
+      //   window.location.replace(
+      //     'https://' + `${workspace.url}/${workspace.workspace_id}`
+      //   )
+      // } else {
+      //   this.$setCurrentWorkspace(instance.workspace_id)
+      //   this.userLogo = workspace.logo
+
+      //   this.$router.replace(`/${this.auth.url}`)
+      // }
     },
   },
 }

@@ -210,6 +210,8 @@ export default {
   mounted() {
     this.$store.dispatch('appData/fetchDashboardData')
     this.$store.dispatch('appData/fetchFolders')
+    document.querySelector("link[rel~='icon']").href =
+      this.$_auth()?.favicon === '' ? '/favicon.png' : this.$_auth()?.favicon
   },
   methods: {
     onShareFile(file) {
@@ -226,6 +228,7 @@ export default {
     },
   },
   head() {
+    console.log(this.$_auth(), this.$brandDetail())
     return {
       title: this.$brandName(),
       link: [
