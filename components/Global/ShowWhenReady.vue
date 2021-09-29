@@ -26,13 +26,14 @@ export default {
   },
   computed: {
     loaded() {
-      return (
-        this.show &&
-        this.$localStorageLoaded &&
-        (this.$auth.isLoggedIn
-          ? !!this.$store.state?.appData?.dashboardData
-          : this.$store.state?.appData?.status)
-      )
+      // return (
+      //   this.show &&
+      //   // this.$localStorageLoaded &&
+      //   (this.$auth.isLoggedIn
+      //     ? !!this.$store.state?.appData?.dashboardData
+      //     : this.$store.state?.appData?.status)
+      // )
+      return true
     },
   },
   watch: {

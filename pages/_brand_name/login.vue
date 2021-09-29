@@ -115,7 +115,6 @@ export default {
       form: {
         email: null,
         password: null,
-        type: 'sub_doamin',
       },
       logo: '',
     }
@@ -130,7 +129,12 @@ export default {
       this.loading = true
 
       await this.$auth
-        .loginWith('local', { data: { ...this.form, url: this.brandName } })
+        .loginWith('local', {
+          data: {
+            ...this.form,
+            workspace_id: this.$brandDetail()?.workspace.url_slug,
+          },
+        })
         .then(() => {
           // set current workspace
           this.$auth.user.workspace_id &&

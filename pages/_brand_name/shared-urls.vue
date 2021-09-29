@@ -139,5 +139,17 @@ export default {
       }
     },
   },
+  head() {
+    return {
+      title: this.$brandName() || 'Digital Asset Manager',
+      link: [
+        {
+          rel: 'icon',
+          type: 'image/x-icon',
+          href: this.$_auth()?.favicon || '/favicon.png',
+        },
+      ],
+    }
+  },
 }
 </script>

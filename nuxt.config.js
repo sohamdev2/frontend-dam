@@ -85,12 +85,12 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
     '@nuxtjs/toast',
-    [
-      'nuxt-vuex-localstorage',
-      {
-        localStorage: ['appData'], //  If not entered, “localStorage” is the default value
-      },
-    ],
+    // [
+    //   'nuxt-vuex-localstorage',
+    //   {
+    //     localStorage: ['appData'], //  If not entered, “localStorage” is the default value
+    //   },
+    // ],
   ],
 
   router: {
