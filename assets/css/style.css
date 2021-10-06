@@ -4716,7 +4716,6 @@ header .user-dropdown.show .dropdown-toggle {
 .my-collection-body .table-list-view {
   height: 100%;
 }
-
 .collection-tabs {
   padding: 10px 10px 0px;
   position: relative;
@@ -4727,9 +4726,19 @@ header .user-dropdown.show .dropdown-toggle {
 .collection-tabs .nav-tabs .active {
   color: #14aaf5;
 }
-
+.my-collection .thead li .blankSpace {
+  width: 105px;
+}
 .my-collection .tbody li .top-column label {
   font-size: 14px !important;
+}
+.my-collection .categary-name {
+  display: flex;
+  align-items: center;
+}
+.my-collection .categary-name .top-column {
+  width: calc(100% - 115px);
+  position: relative;
 }
 .my-collection .categary-name .top-column label {
   font-weight: 600 !important;
@@ -4756,7 +4765,9 @@ header .user-dropdown.show .dropdown-toggle {
 }
 .my-collection .categary-image {
   width: 100px;
+  min-width: 100px;
   height: 100px;
+  margin-right: 15px;
 }
 .my-collection .categary-image:before {
   display: none;
@@ -4766,19 +4777,16 @@ header .user-dropdown.show .dropdown-toggle {
   width: auto;
   max-height: 100%;
 }
-.my-collection .categary-name .form-control {
-  position: absolute;
-  top: 5px;
-  left: 10px;
-  right: 10px;
-  max-width: 80%;
-  font-weight: 600;
-  opacity: 0;
-  visibility: hidden;
-}
-.my-collection .categary-name.editmode .form-control {
-  opacity: 1;
-  visibility: visible;
+.my-collection .collection-description label {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+  -webkit-line-clamp: 4;
+  white-space: normal !important;
+  line-height: 1.4 !important;
+  cursor: pointer;
 }
 .edit-collection-name {
   position: relative;

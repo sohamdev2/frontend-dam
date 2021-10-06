@@ -54,7 +54,7 @@
             <div class="breadcrumb-links">
               <ul>
                 <li>&nbsp;</li>
-                <li><span> Collection</span></li>
+                <li><span> Collections</span></li>
               </ul>
             </div>
           </div>

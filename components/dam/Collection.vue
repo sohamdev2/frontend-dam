@@ -1,11 +1,9 @@
 <template>
   <li>
-    <div class="preview-img tb-column flex8">
+    <div class="categary-name tb-column flex34">
       <div class="categary-image">
         <img :src="file.preview_image" alt="" />
       </div>
-    </div>
-    <div class="categary-name tb-column flex34">
       <div class="top-column">
         <label
           style="cursor: pointer"
@@ -14,35 +12,50 @@
         >
       </div>
     </div>
-    <div class="assets tb-column flex18">
+    <div
+      class="collection-description tb-column flex26"
+      @click.capture.stop="collectionDesc"
+    >
+      <div class="top-column">
+        <label
+          data-toggle="modal"
+          data-target="#collection-description-modal"
+          :style="{ cursor: file.description === null ? 'default' : 'pointer' }"
+          >{{ file.description !== null ? file.description : '-' }}</label
+        >
+      </div>
+    </div>
+    <div class="assets tb-column flex12">
       <div class="top-column">
         <label> {{ $moment(file.updated_at).format('Do MMM, YYYY') }}</label>
       </div>
     </div>
-    <div class="update-date tb-column flex18">
+    <div class="update-date tb-column flex12">
       <div class="top-column">
         <label>{{ $auth.user.name }}</label>
       </div>
     </div>
-    <div class="size tb-column flex12">
+    <div class="size tb-column flex8">
       <div class="top-column">
         <label>{{ file.assets_count }}</label>
       </div>
     </div>
-    <div class="categary-action tb-column flex10">
+    <div class="categary-action tb-column flex8">
       <div class="top-column">
         <div class="categary-actions text-center">
           <a
             data-toggle="modal"
             data-target="#sharePopup"
-            @click.capture.stop="$refs.shareDialog.toggleModel()"
+            :class="{ isEmpty: file.assets_count === 0 }"
+            @click.capture.stop="shareCollection"
           >
             <svg
               id="Layer_1"
+              v-tooltip="{
+                html: false,
+                content: isEmpty,
+              }"
               class="share-icon h-orange"
-              data-toggle="tooltip"
-              title=""
-              data-original-title="Share Collection"
               version="1.1"
               xmlns="http://www.w3.org/2000/svg"
               xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -73,6 +86,7 @@
     </div>
     <client-only>
       <ShareFile ref="shareDialog" :files="[file]" collection type="folder" />
+      <DescriptionDialog ref="descDialog" :collection="file" />
     </client-only>
   </li>
 </template>
@@ -82,7 +96,19 @@ export default {
   props: {
     file: { type: Object, default: () => ({}) },
   },
+  computed: {
+    isEmpty() {
+      return this.file.assets_count > 0
+        ? 'Share Collection'
+        : 'Collection is empty'
+    },
+  },
   methods: {
+    collectionDesc() {
+      if (this.file.description !== null) {
+        this.$refs.descDialog.toggleModel()
+      }
+    },
     collectionDetails() {
       this.$router.push({
         name: 'brand_name-collection-id',
@@ -92,6 +118,17 @@ export default {
         },
       })
     },
+    shareCollection() {
+      if (this.file.assets_count > 0) {
+        this.$refs.shareDialog.toggleModel()
+      }
+    },
   },
 }
 </script>
+
+<style scoped>
+.isEmpty {
+  opacity: 0.4;
+}
+</style>
