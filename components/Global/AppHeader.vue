@@ -526,7 +526,7 @@ export default {
             'http://' + `${workspace.url}/${workspace.workspace_id}`
           )
         } else {
-          console.log('soham')
+          console.log('else')
           const formData = new FormData()
           formData.append('id', this.user.id)
           formData.append('instance_id', instance.instance_id)
