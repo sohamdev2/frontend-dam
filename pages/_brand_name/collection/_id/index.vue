@@ -50,7 +50,7 @@
                   name: 'brand_name-collection',
                   params: { brand_name: $getBrandName() },
                 }"
-                >Collection</nuxt-link
+                >Collections</nuxt-link
               >
             </li>
             <li>
