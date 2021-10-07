@@ -678,7 +678,7 @@
                 }
           "
         >
-          {{ file.display_file_name }} {{ mode }}
+          {{ file.display_file_name }}
         </nuxt-link>
       </div>
     </div>
