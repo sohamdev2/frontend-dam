@@ -83,9 +83,9 @@ export const actions = {
   assignLogo({ commit }, item) {
     commit('logo', item)
   },
-  brandDetails({ state }, item) {
+  brandDetails({ commit }, item) {
     // return commit('brand', item)
-    state.brand = item
+    commit('brand', item)
   },
   async fetchDashboardData({ commit }) {
     if (!this.$auth.loggedIn) return
@@ -97,20 +97,24 @@ export const actions = {
         parseInt(workspace_id) === parseInt(this.$getWorkspaceId())
     )
 
-    const data = await this.$axios
+    await this.$axios
       .$get(
         `/digital/common-data?workspace_id=${this.$getWorkspaceId()}&instance_id=${
-          workspace.instance_id
+          workspace?.instance_id
         }`
       )
-      .then(({ data }) => data)
+      .then(({ data }) => {
+        commit('dashboardData', data)
+
+        return data
+      })
       .catch(this.$showErrorToast)
 
-    if (data) {
-      commit('dashboardData', data)
+    // if (data) {
+    //   commit('dashboardData', data)
 
-      return data
-    }
+    //   return data
+    // }
 
     commit('loading.dashboard', false)
   },
