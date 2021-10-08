@@ -1,7 +1,8 @@
 <template>
   <ListingHeaderTemplate>
-    <div class="preview-img pb-1 no-pointer flex8"></div>
     <div class="categary-name sorting flex34" :class="sortingClass('name')">
+      <div class="blankSpace"></div>
+
       <span
         @click="
           sortingModel = 'name'
@@ -11,7 +12,10 @@
         Collection Name
       </span>
     </div>
-    <div class="assets sorting flex18" :class="sortingClass('updated_at')">
+    <div class="collection-description sorting flex26">
+      <span>Description</span>
+    </div>
+    <div class="assets sorting flex12" :class="sortingClass('updated_at')">
       <span
         @click="
           sortingModel = 'updated_at'
@@ -21,13 +25,13 @@
         Last Updated
       </span>
     </div>
-    <div class="update-date sorting flex18">
+    <div class="update-date sorting flex12">
       <span> Owner </span>
     </div>
-    <div class="size sorting flex12">
+    <div class="size sorting flex8">
       <span> Files </span>
     </div>
-    <div class="categary-action sorting no-pointer flex10 text-center">
+    <div class="categary-action sorting no-pointer flex8 text-center">
       Action
     </div>
   </ListingHeaderTemplate>

@@ -15,9 +15,10 @@
     ></div>
     <div
       class="modal-dialog modal-dialog-scrollable modal-dialog-centered"
+      :class="dynamicClass"
       role="document"
     >
-      <div class="modal-content bg-gray">
+      <div class="modal-content" :class="contentClass">
         <slot></slot>
       </div>
     </div>
@@ -29,12 +30,23 @@ import ValueModel from '@/mixins/ValueModel'
 
 export default {
   mixins: [ValueModel],
+  props: {
+    layoutClass: { type: String, default: null },
+    contentClass: { type: String, default: 'bg-gray ' },
+  },
 
   data() {
     return {
       show: false,
       id: Math.random().toString(12).replace('0.', 'new_file_model_'),
     }
+  },
+  computed: {
+    dynamicClass() {
+      const obj = {}
+      obj[this.layoutClass] = true
+      return obj
+    },
   },
   watch: {
     active(active) {
