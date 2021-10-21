@@ -5,6 +5,40 @@
         <h4 class="title">Folders</h4>
         <FolderList></FolderList>
       </div>
+
+      <div class="common-box bg-gray">
+        <ul class="quick-links customscrollbar">
+          <li>
+            <nuxt-link
+              :to="{
+                name: 'brand_name-collection',
+                params: { brand_name: $getBrandName() },
+              }"
+              >Recent Uploads</nuxt-link
+            >
+          </li>
+          <li><a href="javascript:void(0);">Trending</a></li>
+          <li>
+            <nuxt-link
+              :to="{
+                name: 'brand_name-collection',
+                params: { brand_name: $getBrandName() },
+              }"
+              >All Collections</nuxt-link
+            >
+          </li>
+          <li>
+            <nuxt-link
+              v-if="!user.is_backend_user"
+              :to="{
+                name: 'brand_name-shared-urls',
+                params: { brand_name: this.$getBrandName() },
+              }"
+              >Shared URLs</nuxt-link
+            >
+          </li>
+        </ul>
+      </div>
     </div>
     <div class="body-content-right customscrollbar">
       <SearchBar />
@@ -12,23 +46,89 @@
         <client-only>
           <carousel
             :per-page="1"
-            autoplay
             navigation-enabled
             loop
             :pagination-enabled="false"
           >
             <slide v-for="banner in bannerData" :key="banner.id">
-              <div
+              <!-- <div
                 class="banner-item"
                 :title="banner.title"
                 :style="{
                   backgroundImage: `url('${banner.image}')`,
                 }"
-              ></div>
+              ></div> -->
+              <a :href="banner.url" target="_blank">
+                <div
+                  class="banner-item"
+                  :title="banner.title"
+                  :style="{
+                    backgroundImage: `url('${banner.image}')`,
+                  }"
+                ></div>
+                <div class="content">
+                  <div class="content-wepper">
+                    <p>
+                      {{ banner.description }}
+                    </p>
+                  </div>
+                </div>
+              </a>
             </slide>
           </carousel>
         </client-only>
       </div>
+
+      <div
+        v-if="!user.is_slider && tileData && tileData.length"
+        class="section-title"
+      >
+        <h4>Tiles List</h4>
+      </div>
+      <div
+        v-if="!user.is_slider && tileData && tileData.length"
+        class="trending-sec grid-tile resource-wrapper tiles-list"
+      >
+        <div class="common-box bg-gray">
+          <div class="table-list-view">
+            <ul class="tbody">
+              <template v-for="tile in tileData">
+                <Tile :key="tile.id" :tile="tile" />
+              </template>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div
+        v-if="user.is_slider && tileData && tileData.length"
+        class="section-title"
+      >
+        <h4>Tiles Slider</h4>
+      </div>
+      <div
+        v-if="user.is_slider && tileData && tileData.length"
+        class="trending-sec grid-tile resource-wrapper tiles-list"
+      >
+        <div class="common-box bg-gray">
+          <div class="table-list-view">
+            <ul class="tbody owl-carousel tiles-carousel">
+              <client-only>
+                <carousel
+                  :per-page="4"
+                  navigation-enabled
+                  :pagination-enabled="false"
+                >
+                  <slide v-for="tile in tileData" :key="tile.id">
+                    <Tile :tile="tile" />
+                  </slide>
+                </carousel>
+              </client-only>
+            </ul>
+          </div>
+        </div>
+      </div>
+
       <template
         v-if="
           dashboardData &&
@@ -234,7 +334,11 @@
 </template>
 
 <script>
+import Tile from '@/components/dam/Tile.vue'
 export default {
+  components: {
+    Tile,
+  },
   layout: 'app',
   middleware: ['check-url', 'check-auth'],
   data() {
@@ -243,6 +347,9 @@ export default {
     }
   },
   computed: {
+    user() {
+      return this.$auth.user
+    },
     folderList() {
       return this.$store.state.appData.folders
     },
@@ -254,10 +361,16 @@ export default {
     dashboardData() {
       return this.$store.state.appData.dashboardData
     },
+    tileData() {
+      return [...this.$store.state.appData.tileData].sort(
+        ({ postion: a, postions: b }) => a - b
+      )
+    },
   },
   mounted() {
     this.$store.dispatch('appData/fetchDashboardData')
     this.$store.dispatch('appData/fetchFolders')
+    this.$store.dispatch('appData/fetchTileData')
     document.querySelector("link[rel~='icon']").href =
       this.$_auth()?.favicon === '' ? '/favicon.png' : this.$_auth()?.favicon
   },
@@ -276,7 +389,6 @@ export default {
     },
   },
   head() {
-    console.log(this.$_auth(), this.$brandDetail())
     return {
       title: this.$brandName(),
       link: [
