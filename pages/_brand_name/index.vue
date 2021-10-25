@@ -45,6 +45,7 @@
       <div v-if="dashboardData" class="hero-section">
         <client-only>
           <carousel
+            autoplay
             :per-page="1"
             navigation-enabled
             loop

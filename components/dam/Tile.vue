@@ -3,7 +3,8 @@
     <div class="preview-img">
       <div class="categary-image">
         <a :href="tile.url" target="_blank" class="img-link">
-          <div class="icons">
+          <img v-if="!isSvg" :src="tile.image" alt="Folder Icon" />
+          <div v-else class="icons">
             <img :src="tile.image" alt="Folder Icon" />
           </div>
         </a>
@@ -18,9 +19,22 @@
 </template>
 
 <script>
+const extension = ['.svg', '.png']
 export default {
   props: {
     tile: { type: Object, default: () => ({}) },
+  },
+  computed: {
+    isSvg() {
+      let x = false
+      extension.map((item) => {
+        if (this.tile.image_name.includes(item)) {
+          x = true
+        }
+        return item
+      })
+      return x
+    },
   },
 }
 </script>
