@@ -52,12 +52,13 @@
       </div>
     </div>
     <div class="dam-detail">
-      <div class="row h-100">
-        <div class="col-lg-6 inner-detail-left col-xl-7 h-100">
+      <div class="dam-detail h-100 w-100">
+        <!-- <div class="row h-100"> -->
+        <div class="inner-detail-left h-100">
           <h2 class="title">
             {{ file.display_file_name | shrinkString(60, 15) }}
           </h2>
-          <div class="common-box customscrollbar p0">
+          <div class="common-box customscrollbar bg-gray p20">
             <div v-if="isPdf || isDoc || isTxt" class="doc-wapper">
               <div class="doc-preview">
                 <iframe
@@ -144,13 +145,8 @@
             </div>
           </div>
         </div>
-        <div
-          v-if="ui.loading"
-          class="col-lg-6 inner-detail-right col-xl-5 h-100"
-        >
-          loading...
-        </div>
-        <div v-else class="col-lg-6 inner-detail-right col-xl-5 h-100">
+        <div v-if="ui.loading" class="inner-detail-right h-100">loading...</div>
+        <div v-else class="inner-detail-right h-100">
           <div class="common-box detail-tabs p0">
             <div class="tabs-view h-100">
               <ul class="nav nav-left" role="tablist">
@@ -181,7 +177,9 @@
                     class="tab-pane"
                     :class="{ active: ui.tab === 'overview' }"
                   >
-                    <h4>{{ file.display_file_name | shrinkString(60, 15) }}</h4>
+                    <h4>
+                      {{ file.display_file_name | shrinkString(60, 15) }}
+                    </h4>
                     <p>{{ file.description }}</p>
                     <template v-if="file.category && file.category.length">
                       <h5>Included in Folders</h5>
@@ -433,6 +431,7 @@
           ></ShareFile>
         </client-only>
         <DownloadingIndicator />
+        <!-- </div> -->
       </div>
     </div>
   </div>
