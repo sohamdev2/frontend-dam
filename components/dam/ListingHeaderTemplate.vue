@@ -27,7 +27,6 @@ export default {
   },
   methods: {
     sortingClass(sorting) {
-      console.log(this.sorting, sorting)
       return {
         sortarrow: this.sorting === sorting,
         descending: this.sorting === sorting && this.reverse,

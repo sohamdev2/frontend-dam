@@ -1642,16 +1642,20 @@ header .user-dropdown.show .dropdown-toggle {
   margin: 2px 0px;
   display: flex;
 }
-.quick-links li a {
+.quick-links li a,
+.quick-links li span {
   display: flex;
   padding: 5px 15px;
   font-size: 15px;
   color: #737b88;
+  cursor: pointer;
 }
-.quick-links li a:hover {
+.quick-links li a:hover,
+.quick-links li span:hover {
   color: #172b4d;
   text-decoration: underline;
 }
+
 .category-header h2.title {
   font-weight: 600;
 }
