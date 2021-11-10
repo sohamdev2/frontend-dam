@@ -72,6 +72,57 @@
           :parent-folder="currentFolder"
         ></FolderList>
       </div>
+      <div class="common-box bg-gray">
+        <ul class="quick-links customscrollbar">
+          <li>
+            <span
+              :style="
+                dashboardData &&
+                (dashboardData.recent_uploads.images.length ||
+                  dashboardData.recent_uploads.documents.length ||
+                  dashboardData.recent_uploads.videos.length ||
+                  dashboardData.recent_uploads.audios.length)
+                  ? 'pointer-events: auto'
+                  : 'pointer-events: none'
+              "
+              @click.capture.stop="scrollToRecent"
+              >Recent Uploads</span
+            >
+          </li>
+          <li>
+            <span
+              :style="
+                dashboardData &&
+                dashboardData.trending_data &&
+                dashboardData.trending_data.length
+                  ? 'pointer-events: auto'
+                  : 'pointer-events: none'
+              "
+              @click.capture.stop="scrollToTrending"
+              >Trending</span
+            >
+          </li>
+          <li>
+            <nuxt-link
+              :to="{
+                name: 'brand_name-collection',
+                params: { brand_name: $getBrandName() },
+              }"
+              >All Collections</nuxt-link
+            >
+          </li>
+          <li>
+            <nuxt-link
+              v-if="!user.is_backend_user"
+              :to="{
+                name: 'brand_name-shared-urls',
+                params: { brand_name: this.$getBrandName() },
+              }"
+              >Shared URLs</nuxt-link
+            >
+          </li>
+        </ul>
+      </div>
     </div>
     <div class="body-content-right customscrollbar">
       <SearchBar ref="searchbar" />
@@ -296,6 +347,12 @@ export default {
     }
   },
   computed: {
+    dashboardData() {
+      return this.$store.state.appData.dashboardData
+    },
+    user() {
+      return this.$auth.user
+    },
     hashParam() {
       return (this.$route.hash || '').replace('#', '')
     },
@@ -410,6 +467,32 @@ export default {
     this.getData()
   },
   methods: {
+    scrollToRecent() {
+      const scrollingState = true
+      const scrollTo = 'recent'
+      this.$store.dispatch('appData/changeScrolling', {
+        scrollingState,
+        scrollTo,
+      })
+
+      this.$router.push({
+        name: 'brand_name',
+        params: { brand_name: this.$getBrandName() },
+      })
+    },
+    scrollToTrending() {
+      const scrollingState = true
+      const scrollTo = 'trending'
+
+      this.$store.dispatch('appData/changeScrolling', {
+        scrollingState,
+        scrollTo,
+      })
+      this.$router.push({
+        name: 'brand_name',
+        params: { brand_name: this.$getBrandName() },
+      })
+    },
     // dropdown functionality
     dropDown(file, type, resourceType) {
       this.selectedFiles = []

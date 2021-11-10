@@ -12,6 +12,8 @@ const _state = () => ({
   logo: '',
   brand: null,
   tileData: [],
+  scrollToRecent: false,
+  scrollTo: '',
 })
 
 export { _state as state }
@@ -81,9 +83,16 @@ export const mutations = {
   resetState(state) {
     Object.assign(state, _state())
   },
+  changeScrolling(state, { scrollingState, scrollTo }) {
+    state.scrollToRecent = scrollingState
+    state.scrollTo = scrollTo
+  },
 }
 
 export const actions = {
+  changeScrolling({ commit }, { scrollingState, scrollTo }) {
+    commit('changeScrolling', { scrollingState, scrollTo })
+  },
   assignLogo({ commit }, item) {
     commit('logo', item)
   },
