@@ -9,15 +9,33 @@
       <div class="common-box bg-gray">
         <ul class="quick-links customscrollbar">
           <li>
-            <nuxt-link
-              :to="{
-                name: 'brand_name-collection',
-                params: { brand_name: $getBrandName() },
-              }"
-              >Recent Uploads</nuxt-link
+            <span
+              :style="
+                dashboardData &&
+                (dashboardData.recent_uploads.images.length ||
+                  dashboardData.recent_uploads.documents.length ||
+                  dashboardData.recent_uploads.videos.length ||
+                  dashboardData.recent_uploads.audios.length)
+                  ? 'pointer-events: auto'
+                  : 'pointer-events: none'
+              "
+              @click.capture.stop="scrollToRecent"
+              >Recent Uploads</span
             >
           </li>
-          <li><a href="javascript:void(0);">Trending</a></li>
+          <li>
+            <span
+              :style="
+                dashboardData &&
+                dashboardData.trending_data &&
+                dashboardData.trending_data.length
+                  ? 'pointer-events: auto'
+                  : 'pointer-events: none'
+              "
+              @click.capture.stop="scrollToTrending"
+              >Trending</span
+            >
+          </li>
           <li>
             <nuxt-link
               :to="{
@@ -40,7 +58,7 @@
         </ul>
       </div>
     </div>
-    <div class="body-content-right customscrollbar">
+    <div ref="rightSide" class="body-content-right customscrollbar">
       <SearchBar />
       <div v-if="dashboardData" class="hero-section">
         <client-only>
@@ -137,7 +155,7 @@
           dashboardData.trending_data.length
         "
       >
-        <div class="section-title">
+        <div ref="trending" class="section-title">
           <h4>Trending</h4>
         </div>
         <div class="trending-sec grid-tile resource-wrapper">
@@ -176,6 +194,7 @@
             dashboardData.recent_uploads.videos.length ||
             dashboardData.recent_uploads.audios.length
           "
+          ref="recent"
           class="section-title"
         >
           <h4>Recent Uploads</h4>
@@ -369,13 +388,37 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch('appData/fetchDashboardData')
+    this.$store.dispatch('appData/fetchDashboardData').then(() => {
+      if (this.$store.state.appData.scrollToRecent) {
+        if (this.$store.state.appData.scrollTo === 'recent') {
+          this.scrollToRecent()
+        } else if (this.$store.state.appData.scrollTo === 'trending') {
+          this.scrollToTrending()
+        }
+      }
+    })
     this.$store.dispatch('appData/fetchFolders')
     this.$store.dispatch('appData/fetchTileData')
     document.querySelector("link[rel~='icon']").href =
       this.$_auth()?.favicon === '' ? '/favicon.png' : this.$_auth()?.favicon
   },
   methods: {
+    scrollToTrending() {
+      this.$refs.trending.scrollIntoView()
+      this.resetScrolling()
+    },
+    scrollToRecent() {
+      this.$refs.recent.scrollIntoView()
+      this.resetScrolling()
+    },
+    resetScrolling() {
+      const scrollingState = false
+      const scrollTo = ''
+      this.$store.dispatch('appData/changeScrolling', {
+        scrollingState,
+        scrollTo,
+      })
+    },
     onShareFile(file) {
       this.shareFile = file
       this.$nextTick(() => this.$refs.shareDialog.toggleModel())
