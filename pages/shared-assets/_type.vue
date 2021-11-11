@@ -64,6 +64,7 @@
                 :file="file"
                 :mode="mode"
                 share-mode
+                :share-id="shareId"
               />
               <!-- <li>
                 <div class="categary-name tb-column flex52">
@@ -146,8 +147,10 @@ export default {
           })
         const subFolders = makeFolder(data.category || [])
         const files = data.assets || []
+        const shareId = data.share_id
 
         return {
+          shareId,
           subFolders,
           files,
           stack: [{ subFolders, files }],
