@@ -154,6 +154,7 @@ export default {
     hideSelect: { type: Boolean, default: false },
     emitShare: { type: Boolean, default: false },
     mode: { type: String, default: 'row' },
+    shareId: { type: Number, default: 0 },
   },
   data() {
     return {
@@ -269,6 +270,15 @@ export default {
         .finally(() => (this.videoThumbnailFetching = false))
     },
     downloadFile() {
+      if (this.$route.name.includes('shared-assets')) {
+        this.$axios
+          .$post(`share-link-download`, {
+            url_workspace_id: this.$getWorkspaceId(),
+            workspace_id: this.$getWorkspaceId(),
+            id: this.shareId,
+          })
+          .catch(this.$errorToast)
+      }
       this.$store.dispatch('downloadIndicator/downloadFile', {
         id: this.file.id,
         url: this.__url,
