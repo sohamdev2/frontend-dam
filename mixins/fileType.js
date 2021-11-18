@@ -36,6 +36,9 @@ export default {
     isAudio() {
       return this.$isAudio(this.__file_ext)
     },
+    isHtml() {
+      return this.$isHtml(this.__file_ext)
+    },
     previewImage() {
       return this.getPreviewIcon()
     },
@@ -55,6 +58,9 @@ export default {
       } else if (this.$isAudio(ext))
         return require('@/assets/img/icon/file/audio.svg')
       else if (this.$isImage(ext)) return imageThumb || compressedImage || url
+      else if (this.isDoc) {
+        return imageThumb || compressedImage || url
+      } else if (this.isHtml) return imageThumb || compressedImage || url
       else
         try {
           return require(`@/assets/img/icon/file/${ext}.svg`)

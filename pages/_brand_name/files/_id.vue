@@ -59,41 +59,89 @@
             {{ file.display_file_name | shrinkString(60, 15) }}
           </h2>
           <div class="common-box customscrollbar bg-gray p20">
-            <div v-if="isPdf || isDoc || isTxt" class="doc-wapper">
-              <div class="doc-preview">
-                <iframe
-                  v-if="isPdf"
-                  type="application/pdf"
-                  :src="__url + '#toolbar=0?transparent=0'"
-                  width="100%"
-                  height="100%"
-                >
-                </iframe>
-                <iframe
-                  v-else-if="isTxt"
-                  type="application/txt"
-                  :src="__url"
-                  width="100%"
-                  height="100%"
-                ></iframe>
-                <iframe
-                  v-else-if="isDoc"
-                  :src="`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(
-                    __url
-                  )}`"
-                  width="100%"
-                  height="100%"
-                  frameborder="0"
-                >
-                  This is an embedded
-                  <a target="_blank" href="http://office.com"
-                    >Microsoft Office</a
+            <div
+              v-if="isPdf || isDoc || isTxt || isHtml"
+              :class="{ 'doc-wapper': !previewIcon, 'no-preview': previewIcon }"
+            >
+              <div :class="{ 'doc-preview': !previewIcon, icons: previewIcon }">
+                <template v-if="isPdf">
+                  <img
+                    v-if="previewLoaded"
+                    ref="docFile"
+                    class="img-fluid"
+                    style="object-fit: contain"
+                    :src="previewFile"
+                    :alt="file.display_file_name"
+                  />
+                  <iframe
+                    v-else
+                    type="application/pdf"
+                    :src="__url + '#toolbar=0?transparent=0'"
+                    width="100%"
+                    height="100%"
+                    @load="checkPreview"
+                  ></iframe>
+                </template>
+                <template v-else-if="isHtml">
+                  <img
+                    ref="docFile"
+                    class="img-fluid"
+                    style="object-fit: contain"
+                    :src="previewImage"
+                    :alt="file.display_file_name"
+                    @error="imageErrorHandle"
+                  />
+                </template>
+                <template v-else-if="isTxt">
+                  <img
+                    v-if="previewLoaded"
+                    ref="docFile"
+                    class="img-fluid"
+                    style="object-fit: contain"
+                    :src="previewFile"
+                    :alt="file.display_file_name"
+                  />
+                  <iframe
+                    v-else
+                    type="application/txt"
+                    :src="__url"
+                    width="100%"
+                    height="100%"
+                    @load="checkPreview"
+                  ></iframe>
+                </template>
+                <template v-else-if="isDoc">
+                  <img
+                    v-if="previewLoaded"
+                    ref="docFile"
+                    class="img-fluid"
+                    style="object-fit: contain"
+                    :src="previewFile"
+                    :alt="file.display_file_name"
+                  />
+                  <iframe
+                    v-else
+                    :src="`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(
+                      __url
+                    )}`"
+                    width="100%"
+                    height="100%"
+                    frameborder="0"
+                    @load="checkPreview"
                   >
-                  document, powered by
-                  <a target="_blank" href="http://office.com/webapps">
-                    Office Online </a
-                  >.
-                </iframe>
+                    This is an embedded
+                    <a target="_blank" href="http://office.com">
+                      Microsoft Office
+                    </a>
+                    document, powered by
+                    <a target="_blank" href="http://office.com/webapps">
+                      Office Online </a
+                    >.
+                  </iframe>
+                </template>
+                <p v-if="previewIcon">
+                  {{ 'No preview available for this file.' }}
+                </p>
               </div>
             </div>
             <div v-else-if="isAudio" class="audio-wapper">
@@ -113,9 +161,9 @@
             </div>
             <div v-else-if="isVideo || isImage" class="asset-detail-img">
               <div v-if="isVideo" class="preview-video">
+                <!-- :poster="videoThumbnail" -->
                 <video
                   ref="video"
-                  :poster="videoThumbnail"
                   controlsList="nodownload"
                   controls
                   class="thevideo"
@@ -127,13 +175,19 @@
 
               <img
                 v-else-if="isImage"
+                ref="videoFile"
                 :src="previewImage"
                 :alt="file.display_file_name"
+                @error="imageErrorHandle"
               />
             </div>
             <div v-else class="no-preview">
               <div class="icons">
-                <img :src="previewImage" :alt="file.display_file_name" />
+                <img
+                  :src="previewImage"
+                  :alt="file.display_file_name"
+                  @error="imageErrorHandle"
+                />
                 <p>
                   {{
                     ui.videoError
@@ -542,6 +596,9 @@ export default {
       },
       videoThumbnail: null,
       exif: null,
+      previewIcon: false,
+      previewFile: null,
+      previewLoaded: false,
     }
   },
   computed: {
@@ -684,6 +741,59 @@ export default {
     }
   },
   methods: {
+    imageErrorHandle(data) {
+      if (this.isPdf || this.isTxt || this.isDoc || this.isHtml) {
+        this.previewIcon = true
+      }
+      try {
+        data.target.src = require(`~/assets/img/icon/file/${this.file.file_type.toLowerCase()}.svg`)
+      } catch {
+        data.target.src = require(`~/assets/img/icon/file/general.svg`)
+      }
+      setTimeout(() => {
+        if (this.file.file_type.toLowerCase() === 'html') {
+          this.$refs.docFile.style.maxHeight = '128px'
+        } else if (this.$isVideo(this.file.file_type)) {
+          this.$refs.videoFile.style.maxHeight = '128px'
+        } else if (this.$isImage(this.file.file_type)) {
+          this.$refs.sourceImage.style.maxHeight = '128px'
+        }
+      }, 50)
+    },
+    errorHandle() {
+      if (this.isPdf || this.isTxt || this.isDoc || this.isHtml) {
+        this.previewIcon = true
+      }
+      try {
+        this.previewFile = require(`~/assets/img/icon/file/${this.file.file_type.toLowerCase()}.svg`)
+      } catch {
+        this.previewFile = require(`~/assets/img/icon/file/general.svg`)
+      }
+      setTimeout(() => {
+        this.$refs.docFile.style.maxHeight = '128px'
+      }, 50)
+    },
+    checkPreview() {
+      axios
+        .get(this.file.display_file)
+        .then(() => {
+          return true
+        })
+        .catch(() => {
+          if (this.file.file_preview_id) {
+            if (this.file.file_preview_status === 'success') {
+              this.previewFile = this.file.compress_file
+              this.previewLoaded = true
+            } else {
+              this.previewLoaded = true
+              this.errorHandle()
+            }
+          } else {
+            this.previewLoaded = true
+            this.errorHandle()
+          }
+        })
+    },
     removeTagFromFile(tag) {
       this.$axios
         .$post('digital-assets/delete-tag', {
