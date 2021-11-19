@@ -2,10 +2,20 @@
 <template>
   <div class="h-100">
     <div
-      class="section-title dam-detail-title d-flex flex-column flex-lg-row align-items-center"
+      class="
+        section-title
+        dam-detail-title
+        d-flex
+        flex-column flex-lg-row
+        align-items-center
+      "
     >
       <div
-        class="sec-title-left d-flex justify-content-between justify-content-lg-start"
+        class="
+          sec-title-left
+          d-flex
+          justify-content-between justify-content-lg-start
+        "
       >
         <nuxt-link
           v-if="breadcrumbs"
@@ -181,14 +191,22 @@
                 @error="imageErrorHandle"
               />
             </div>
-            <div v-else class="no-preview">
-              <div class="icons">
+            <div
+              v-else
+              :class="{ 'no-preview': !hasZipCompressedImage }"
+              :style="{
+                textAlign: hasZipCompressedImage ? 'center' : '',
+              }"
+            >
+              <div :class="{ icons: !hasZipCompressedImage }">
                 <img
-                  :src="previewImage"
+                  :src="
+                    hasZipCompressedImage ? file.compress_file : previewImage
+                  "
                   :alt="file.display_file_name"
                   @error="imageErrorHandle"
                 />
-                <p>
+                <p v-if="!hasZipCompressedImage">
                   {{
                     ui.videoError
                       ? 'We cannot play this video, yet...'
@@ -571,7 +589,7 @@ export default {
           metaData = sortObject(metaData)
         }
 
-        delete data.thumbnail_file
+        // delete data.thumbnail_file
         if ((data.file_type || '').toLowerCase() === 'gif')
           delete data.compress_file
 
@@ -602,6 +620,12 @@ export default {
     }
   },
   computed: {
+    hasZipCompressedImage() {
+      return (
+        this.file.file_type === 'zip' &&
+        (this.file.compress_file || '').length > 0
+      )
+    },
     hashParam() {
       return this.$route.params.came_from_hash
     },
