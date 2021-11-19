@@ -408,10 +408,15 @@
                 @error="errorHandle"
               />
             </div>
-            <div v-else :class="{ icons: !isImage || filePreview }">
+            <div
+              v-else
+              :class="{
+                icons: !hasZipCompressedImage && (!isImage || filePreview),
+              }"
+            >
               <img
                 v-show="!imageLoading"
-                :src="previewImage"
+                :src="file.compress_file || previewImage"
                 @load="imageLoading = false"
                 @error="errorHandle"
               />
@@ -875,6 +880,12 @@ export default {
     }
   },
   computed: {
+    hasZipCompressedImage() {
+      return (
+        this.file.file_type === 'zip' &&
+        (this.file.compress_file || '').length > 0
+      )
+    },
     filePreview() {
       let x = null
       if (this.file.file_preview_id) {
@@ -1034,9 +1045,8 @@ export default {
     setPlaytime() {
       setTimeout(() => {
         try {
-          window.$(
-            `[data-id="file-${this.file.id}"]`
-          )[0].currentTime = this.$refs.video.currentTime
+          window.$(`[data-id="file-${this.file.id}"]`)[0].currentTime =
+            this.$refs.video.currentTime
         } catch {
           //
         }
