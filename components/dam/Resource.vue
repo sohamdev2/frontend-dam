@@ -384,11 +384,41 @@
                   }
             "
           >
-            <div :class="{ icons: !isImage }">
+            <div v-if="isDoc" :class="{ icons: !isDoc }">
               <img
                 v-show="!imageLoading"
                 :src="previewImage"
                 @load="imageLoading = false"
+                @error="errorHandle"
+              />
+            </div>
+            <div v-else-if="isTxt" :class="{ icons: !isTxt || filePreview }">
+              <img
+                v-show="!imageLoading"
+                :src="previewImage"
+                @load="imageLoading = false"
+                @error="errorHandle"
+              />
+            </div>
+            <div v-else-if="isHtml" :class="{ icons: !isHtml || filePreview }">
+              <img
+                v-show="!imageLoading"
+                :src="previewImage"
+                @load="imageLoading = false"
+                @error="errorHandle"
+              />
+            </div>
+            <div
+              v-else
+              :class="{
+                icons: !hasZipCompressedImage && (!isImage || filePreview),
+              }"
+            >
+              <img
+                v-show="!imageLoading"
+                :src="file.compress_file || previewImage"
+                @load="imageLoading = false"
+                @error="errorHandle"
               />
             </div>
           </nuxt-link>
@@ -850,6 +880,30 @@ export default {
     }
   },
   computed: {
+    hasZipCompressedImage() {
+      return (
+        this.file.file_type === 'zip' &&
+        (this.file.compress_file || '').length > 0
+      )
+    },
+    filePreview() {
+      let x = null
+      if (this.file.file_preview_id) {
+        if (
+          this.file.file_preview_status === 'pending' ||
+          this.file.file_preview_status === 'started'
+        ) {
+          x = true
+        } else {
+          x = false
+        }
+      } else if (this.isImage) {
+        x = false
+      } else if (this.isTxt || this.isPdf || this.isDoc) {
+        x = true
+      }
+      return x
+    },
     hashParam() {
       return (this.$route.hash || '').replace('#', '')
     },
@@ -911,6 +965,14 @@ export default {
     this.loadJS()
   },
   methods: {
+    errorHandle(data) {
+      try {
+        data.target.src = require(`~/assets/img/icon/file/${this.file.file_type.toLowerCase()}.svg`)
+      } catch {
+        data.target.src = require(`@/assets/img/icon/file/general.svg`)
+      }
+      data.target.parentElement.classList.add('icons')
+    },
     loadJS() {
       window.$('[data-toggle="tooltip"]').tooltip()
     },
@@ -983,9 +1045,8 @@ export default {
     setPlaytime() {
       setTimeout(() => {
         try {
-          window.$(
-            `[data-id="file-${this.file.id}"]`
-          )[0].currentTime = this.$refs.video.currentTime
+          window.$(`[data-id="file-${this.file.id}"]`)[0].currentTime =
+            this.$refs.video.currentTime
         } catch {
           //
         }
