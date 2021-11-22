@@ -1,62 +1,61 @@
 <template>
   <div class="body-content two-part">
     <div v-if="folderList.length" class="body-content-left">
-      <div class="category-list common-box bg-gray">
-        <h4 class="title">Folders</h4>
+      <h4>Folders</h4>
+
+      <div class="category-list customscrollbar">
         <FolderList></FolderList>
       </div>
 
-      <div class="common-box bg-gray">
-        <ul class="quick-links customscrollbar">
-          <li>
-            <span
-              :style="
-                dashboardData &&
-                (dashboardData.recent_uploads.images.length ||
-                  dashboardData.recent_uploads.documents.length ||
-                  dashboardData.recent_uploads.videos.length ||
-                  dashboardData.recent_uploads.audios.length)
-                  ? 'pointer-events: auto'
-                  : 'pointer-events: none'
-              "
-              @click.capture.stop="scrollToRecent"
-              >Recent Uploads</span
-            >
-          </li>
-          <li>
-            <span
-              :style="
-                dashboardData &&
-                dashboardData.trending_data &&
-                dashboardData.trending_data.length
-                  ? 'pointer-events: auto'
-                  : 'pointer-events: none'
-              "
-              @click.capture.stop="scrollToTrending"
-              >Trending</span
-            >
-          </li>
-          <li>
-            <nuxt-link
-              :to="{
-                name: 'brand_name-collection',
-                params: { brand_name: $getBrandName() },
-              }"
-              >All Collections</nuxt-link
-            >
-          </li>
-          <li>
-            <nuxt-link
-              v-if="!user.is_backend_user"
-              :to="{
-                name: 'brand_name-shared-urls',
-                params: { brand_name: this.$getBrandName() },
-              }"
-              >Shared URLs</nuxt-link
-            >
-          </li>
-        </ul>
-      </div>
+      <ul class="quick-links">
+        <li>
+          <span
+            :style="
+              dashboardData &&
+              (dashboardData.recent_uploads.images.length ||
+                dashboardData.recent_uploads.documents.length ||
+                dashboardData.recent_uploads.videos.length ||
+                dashboardData.recent_uploads.audios.length)
+                ? 'pointer-events: auto'
+                : 'pointer-events: none'
+            "
+            @click.capture.stop="scrollToRecent"
+            >Recent Uploads</span
+          >
+        </li>
+        <li>
+          <span
+            :style="
+              dashboardData &&
+              dashboardData.trending_data &&
+              dashboardData.trending_data.length
+                ? 'pointer-events: auto'
+                : 'pointer-events: none'
+            "
+            @click.capture.stop="scrollToTrending"
+            >Trending</span
+          >
+        </li>
+        <li>
+          <nuxt-link
+            :to="{
+              name: 'brand_name-collection',
+              params: { brand_name: $getBrandName() },
+            }"
+            >All Collections</nuxt-link
+          >
+        </li>
+        <li>
+          <nuxt-link
+            v-if="!user.is_backend_user"
+            :to="{
+              name: 'brand_name-shared-urls',
+              params: { brand_name: this.$getBrandName() },
+            }"
+            >Shared URLs</nuxt-link
+          >
+        </li>
+      </ul>
     </div>
     <div ref="rightSide" class="body-content-right customscrollbar">
       <SearchBar />

@@ -1,36 +1,40 @@
 <template>
-  <div class="customscrollbar">
-    <client-only v-if="foldersLoading">
-      <div>
-        <ContentLoader
-          :speed="1"
-          :width="240"
-          :height="400"
-          :animate="true"
-          class="normalLoader"
-        >
-          <rect x="10" y="5" rx="2" ry="2" width="220" height="24" />
-          <rect x="10" y="40" rx="2" ry="2" width="220" height="24" />
-          <rect x="10" y="75" rx="2" ry="2" width="220" height="24" />
-          <rect x="10" y="110" rx="2" ry="2" width="220" height="24" />
-        </ContentLoader>
-      </div>
-    </client-only>
-    <transition-group v-else-if="folderList.length" name="slide-up" tag="ul">
-      <FolderItem
-        v-for="folder in folders"
-        :key="folder.id"
-        :selection="value"
-        :folder="folder"
-      />
-    </transition-group>
-    <!-- <div v-else class="no-data-found my-5 pb-5">
+  <client-only v-if="foldersLoading">
+    <div>
+      <ContentLoader
+        :speed="1"
+        :width="240"
+        :height="400"
+        :animate="true"
+        class="normalLoader"
+      >
+        <rect x="10" y="5" rx="2" ry="2" width="220" height="24" />
+        <rect x="10" y="40" rx="2" ry="2" width="220" height="24" />
+        <rect x="10" y="75" rx="2" ry="2" width="220" height="24" />
+        <rect x="10" y="110" rx="2" ry="2" width="220" height="24" />
+      </ContentLoader>
+    </div>
+  </client-only>
+  <transition-group
+    v-else-if="folderList.length"
+    name="slide-up"
+    tag="ul"
+    class="category-menu"
+  >
+    <FolderItem
+      v-for="folder in folders"
+      :key="folder.id"
+      :selection="value"
+      :folder="folder"
+      :parents="folderArray"
+    />
+  </transition-group>
+  <!-- <div v-else class="no-data-found my-5 pb-5">
       <div class="inner w-100">
         <img src="~/assets/img/no-data-image.svg" alt="No Data Found" />
         <p>You don't have folder...</p>
       </div>
     </div> -->
-  </div>
 </template>
 
 <script>
@@ -48,6 +52,7 @@ export default {
       // sortedFolder: [],
       // model: this.value,
       currentFolderName: '',
+      folderArray: [],
     }
   },
   computed: {
@@ -146,6 +151,22 @@ export default {
 
       return this.cachedFolders
     },
+  },
+  async mounted() {
+    const x = parseInt(this.$route.hash.substring(1))
+    if (Number.isInteger(x)) {
+      await this.$axios
+        .$post(`digital/get-parent-category`, {
+          workspace_id: this.$getWorkspaceId(),
+          category_id: x,
+        })
+        .then((response) => {
+          console.log(response.data)
+          response.data.map((item) => this.folderArray.push(item))
+          console.log(this.folderArray)
+        })
+    }
+    // this.folderArray = [167]
   },
   methods: {
     getCurrentFolderName() {

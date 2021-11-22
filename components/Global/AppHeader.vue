@@ -16,10 +16,10 @@
           :key="link.name"
           :class="{ active: $route.hash == link.tagName ? true : false }"
         >
-          <nuxt-link :to="link.to"
+          <a href="javascript:void(0)" @click="changeCategory(link.to)"
             ><span>{{ link.name }}</span
             ><span v-html="link.imageUrl"></span
-          ></nuxt-link>
+          ></a>
         </li>
       </ul>
     </div>
@@ -498,6 +498,10 @@ export default {
     this.userLogo = workspace.logo
   },
   methods: {
+    changeCategory(toData) {
+      this.$emit('resetList')
+      this.$router.push(toData)
+    },
     async loadCollection() {
       const workspace = this.$getWorkspaceId()
       if (!workspace) {
