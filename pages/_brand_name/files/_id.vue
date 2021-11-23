@@ -2,20 +2,10 @@
 <template>
   <div class="h-100">
     <div
-      class="
-        section-title
-        dam-detail-title
-        d-flex
-        flex-column flex-lg-row
-        align-items-center
-      "
+      class="section-title dam-detail-title d-flex flex-column flex-lg-row align-items-center"
     >
       <div
-        class="
-          sec-title-left
-          d-flex
-          justify-content-between justify-content-lg-start
-        "
+        class="sec-title-left d-flex justify-content-between justify-content-lg-start"
       >
         <nuxt-link
           v-if="breadcrumbs"
@@ -149,6 +139,14 @@
                     >.
                   </iframe>
                 </template>
+                <template v-else-if="isImage">
+                  <img
+                    ref="sourceImage"
+                    :src="previewImage"
+                    :alt="file.display_file_name"
+                    @error="imageErrorHandle"
+                  />
+                </template>
                 <p v-if="previewIcon">
                   {{ 'No preview available for this file.' }}
                 </p>
@@ -169,7 +167,7 @@
                 />
               </div>
             </div>
-            <div v-else-if="isVideo || isImage" class="asset-detail-img">
+            <div v-else-if="isVideo" class="asset-detail-img">
               <div v-if="isVideo" class="preview-video">
                 <!-- :poster="videoThumbnail" -->
                 <video
@@ -182,14 +180,6 @@
                   Your browser does not support the video tag.
                 </video>
               </div>
-
-              <img
-                v-else-if="isImage"
-                ref="videoFile"
-                :src="previewImage"
-                :alt="file.display_file_name"
-                @error="imageErrorHandle"
-              />
             </div>
             <div
               v-else
@@ -777,8 +767,6 @@ export default {
       setTimeout(() => {
         if (this.file.file_type.toLowerCase() === 'html') {
           this.$refs.docFile.style.maxHeight = '128px'
-        } else if (this.$isVideo(this.file.file_type)) {
-          this.$refs.videoFile.style.maxHeight = '128px'
         } else if (this.$isImage(this.file.file_type)) {
           this.$refs.sourceImage.style.maxHeight = '128px'
         }
