@@ -60,7 +60,7 @@
           </h2>
           <div class="common-box customscrollbar bg-gray p20">
             <div
-              v-if="isPdf || isDoc || isTxt || isHtml"
+              v-if="isPdf || isDoc || isTxt || isHtml || isImage"
               :class="{ 'doc-wapper': !previewIcon, 'no-preview': previewIcon }"
             >
               <div :class="{ 'doc-preview': !previewIcon, icons: previewIcon }">
