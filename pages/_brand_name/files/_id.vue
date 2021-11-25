@@ -139,14 +139,7 @@
                     >.
                   </iframe>
                 </template>
-                <template v-else-if="isImage">
-                  <img
-                    ref="sourceImage"
-                    :src="previewImage"
-                    :alt="file.display_file_name"
-                    @error="imageErrorHandle"
-                  />
-                </template>
+
                 <p v-if="previewIcon">
                   {{ 'No preview available for this file.' }}
                 </p>
@@ -166,6 +159,17 @@
                   noplayed-line-color="#1a1d2556"
                 />
               </div>
+            </div>
+            <div v-else-if="isImage" class="asset-detail-img">
+              <img
+                ref="sourceImage"
+                :src="previewImage"
+                :alt="file.display_file_name"
+                @error="imageErrorHandle"
+              />
+              <p v-if="previewIcon">
+                {{ 'No preview available for this file.' }}
+              </p>
             </div>
             <div v-else-if="isVideo" class="asset-detail-img">
               <div v-if="isVideo" class="preview-video">
