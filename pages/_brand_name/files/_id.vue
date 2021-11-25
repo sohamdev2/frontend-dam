@@ -60,7 +60,7 @@
           </h2>
           <div class="common-box customscrollbar bg-gray p20">
             <div
-              v-if="isPdf || isDoc || isTxt || isHtml || isImage"
+              v-if="isPdf || isDoc || isTxt || isHtml"
               :class="{ 'doc-wapper': !previewIcon, 'no-preview': previewIcon }"
             >
               <div :class="{ 'doc-preview': !previewIcon, icons: previewIcon }">
@@ -139,14 +139,7 @@
                     >.
                   </iframe>
                 </template>
-                <template v-else-if="isImage">
-                  <img
-                    ref="sourceImage"
-                    :src="previewImage"
-                    :alt="file.display_file_name"
-                    @error="imageErrorHandle"
-                  />
-                </template>
+
                 <p v-if="previewIcon">
                   {{ 'No preview available for this file.' }}
                 </p>
@@ -166,6 +159,17 @@
                   noplayed-line-color="#1a1d2556"
                 />
               </div>
+            </div>
+            <div v-else-if="isImage" class="asset-detail-img">
+              <img
+                ref="sourceImage"
+                :src="previewImage"
+                :alt="file.display_file_name"
+                @error="imageErrorHandle"
+              />
+              <p v-if="previewIcon">
+                {{ 'No preview available for this file.' }}
+              </p>
             </div>
             <div v-else-if="isVideo" class="asset-detail-img">
               <div v-if="isVideo" class="preview-video">

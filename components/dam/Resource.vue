@@ -400,6 +400,14 @@
                 @error="errorHandle"
               />
             </div>
+            <div v-else-if="isPdf" :class="{ icons: !isPdf || filePreview }">
+              <img
+                v-show="!imageLoading"
+                :src="previewImage"
+                @load="imageLoading = false"
+                @error="errorHandle"
+              />
+            </div>
             <div v-else-if="isHtml" :class="{ icons: !isHtml || filePreview }">
               <img
                 v-show="!imageLoading"
