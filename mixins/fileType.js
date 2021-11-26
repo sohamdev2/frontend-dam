@@ -85,8 +85,13 @@ export default {
         return compressedImage || imageThumb || url
       } else if (this.$isAudio(ext))
         return require('@/assets/img/icon/file/audio.svg')
-      else if (this.$isImage(ext)) return compressedImage || imageThumb || url
-      else if (this.isDoc) {
+      else if (this.$isImage(ext)) {
+        if (this.file.file_type === 'gif') {
+          return url
+        } else {
+          return compressedImage || imageThumb || url
+        }
+      } else if (this.isDoc) {
         return compressedImage || imageThumb || url
       } else if (this.isHtml) return compressedImage || imageThumb || url
       else
