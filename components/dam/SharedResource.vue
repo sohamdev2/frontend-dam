@@ -155,6 +155,7 @@ export default {
     emitShare: { type: Boolean, default: false },
     mode: { type: String, default: 'row' },
     shareId: { type: Number, default: 0 },
+    shareWorkspaceId: { type: String, required: true },
   },
   data() {
     return {
@@ -272,8 +273,7 @@ export default {
       if (this.$route.name.includes('shared-assets')) {
         this.$axios
           .$post(`share-link-download`, {
-            url_workspace_id: this.$getWorkspaceId(),
-            workspace_id: this.$getWorkspaceId(),
+            workspace_id: this.shareWorkspaceId,
             id: this.shareId,
           })
           .catch(this.$errorToast)

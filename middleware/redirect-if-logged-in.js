@@ -12,6 +12,7 @@ export default async function ({
     'dam-dev3.herokuapp.com',
     'dam-staging3.herokuapp.com',
     'dam.marketinghub.com',
+    'uat-damfrontend.herokuapp.com',
   ]
   const hostName = process.server ? req.headers.host : location.host
   if (!url.includes(hostName)) {
