@@ -60,7 +60,14 @@
           </div>
         </div>
         <div
-          class="common-box bg-gray resource-wrapper grid-list my-collection table-list-scrolling"
+          class="
+            common-box
+            bg-gray
+            resource-wrapper
+            grid-list
+            my-collection
+            table-list-scrolling
+          "
         >
           <div class="table-list-view multi-table-view">
             <CollectionListingHeader
