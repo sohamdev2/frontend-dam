@@ -1,6 +1,18 @@
 <template>
   <li>
-    <div class="share-url tb-column flex50">
+    <div class="share-url tb-column flex3">
+      <div class="top-column">
+        <label v-if="!revoked" class="check-label">
+          <input
+            :key="checkboxKey"
+            type="checkbox"
+            @change="$emit('selection-change', $event.target.checked)"
+          />
+          <span class="check-span"></span>
+        </label>
+      </div>
+    </div>
+    <div class="share-url tb-column flex47">
       <div class="top-column">
         <label>
           <component
@@ -102,6 +114,7 @@ export default {
   data() {
     return {
       deletingModel: this.deleting,
+      checkboxKey: 0,
     }
   },
   computed: {
