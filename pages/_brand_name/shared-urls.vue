@@ -1,14 +1,30 @@
 <template>
   <div class="body-content">
     <div class="body-content-auto w-100">
-      <div class="common-box-header">
+      <div
+        class="
+          common-box-header
+          d-flex
+          align-items-center
+          justify-content-between
+        "
+      >
         <h2 class="title">Shared urls</h2>
+        <a
+          v-show="!!(selectedIds || []).length"
+          href="javascript:void(0);"
+          class="btn"
+          :disabled="deleting"
+          @click="deleting ? null : $refs.deleteDialog.triggerModel()"
+          >{{ deleting ? 'Deleting...' : 'Delete Selected' }}</a
+        >
       </div>
       <div class="common-box bg-gray">
         <div v-if="urls.length" class="table-list-view shared-url-table h-100">
           <ul class="thead">
             <li>
-              <div class="share-url sorting flex50">
+              <div class="share-url sorting flex3"></div>
+              <div class="share-url sorting flex47">
                 <span>Shared URL</span>
               </div>
               <div
@@ -47,7 +63,8 @@
                 :key="url.id"
                 v-bind="{ url }"
                 :style="`transition-delay: ${i * 25}ms`"
-                @deleted="urls = urls.filter(({ id }) => id !== $event)"
+                @deleted="onUrlDeleted"
+                @selection-change="updateSelection(url.id, $event)"
               />
             </transition-group>
           </div>
@@ -85,6 +102,16 @@
         </div>
       </div>
     </div>
+    <client-only>
+      <DeleteDialog
+        ref="deleteDialog"
+        header-text="Delete Share URL"
+        @click:confirm-button="deleteUrls()"
+      >
+        <template slot="header">Delete Shared URL</template>
+        Are you sure you want to delete the <strong>shared URL(s)</strong>?
+      </DeleteDialog>
+    </client-only>
   </div>
 </template>
 
@@ -117,6 +144,7 @@ export default {
         desc: true,
       },
       sortDesc: false,
+      selectedIds: [],
     }
   },
   methods: {
@@ -137,6 +165,35 @@ export default {
       return {
         active: this.sorting.value === value && this.sorting.desc === true,
       }
+    },
+    deleteUrls() {
+      if (!this.selectedIds?.length || this.deleting) return
+      this.deleting = true
+      this.$axios
+        .$post(`digital/delete-multiple-share-assets-url`, {
+          workspace_id: this.$getWorkspaceId(),
+          share_url_ids: this.selectedIds,
+        })
+        .then((e) => {
+          this.$toast.success(e.message)
+          this.urls = this.urls.filter((e) => !this.selectedIds.includes(e.id))
+          this.selectedIds = []
+        })
+        .catch((e) => {
+          this.$toast.error(this.$getErrorMessage(e))
+        })
+        .finally(() => (this.deleting = false))
+    },
+    updateSelection(urlId, selection) {
+      if (!selection && this.selectedIds.includes(urlId)) {
+        this.selectedIds = this.selectedIds.filter((e) => e !== urlId)
+      } else if (selection && !this.selectedIds.includes(urlId)) {
+        this.selectedIds.push(urlId)
+      }
+    },
+    onUrlDeleted(urlId) {
+      this.updateSelection(urlId, false)
+      this.urls = this.urls.filter(({ id }) => id !== urlId)
     },
   },
   head() {
