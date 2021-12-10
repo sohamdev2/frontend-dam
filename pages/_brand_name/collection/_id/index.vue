@@ -1,7 +1,14 @@
 <template>
   <div class="body-content collection-list-body">
     <div
-      class="section-title collection-header d-flex flex-column flex-lg-row align-items-center mt0"
+      class="
+        section-title
+        collection-header
+        d-flex
+        flex-column flex-lg-row
+        align-items-center
+        mt0
+      "
     >
       <div class="sec-title-left d-flex align-items-center">
         <nuxt-link
