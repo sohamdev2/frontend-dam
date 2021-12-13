@@ -2,11 +2,11 @@
   <li>
     <div class="share-url tb-column flex3">
       <div class="top-column">
-        <label v-if="!revoked" class="check-label">
+        <label class="check-label">
           <input
-            :key="checkboxKey"
             type="checkbox"
-            @change="$emit('selection-change', $event.target.checked)"
+            :checked="selected"
+            @change="$emit('selection-change', !selected)"
           />
           <span class="check-span"></span>
         </label>
@@ -57,8 +57,10 @@
     <div class="share-actions tb-column flex5 text-center">
       <ul class="action justify-content-center">
         <li>
-          <a @click="$refs.deleteDialog.triggerModel()"
-            ><svg
+          <a @click="deletingModel ? null : $refs.deleteDialog.triggerModel()">
+            <SpinLoading v-if="deletingModel" />
+            <svg
+              v-else
               id="Layer_1"
               data-original-title="Delete URL"
               class="delete-icon h-orange"
@@ -110,11 +112,11 @@ export default {
   props: {
     url: { type: Object, required: true },
     deleting: { type: Boolean, default: false },
+    selected: { type: Boolean, default: false },
   },
   data() {
     return {
       deletingModel: this.deleting,
-      checkboxKey: 0,
     }
   },
   computed: {
