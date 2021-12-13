@@ -1,7 +1,7 @@
 <template>
   <li>
     <div
-      class="categary-name tb-column flex52"
+      class="preview-img tb-column flex10"
       :class="{ selected, video: isVideo, image: isImage }"
       v-on="{
         ...(isVideo
@@ -56,6 +56,10 @@
             />
           </div>
         </div>
+      </div>
+    </div>
+    <div class="categary-name tb-column flex27">
+      <div class="media">
         <div class="media-body">
           <div class="top-column">
             <nuxt-link
@@ -82,31 +86,28 @@
         </div>
       </div>
     </div>
-    <div class="assets tb-column flex15">
+    <div class="assets tb-column flex18">
       <div class="top-column">
         <span :inner-html.prop="file.file_type || '&dash;'"></span>
       </div>
     </div>
-    <div class="update-date tb-column flex15">
+    <div class="update-date tb-column flex18">
       <div class="top-column">
         <label>{{ $moment(file.updated_at).format('Do MMM, YYYY') }}</label>
       </div>
     </div>
-    <div class="size tb-column flex10">
+    <div class="size tb-column flex12">
       <div class="top-column">
         <label>{{ $toHumanlySize(file.file_size) }}</label>
       </div>
     </div>
-    <div class="categary-action tb-column flex8">
+    <div class="categary-action tb-column flex15">
       <div class="top-column">
         <div class="categary-actions text-right">
           <a class="action-btn download-link" @click="downloadFile">
             <svg
               id="Layer_1"
               class="download-icon h-orange"
-              data-toggle="tooltip"
-              title=""
-              data-original-title="Download"
               version="1.1"
               xmlns="http://www.w3.org/2000/svg"
               xmlns:xlink="http://www.w3.org/1999/xlink"

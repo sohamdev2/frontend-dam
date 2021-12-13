@@ -1,7 +1,8 @@
 <template>
   <ListingHeaderTemplate>
+    <div class="preview-img pb-1 no-pointer flex10"></div>
     <div
-      class="categary-name sorting sortarrow flex52"
+      class="categary-name sorting sortarrow flex27"
       :class="sortingClass('display_file_name')"
     >
       <span
@@ -16,7 +17,7 @@
       >
     </div>
     <div
-      class="assets sorting sortarrow flex15"
+      class="assets sorting sortarrow flex18"
       :class="sortingClass('file_type')"
     >
       <span
@@ -31,7 +32,7 @@
       >
     </div>
     <div
-      class="update-date sorting sortarrow flex15"
+      class="update-date sorting sortarrow flex18"
       :class="sortingClass('updated_at')"
     >
       <span
@@ -46,7 +47,7 @@
       >
     </div>
     <div
-      class="size sorting sortarrow flex10"
+      class="size sorting sortarrow flex12"
       :class="sortingClass('file_size')"
     >
       <span
@@ -60,7 +61,7 @@
         >Size</span
       >
     </div>
-    <div class="categary-action sorting text-right flex8">
+    <div class="categary-action sorting no-pointer flex15 text-right">
       <span>Action</span>
     </div>
   </ListingHeaderTemplate>
