@@ -50,7 +50,7 @@
               v-clipboard:success="() => (copied = true)"
               v-clipboard:error="() => $toast.global.error('Copy failed')"
               type="button"
-              class="btn"
+              class="btn btn-big"
               :class="{ copied, 'dam-btn-outline': !copied }"
               :disabled="copied"
             >

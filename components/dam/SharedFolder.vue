@@ -1,12 +1,16 @@
 <template>
   <li>
-    <div class="categary-name tb-column flex52">
+    <div class="preview-img tb-column flex10">
       <div class="media">
         <div class="media-left">
           <div class="categary-image">
             <img src="~/assets/img/folder-icon.svg" alt="Folder Icon" />
           </div>
         </div>
+      </div>
+    </div>
+    <div class="categary-name tb-column flex27">
+      <div class="media">
         <div class="media-body">
           <div class="top-column">
             <nuxt-link
@@ -32,7 +36,7 @@
         </div>
       </div>
     </div>
-    <div class="assets tb-column flex15">
+    <div class="assets tb-column flex18">
       <div class="top-column">
         <span
           ><template v-if="assetsCount">
@@ -53,17 +57,17 @@
         >
       </div>
     </div>
-    <div class="update-date tb-column flex15">
+    <div class="update-date tb-column flex18">
       <div class="top-column">
         <label>{{ $moment(folder.updated_at).format('Do MMM, YYYY') }}</label>
       </div>
     </div>
-    <div class="size tb-column flex10">
+    <div class="size tb-column flex12">
       <div class="top-column">
         <label>&dash;</label>
       </div>
     </div>
-    <div class="categary-action tb-column flex8">
+    <div class="categary-action tb-column flex15">
       <div class="top-column">
         <div class="categary-actions text-center">
           <template v-if="shareMode"> - </template>
