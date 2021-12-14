@@ -25,7 +25,7 @@
         <div class="select-right">
           <ul>
             <li>
-              <a @click="showShare">
+              <a @click="showShare" href="javascript:void(0);">
                 Share
                 <svg
                   id="Layer_1"

@@ -189,6 +189,12 @@ export default {
     this.sort('files', 'display_file_name', this.$sortToUpperCase)
   },
   mounted() {
+    this.$axios
+      .$post(`share-link-view`, {
+        workspace_id: this.workspaceId,
+        id: this.shareId,
+      })
+      .catch(this.$errorToast)
     window.onpopstate = () => this.prevStack()
 
     if (this.$route.query.file)
