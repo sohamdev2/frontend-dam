@@ -275,7 +275,8 @@ export default {
         this.$axios
           .$post(`share-link-download`, {
             workspace_id: this.shareWorkspaceId,
-            id: this.shareId,
+            share_id: this.shareId,
+            asset_id: this.file.id,
           })
           .catch(this.$errorToast)
       }
