@@ -880,7 +880,7 @@ export default {
     return {
       playingModel: false,
       paused: false,
-      videoThumbnail: this.previewImage,
+      videoThumbnail: this.file.preview_image,
       videoThumbnailAdded: false,
       imageLoading: false,
       videoThumbnailFetching: false,
@@ -1085,7 +1085,7 @@ export default {
         url: this.__url,
         name: this.file.display_file_name,
         callCountApi: !this.shareMode,
-        useModernDownload: true,
+        useModernDownload: false,
       })
     },
   },
