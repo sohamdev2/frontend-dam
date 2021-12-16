@@ -144,7 +144,7 @@ export default {
     return $axios
       .$get(`show-share-assets?type=${params.type}&status=${query.status}`)
       .then(({ data }) => {
-        if (!data.category.length && !data.assets.length)
+        if (!data.category?.length && !data.assets?.length)
           return error({
             status: 404,
             message: 'Requested files or folders were removed.',

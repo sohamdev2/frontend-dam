@@ -880,7 +880,7 @@ export default {
     return {
       playingModel: false,
       paused: false,
-      videoThumbnail: this.file.preview_image,
+      videoThumbnail: this.previewImage,
       videoThumbnailAdded: false,
       imageLoading: false,
       videoThumbnailFetching: false,
