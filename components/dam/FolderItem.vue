@@ -366,7 +366,7 @@ export default {
 .dropdown-menu.show {
   will-change: transform;
   position: absolute;
-  transform: translate3d(-94px, 38px, 0px);
+  transform: translate3d(-94px, 35px, 0px);
   top: 0px;
   left: 0px;
 }
