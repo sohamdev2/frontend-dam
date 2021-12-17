@@ -31,7 +31,7 @@
           <span
             v-if="revoked"
             v-tooltip="'URL has been revoked by admin'"
-            class="btn ml-3 revoked-label"
+            class="ml-3 revoked-label"
             >Revoked</span
           ></label
         >

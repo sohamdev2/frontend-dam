@@ -1,5 +1,5 @@
 <template>
-  <ul class="thead">
+  <ul class="thead" style="padding-left: 8px; padding-right: 8px">
     <li>
       <slot />
     </li>

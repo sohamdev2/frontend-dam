@@ -59,46 +59,49 @@
       </div>
     </div>
     <div class="categary-name tb-column flex27">
-      <div class="media">
-        <div class="media-body">
-          <div class="top-column">
-            <nuxt-link
-              :is="shareMode ? 'a' : 'nuxt-link'"
-              v-tooltip="file.display_file_name"
-              :event="selected || shareMode ? '' : 'click'"
-              :to="
-                shareMode
-                  ? ''
-                  : {
-                      name: 'brand_name-files-id',
-                      params: {
-                        id: file.id,
-                        brand_name: $getBrandName(),
-                        came_from_hash: hashParam,
-                        folder: $route.params.folder_name,
-                      },
-                    }
-              "
-            >
-              {{ file.display_file_name }}
-            </nuxt-link>
-          </div>
-        </div>
+      <div class="top-column">
+        <nuxt-link
+          :is="shareMode ? 'a' : 'nuxt-link'"
+          v-tooltip="file.display_file_name"
+          :event="selected || shareMode ? '' : 'click'"
+          :to="
+            shareMode
+              ? ''
+              : {
+                  name: 'brand_name-files-id',
+                  params: {
+                    id: file.id,
+                    brand_name: $getBrandName(),
+                    came_from_hash: hashParam,
+                    folder: $route.params.folder_name,
+                  },
+                }
+          "
+        >
+          <span>{{ file.display_file_name }}</span>
+        </nuxt-link>
       </div>
     </div>
     <div class="assets tb-column flex18">
       <div class="top-column">
-        <span :inner-html.prop="file.file_type || '&dash;'"></span>
+        <span
+          style="text-transform: uppercase"
+          :inner-html.prop="file.file_type || '&dash;'"
+        ></span>
       </div>
     </div>
     <div class="update-date tb-column flex18">
       <div class="top-column">
-        <label>{{ $moment(file.updated_at).format('Do MMM, YYYY') }}</label>
+        <label style="font-size: 13px">{{
+          $moment(file.updated_at).format('Do MMM, YYYY')
+        }}</label>
       </div>
     </div>
     <div class="size tb-column flex12">
       <div class="top-column">
-        <label>{{ $toHumanlySize(file.file_size) }}</label>
+        <label style="font-size: 13px">{{
+          $toHumanlySize(file.file_size)
+        }}</label>
       </div>
     </div>
     <div class="categary-action tb-column flex15">
