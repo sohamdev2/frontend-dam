@@ -41,7 +41,10 @@
         :class="[`${mode}` == 'row' ? 'grid-tile' : 'grid-list']"
         style="height: calc(100% - 75px)"
       >
-        <div class="common-box bg-gray h-auto">
+        <div
+          class="common-box bg-gray h-auto"
+          style="padding: 8px 0px; border-radius: 4px"
+        >
           <div class="table-list-view multi-table-view category-wrapper">
             <ListingHeaderSharedResource
               v-if="!loading"
@@ -50,7 +53,7 @@
               :reverse="sorting.toolbar.desc"
               @sort="(args) => args.forEach((arg) => sort(...arg))"
             />
-            <div class="customscrollbar no_footer">
+            <div class="customscrollbar no_footer" style="padding: 0px 8px">
               <ul class="tbody">
                 <SharedFolder
                   v-for="folder in subFolders"

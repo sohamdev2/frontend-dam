@@ -1,39 +1,42 @@
 <template>
   <li>
-    <div class="preview-img tb-column flex10">
+    <div class="preview-img tb-column flex10" style="cursor: pointer">
       <div class="media">
         <div class="media-left">
           <div class="categary-image">
-            <img src="~/assets/img/folder-icon.svg" alt="Folder Icon" />
+            <img
+              :src="
+                require(assetsCount
+                  ? '~/assets/img/folder-icon.svg'
+                  : '~/assets/img/folder-icon2.svg')
+              "
+              alt="Folder Icon"
+            />
           </div>
         </div>
       </div>
     </div>
     <div class="categary-name tb-column flex27">
-      <div class="media">
-        <div class="media-body">
-          <div class="top-column">
-            <nuxt-link
-              :is="shareMode ? 'a' : 'nuxt-link'"
-              v-tooltip="folder.folder_name || folder.category_name"
-              :event="selected || shareMode ? '' : 'click'"
-              :to="
-                shareMode
-                  ? ''
-                  : {
-                      name: 'brand_name-folders',
-                      params: {
-                        brand_name: $getBrandName(),
-                        folder: folder.folder_name || folder.category_name,
-                      },
-                      hash: `#${folder.id}`,
-                    }
-              "
-            >
-              {{ folder.folder_name || folder.category_name }}
-            </nuxt-link>
-          </div>
-        </div>
+      <div class="top-column">
+        <nuxt-link
+          :is="shareMode ? 'a' : 'nuxt-link'"
+          v-tooltip="folder.folder_name || folder.category_name"
+          :event="selected || shareMode ? '' : 'click'"
+          :to="
+            shareMode
+              ? ''
+              : {
+                  name: 'brand_name-folders',
+                  params: {
+                    brand_name: $getBrandName(),
+                    folder: folder.folder_name || folder.category_name,
+                  },
+                  hash: `#${folder.id}`,
+                }
+          "
+        >
+          <span>{{ folder.folder_name || folder.category_name }}</span>
+        </nuxt-link>
       </div>
     </div>
     <div class="assets tb-column flex18">
@@ -59,17 +62,19 @@
     </div>
     <div class="update-date tb-column flex18">
       <div class="top-column">
-        <label>{{ $moment(folder.updated_at).format('Do MMM, YYYY') }}</label>
+        <label style="font-size: 13px">{{
+          $moment(folder.updated_at).format('Do MMM, YYYY')
+        }}</label>
       </div>
     </div>
     <div class="size tb-column flex12">
       <div class="top-column">
-        <label>&dash;</label>
+        <label style="font-size: 13px">&dash;</label>
       </div>
     </div>
     <div class="categary-action tb-column flex15">
       <div class="top-column">
-        <div class="categary-actions text-center">
+        <div class="categary-actions text-right">
           <template v-if="shareMode"> - </template>
         </div>
       </div>
