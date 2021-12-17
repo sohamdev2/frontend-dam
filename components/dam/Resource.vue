@@ -424,7 +424,7 @@
             >
               <img
                 v-show="!imageLoading"
-                :src="file.compress_file || previewImage"
+                :src="file.thumbnail_file || previewImage"
                 @load="imageLoading = false"
                 @error="errorHandle"
               />

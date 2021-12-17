@@ -62,11 +62,14 @@
       <div v-if="dashboardData" class="hero-section">
         <client-only>
           <carousel
+            ref="hero"
             autoplay
             :per-page="1"
             navigation-enabled
-            loop
+            :loop="false"
+            :navigate-to="heroNavigateTo"
             :pagination-enabled="false"
+            @transition-end="onHeroChanged"
           >
             <slide v-for="banner in bannerData" :key="banner.id">
               <!-- <div
@@ -363,6 +366,7 @@ export default {
   data() {
     return {
       shareFile: null,
+      heroNavigateTo: 0,
     }
   },
   computed: {
@@ -402,6 +406,18 @@ export default {
       this.$_auth()?.favicon === '' ? '/favicon.png' : this.$_auth()?.favicon
   },
   methods: {
+    onHeroChanged() {
+      this.$nextTick(() => {
+        const hero = this.$refs.hero
+        const page = hero.currentPage
+        if (page === this.bannerData.length - 1) {
+          this.heroNavigateTo = [page, false]
+          setTimeout(() => {
+            this.heroNavigateTo = [0, false]
+          }, 1500)
+        }
+      })
+    },
     scrollToTrending() {
       this.$refs.trending.scrollIntoView()
       this.resetScrolling()
