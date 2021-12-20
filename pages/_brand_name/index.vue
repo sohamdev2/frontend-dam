@@ -206,9 +206,7 @@
           <template v-if="files.length">
             <div :key="key" class="mini-title">
               <!-- <input id="Images" type="checkbox" class="form-check-input" /> -->
-              <label for="Images" class="check-label">{{
-                keytoTitle(key)
-              }}</label>
+              <label>{{ keytoTitle(key) }}</label>
               <nuxt-link
                 :to="{
                   name: 'brand_name-folders',
