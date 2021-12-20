@@ -321,6 +321,7 @@
                   ref="expandButton"
                   :href="`#file-video-${file.id}`"
                   data-fancybox
+                  @click="viewAssetsCount()"
                   ><svg
                     id="Layer_1"
                     class="expand-icon white"
@@ -619,7 +620,12 @@
               >
               </a>
 
-              <a v-if="isImage" @click.stop="$refs.expandButton.click()"
+              <a
+                v-if="isImage"
+                @click.stop="
+                  $refs.expandButton.click()
+                  viewAssetsCount()
+                "
                 ><svg
                   id="Layer_1"
                   class="expand-icon white"
@@ -1059,6 +1065,14 @@ export default {
           //
         }
       }, 250)
+    },
+    async viewAssetsCount() {
+      await this.$axios
+        .$post('digital/view-asset-count', {
+          workspace_id: this.$getWorkspaceId(),
+          asset_id: this.file.id,
+        })
+        .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
     },
     getThumbnail() {
       if (this.file.thumbnail_file)

@@ -9,8 +9,8 @@
           justify-content-between
         "
       >
-        <h2 class="title">Shared urls</h2>
-        <div class="table-filter" v-if="total > 0">
+        <h2 class="title">Shared URLs</h2>
+        <div v-if="total > 0" class="table-filter">
           <ul>
             <li>{{ total }} Shared Url(s)</li>
             <li>
@@ -45,7 +45,7 @@
         <div v-if="urls.length" class="table-list-view shared-url-table h-100">
           <ul class="thead">
             <li>
-              <div class="share-url sorting flex3">
+              <div class="sorting flex3">
                 <label class="check-label">
                   <input
                     type="checkbox"
@@ -55,12 +55,12 @@
                   <span class="check-span"></span>
                 </label>
               </div>
-              <div class="share-url sorting flex47">
-                <span>Shared URL</span>
+              <div class="share-url sorting flex61">
+                <span>Shared URLs</span>
               </div>
               <div
                 :class="[
-                  'generated-date sorting flex15 sortarrow',
+                  'generated-date sorting flex10 sortarrow',
                   sortingClass('updated_at'),
                 ]"
               >
@@ -68,7 +68,7 @@
               </div>
               <div
                 :class="[
-                  'generated-by sorting flex15  sortarrow',
+                  'generated-by sorting flex10  sortarrow',
                   sortingClass('user_name'),
                 ]"
               >
@@ -76,13 +76,13 @@
               </div>
               <div
                 :class="[
-                  'generated-source sorting flex15 sortarrow',
+                  'generated-source sorting flex10 sortarrow',
                   sortingClass('generated_source'),
                 ]"
               >
                 <span @click="sort('generated_source')">Generated Source</span>
               </div>
-              <div class="share-actions sorting flex5 text-center">
+              <div class="share-actions sorting flex6">
                 <span>Action</span>
               </div>
             </li>
