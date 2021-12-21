@@ -191,6 +191,7 @@
 
         <div class="modal-footer justify-content-end p-0 pt-3">
           <button
+            :key="creating"
             type="button"
             class="btn"
             :class="{ 'btn-disabled': !creating }"
