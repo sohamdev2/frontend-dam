@@ -69,7 +69,13 @@
                   }
             "
           >
-            <div :class="{ icons: videoThumbnail == previewImage }">
+            <div
+              :class="{
+                icons:
+                  videoThumbnail.split(/[#?]/)[0].split('.').pop().trim() ==
+                  'svg',
+              }"
+            >
               <img :src="videoThumbnail" />
             </div>
             <video
@@ -96,7 +102,10 @@
               "
             >
               <ContentLoader
-                v-if="(isImage && imageLoading) || videoThumbnailFetching"
+                v-if="
+                  (isImage && imageLoading) ||
+                  (isVideo && videoThumbnailFetching)
+                "
                 style="position: absolute; top: 0; right: 0; left: 0; bottom: 0"
                 :speed="1"
                 :width="100"
@@ -443,7 +452,10 @@
               "
             >
               <ContentLoader
-                v-if="(isImage && imageLoading) || videoThumbnailFetching"
+                v-if="
+                  (isImage && imageLoading) ||
+                  (isVideo && videoThumbnailFetching)
+                "
                 style="position: absolute; top: 0; right: 0; left: 0; bottom: 0"
                 :speed="1"
                 :width="100"
