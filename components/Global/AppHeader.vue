@@ -523,14 +523,12 @@ export default {
       )
       // redirect then to the appropriate dashboard
       if (this.auth.is_domain === workspace.is_domain) {
-        console.log('if')
         if (workspace.is_domain === 1) {
           await this.$logout()
           window.location.replace(
             'http://' + `${workspace.url}/${workspace.workspace_id}`
           )
         } else {
-          console.log('else')
           const formData = new FormData()
           formData.append('id', this.user.id)
           formData.append('instance_id', instance.instance_id)
@@ -548,7 +546,6 @@ export default {
             })
         }
       } else if (this.auth.is_domain !== workspace.is_domain) {
-        console.log('elseif')
         if (workspace.is_domain === 1) {
           await this.$logout()
           window.location.replace(
