@@ -121,7 +121,7 @@ h2.title {font-size: 22px;font-weight: 500;color: #172B4D;margin: 0;}
 .check-label input{position:absolute;opacity:0;cursor:pointer;}
 .check-label input:checked ~ .check-span{background-color:#5E81F4;border-color:#6577B2;}
 .check-label input:checked ~ .check-span:after{display:block;}
-.check-label .check-span{position:absolute;top:0px;left:0;height:16px;width:16px;line-height:16px;background-color:#ffffff;border-radius:2px;border:1px solid #707070;cursor: pointer}
+.check-label .check-span{position:absolute;top:0px;left:0;height:16px;width:16px;line-height:16px;background-color:#ffffff;border-radius:2px;border:1px solid #707070;cursor: pointer;}
 .check-label .check-span:after{content:"";position:absolute;display:none;left:4.5px;top:1.5px;width:5px;height:9px;border:solid #ffffff;border-width:0 2px 2px 0;-webkit-transform:rotate(45deg);-ms-transform:rotate(45deg);transform:rotate(45deg);}
 
 /* Custom Radiobox ----------------*/
@@ -438,6 +438,7 @@ header .user-dropdown.show .dropdown-toggle{color: #ffffff;}
 .tiles-list.trending-sec .categary-image .icons img {max-height: 60%;width: auto;}
 .tiles-list.trending-sec .categary-image .img-link > img{width: 100%;}
 .tiles-list.trending-sec .table-list-view .tbody > li {flex: 0 0 calc(25% - 20px) !important;max-width: calc(25% - 20px) !important;margin: 10px !important;}
+.tiles-list li .categary-name a{font-weight: 600;}
 
 .grid-list .table-list-view .customscrollbar {height: calc(100% - 30px) !important;}
 .grid-list .multi-table-view:not(.show-detail) .tbody>li,
@@ -496,8 +497,8 @@ header .user-dropdown.show .dropdown-toggle{color: #ffffff;}
 .preview-img.video  video {background-color: #000000;opacity: 0;width: 100%;}
 .preview-img.video .categary-image img{width: 100%;}
 .categary-image:before {display: block;content: " ";width: 100%;padding-top: 74.5%;}
-.categary-image .icons img{max-height: 40%;z-index: 4;width: auto !important;height: 40%}
-.grid-list .categary-image .icons img{max-height: 96%;}
+.categary-image .icons img{max-height: 40%;z-index: 4;width: auto!important;height: 40%;}
+.grid-list .categary-image .icons img{max-height: 96%;height: 96%;}
 .video .categary-image {position: relative;}
 .video-info {position: absolute;top:0;left: 0;padding: 10px;width: 100%;height: 100%;display: flex;flex-wrap: wrap;flex-direction: column;justify-content: space-between;opacity: 0;visibility: hidden;}
 .preview-img.video .video-info {background-color: rgba(0,0,0,0.3);}

@@ -10,10 +10,8 @@ export default async function ({
   req,
 }) {
   if ($auth.loggedIn) {
-    // console.log('log in')
     const { brand_name: brandName } = app.context.route.params
     if ($getBrandName() !== brandName) {
-      // console.log('hi')
       redirect({
         ...app.context.route,
         params: { brand_name: $getBrandName() },
@@ -21,7 +19,6 @@ export default async function ({
     }
   } else
     try {
-      // console.log('else')
       let isValid = false
       const url = [
         'localhost:3001',
@@ -32,7 +29,6 @@ export default async function ({
       ]
       const hostName = process.server ? req.headers.host : location.host
       if (!url.includes(hostName) || route.query.custom === 'true') {
-        // console.log('else if')
         const hostName = process.server ? req.headers.host : location.host
         let domainUrl = hostName
         const findIndex = domainUrl.search(':')
@@ -50,7 +46,6 @@ export default async function ({
             return data.code === 200
           })
       } else {
-        // console.log('else else')
         isValid = await $axios
           .post('verify-domain', {
             url: $getBrandName(),

@@ -161,9 +161,7 @@ export default {
           category_id: x,
         })
         .then((response) => {
-          console.log(response.data)
           response.data.map((item) => this.folderArray.push(item))
-          console.log(this.folderArray)
         })
     }
     // this.folderArray = [167]

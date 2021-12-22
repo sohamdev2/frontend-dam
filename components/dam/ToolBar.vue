@@ -363,12 +363,12 @@ export default {
     return {
       sortingModel: this.sorting || 'Sort by',
       intialCount: this.assetCount || '12',
-      sortingOptions: [
+      /* sortingOptions: [
         { text: 'Name', id: 'display_file_name' },
         { text: 'Date', id: 'updated_at' },
-        { text: 'Size', id: 'file_size' },
+        ...(this.hashParam ? [{ text: 'Size', id: 'file_size' }] : []),
         { text: 'Type', id: 'file_type' },
-      ],
+      ], */
       assetCountOptions: [
         { text: '12', id: '12' },
         { text: '20', id: '20' },
@@ -386,6 +386,14 @@ export default {
     }
   },
   computed: {
+    sortingOptions() {
+      return [
+        { text: 'Name', id: 'display_file_name' },
+        { text: 'Date', id: 'updated_at' },
+        ...(this.hashParam ? [{ text: 'Size', id: 'file_size' }] : []),
+        { text: 'Type', id: 'file_type' },
+      ]
+    },
     isInteger() {
       return Number.isInteger(parseInt(this.hashParam))
     },

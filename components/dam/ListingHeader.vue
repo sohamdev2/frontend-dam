@@ -40,8 +40,12 @@
         >Date</span
       >
     </div>
-    <div class="size sorting flex12" :class="sortingClass('file_size')">
+    <div
+      class="size sorting flex12"
+      :class="hashParam ? sortingClass('file_size') : ''"
+    >
       <span
+        v-if="hashParam"
         @click="
           sortingModel = 'file_size'
           emitSort([
@@ -51,6 +55,7 @@
         "
         >Size</span
       >
+      <span v-else> Size </span>
     </div>
     <div class="categary-action sorting text-right flex15">
       <span>Action</span>
@@ -78,6 +83,11 @@ export default {
   //     this.$emit('update:sorting', sortingModel)
   //   },
   // },
+  computed: {
+    hashParam() {
+      return this.$route.hash?.replace('#', '')
+    },
+  },
   methods: {
     emitSort(arg) {
       this.$nextTick(() => this.$emit('sort', arg))
