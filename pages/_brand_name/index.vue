@@ -433,8 +433,8 @@ export default {
       })
     },
     onShareFile(file) {
-      this.shareFile = file
       this.$nextTick(() => this.$refs.shareDialog.toggleModel())
+      this.shareFile = file
     },
     keytoTitle(key) {
       return key[0].toUpperCase() + key.slice(1)

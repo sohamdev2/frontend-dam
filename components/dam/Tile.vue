@@ -12,7 +12,7 @@
     </div>
     <div class="categary-name">
       <div class="top-column">
-        <a :href="tile.url">{{ tile.title }}</a>
+        <a :href="tile.url" target="_blank">{{ tile.title }}</a>
       </div>
     </div>
   </li>
