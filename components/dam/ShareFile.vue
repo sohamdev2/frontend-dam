@@ -1,7 +1,13 @@
 <template>
   <Model v-model="active">
     <div class="modal-header">
-      <h5 class="modal-title">Share selected files</h5>
+      <h5 v-if="!shareUrl" class="modal-title">
+        <template v-if="totalFilesFoldersCount == 1">
+          Share selected file
+        </template>
+        <template v-else> Share selected files </template>
+      </h5>
+      <h5 v-if="shareUrl" class="modal-title">Create Share Link</h5>
       <button type="button" class="close" @click="active = false">
         <span aria-hidden="true"
           ><svg
@@ -32,7 +38,7 @@
     </div>
     <div class="modal-body">
       <template v-if="shareUrl">
-        <p>Share Link</p>
+        <!--        <p>Share Link</p>-->
         <div class="mt-3 align-items-center" style="display: flex">
           <div style="flex: 1; padding-right: 1rem">
             <input
@@ -60,7 +66,7 @@
         </div>
       </template>
       <template v-else class="search-folder mb-0">
-        <p>Create Share Link</p>
+        <!--        <p>Create Share Link</p>-->
         <div class="share-wrapper">
           <div
             v-for="folder in folders"
@@ -256,6 +262,9 @@ export default {
         return item.is_public === 0
       })
       return privateAssets
+    },
+    totalFilesFoldersCount() {
+      return this.files.length + this.folders.length
     },
   },
   watch: {
