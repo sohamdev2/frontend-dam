@@ -53,6 +53,7 @@
         >
           <nuxt-link
             :is="shareMode ? 'a' : 'nuxt-link'"
+            v-if="!imageLoading && !videoThumbnailFetching"
             class="img-link"
             :event="selected || shareMode ? '' : 'click'"
             :to="
@@ -76,7 +77,7 @@
                   'svg',
               }"
             >
-              <img :src="videoThumbnail" />
+              <img :src="videoThumbnail" @load="imageLoading = false" />
             </div>
             <video
               ref="video"
@@ -102,10 +103,7 @@
               "
             >
               <ContentLoader
-                v-if="
-                  (isImage && imageLoading) ||
-                  (isVideo && videoThumbnailFetching)
-                "
+                v-if="imageLoading || (isVideo && videoThumbnailFetching)"
                 style="position: absolute; top: 0; right: 0; left: 0; bottom: 0"
                 :speed="1"
                 :width="100"
@@ -452,10 +450,7 @@
               "
             >
               <ContentLoader
-                v-if="
-                  (isImage && imageLoading) ||
-                  (isVideo && videoThumbnailFetching)
-                "
+                v-if="(isImage && imageLoading) || videoThumbnailFetching"
                 style="position: absolute; top: 0; right: 0; left: 0; bottom: 0"
                 :speed="1"
                 :width="100"
@@ -1087,8 +1082,10 @@ export default {
         .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
     },
     getThumbnail() {
-      if (this.file.thumbnail_file)
+      if (this.file.thumbnail_file) {
+        this.imageLoading = true
         return (this.videoThumbnail = this.file.thumbnail_file)
+      }
 
       this.videoThumbnailAdded = false
       this.videoThumbnailFetching = true
