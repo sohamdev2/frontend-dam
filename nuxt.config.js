@@ -227,8 +227,15 @@ export default {
       next()
     },
     '~/middleware/url-check.js',
+    { path: '/convert', handler: '~/api-middlewares/media-converter' },
   ],
-  build: {},
+  build: {
+    extend(config, { isDev, isClient }) {
+      config.node = {
+        fs: 'empty',
+      }
+    },
+  },
   publicRuntimeConfig: {
     appName: process.env.APP_NAME,
     baseUrl: process.env.BASE_URL,

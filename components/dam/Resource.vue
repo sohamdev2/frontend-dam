@@ -1,5 +1,6 @@
 <template>
   <li
+    :style="selected || shareMode ? '' : 'cursor: pointer !important'"
     :class="{
       selected,
       video: isVideo,
@@ -138,7 +139,7 @@
                     type="button"
                     class="dropdown-toggle"
                     data-toggle="dropdown"
-                    @click.capture.stop="dropDown()"
+                    @click.capture.prevent.stop="dropDown()"
                   >
                     <svg
                       id="Layer_1"
@@ -269,7 +270,7 @@
                 </div>
               </div>
             </div>
-            <div class="down-info">
+            <div class="down-info" style="z-index: 4">
               <template v-if="isVideo">
                 <video
                   :id="`file-video-${file.id}`"
@@ -286,7 +287,7 @@
               </template>
 
               <template v-if="isVideo">
-                <a @click="paused = !paused">
+                <a @click.capture.prevent.stop="paused = !paused">
                   <svg
                     v-if="paused"
                     id="Layer_1"
@@ -400,10 +401,10 @@
                 @error="errorHandle"
               />
             </div>
-            <div v-else-if="isTxt" :class="{ icons: !isTxt || filePreview }">
+            <div v-else-if="isTxt" :class="{ icons: !__image_thumb }">
               <img
                 v-show="!imageLoading"
-                :src="previewImage"
+                :src="__image_thumb || previewImage"
                 @load="imageLoading = false"
                 @error="errorHandle"
               />
@@ -484,7 +485,7 @@
                     type="button"
                     class="dropdown-toggle"
                     data-toggle="dropdown"
-                    @click.capture.stop="dropDown()"
+                    @click.capture.prevent.stop="dropDown()"
                   >
                     <svg
                       id="Layer_1"
@@ -615,7 +616,7 @@
                 </div>
               </div>
             </div>
-            <div class="down-info">
+            <div class="down-info" style="z-index: 4">
               <a
                 ref="expandButton"
                 style="display: none"
@@ -1046,10 +1047,10 @@ export default {
         const video = this.$refs.video
         video.ontimeupdate = function () {
           if (video.currentTime >= 5) {
-            const tmp_src = video.src
+            const src = video.src
 
             video.src = ''
-            video.src = tmp_src
+            video.src = src
             video.currentTime = 0
             video.play()
           }
