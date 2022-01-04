@@ -643,7 +643,7 @@ const IMAGE_MIMETYPES = {
 
 const categoriesObject = [
   { text: 'Home', id: '' },
-  { text: 'Audio', id: 'audio' },
+  { text: 'Audios', id: 'audio' },
   { text: 'Documents', id: 'application' },
   { text: 'Images', id: 'image' },
   { text: 'Videos', id: 'video' },
