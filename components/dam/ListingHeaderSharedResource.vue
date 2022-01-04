@@ -13,7 +13,7 @@
             ['files', 'display_file_name', $sortToUpperCase],
           ])
         "
-        >Name</span
+        >Asset Name</span
       >
     </div>
     <!--    <div class="assets sorting flex18" :class="sortingClass('file_type')">
@@ -53,7 +53,7 @@
       >
     </div>-->
     <div class="assets sorting flex18">
-      <span>Assets</span>
+      <span>Asset Type</span>
     </div>
     <div class="update-date sorting flex18">
       <span>Date</span>
