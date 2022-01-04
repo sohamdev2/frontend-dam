@@ -2,10 +2,7 @@
   <Model v-model="active">
     <div class="modal-header">
       <h5 v-if="!shareUrl" class="modal-title">
-        <template v-if="totalFilesFoldersCount == 1">
-          Share selected file
-        </template>
-        <template v-else> Share selected files </template>
+        Share selected {{ resourceType }}
       </h5>
       <h5 v-if="shareUrl" class="modal-title">Create Share Link</h5>
       <button type="button" class="close" @click="active = false">
@@ -246,6 +243,17 @@ export default {
     //     })
     //   );
     // },
+    resourceType() {
+      return this.files?.length && this.folders?.length
+        ? 'assets'
+        : this.files?.length
+        ? this.files.length === 1
+          ? 'file'
+          : 'files'
+        : this.folders.length === 1
+        ? 'folder'
+        : 'folders'
+    },
     shareMessage() {
       return this.isFolderPrivate.length >= 1 && this.isPrivate.length >= 1
     },

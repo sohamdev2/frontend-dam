@@ -375,7 +375,7 @@ const optionDates = Object.freeze([
 
 const filterOptions = Object.freeze([
   { text: 'All', id: 'all' },
-  { text: 'Audio', id: 'audio' },
+  { text: 'Audios', id: 'audio' },
   { text: 'Documents', id: 'application' },
   { text: 'Images', id: 'image' },
   { text: 'Videos', id: 'video' },
