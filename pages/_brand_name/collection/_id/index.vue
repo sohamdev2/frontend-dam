@@ -1,14 +1,7 @@
 <template>
   <div class="body-content collection-list-body">
     <div
-      class="
-        section-title
-        collection-header
-        d-flex
-        flex-column flex-lg-row
-        align-items-center
-        mt0
-      "
+      class="section-title collection-header d-flex flex-column flex-lg-row align-items-center mt0"
     >
       <div class="sec-title-left d-flex align-items-center">
         <nuxt-link
@@ -20,9 +13,9 @@
           class="home-icon"
         >
           <svg
+            id="Layer_1"
             class="home-icon orange"
             version="1.1"
-            id="Layer_1"
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
             x="0px"
@@ -83,9 +76,9 @@
                   @click="changeView('tile')"
                 >
                   <svg
+                    id="Layer_1"
                     class="gridview-icon"
                     version="1.1"
-                    id="Layer_1"
                     xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink"
                     x="0px"
@@ -123,9 +116,9 @@
                   @click="changeView('list')"
                 >
                   <svg
+                    id="Layer_1"
                     class="listview-icon"
                     version="1.1"
-                    id="Layer_1"
                     xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink"
                     x="0px"
@@ -227,10 +220,10 @@
                 >
                   <div class="inner w-100">
                     <svg
+                      id="Layer_1"
                       class="no-record-icon darkgray"
                       style="height: 150px"
                       version="1.1"
-                      id="Layer_1"
                       xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink"
                       x="0px"

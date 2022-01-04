@@ -2,12 +2,7 @@
   <div class="body-content">
     <div class="body-content-auto w-100">
       <div
-        class="
-          common-box-header
-          d-flex
-          align-items-center
-          justify-content-between
-        "
+        class="common-box-header d-flex align-items-center justify-content-between"
       >
         <h2 class="title">Shared URLs</h2>
         <div v-if="total > 0" class="table-filter">
