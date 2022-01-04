@@ -23,9 +23,9 @@
               class="home-icon"
             >
               <svg
+                id="Layer_1"
                 class="home-icon orange"
                 version="1.1"
-                id="Layer_1"
                 xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 x="0px"
@@ -60,14 +60,7 @@
           </div>
         </div>
         <div
-          class="
-            common-box
-            bg-gray
-            resource-wrapper
-            grid-list
-            my-collection
-            table-list-scrolling
-          "
+          class="common-box bg-gray resource-wrapper grid-list my-collection table-list-scrolling"
         >
           <div class="table-list-view multi-table-view">
             <CollectionListingHeader
