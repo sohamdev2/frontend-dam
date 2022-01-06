@@ -2,12 +2,7 @@
   <div class="body-content">
     <div class="body-content-auto w-100">
       <div
-        class="
-          common-box-header
-          d-flex
-          align-items-center
-          justify-content-between
-        "
+        class="common-box-header d-flex align-items-center justify-content-between"
       >
         <h2 class="title">Shared URLs</h2>
         <div v-if="total > 0" class="table-filter">
@@ -141,13 +136,9 @@
       </div>
     </div>
     <client-only>
-      <DeleteDialog
-        ref="deleteDialog"
-        header-text="Delete Share URL"
-        @click:confirm-button="deleteUrls()"
-      >
-        <template slot="header">Delete Shared URL</template>
-        Are you sure you want to delete the <strong>shared URL(s)</strong>?
+      <DeleteDialog ref="deleteDialog" @click:confirm-button="deleteUrls()">
+        <template slot="header">Delete Shared URL(s)</template>
+        Are you sure you want to <strong>delete</strong> shared URL(s)?
       </DeleteDialog>
     </client-only>
   </div>
