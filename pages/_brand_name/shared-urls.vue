@@ -136,13 +136,9 @@
       </div>
     </div>
     <client-only>
-      <DeleteDialog
-        ref="deleteDialog"
-        header-text="Delete Share URL"
-        @click:confirm-button="deleteUrls()"
-      >
-        <template slot="header">Delete Shared URL</template>
-        Are you sure you want to delete the <strong>shared URL(s)</strong>?
+      <DeleteDialog ref="deleteDialog" @click:confirm-button="deleteUrls()">
+        <template slot="header">Delete Shared URL(s)</template>
+        Are you sure you want to <strong>delete</strong> shared URL(s)?
       </DeleteDialog>
     </client-only>
   </div>
