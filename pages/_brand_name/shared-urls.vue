@@ -1,19 +1,61 @@
 <template>
   <div class="body-content">
     <div class="body-content-auto w-100">
-      <div class="common-box-header">
-        <h2 class="title">Shared urls</h2>
+      <div
+        class="common-box-header d-flex align-items-center justify-content-between"
+      >
+        <h2 class="title">Shared URLs</h2>
+        <div v-if="total > 0" class="table-filter">
+          <ul>
+            <li>{{ total }} Shared Url(s)</li>
+            <li>
+              <div class="search-by small-wd">
+                <Select2
+                  :value="per_page"
+                  :options="[
+                    { text: '12', id: '12' },
+                    { text: '20', id: '20' },
+                    { text: '40', id: '40' },
+                    { text: '80', id: '80' },
+                    { text: '100', id: '100' },
+                  ]"
+                  :attrs="{ minimumResultsForSearch: -1 }"
+                  @input="updatePageSize"
+                />
+              </div>
+            </li>
+            <li v-show="!!(selectedIds || []).length">
+              <a
+                href="javascript:void(0);"
+                class="btn"
+                :disabled="deleting"
+                @click="deleting ? null : $refs.deleteDialog.triggerModel()"
+                >{{ deleting ? 'Deleting...' : 'Delete Selected' }}</a
+              >
+            </li>
+          </ul>
+        </div>
       </div>
       <div class="common-box bg-gray">
         <div v-if="urls.length" class="table-list-view shared-url-table h-100">
           <ul class="thead">
             <li>
-              <div class="share-url sorting flex50">
-                <span>Shared URL</span>
+              <div class="sorting flex3">
+                <label class="check-label">
+                  <input
+                    type="checkbox"
+                    :checked="allSelected"
+                    @click="onHeaderSelect($event.target.checked)"
+                  />
+                  <span class="check-span"></span>
+                </label>
+              </div>
+              <div class="share-url sorting flex61">
+                <span>Shared URLs</span>
               </div>
               <div
                 :class="[
-                  'generated-date sorting flex15 sortarrow',
+                  'generated-date sorting flex10 sortarrow',
                   sortingClass('updated_at'),
                 ]"
               >
@@ -21,7 +63,7 @@
               </div>
               <div
                 :class="[
-                  'generated-by sorting flex15  sortarrow',
+                  'generated-by sorting flex10  sortarrow',
                   sortingClass('user_name'),
                 ]"
               >
@@ -29,13 +71,13 @@
               </div>
               <div
                 :class="[
-                  'generated-source sorting flex15 sortarrow',
+                  'generated-source sorting flex10 sortarrow',
                   sortingClass('generated_source'),
                 ]"
               >
                 <span @click="sort('generated_source')">Generated Source</span>
               </div>
-              <div class="share-actions sorting flex5 text-center">
+              <div class="share-actions sorting flex6">
                 <span>Action</span>
               </div>
             </li>
@@ -47,9 +89,17 @@
                 :key="url.id"
                 v-bind="{ url }"
                 :style="`transition-delay: ${i * 25}ms`"
-                @deleted="urls = urls.filter(({ id }) => id !== $event)"
+                :selected="selectedIds.includes(url.id)"
+                :deleting="deleting && selectedIds.includes(url.id)"
+                @deleted="onUrlDeleted"
+                @selection-change="updateSelection(url.id, $event)"
               />
             </transition-group>
+            <Pagination
+              v-if="last_page > 1"
+              :last-page="last_page"
+              :current-page.sync="current_page"
+            />
           </div>
         </div>
         <div v-else key="no-data" class="no-data-found">
@@ -85,21 +135,38 @@
         </div>
       </div>
     </div>
+    <client-only>
+      <DeleteDialog
+        ref="deleteDialog"
+        header-text="Delete Share URL"
+        @click:confirm-button="deleteUrls()"
+      >
+        <template slot="header">Delete Shared URL</template>
+        Are you sure you want to delete the <strong>shared URL(s)</strong>?
+      </DeleteDialog>
+    </client-only>
   </div>
 </template>
 
 <script>
 import SharedURLItem from '~/components/dam/SharedURLItem'
+import Pagination from '~/components/dam/Pagination'
 
 export default {
-  components: { SharedURLItem },
+  components: { SharedURLItem, Pagination },
   middleware: ['check-auth', 'check-url', 'can-access'],
   layout: 'app-min-no-search',
   asyncData({ $axios, $getWorkspaceId, error, $sortBy }) {
     return $axios
-      .$get(`digital/list-share-assets-url?workspace_id=${$getWorkspaceId()}`)
-      .then(({ data }) => ({
-        urls: data
+      .$get(
+        `digital/list-share-assets-url?workspace_id=${$getWorkspaceId()}&total_record=12`
+      )
+      .then(({ data = {} }) => ({
+        current_page: data.current_page,
+        last_page: data.last_page,
+        total: data.total,
+        per_page: data.per_page,
+        urls: data.data
           .map(({ user, ...rest }) => ({
             ...rest,
             userName: user?.name || '-',
@@ -117,9 +184,65 @@ export default {
         desc: true,
       },
       sortDesc: false,
+      selectedIds: [],
+      allSelected: false,
     }
   },
+  watch: {
+    current_page(page) {
+      if (page === -1) {
+        this.$router.replace({
+          query: null,
+          hash: this.hashParam && `#${this.hashParam}`,
+        })
+      } else {
+        this.$router.replace({
+          query: { page },
+          hash: this.hashParam && `#${this.hashParam}`,
+        })
+        this.getData()
+      }
+    },
+  },
   methods: {
+    updatePageSize(e) {
+      this.per_page = e
+      this.current_page = 1
+      this.$router.replace({
+        query: { page: this.current_page },
+        hash: this.hashParam && `#${this.hashParam}`,
+      })
+      this.getData()
+    },
+    getData() {
+      this.$axios
+        .$get(
+          `digital/list-share-assets-url?workspace_id=${this.$getWorkspaceId()}&page=${
+            this.current_page
+          }&total_record=${this.per_page || 12}`
+        )
+        .then(({ data = {} }) => {
+          this.allSelected = false
+          this.current_page = data.current_page
+          this.last_page = data.last_page
+          this.total = data.total
+          this.per_page = data.per_page
+          this.urls = data.data
+            .map(({ user, ...rest }) => ({
+              ...rest,
+              userName: user?.name || '-',
+              user,
+            }))
+            .sort(this.$sortBy('updated_at', true))
+          this.selectedIds = []
+          this.allSelected = false
+        })
+        .catch(console.error)
+    },
+    onHeaderSelect(selected) {
+      this.selectedIds = selected ? this.urls.map((e) => e.id) : []
+      this.allSelected = selected
+    },
     sort(value) {
       let desc = false
 
@@ -136,6 +259,57 @@ export default {
     sortingClass(value) {
       return {
         active: this.sorting.value === value && this.sorting.desc === true,
+      }
+    },
+    deleteUrls() {
+      if (!this.selectedIds?.length || this.deleting) return
+      this.deleting = true
+      this.$axios
+        .$post(`digital/delete-multiple-share-assets-url`, {
+          workspace_id: this.$getWorkspaceId(),
+          share_url_ids: this.selectedIds,
+        })
+        .then((e) => {
+          this.$toast.success(e.message)
+          this.urls = this.urls.filter((e) => !this.selectedIds.includes(e.id))
+          this.selectedIds = []
+          this.allSelected = false
+          if (!this.urls.length) {
+            if (this.last_page === this.current_page && this.last_page > 1) {
+              this.$router.replace({
+                query: { page: this.last_page - 1 },
+                hash: this.hashParam && `#${this.hashParam}`,
+              })
+              this.current_page = this.last_page - 1
+            }
+            this.getData()
+          }
+        })
+        .catch((e) => {
+          this.$toast.error(this.$getErrorMessage(e))
+        })
+        .finally(() => (this.deleting = false))
+    },
+    updateSelection(urlId, selection) {
+      if (!selection && this.selectedIds.includes(urlId)) {
+        this.selectedIds = this.selectedIds.filter((e) => e !== urlId)
+      } else if (selection && !this.selectedIds.includes(urlId)) {
+        this.selectedIds.push(urlId)
+      }
+      this.allSelected = this.urls.every((e) => this.selectedIds.includes(e.id))
+    },
+    onUrlDeleted(urlId) {
+      this.urls = this.urls.filter(({ id }) => id !== urlId)
+      this.updateSelection(urlId, false)
+      if (!this.urls.length) {
+        if (this.last_page === this.current_page && this.last_page > 1) {
+          this.$router.replace({
+            query: { page: this.last_page - 1 },
+            hash: this.hashParam && `#${this.hashParam}`,
+          })
+          this.current_page = this.last_page - 1
+        }
+        this.getData()
       }
     },
   },

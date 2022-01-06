@@ -317,6 +317,13 @@
                   </li>
                 </ul>
               </template>
+              <h5 class="mb-2">Permission</h5>
+              <Select2
+                v-model="searchParams.permission"
+                class="select"
+                :attrs="{ minimumResultsForSearch: -1 }"
+                :options="permissionOptions"
+              />
             </div>
           </div>
         </div>
@@ -368,10 +375,15 @@ const optionDates = Object.freeze([
 
 const filterOptions = Object.freeze([
   { text: 'All', id: 'all' },
-  { text: 'Audio', id: 'audio' },
+  { text: 'Audios', id: 'audio' },
   { text: 'Documents', id: 'application' },
   { text: 'Images', id: 'image' },
   { text: 'Videos', id: 'video' },
+])
+const permissionOptions = Object.freeze([
+  { text: 'All', id: 'all' },
+  { text: 'Public', id: '1' },
+  { text: 'Private', id: '0' },
 ])
 
 function SearchParams() {
@@ -385,6 +397,7 @@ function SearchParams() {
   this.orientation = ''
   this.other_tags = []
   this.filter = 'all'
+  this.permission = 'all'
 }
 
 export default {
@@ -395,6 +408,7 @@ export default {
       optionDates,
       SearchParams,
       filterOptions,
+      permissionOptions,
       searchParams: this.$route.params.searchParams || new SearchParams(),
       moreOptions: false,
       searchData: {},
@@ -513,6 +527,17 @@ export default {
           type: 'orientation',
           name: `Orientation: <strong>${text}</strong>`,
           value: this.searchParams.orientation,
+        })
+      }
+      if (this.searchParams.permission !== 'all') {
+        const text = permissionOptions.find(
+          ({ id }) => id === this.searchParams.permission
+        ).text
+
+        filters.push({
+          key: 'permission',
+          type: 'permission',
+          name: `Search in: <strong>${text}</strong>`,
         })
       }
 
@@ -643,6 +668,7 @@ export default {
           this.searchParams.filter === 'all' ? null : this.searchParams.filter,
         start_date,
         end_date,
+        is_public: this.searchParams.permission,
       }
     },
     search() {
@@ -720,6 +746,7 @@ export default {
           break
         case 'filter':
         case 'date':
+        case 'permission':
           this.searchParams[item.type] = 'all'
           break
         case 'orientation':

@@ -48,7 +48,7 @@ export default {
 
       let tst = null
       if (
-        this.$route.name.search('collection') ||
+        this.$route.name.search('collection') > -1 ||
         this.$route.name.search('analytics') > -1
       ) {
         if (path === 'subFolders') {

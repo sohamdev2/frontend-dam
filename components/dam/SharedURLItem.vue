@@ -1,6 +1,18 @@
 <template>
   <li>
-    <div class="share-url tb-column flex50">
+    <div class="tb-column flex3">
+      <div class="top-column">
+        <label class="check-label">
+          <input
+            type="checkbox"
+            :checked="selected"
+            @change="$emit('selection-change', !selected)"
+          />
+          <span class="check-span"></span>
+        </label>
+      </div>
+    </div>
+    <div class="share-url tb-column flex61">
       <div class="top-column">
         <label>
           <component
@@ -12,41 +24,46 @@
             :style="{ 'user-select': revoked ? 'none' : '' }"
             target="__blank"
           >
-            <component :is="revoked ? 's' : 'span'">
+            <component :is="revoked ? 's' : ''">
               {{ url.share_url | normalizedUrl(url.generated_source) }}
             </component>
+            {{
+              revoked ? '' : url.share_url | normalizedUrl(url.generated_source)
+            }}
           </component>
           <span
             v-if="revoked"
             v-tooltip="'URL has been revoked by admin'"
-            class="btn ml-3 revoked-label"
+            class="ml-3 revoked-label"
             >Revoked</span
           ></label
         >
       </div>
     </div>
-    <div class="generated-date tb-column flex15">
+    <div class="generated-date tb-column flex10">
       <div class="top-column">
         <label v-tooltip="$moment(url.updated_at).format('LL LT')">{{
           $moment(url.updated_at).format('Do, MMM YYYY')
         }}</label>
       </div>
     </div>
-    <div class="generated-by tb-column flex15">
+    <div class="generated-by tb-column flex10">
       <div class="top-column">
         <label>{{ url.userName }}</label>
       </div>
     </div>
-    <div class="generated-source tb-column flex15">
+    <div class="generated-source tb-column flex10">
       <div class="top-column">
         <label>{{ url.generated_source | normalizedSource }}</label>
       </div>
     </div>
-    <div class="share-actions tb-column flex5 text-center">
+    <div class="share-actions tb-column flex6">
       <ul class="action justify-content-center">
         <li>
-          <a @click="$refs.deleteDialog.triggerModel()"
-            ><svg
+          <a @click="deletingModel ? null : $refs.deleteDialog.triggerModel()">
+            <SpinLoading v-if="deletingModel" />
+            <svg
+              v-else
               id="Layer_1"
               data-original-title="Delete URL"
               class="delete-icon h-orange"
@@ -98,6 +115,7 @@ export default {
   props: {
     url: { type: Object, required: true },
     deleting: { type: Boolean, default: false },
+    selected: { type: Boolean, default: false },
   },
   data() {
     return {

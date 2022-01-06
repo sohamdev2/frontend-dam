@@ -4,8 +4,8 @@
       class="profile-bg flex-20"
       :style="{
         backgroundImage: collection
-          ? `url('${file.preview_image}')`
-          : `url('${previewImage}')`,
+          ? `url('${__image_thumb || file.preview_image}')`
+          : `url('${__image_thumb || previewImage}')`,
       }"
     ></div>
     <div class="share-name flex-80 pl-2">

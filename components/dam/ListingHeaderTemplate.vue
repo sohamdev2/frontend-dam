@@ -1,5 +1,5 @@
 <template>
-  <ul class="thead">
+  <ul class="thead" style="padding-left: 8px; padding-right: 8px">
     <li>
       <slot />
     </li>
@@ -27,7 +27,6 @@ export default {
   },
   methods: {
     sortingClass(sorting) {
-      console.log(this.sorting, sorting)
       return {
         sortarrow: this.sorting === sorting,
         descending: this.sorting === sorting && this.reverse,
