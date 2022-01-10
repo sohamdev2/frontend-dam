@@ -220,7 +220,21 @@ export function getFormattedMetaValue(value, key, tooltip) {
   return value || (tooltip ? '' : '&dash;')
 }
 
-export const imageExtensions = ['jpg', 'png', 'jpeg', 'svg', 'gif']
+export const imageExtensions = [
+  'jpg',
+  'png',
+  'jpeg',
+  'svg',
+  'gif',
+  'psd',
+  'ai',
+  'eps',
+  'pbm',
+  'ppm',
+  'nef',
+  'orf',
+  'bmp',
+]
 export const videoExtensions = [
   'mp4',
   'mkv',
@@ -232,6 +246,8 @@ export const videoExtensions = [
   '3gp',
 ]
 export const pdfExtensions = ['pdf']
+export const htmlExtensions = ['html']
+
 export const docExtensions = [
   'doc',
   'docx',
@@ -240,12 +256,18 @@ export const docExtensions = [
   'xlsx',
   'xls',
   'dotx',
+  'odt',
+  'ott',
 ]
-export const audioExtensions = ['mp3', 'wav', 'wma', 'aac']
+export const audioExtensions = ['mp3', 'wav', 'wma', 'aac', 'ogg']
 export const txtExtensions = ['txt']
 
 export function isPdf(ext) {
   return !!ext && pdfExtensions.includes(ext.toLowerCase())
+}
+
+export function isHtml(ext) {
+  return !!ext && htmlExtensions.includes(ext.toLowerCase())
 }
 
 export function isImage(ext) {

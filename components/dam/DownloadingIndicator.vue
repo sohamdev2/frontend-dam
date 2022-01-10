@@ -236,4 +236,16 @@ export default {
 .downloading-indicator--list {
   padding: 8px 0;
 }
+.downloading-indicator--header .radial-progress-container {
+  height: 32px !important;
+  width: 32px !important;
+}
+.downloading-indicator--header
+  .radial-progress-container
+  svg.radial-progress-bar {
+  height: 32px !important;
+}
+.downloading-indicator--wrapper svg.radial-progress-bar {
+  height: 32px !important;
+}
 </style>

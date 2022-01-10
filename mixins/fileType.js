@@ -36,8 +36,15 @@ export default {
     isAudio() {
       return this.$isAudio(this.__file_ext)
     },
+    isHtml() {
+      return this.$isHtml(this.__file_ext)
+    },
     previewImage() {
-      return this.getPreviewIcon()
+      if (this.$route.name.search('files') > 0) {
+        return this.getDetailIcon()
+      } else {
+        return this.getPreviewIcon()
+      }
     },
   },
   methods: {
@@ -51,10 +58,42 @@ export default {
       if (!ext) return GENERAL_ICON
 
       if (this.$isPdf(ext)) {
-        return require('@/assets/img/icon/file/pdf.svg')
+        return imageThumb || compressedImage || url
       } else if (this.$isAudio(ext))
         return require('@/assets/img/icon/file/audio.svg')
       else if (this.$isImage(ext)) return imageThumb || compressedImage || url
+      else if (this.isDoc) {
+        return imageThumb || compressedImage || url
+      } else if (this.isHtml) return imageThumb || compressedImage || url
+      else
+        try {
+          return require(`@/assets/img/icon/file/${ext}.svg`)
+        } catch {
+          return thumb || GENERAL_ICON
+        }
+    },
+    getDetailIcon(
+      ext = this.__file_ext,
+      thumb = this.__thumb,
+      imageThumb = this.__image_thumb,
+      compressedImage = this.__compressed_preview,
+      url = this.__url
+    ) {
+      if (!ext) return GENERAL_ICON
+
+      if (this.$isPdf(ext)) {
+        return compressedImage || imageThumb || url
+      } else if (this.$isAudio(ext))
+        return require('@/assets/img/icon/file/audio.svg')
+      else if (this.$isImage(ext)) {
+        if (this.file.file_type === 'gif') {
+          return url
+        } else {
+          return compressedImage || imageThumb || url
+        }
+      } else if (this.isDoc) {
+        return compressedImage || imageThumb || url
+      } else if (this.isHtml) return compressedImage || imageThumb || url
       else
         try {
           return require(`@/assets/img/icon/file/${ext}.svg`)

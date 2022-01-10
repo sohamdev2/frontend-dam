@@ -13,6 +13,8 @@ export default {
       'dam-dev3.herokuapp.com',
       'dam-staging3.herokuapp.com',
       'dam.marketinghub.com',
+      'uat-damfrontend.herokuapp.com',
+      'test-app-dam-front.herokuapp.com',
     ]
     let hostName = process.server ? req.headers.host : location.host
     if (!url.includes(hostName)) {

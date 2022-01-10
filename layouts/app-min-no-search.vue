@@ -1,6 +1,6 @@
 <template>
   <ShowWhenReady>
-    <AppHeader v-if="$auth.loggedIn" />
+    <AppHeader v-if="$auth.loggedIn && $route.name != 'shared-assets-type'" />
 
     <nuxt></nuxt>
   </ShowWhenReady>

@@ -1,8 +1,10 @@
 <template>
   <div class="body-content two-part">
     <div v-if="folderList.length" class="body-content-left">
-      <div class="category-list common-box bg-gray">
-        <h4
+      <h4>Folders</h4>
+
+      <div class="category-list customscrollbar">
+        <!-- <h4
           v-if="
             currentFolder &&
             $refs.folderList &&
@@ -64,14 +66,58 @@
               </g></svg
           ></nuxt-link>
           {{ $refs.folderList.getCurrentFolderName() }}
-        </h4>
-        <h4 v-else class="title">Folders</h4>
-        <FolderList
-          ref="folderList"
-          :value="hashParam"
-          :parent-folder="currentFolder"
-        ></FolderList>
+        </h4> -->
+        <FolderList></FolderList>
       </div>
+      <ul class="quick-links">
+        <li>
+          <span
+            :style="
+              dashboardData &&
+              (dashboardData.recent_uploads.images.length ||
+                dashboardData.recent_uploads.documents.length ||
+                dashboardData.recent_uploads.videos.length ||
+                dashboardData.recent_uploads.audios.length)
+                ? 'pointer-events: auto'
+                : 'pointer-events: none'
+            "
+            @click.capture.stop="scrollToRecent"
+            >Recent Uploads</span
+          >
+        </li>
+        <li>
+          <span
+            :style="
+              dashboardData &&
+              dashboardData.trending_data &&
+              dashboardData.trending_data.length
+                ? 'pointer-events: auto'
+                : 'pointer-events: none'
+            "
+            @click.capture.stop="scrollToTrending"
+            >Trending</span
+          >
+        </li>
+        <li>
+          <nuxt-link
+            :to="{
+              name: 'brand_name-collection',
+              params: { brand_name: $getBrandName() },
+            }"
+            >All Collections</nuxt-link
+          >
+        </li>
+        <li>
+          <nuxt-link
+            v-if="!user.is_backend_user"
+            :to="{
+              name: 'brand_name-shared-urls',
+              params: { brand_name: this.$getBrandName() },
+            }"
+            >Shared URLs</nuxt-link
+          >
+        </li>
+      </ul>
     </div>
     <div class="body-content-right customscrollbar">
       <SearchBar ref="searchbar" />
@@ -296,6 +342,12 @@ export default {
     }
   },
   computed: {
+    dashboardData() {
+      return this.$store.state.appData.dashboardData
+    },
+    user() {
+      return this.$auth.user
+    },
     hashParam() {
       return (this.$route.hash || '').replace('#', '')
     },
@@ -410,6 +462,32 @@ export default {
     this.getData()
   },
   methods: {
+    scrollToRecent() {
+      const scrollingState = true
+      const scrollTo = 'recent'
+      this.$store.dispatch('appData/changeScrolling', {
+        scrollingState,
+        scrollTo,
+      })
+
+      this.$router.push({
+        name: 'brand_name',
+        params: { brand_name: this.$getBrandName() },
+      })
+    },
+    scrollToTrending() {
+      const scrollingState = true
+      const scrollTo = 'trending'
+
+      this.$store.dispatch('appData/changeScrolling', {
+        scrollingState,
+        scrollTo,
+      })
+      this.$router.push({
+        name: 'brand_name',
+        params: { brand_name: this.$getBrandName() },
+      })
+    },
     // dropdown functionality
     dropDown(file, type, resourceType) {
       this.selectedFiles = []

@@ -21,9 +21,9 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
       {
+        //  Adobe Acumin Font
         rel: 'stylesheet',
-        href:
-          'https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap',
+        href: 'https://use.typekit.net/oep8bma.css',
       },
     ],
     script: [
@@ -227,8 +227,15 @@ export default {
       next()
     },
     '~/middleware/url-check.js',
+    { path: '/convert', handler: '~/api-middlewares/media-converter' },
   ],
-  build: {},
+  build: {
+    extend(config, { isDev, isClient }) {
+      config.node = {
+        fs: 'empty',
+      }
+    },
+  },
   publicRuntimeConfig: {
     appName: process.env.APP_NAME,
     baseUrl: process.env.BASE_URL,

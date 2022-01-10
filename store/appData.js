@@ -7,9 +7,13 @@ const _state = () => ({
   loading: {
     dashboard: true,
     folders: true,
+    tile: true,
   },
   logo: '',
   brand: null,
+  tileData: [],
+  scrollToRecent: false,
+  scrollTo: '',
 })
 
 export { _state as state }
@@ -21,7 +25,9 @@ export const mutations = {
     'loading.dashboard',
     'loading.folders',
     'logo',
-    'brand'
+    'brand',
+    'tileData',
+    'loading.tile'
   ),
 
   // brandDetails(state, item) {
@@ -77,9 +83,16 @@ export const mutations = {
   resetState(state) {
     Object.assign(state, _state())
   },
+  changeScrolling(state, { scrollingState, scrollTo }) {
+    state.scrollToRecent = scrollingState
+    state.scrollTo = scrollTo
+  },
 }
 
 export const actions = {
+  changeScrolling({ commit }, { scrollingState, scrollTo }) {
+    commit('changeScrolling', { scrollingState, scrollTo })
+  },
   assignLogo({ commit }, item) {
     commit('logo', item)
   },
@@ -117,6 +130,23 @@ export const actions = {
     // }
 
     commit('loading.dashboard', false)
+  },
+  async fetchTileData({ commit }) {
+    if (!this.$auth.loggedIn) return
+
+    commit('loading.tile', true)
+
+    const data = await this.$axios
+      .$get(`/digital/get-tiles?workspace_id=${this.$getWorkspaceId()}`)
+      .then(({ data }) => data)
+      .catch(this.$showErrorToast)
+
+    if (data) {
+      commit('tileData', data)
+      return data
+    }
+
+    commit('loading.tile', false)
   },
   async fetchFolders({ commit }) {
     if (!this.$auth.loggedIn) return

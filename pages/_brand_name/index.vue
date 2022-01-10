@@ -1,34 +1,155 @@
 <template>
   <div class="body-content two-part">
     <div v-if="folderList.length" class="body-content-left">
-      <div class="category-list common-box bg-gray">
-        <h4 class="title">Folders</h4>
+      <h4>Folders</h4>
+
+      <div class="category-list customscrollbar">
         <FolderList></FolderList>
       </div>
+
+      <ul class="quick-links">
+        <li>
+          <span
+            :style="
+              dashboardData &&
+              (dashboardData.recent_uploads.images.length ||
+                dashboardData.recent_uploads.documents.length ||
+                dashboardData.recent_uploads.videos.length ||
+                dashboardData.recent_uploads.audios.length)
+                ? 'pointer-events: auto'
+                : 'pointer-events: none'
+            "
+            @click.capture.stop="scrollToRecent"
+            >Recent Uploads</span
+          >
+        </li>
+        <li>
+          <span
+            :style="
+              dashboardData &&
+              dashboardData.trending_data &&
+              dashboardData.trending_data.length
+                ? 'pointer-events: auto'
+                : 'pointer-events: none'
+            "
+            @click.capture.stop="scrollToTrending"
+            >Trending</span
+          >
+        </li>
+        <li>
+          <nuxt-link
+            :to="{
+              name: 'brand_name-collection',
+              params: { brand_name: $getBrandName() },
+            }"
+            >All Collections</nuxt-link
+          >
+        </li>
+        <li>
+          <nuxt-link
+            v-if="!user.is_backend_user"
+            :to="{
+              name: 'brand_name-shared-urls',
+              params: { brand_name: this.$getBrandName() },
+            }"
+            >Shared URLs</nuxt-link
+          >
+        </li>
+      </ul>
     </div>
-    <div class="body-content-right customscrollbar">
+    <div ref="rightSide" class="body-content-right customscrollbar">
       <SearchBar />
       <div v-if="dashboardData" class="hero-section">
         <client-only>
           <carousel
-            :per-page="1"
+            ref="hero"
             autoplay
+            :per-page="1"
             navigation-enabled
-            loop
+            :loop="false"
+            :navigate-to="heroNavigateTo"
             :pagination-enabled="false"
+            @transition-end="onHeroChanged"
           >
             <slide v-for="banner in bannerData" :key="banner.id">
-              <div
+              <!-- <div
                 class="banner-item"
                 :title="banner.title"
                 :style="{
                   backgroundImage: `url('${banner.image}')`,
                 }"
-              ></div>
+              ></div> -->
+              <a :href="banner.url" target="_blank">
+                <div
+                  class="banner-item"
+                  :title="banner.title"
+                  :style="{
+                    backgroundImage: `url('${banner.image}')`,
+                  }"
+                ></div>
+                <div class="content">
+                  <div class="content-wepper">
+                    <p>
+                      {{ banner.description }}
+                    </p>
+                  </div>
+                </div>
+              </a>
             </slide>
           </carousel>
         </client-only>
       </div>
+
+      <div
+        v-if="!user.is_slider && tileData && tileData.length"
+        class="section-title"
+      >
+        <h4>Tiles List</h4>
+      </div>
+      <div
+        v-if="!user.is_slider && tileData && tileData.length"
+        class="trending-sec grid-tile resource-wrapper tiles-list"
+      >
+        <div class="common-box bg-gray">
+          <div class="table-list-view">
+            <ul class="tbody">
+              <template v-for="tile in tileData">
+                <Tile :key="tile.id" :tile="tile" />
+              </template>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div
+        v-if="user.is_slider && tileData && tileData.length"
+        class="section-title"
+      >
+        <h4>Tiles Slider</h4>
+      </div>
+      <div
+        v-if="user.is_slider && tileData && tileData.length"
+        class="trending-sec grid-tile resource-wrapper tiles-list"
+      >
+        <div class="common-box bg-gray">
+          <div class="table-list-view">
+            <ul class="tbody owl-carousel tiles-carousel">
+              <client-only>
+                <carousel
+                  :per-page="4"
+                  navigation-enabled
+                  :pagination-enabled="false"
+                >
+                  <slide v-for="tile in tileData" :key="tile.id">
+                    <Tile :tile="tile" />
+                  </slide>
+                </carousel>
+              </client-only>
+            </ul>
+          </div>
+        </div>
+      </div>
+
       <template
         v-if="
           dashboardData &&
@@ -36,7 +157,7 @@
           dashboardData.trending_data.length
         "
       >
-        <div class="section-title">
+        <div ref="trending" class="section-title">
           <h4>Trending</h4>
         </div>
         <div class="trending-sec grid-tile resource-wrapper">
@@ -75,6 +196,7 @@
             dashboardData.recent_uploads.videos.length ||
             dashboardData.recent_uploads.audios.length
           "
+          ref="recent"
           class="section-title"
         >
           <h4>Recent Uploads</h4>
@@ -84,9 +206,7 @@
           <template v-if="files.length">
             <div :key="key" class="mini-title">
               <!-- <input id="Images" type="checkbox" class="form-check-input" /> -->
-              <label for="Images" class="check-label">{{
-                keytoTitle(key)
-              }}</label>
+              <label>{{ keytoTitle(key) }}</label>
               <nuxt-link
                 :to="{
                   name: 'brand_name-folders',
@@ -234,15 +354,23 @@
 </template>
 
 <script>
+import Tile from '@/components/dam/Tile.vue'
 export default {
+  components: {
+    Tile,
+  },
   layout: 'app',
   middleware: ['check-url', 'check-auth'],
   data() {
     return {
       shareFile: null,
+      heroNavigateTo: 0,
     }
   },
   computed: {
+    user() {
+      return this.$auth.user
+    },
     folderList() {
       return this.$store.state.appData.folders
     },
@@ -254,17 +382,59 @@ export default {
     dashboardData() {
       return this.$store.state.appData.dashboardData
     },
+    tileData() {
+      return [...this.$store.state.appData.tileData].sort(
+        ({ postion: a, postions: b }) => a - b
+      )
+    },
   },
   mounted() {
-    this.$store.dispatch('appData/fetchDashboardData')
+    this.$store.dispatch('appData/fetchDashboardData').then(() => {
+      if (this.$store.state.appData.scrollToRecent) {
+        if (this.$store.state.appData.scrollTo === 'recent') {
+          this.scrollToRecent()
+        } else if (this.$store.state.appData.scrollTo === 'trending') {
+          this.scrollToTrending()
+        }
+      }
+    })
     this.$store.dispatch('appData/fetchFolders')
+    this.$store.dispatch('appData/fetchTileData')
     document.querySelector("link[rel~='icon']").href =
       this.$_auth()?.favicon === '' ? '/favicon.png' : this.$_auth()?.favicon
   },
   methods: {
+    onHeroChanged() {
+      this.$nextTick(() => {
+        const hero = this.$refs.hero
+        const page = hero.currentPage
+        if (page === this.bannerData.length - 1) {
+          this.heroNavigateTo = [page, false]
+          setTimeout(() => {
+            this.heroNavigateTo = [0, false]
+          }, 1500)
+        }
+      })
+    },
+    scrollToTrending() {
+      this.$refs.trending.scrollIntoView()
+      this.resetScrolling()
+    },
+    scrollToRecent() {
+      this.$refs.recent.scrollIntoView()
+      this.resetScrolling()
+    },
+    resetScrolling() {
+      const scrollingState = false
+      const scrollTo = ''
+      this.$store.dispatch('appData/changeScrolling', {
+        scrollingState,
+        scrollTo,
+      })
+    },
     onShareFile(file) {
-      this.shareFile = file
       this.$nextTick(() => this.$refs.shareDialog.toggleModel())
+      this.shareFile = file
     },
     keytoTitle(key) {
       return key[0].toUpperCase() + key.slice(1)
@@ -276,7 +446,6 @@ export default {
     },
   },
   head() {
-    console.log(this.$_auth(), this.$brandDetail())
     return {
       title: this.$brandName(),
       link: [

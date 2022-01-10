@@ -1,7 +1,8 @@
 <template>
   <ListingHeaderTemplate>
+    <div class="preview-img pb-1 no-pointer flex10"></div>
     <div
-      class="categary-name sorting sortarrow flex52"
+      class="categary-name sorting sortarrow flex27"
       :class="sortingClass('display_file_name')"
     >
       <span
@@ -12,13 +13,10 @@
             ['files', 'display_file_name', $sortToUpperCase],
           ])
         "
-        >Name</span
+        >Asset Name</span
       >
     </div>
-    <div
-      class="assets sorting sortarrow flex15"
-      :class="sortingClass('file_type')"
-    >
+    <!--    <div class="assets sorting flex18" :class="sortingClass('file_type')">
       <span
         @click="
           sortingModel = 'file_type'
@@ -30,10 +28,7 @@
         >Assets</span
       >
     </div>
-    <div
-      class="update-date sorting sortarrow flex15"
-      :class="sortingClass('updated_at')"
-    >
+    <div class="update-date sorting flex18" :class="sortingClass('updated_at')">
       <span
         @click="
           sortingModel = 'updated_at'
@@ -45,10 +40,7 @@
         >Date</span
       >
     </div>
-    <div
-      class="size sorting sortarrow flex10"
-      :class="sortingClass('file_size')"
-    >
+    <div class="size sorting flex12" :class="sortingClass('file_size')">
       <span
         @click="
           sortingModel = 'file_size'
@@ -59,8 +51,17 @@
         "
         >Size</span
       >
+    </div>-->
+    <div class="assets sorting flex18">
+      <span>Asset Type</span>
     </div>
-    <div class="categary-action sorting text-right flex8">
+    <div class="update-date sorting flex18">
+      <span>Date</span>
+    </div>
+    <div class="size sorting flex12">
+      <span>Size</span>
+    </div>
+    <div class="categary-action sorting no-pointer flex15 text-right">
       <span>Action</span>
     </div>
   </ListingHeaderTemplate>

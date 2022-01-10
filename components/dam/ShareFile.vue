@@ -1,7 +1,10 @@
 <template>
   <Model v-model="active">
     <div class="modal-header">
-      <h5 class="modal-title">Share selected files</h5>
+      <h5 v-if="!shareUrl" class="modal-title">
+        Share selected {{ resourceType }}
+      </h5>
+      <h5 v-if="shareUrl" class="modal-title">Create Share Link</h5>
       <button type="button" class="close" @click="active = false">
         <span aria-hidden="true"
           ><svg
@@ -32,7 +35,7 @@
     </div>
     <div class="modal-body">
       <template v-if="shareUrl">
-        <p>Share Link</p>
+        <!--        <p>Share Link</p>-->
         <div class="mt-3 align-items-center" style="display: flex">
           <div style="flex: 1; padding-right: 1rem">
             <input
@@ -50,7 +53,7 @@
               v-clipboard:success="() => (copied = true)"
               v-clipboard:error="() => $toast.global.error('Copy failed')"
               type="button"
-              class="btn"
+              class="btn btn-big"
               :class="{ copied, 'dam-btn-outline': !copied }"
               :disabled="copied"
             >
@@ -60,7 +63,7 @@
         </div>
       </template>
       <template v-else class="search-folder mb-0">
-        <p>Create Share Link</p>
+        <!--        <p>Create Share Link</p>-->
         <div class="share-wrapper">
           <div
             v-for="folder in folders"
@@ -191,6 +194,7 @@
 
         <div class="modal-footer justify-content-end p-0 pt-3">
           <button
+            :key="creating"
             type="button"
             class="btn"
             :class="{ 'btn-disabled': !creating }"
@@ -239,6 +243,17 @@ export default {
     //     })
     //   );
     // },
+    resourceType() {
+      return this.files?.length && this.folders?.length
+        ? 'assets'
+        : this.files?.length
+        ? this.files.length === 1
+          ? 'file'
+          : 'files'
+        : this.folders.length === 1
+        ? 'folder'
+        : 'folders'
+    },
     shareMessage() {
       return this.isFolderPrivate.length >= 1 && this.isPrivate.length >= 1
     },
@@ -255,6 +270,9 @@ export default {
         return item.is_public === 0
       })
       return privateAssets
+    },
+    totalFilesFoldersCount() {
+      return this.files.length + this.folders.length
     },
   },
   watch: {

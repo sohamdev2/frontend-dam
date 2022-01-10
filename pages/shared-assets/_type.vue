@@ -1,7 +1,7 @@
 <template>
-  <div class="body-content">
-    <div class="body-content-auto w-100">
-      <div class="common-box-header">
+  <div class="container">
+    <div style="height: 100vh">
+      <div class="common-box-header mt20">
         <h2 class="title">Shared File and folders</h2>
       </div>
       <div v-if="noData" key="no-data" class="no-data-found">
@@ -37,11 +37,15 @@
       </div>
       <div
         v-else
-        class="resource-wrapper share-inner-table w-100"
+        class="body-content-main customscrollbar resource-wrapper"
         :class="[`${mode}` == 'row' ? 'grid-tile' : 'grid-list']"
+        style="height: calc(100% - 75px)"
       >
-        <div class="common-box bg-gray h-100">
-          <div class="table-list-view h-100">
+        <div
+          class="common-box bg-gray h-auto"
+          style="padding: 8px 0px; border-radius: 4px"
+        >
+          <div class="table-list-view multi-table-view category-wrapper">
             <ListingHeaderSharedResource
               v-if="!loading"
               key="header"
@@ -49,74 +53,78 @@
               :reverse="sorting.toolbar.desc"
               @sort="(args) => args.forEach((arg) => sort(...arg))"
             />
-            <ul class="tbody customscrollbar">
-              <SharedFolder
-                v-for="folder in subFolders"
-                :key="'folder-' + folder.id"
-                :folder="folder"
-                :mode="mode"
-                share-mode
-                @click.capture.native="nextStack(folder.id)"
-              />
-              <SharedResource
-                v-for="file in files"
-                :key="'file-' + file.id"
-                :file="file"
-                :mode="mode"
-                share-mode
-              />
-              <!-- <li>
-                <div class="categary-name tb-column flex52">
-                  <div class="media">
-                    <div class="media-left">
-                      <div class="categary-image">
-                        <img src="img/file/ai.svg" alt="Folder Icon" />
+            <div class="customscrollbar no_footer" style="padding: 0px 8px">
+              <ul class="tbody">
+                <SharedFolder
+                  v-for="folder in subFolders"
+                  :key="'folder-' + folder.id"
+                  :folder="folder"
+                  :mode="mode"
+                  share-mode
+                  @click.capture.native="nextStack(folder.id)"
+                />
+                <SharedResource
+                  v-for="file in files"
+                  :key="'file-' + file.id"
+                  :file="file"
+                  :mode="mode"
+                  share-mode
+                  :share-id="shareId"
+                  :share-workspace-id="workspaceId"
+                />
+                <!-- <li>
+                  <div class="categary-name tb-column flex52">
+                    <div class="media">
+                      <div class="media-left">
+                        <div class="categary-image">
+                          <img src="img/file/ai.svg" alt="Folder Icon" />
+                        </div>
+                      </div>
+                      <div class="media-body">
+                        <div class="top-column">
+                          <a
+                            href="javascript:void(0);"
+                            data-toggle="tooltip"
+                            title=""
+                            data-original-title="Ambulance Lead Times"
+                            >Ambulance Lead Times</a
+                          >
+                        </div>
                       </div>
                     </div>
-                    <div class="media-body">
-                      <div class="top-column">
-                        <a
-                          href="javascript:void(0);"
-                          data-toggle="tooltip"
-                          title=""
-                          data-original-title="Ambulance Lead Times"
-                          >Ambulance Lead Times</a
-                        >
+                  </div>
+                  <div class="assets tb-column flex15">
+                    <div class="top-column">
+                      <label>ai</label>
+                    </div>
+                  </div>
+                  <div class="update-date tb-column flex15">
+                    <div class="top-column">
+                      <label>27 Jul 2020</label>
+                    </div>
+                  </div>
+                  <div class="size tb-column flex10">
+                    <div class="top-column">
+                      <label>200 kb</label>
+                    </div>
+                  </div>
+                  <div class="categary-action tb-column flex8">
+                    <div class="top-column">
+                      <div class="categary-actions text-center">
+                        <a href="javascript:void(0);">
+                          <img src="img/download.svg" alt="" />
+                        </a>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="assets tb-column flex15">
-                  <div class="top-column">
-                    <label>ai</label>
-                  </div>
-                </div>
-                <div class="update-date tb-column flex15">
-                  <div class="top-column">
-                    <label>27 Jul 2020</label>
-                  </div>
-                </div>
-                <div class="size tb-column flex10">
-                  <div class="top-column">
-                    <label>200 kb</label>
-                  </div>
-                </div>
-                <div class="categary-action tb-column flex8">
-                  <div class="top-column">
-                    <div class="categary-actions text-center">
-                      <a href="javascript:void(0);">
-                        <img src="img/download.svg" alt="" />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </li> -->
-            </ul>
+                </li> -->
+              </ul>
+            </div>
           </div>
         </div>
       </div>
+      <DownloadingIndicator />
     </div>
-    <DownloadingIndicator />
   </div>
 </template>
 
@@ -139,18 +147,22 @@ export default {
     return $axios
       .$get(`show-share-assets?type=${params.type}&status=${query.status}`)
       .then(({ data }) => {
-        if (!data.category.length && !data.assets.length)
+        if (!data.category?.length && !data.assets?.length)
           return error({
             status: 404,
             message: 'Requested files or folders were removed.',
           })
         const subFolders = makeFolder(data.category || [])
         const files = data.assets || []
+        const shareId = data.share_id
+        const workspaceId = data.workspace_id
 
         return {
+          shareId,
           subFolders,
           files,
           stack: [{ subFolders, files }],
+          workspaceId,
         }
       })
       .catch((e) => {
@@ -180,6 +192,12 @@ export default {
     this.sort('files', 'display_file_name', this.$sortToUpperCase)
   },
   mounted() {
+    this.$axios
+      .$post(`share-link-view`, {
+        workspace_id: this.workspaceId,
+        id: this.shareId,
+      })
+      .catch(this.$errorToast)
     window.onpopstate = () => this.prevStack()
 
     if (this.$route.query.file)

@@ -52,47 +52,97 @@
       </div>
     </div>
     <div class="dam-detail">
-      <div class="row h-100">
-        <div class="col-lg-6 inner-detail-left col-xl-7 h-100">
+      <div class="dam-detail h-100 w-100">
+        <!-- <div class="row h-100"> -->
+        <div class="inner-detail-left h-100">
           <h2 class="title">
             {{ file.display_file_name | shrinkString(60, 15) }}
           </h2>
-          <div class="common-box customscrollbar p0">
-            <div v-if="isPdf || isDoc || isTxt" class="doc-wapper">
-              <div class="doc-preview">
-                <iframe
-                  v-if="isPdf"
-                  type="application/pdf"
-                  :src="__url + '#toolbar=0?transparent=0'"
-                  width="100%"
-                  height="100%"
-                >
-                </iframe>
-                <iframe
-                  v-else-if="isTxt"
-                  type="application/txt"
-                  :src="__url"
-                  width="100%"
-                  height="100%"
-                ></iframe>
-                <iframe
-                  v-else-if="isDoc"
-                  :src="`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(
-                    __url
-                  )}`"
-                  width="100%"
-                  height="100%"
-                  frameborder="0"
-                >
-                  This is an embedded
-                  <a target="_blank" href="http://office.com"
-                    >Microsoft Office</a
+          <div class="common-box customscrollbar bg-gray p20">
+            <div
+              v-if="isPdf || isDoc || isTxt || isHtml"
+              :class="{ 'doc-wapper': !previewIcon, 'no-preview': previewIcon }"
+            >
+              <div :class="{ 'doc-preview': !previewIcon, icons: previewIcon }">
+                <template v-if="isPdf">
+                  <img
+                    v-if="previewLoaded"
+                    ref="docFile"
+                    class="img-fluid"
+                    style="object-fit: contain"
+                    :src="previewFile"
+                    :alt="file.display_file_name"
+                  />
+                  <iframe
+                    v-else
+                    type="application/pdf"
+                    :src="__url + '#toolbar=0?transparent=0'"
+                    width="100%"
+                    height="100%"
+                    @load="checkPreview"
+                  ></iframe>
+                </template>
+                <template v-else-if="isHtml">
+                  <img
+                    ref="docFile"
+                    class="img-fluid"
+                    style="object-fit: contain"
+                    :src="previewImage"
+                    :alt="file.display_file_name"
+                    @error="imageErrorHandle"
+                  />
+                </template>
+                <template v-else-if="isTxt">
+                  <img
+                    v-if="previewLoaded"
+                    ref="docFile"
+                    class="img-fluid"
+                    style="object-fit: contain"
+                    :src="previewFile"
+                    :alt="file.display_file_name"
+                  />
+                  <iframe
+                    v-else
+                    type="application/txt"
+                    :src="__url"
+                    width="100%"
+                    height="100%"
+                    @load="checkPreview"
+                  ></iframe>
+                </template>
+                <template v-else-if="isDoc">
+                  <img
+                    v-if="previewLoaded"
+                    ref="docFile"
+                    class="img-fluid"
+                    style="object-fit: contain"
+                    :src="previewFile"
+                    :alt="file.display_file_name"
+                  />
+                  <iframe
+                    v-else
+                    :src="`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(
+                      __url
+                    )}`"
+                    width="100%"
+                    height="100%"
+                    frameborder="0"
+                    @load="checkPreview"
                   >
-                  document, powered by
-                  <a target="_blank" href="http://office.com/webapps">
-                    Office Online </a
-                  >.
-                </iframe>
+                    This is an embedded
+                    <a target="_blank" href="http://office.com">
+                      Microsoft Office
+                    </a>
+                    document, powered by
+                    <a target="_blank" href="http://office.com/webapps">
+                      Office Online </a
+                    >.
+                  </iframe>
+                </template>
+
+                <p v-if="previewIcon">
+                  {{ 'No preview available for this file.' }}
+                </p>
               </div>
             </div>
             <div v-else-if="isAudio" class="audio-wapper">
@@ -110,11 +160,22 @@
                 />
               </div>
             </div>
-            <div v-else-if="isVideo || isImage" class="asset-detail-img">
+            <div v-else-if="isImage" class="asset-detail-img">
+              <img
+                ref="sourceImage"
+                :src="previewImage"
+                :alt="file.display_file_name"
+                @error="imageErrorHandle"
+              />
+              <p v-if="previewIcon">
+                {{ 'No preview available for this file.' }}
+              </p>
+            </div>
+            <div v-else-if="isVideo" class="asset-detail-img">
               <div v-if="isVideo" class="preview-video">
+                <!-- :poster="videoThumbnail" -->
                 <video
                   ref="video"
-                  :poster="videoThumbnail"
                   controlsList="nodownload"
                   controls
                   class="thevideo"
@@ -123,17 +184,23 @@
                   Your browser does not support the video tag.
                 </video>
               </div>
-
-              <img
-                v-else-if="isImage"
-                :src="previewImage"
-                :alt="file.display_file_name"
-              />
             </div>
-            <div v-else class="no-preview">
-              <div class="icons">
-                <img :src="previewImage" :alt="file.display_file_name" />
-                <p>
+            <div
+              v-else
+              :class="{ 'no-preview': !hasZipCompressedImage }"
+              :style="{
+                textAlign: hasZipCompressedImage ? 'center' : '',
+              }"
+            >
+              <div :class="{ icons: !hasZipCompressedImage }">
+                <img
+                  :src="
+                    hasZipCompressedImage ? file.compress_file : previewImage
+                  "
+                  :alt="file.display_file_name"
+                  @error="imageErrorHandle"
+                />
+                <p v-if="!hasZipCompressedImage">
                   {{
                     ui.videoError
                       ? 'We cannot play this video, yet...'
@@ -144,13 +211,8 @@
             </div>
           </div>
         </div>
-        <div
-          v-if="ui.loading"
-          class="col-lg-6 inner-detail-right col-xl-5 h-100"
-        >
-          loading...
-        </div>
-        <div v-else class="col-lg-6 inner-detail-right col-xl-5 h-100">
+        <div v-if="ui.loading" class="inner-detail-right h-100">loading...</div>
+        <div v-else class="inner-detail-right h-100">
           <div class="common-box detail-tabs p0">
             <div class="tabs-view h-100">
               <ul class="nav nav-left" role="tablist">
@@ -181,7 +243,9 @@
                     class="tab-pane"
                     :class="{ active: ui.tab === 'overview' }"
                   >
-                    <h4>{{ file.display_file_name | shrinkString(60, 15) }}</h4>
+                    <h4>
+                      {{ file.display_file_name | shrinkString(60, 15) }}
+                    </h4>
                     <p>{{ file.description }}</p>
                     <template v-if="file.category && file.category.length">
                       <h5>Included in Folders</h5>
@@ -373,6 +437,60 @@
                     </svg>
                     Download
                   </button>
+                  <div
+                    v-if="downloadableFormats.length"
+                    class="dropdown convert-video"
+                  >
+                    <a
+                      href="javascript:void(0);"
+                      class="dropdown-toggle btn btn-gray btn-icon"
+                      :class="{
+                        disabledFileConvert: allButtonDisabled || converting,
+                      }"
+                      :disabled="allButtonDisabled || converting"
+                      data-toggle="dropdown"
+                    >
+                      <svg
+                        id="Layer_1"
+                        class="convert-assets-icon"
+                        :class="{ converting: converting }"
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        x="0px"
+                        y="0px"
+                        viewBox="0 0 18 18"
+                        xml:space="preserve"
+                      >
+                        <g id="Convert">
+                          <g id="sync" transform="translate(-2 -2.023)">
+                            <path
+                              id="Path_40227"
+                              class="fill-color"
+                              d="M16.1,14.6h1.8c-2,3.8-6.7,5.3-10.5,3.3c-2.6-1.3-4.2-4-4.2-6.9H2c0,5,4,9,9,9c3.2,0,6.2-1.7,7.8-4.5v1.8H20v-3.9h-3.9V14.6z"
+                            ></path>
+                            <path
+                              id="Path_40228"
+                              class="fill-color"
+                              d="M5.9,7.4H4.1c2-3.8,6.7-5.3,10.5-3.3c2.6,1.3,4.2,4,4.2,6.9H20c0-5-4-9-9-9C7.8,2,4.8,3.7,3.2,6.5V4.7H2v3.9h3.9V7.4z"
+                            ></path>
+                          </g>
+                        </g>
+                      </svg>
+                      {{ converting ? 'Converting...' : 'Convert' }}
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li
+                        v-for="format in downloadableFormats"
+                        :key="format"
+                        @click="convertFile(format)"
+                      >
+                        <a href="javascript:void(0);" class="dropdown-item">{{
+                          format
+                        }}</a>
+                      </li>
+                    </ul>
+                  </div>
                   <button
                     v-if="file.is_public === 1"
                     type="button"
@@ -433,6 +551,7 @@
           ></ShareFile>
         </client-only>
         <DownloadingIndicator />
+        <!-- </div> -->
       </div>
     </div>
   </div>
@@ -441,13 +560,90 @@
 <script>
 import EXIF from 'exif-js'
 import axios from 'axios'
+import FileSaver from 'file-saver'
+import Jimp from 'jimp'
 import fileType from '~/mixins/fileType'
 
 const categories = ['video', 'audio', 'image', 'application', 'archive']
 
+const VIDEO_FORMATS = [
+  'asf',
+  'avi',
+  'fla',
+  'f4a',
+  'f4b',
+  'f4p',
+  'flv',
+  'f4v',
+  // 'mmf',
+  'mov',
+  'mpeg',
+  'mp4',
+  'm4v',
+  // 'ogg',
+  'ogv',
+  'rm',
+  // 'viv',
+  'vob',
+  'wav',
+  'webm',
+]
+const AUDIO_FORMATS = [
+  'mp2',
+  'mp3',
+  'oga',
+  'opus',
+  'wv',
+  'voc',
+  'tta',
+  'flac',
+  'au',
+  'aiff',
+]
+const IMAGE_FORMATS = [
+  'tif',
+  'tiff',
+  'bmp', // exclude for svg file
+  'jpg',
+  // 'jp2',
+  // 'gif',//requires libvips with support for ImageMagick
+  'jpeg',
+  'jfif', // exclude for svg file
+  // 'pjpeg',
+  // 'pjp',
+  'png',
+  // 'eps',
+  // 'raw',
+  // 'cr2',
+  // 'orf',
+  // 'sr2',
+  // 'apng',
+  // 'svg',
+  'webp',
+  // 'ico',
+  // 'cur',
+  'heif',
+  'avif',
+]
+const UNSUPPORTED_FORMATS_FROM_SVG = ['bmp', 'jfif']
+const IMAGE_MIMETYPES = {
+  tif: 'image/tiff',
+  tiff: 'image/tiff',
+  bmp: 'image/bmp',
+  jpg: 'image/jpeg',
+  jpeg: 'image/jpeg',
+  jfif: 'image/jpeg',
+  pjpeg: 'image/pjpeg',
+  png: 'image/png',
+  eps: 'application/postscript',
+  svg: 'image/svg+xml',
+  webp: 'image/webp',
+  ico: 'image/vnd.microsoft.icon',
+}
+
 const categoriesObject = [
   { text: 'Home', id: '' },
-  { text: 'Audio', id: 'audio' },
+  { text: 'Audios', id: 'audio' },
   { text: 'Documents', id: 'application' },
   { text: 'Images', id: 'image' },
   { text: 'Videos', id: 'video' },
@@ -518,7 +714,7 @@ export default {
           metaData = sortObject(metaData)
         }
 
-        delete data.thumbnail_file
+        // delete data.thumbnail_file
         if ((data.file_type || '').toLowerCase() === 'gif')
           delete data.compress_file
 
@@ -543,9 +739,38 @@ export default {
       },
       videoThumbnail: null,
       exif: null,
+      previewIcon: false,
+      previewFile: null,
+      previewLoaded: false,
+      converting: false,
     }
   },
   computed: {
+    downloadableFormats() {
+      const sortAscending = (a, b) => a.localeCompare(b)
+      if (this.file.type === 'video')
+        return [...VIDEO_FORMATS, 'gif'].sort(sortAscending)
+      if (this.file.type === 'audio') return AUDIO_FORMATS.sort(sortAscending)
+      if (this.file.type === 'image') {
+        if (this.file.file_type === 'svg')
+          return [
+            'svg',
+            ...IMAGE_FORMATS.filter(
+              (e) => !UNSUPPORTED_FORMATS_FROM_SVG.includes(e)
+            ),
+          ].sort(sortAscending)
+        return this.file.file_type === 'gif'
+          ? ['gif', ...IMAGE_FORMATS].sort(sortAscending)
+          : IMAGE_FORMATS.sort(sortAscending)
+      }
+      return []
+    },
+    hasZipCompressedImage() {
+      return (
+        this.file.file_type === 'zip' &&
+        (this.file.compress_file || '').length > 0
+      )
+    },
     hashParam() {
       return this.$route.params.came_from_hash
     },
@@ -685,6 +910,151 @@ export default {
     }
   },
   methods: {
+    updateDownloadCount(assetId, type) {
+      this.$axios.$post('digital/download-count', {
+        workspace_id: this.$getWorkspaceId(),
+        asset_id: assetId,
+        is_backend_download: true,
+        download_by: 'desktop',
+        type,
+      })
+    },
+    convertOtherImage(format) {
+      axios
+        .post(
+          '/convert',
+          {
+            url: this.file.display_file,
+            format,
+            fileType: 'image',
+          },
+          {
+            responseType: 'blob',
+          }
+        )
+        .then((r) => {
+          const targetName =
+            this.file.display_file_name.substring(
+              0,
+              this.file.display_file_name.lastIndexOf('.') + 1
+            ) + format
+          FileSaver.saveAs(r.data, targetName)
+          this.updateDownloadCount(this.file.id, 'asset')
+        })
+        .catch(console.error)
+        .finally(() => (this.converting = false))
+    },
+    convertFile(format) {
+      if (this.converting) return
+      if (
+        format === this.file.file_type ||
+        !['audio', 'video', 'image'].includes(this.file.type)
+      ) {
+        return this.downloadFile()
+      }
+      const targetName =
+        this.file.display_file_name.substring(
+          0,
+          this.file.display_file_name.lastIndexOf('.') + 1
+        ) + format
+      this.converting = true
+      if (['audio', 'video'].includes(this.file.type)) {
+        axios
+          .post(
+            '/convert',
+            {
+              url: this.file.display_file,
+              format,
+              fileType: this.file.type,
+            },
+            {
+              responseType: 'blob',
+            }
+          )
+          .then((r) => {
+            FileSaver.saveAs(r.data, targetName)
+            this.updateDownloadCount(this.file.id, 'asset')
+          })
+          .catch(console.error)
+          .finally(() => (this.converting = false))
+      } else if (['jfif', 'bmp'].includes(format)) {
+        Jimp.read(this.file.display_file)
+          .then((image) => {
+            const mime = IMAGE_MIMETYPES[format]
+            if (!mime) {
+              this.$toast.error('Could not retrieve mimeType')
+              this.converting = false
+              return
+            }
+            image.getBase64(mime, (e, d) => {
+              if (e) {
+                this.$toast.error('Could not convert image')
+                this.converting = false
+                return
+              }
+              FileSaver.saveAs(d, targetName)
+              this.updateDownloadCount(this.file.id, 'asset')
+            })
+          })
+          .catch(console.error)
+          .finally(() => {
+            this.converting = false
+          })
+      } else {
+        this.convertOtherImage(format)
+      }
+    },
+    imageErrorHandle(data) {
+      if (this.isPdf || this.isTxt || this.isDoc || this.isHtml) {
+        this.previewIcon = true
+      }
+      try {
+        data.target.src = require(`~/assets/img/icon/file/${this.file.file_type.toLowerCase()}.svg`)
+      } catch {
+        data.target.src = require(`~/assets/img/icon/file/general.svg`)
+      }
+      setTimeout(() => {
+        if (this.file.file_type.toLowerCase() === 'html') {
+          this.$refs.docFile.style.maxHeight = '128px'
+        } else if (this.$isImage(this.file.file_type)) {
+          this.$refs.sourceImage.style.maxHeight = '128px'
+        }
+      }, 50)
+    },
+    errorHandle() {
+      if (this.isPdf || this.isTxt || this.isDoc || this.isHtml) {
+        this.previewIcon = true
+      }
+      try {
+        this.previewFile = require(`~/assets/img/icon/file/${this.file.file_type.toLowerCase()}.svg`)
+      } catch {
+        this.previewFile = require(`~/assets/img/icon/file/general.svg`)
+      }
+      setTimeout(() => {
+        this.$refs.docFile.style.maxHeight = '128px'
+      }, 50)
+    },
+    checkPreview() {
+      axios
+        .get(this.file.display_file)
+        .then(() => {
+          return true
+        })
+        .catch(() => {
+          if (this.file.file_preview_id) {
+            if (this.file.file_preview_status === 'success') {
+              this.previewFile = this.file.compress_file
+              this.previewLoaded = true
+            } else {
+              this.previewLoaded = true
+              this.errorHandle()
+            }
+          } else {
+            this.previewLoaded = true
+            this.errorHandle()
+          }
+        })
+    },
     removeTagFromFile(tag) {
       this.$axios
         .$post('digital-assets/delete-tag', {
@@ -824,3 +1194,21 @@ export default {
   },
 }
 </script>
+<style scoped>
+.convert-assets-icon.converting {
+  animation: rotate 1s infinite both;
+}
+@keyframes rotate {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+.dropdown-toggle.disabledFileConvert {
+  pointer-events: none;
+  opacity: 0.4;
+  cursor: no-drop;
+}
+</style>

@@ -1,5 +1,6 @@
 <template>
   <li
+    :style="selected || shareMode ? '' : 'cursor: pointer !important'"
     :class="{
       selected,
       video: isVideo,
@@ -53,6 +54,7 @@
         >
           <nuxt-link
             :is="shareMode ? 'a' : 'nuxt-link'"
+            v-if="!imageLoading && !videoThumbnailFetching"
             class="img-link"
             :event="selected || shareMode ? '' : 'click'"
             :to="
@@ -69,8 +71,14 @@
                   }
             "
           >
-            <div :class="{ icons: videoThumbnail == previewImage }">
-              <img :src="videoThumbnail" />
+            <div
+              :class="{
+                icons:
+                  videoThumbnail.split(/[#?]/)[0].split('.').pop().trim() ==
+                  'svg',
+              }"
+            >
+              <img :src="videoThumbnail" @load="imageLoading = false" />
             </div>
             <video
               ref="video"
@@ -96,7 +104,7 @@
               "
             >
               <ContentLoader
-                v-if="(isImage && imageLoading) || videoThumbnailFetching"
+                v-if="imageLoading || (isVideo && videoThumbnailFetching)"
                 style="position: absolute; top: 0; right: 0; left: 0; bottom: 0"
                 :speed="1"
                 :width="100"
@@ -131,7 +139,7 @@
                     type="button"
                     class="dropdown-toggle"
                     data-toggle="dropdown"
-                    @click.capture.stop="dropDown()"
+                    @click.capture.prevent.stop="dropDown()"
                   >
                     <svg
                       id="Layer_1"
@@ -262,7 +270,7 @@
                 </div>
               </div>
             </div>
-            <div class="down-info">
+            <div class="down-info" style="z-index: 4">
               <template v-if="isVideo">
                 <video
                   :id="`file-video-${file.id}`"
@@ -279,7 +287,7 @@
               </template>
 
               <template v-if="isVideo">
-                <a @click="paused = !paused">
+                <a @click.capture.prevent.stop="paused = !paused">
                   <svg
                     v-if="paused"
                     id="Layer_1"
@@ -321,6 +329,7 @@
                   ref="expandButton"
                   :href="`#file-video-${file.id}`"
                   data-fancybox
+                  @click="viewAssetsCount()"
                   ><svg
                     id="Layer_1"
                     class="expand-icon white"
@@ -384,11 +393,49 @@
                   }
             "
           >
-            <div :class="{ icons: !isImage }">
+            <div v-if="isDoc" :class="{ icons: !isDoc }">
               <img
                 v-show="!imageLoading"
                 :src="previewImage"
                 @load="imageLoading = false"
+                @error="errorHandle"
+              />
+            </div>
+            <div v-else-if="isTxt" :class="{ icons: !__image_thumb }">
+              <img
+                v-show="!imageLoading"
+                :src="__image_thumb || previewImage"
+                @load="imageLoading = false"
+                @error="errorHandle"
+              />
+            </div>
+            <div v-else-if="isPdf" :class="{ icons: !isPdf || filePreview }">
+              <img
+                v-show="!imageLoading"
+                :src="previewImage"
+                @load="imageLoading = false"
+                @error="errorHandle"
+              />
+            </div>
+            <div v-else-if="isHtml" :class="{ icons: !isHtml || filePreview }">
+              <img
+                v-show="!imageLoading"
+                :src="previewImage"
+                @load="imageLoading = false"
+                @error="errorHandle"
+              />
+            </div>
+            <div
+              v-else
+              :class="{
+                icons: !hasZipCompressedImage && (!isImage || filePreview),
+              }"
+            >
+              <img
+                v-show="!imageLoading"
+                :src="file.thumbnail_file || previewImage"
+                @load="imageLoading = false"
+                @error="errorHandle"
               />
             </div>
           </nuxt-link>
@@ -438,7 +485,7 @@
                     type="button"
                     class="dropdown-toggle"
                     data-toggle="dropdown"
-                    @click.capture.stop="dropDown()"
+                    @click.capture.prevent.stop="dropDown()"
                   >
                     <svg
                       id="Layer_1"
@@ -569,7 +616,7 @@
                 </div>
               </div>
             </div>
-            <div class="down-info">
+            <div class="down-info" style="z-index: 4">
               <a
                 ref="expandButton"
                 style="display: none"
@@ -581,7 +628,12 @@
               >
               </a>
 
-              <a v-if="isImage" @click.stop="$refs.expandButton.click()"
+              <a
+                v-if="isImage"
+                @click.stop="
+                  $refs.expandButton.click()
+                  viewAssetsCount()
+                "
                 ><svg
                   id="Layer_1"
                   class="expand-icon white"
@@ -850,6 +902,30 @@ export default {
     }
   },
   computed: {
+    hasZipCompressedImage() {
+      return (
+        this.file.file_type === 'zip' &&
+        (this.file.compress_file || '').length > 0
+      )
+    },
+    filePreview() {
+      let x = null
+      if (this.file.file_preview_id) {
+        if (
+          this.file.file_preview_status === 'pending' ||
+          this.file.file_preview_status === 'started'
+        ) {
+          x = true
+        } else {
+          x = false
+        }
+      } else if (this.isImage) {
+        x = false
+      } else if (this.isTxt || this.isPdf || this.isDoc) {
+        x = true
+      }
+      return x
+    },
     hashParam() {
       return (this.$route.hash || '').replace('#', '')
     },
@@ -911,6 +987,14 @@ export default {
     this.loadJS()
   },
   methods: {
+    errorHandle(data) {
+      try {
+        data.target.src = require(`~/assets/img/icon/file/${this.file.file_type.toLowerCase()}.svg`)
+      } catch {
+        data.target.src = require(`@/assets/img/icon/file/general.svg`)
+      }
+      data.target.parentElement.classList.add('icons')
+    },
     loadJS() {
       window.$('[data-toggle="tooltip"]').tooltip()
     },
@@ -963,10 +1047,10 @@ export default {
         const video = this.$refs.video
         video.ontimeupdate = function () {
           if (video.currentTime >= 5) {
-            const tmp_src = video.src
+            const src = video.src
 
             video.src = ''
-            video.src = tmp_src
+            video.src = src
             video.currentTime = 0
             video.play()
           }
@@ -983,17 +1067,26 @@ export default {
     setPlaytime() {
       setTimeout(() => {
         try {
-          window.$(
-            `[data-id="file-${this.file.id}"]`
-          )[0].currentTime = this.$refs.video.currentTime
+          window.$(`[data-id="file-${this.file.id}"]`)[0].currentTime =
+            this.$refs.video.currentTime
         } catch {
           //
         }
       }, 250)
     },
+    async viewAssetsCount() {
+      await this.$axios
+        .$post('digital/view-asset-count', {
+          workspace_id: this.$getWorkspaceId(),
+          asset_id: this.file.id,
+        })
+        .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
+    },
     getThumbnail() {
-      if (this.file.thumbnail_file)
+      if (this.file.thumbnail_file) {
+        this.imageLoading = true
         return (this.videoThumbnail = this.file.thumbnail_file)
+      }
 
       this.videoThumbnailAdded = false
       this.videoThumbnailFetching = true
@@ -1016,7 +1109,7 @@ export default {
         url: this.__url,
         name: this.file.display_file_name,
         callCountApi: !this.shareMode,
-        useModernDownload: true,
+        useModernDownload: false,
       })
     },
   },

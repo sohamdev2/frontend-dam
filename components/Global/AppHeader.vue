@@ -16,10 +16,10 @@
           :key="link.name"
           :class="{ active: $route.hash == link.tagName ? true : false }"
         >
-          <nuxt-link :to="link.to"
+          <a href="javascript:void(0)" @click="changeCategory(link.to)"
             ><span>{{ link.name }}</span
             ><span v-html="link.imageUrl"></span
-          ></nuxt-link>
+          ></a>
         </li>
       </ul>
     </div>
@@ -27,9 +27,9 @@
       <div class="dropdown mycollection">
         <button type="button" class="dropdown-toggle" data-toggle="dropdown">
           <svg
+            id="Layer_1"
             class="collection-icon"
             version="1.1"
-            id="Layer_1"
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
             x="0px"
@@ -56,9 +56,9 @@
           </svg>
           <span>Collection</span>
           <svg
+            id="Layer_1"
             class="arrow-down-icon"
             version="1.1"
-            id="Layer_1"
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
             x="0px"
@@ -339,7 +339,7 @@
                       d="M883.9,234.4l3.2,3.1l-3.2,3.4v-2.3h-3.8c-2.1,0-4.3,0.5-6.1,1.6c1.4-2,3.9-3.2,8.4-3.2h1.5L883.9,234.4 M883.1,231.8c-0.4,0-0.7,0.3-0.7,0.7c0,0,0,0,0,0v3c-8.8,0-11.2,4.3-11.4,10.6c0,0.1,0,0.1,0.1,0.1c0.1,0,0.1,0,0.1-0.1c1.4-4,4.6-6,8.9-6h2.3v2.9c0,0.4,0.3,0.7,0.7,0.7c0,0,0,0,0,0c0.2,0,0.4-0.1,0.5-0.2l5.2-5.5c0.3-0.3,0.2-0.7,0-1c0,0,0,0,0,0l-5.2-4.9C883.4,231.9,883.3,231.8,883.1,231.8L883.1,231.8z"
                     ></path>
                   </g></svg
-                >Shared URL
+                >Shared URLs
               </nuxt-link>
             </li>
             <li>
@@ -443,7 +443,7 @@ export default {
           tagName: '#application',
         },
         {
-          name: 'Audio',
+          name: 'Audios',
           to: {
             name: 'brand_name-folders',
             params: { brand_name: this.$getBrandName() },
@@ -498,6 +498,10 @@ export default {
     this.userLogo = workspace.logo
   },
   methods: {
+    changeCategory(toData) {
+      this.$emit('resetList')
+      this.$router.push(toData)
+    },
     async loadCollection() {
       const workspace = this.$getWorkspaceId()
       if (!workspace) {
@@ -519,14 +523,12 @@ export default {
       )
       // redirect then to the appropriate dashboard
       if (this.auth.is_domain === workspace.is_domain) {
-        console.log('if')
         if (workspace.is_domain === 1) {
           await this.$logout()
           window.location.replace(
             'http://' + `${workspace.url}/${workspace.workspace_id}`
           )
         } else {
-          console.log('else')
           const formData = new FormData()
           formData.append('id', this.user.id)
           formData.append('instance_id', instance.instance_id)
@@ -544,7 +546,6 @@ export default {
             })
         }
       } else if (this.auth.is_domain !== workspace.is_domain) {
-        console.log('elseif')
         if (workspace.is_domain === 1) {
           await this.$logout()
           window.location.replace(
