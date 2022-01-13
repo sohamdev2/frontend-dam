@@ -1055,7 +1055,7 @@ export default {
           }
         })
     },
-    removeTagFromFile(tag) {
+    /* removeTagFromFile(tag) {
       this.$axios
         .$post('digital-assets/delete-tag', {
           workspace_id: this.$getWorkspaceId(),
@@ -1075,7 +1075,7 @@ export default {
           this.tags.push(data)
         })
         .catch(this.onError)
-    },
+    }, */
     async archiveFile() {
       if (this.ui.archiving) return
 
