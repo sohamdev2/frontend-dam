@@ -2,7 +2,7 @@
   <li>
     <div class="tb-column flex3">
       <div class="top-column">
-        <label class="check-label">
+        <label v-if="revoked" class="check-label">
           <input
             type="checkbox"
             :checked="selected"
@@ -88,16 +88,52 @@
             </svg>
           </a>
         </li>
-        <li>
+        <li v-if="!revoked">
+          <a @click="$refs.deleteDialog.triggerModel()">
+            <SpinLoading v-if="deletingModel" />
+            <svg
+              v-else
+              id="Layer_1"
+              v-tooltip="'Revoke Shared URL'"
+              class="inactive-icon h-orange"
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              x="0px"
+              y="0px"
+              viewBox="0 0 18 18"
+              style="enable-background: new 0 0 18 18"
+              xml:space="preserve"
+            >
+              <g>
+                <g id="turn-off" transform="translate(-20.581)">
+                  <g id="Group_39280" transform="translate(21.331)">
+                    <g id="Group_39279" transform="translate(0)">
+                      <path
+                        id="Path_40169"
+                        class="fill-color"
+                        d="M11.6,2.2c-0.4-0.2-0.8,0-1,0.4c-0.2,0.4,0,0.8,0.4,1c3.4,1.5,5,5.5,3.5,8.9c-1.5,3.4-5.5,5-8.9,3.5c-3.4-1.5-5-5.5-3.5-8.9C2.7,5.5,4,4.2,5.6,3.6C5.9,3.4,6.1,3,6,2.6S5.4,2,5,2.2c0,0,0,0,0,0C0.8,4-1.1,8.9,0.7,13s6.7,6.1,10.9,4.3c4.2-1.8,6.1-6.7,4.3-10.9C15,4.5,13.5,3,11.6,2.2L11.6,2.2z"
+                      />
+                      <path
+                        id="Path_40170"
+                        class="fill-color"
+                        d="M8.2,8.2C8.7,8.2,9,7.9,9,7.5V0.8C9,0.3,8.7,0,8.2,0S7.5,0.3,7.5,0.8v6.8C7.5,7.9,7.8,8.2,8.2,8.2z"
+                      />
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </a>
+        </li>
+        <li v-else>
           <a @click="deletingModel ? null : $refs.deleteDialog.triggerModel()">
             <SpinLoading v-if="deletingModel" />
             <svg
               v-else
               id="Layer_1"
-              data-original-title="Delete URL"
+              v-tooltip="'Delete Shared URL'"
               class="delete-icon h-orange"
-              data-toggle="tooltip"
-              title=""
               version="1.1"
               xmlns="http://www.w3.org/2000/svg"
               xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -125,11 +161,16 @@
     <client-only>
       <DeleteDialog
         ref="deleteDialog"
-        header-text="Delete Share URL"
+        :header-text="`${url.is_active ? 'Revoke' : 'Delete'} Share URL`"
         @click:confirm-button="deleteUrl()"
       >
-        <template slot="header">Delete Share URL</template>
-        Are you sure you want to delete the <strong>shared URL</strong>?
+        <template slot="header"
+          >{{ url.is_active ? 'Revoke' : 'Delete' }} Share URL</template
+        >
+
+        Are you sure you want to
+        <strong>{{ `${url.is_active ? 'revoke' : 'delete'}` }}</strong>
+        shared URL?
       </DeleteDialog>
     </client-only>
   </li>
@@ -178,7 +219,15 @@ export default {
           workspace_id: this.$getWorkspaceId(),
           share_url_id: this.url.id,
         })
-        .then(() => this.$emit('deleted', this.url.id))
+        .then(({ data }) => {
+          //  if (this.isFromUser) {
+          this.$emit('revoked', this.url)
+
+          //  }
+          if (data.deleted_at && data.is_active === 0) {
+            this.$emit('deleted', this.url.id)
+          }
+        })
         .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
 
       this.deletingModel = false
