@@ -151,15 +151,7 @@ export const actions = {
       callCountApi: false,
       multiple: true,
       extras: { orgUrl },
-    }).then(() =>
-      this.$axios.$post('share-assets-download', {
-        workspace_id: this.$getWorkspaceId(),
-        digital_assets_id: files,
-        category_id: folders,
-        share_Id: shareId,
-        download_by: 'desktop',
-      })
-    )
+    }).then()
   },
   downloadFile(
     { commit, state: { files: stateFiles } },
