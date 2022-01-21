@@ -43,7 +43,7 @@
           </g>
         </svg>
       </a>
-      <div class="frontend-left-menu">
+      <div v-show="!!leftMenuOpen" class="frontend-left-menu">
         <h4>Folders</h4>
 
         <div class="category-list customscrollbar">
@@ -145,7 +145,7 @@
       </div>
 
       <div
-        v-if="!user.is_slider && tileData && tileData.length"
+        v-if="0 && !user.is_slider && tileData && tileData.length"
         class="section-title"
       >
         <h4>Tiles List</h4>
