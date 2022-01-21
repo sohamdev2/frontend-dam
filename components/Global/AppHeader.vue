@@ -42,7 +42,11 @@
     </div>
     <div class="col d-flex align-items-center justify-content-end">
       <div class="dropdown mycollection">
-        <button type="button" class="dropdown-toggle" data-toggle="dropdown">
+        <button
+          type="button"
+          class="dropdown-toggle collection-button"
+          data-toggle="dropdown"
+        >
           <svg
             id="Layer_1"
             class="collection-icon"
@@ -105,11 +109,15 @@
             </g>
           </svg>
         </button>
-        <div v-if="collectionList.length === 0" class="dropdown-menu">
+        <div
+          v-if="collectionList.length === 0"
+          ref="collectionDropdown"
+          class="dropdown-menu"
+        >
           <span>Recent Collection</span>
           <p>No collection available.</p>
         </div>
-        <div v-else class="dropdown-menu">
+        <div v-else ref="collectionDropdown" class="dropdown-menu">
           <span>Recent Collection</span>
           <ul class="collection-folder">
             <li v-for="collection in collectionList" :key="collection.id">
@@ -157,7 +165,7 @@
           <span>{{ user.name || user.email }}</span>
           <svg
             id="Layer_1"
-            class="arrow-down-icon"
+            class="arrow-down-icon user-dropdown-icon"
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -199,7 +207,7 @@
             {{ (user.name || user.email || '').slice(0, 2) }}
           </div>
         </a>
-        <div class="dropdown-menu">
+        <div ref="userDropdown" class="dropdown-menu">
           <ul class="workspace-menu customscrollbar">
             <li
               v-for="instance in accessibleIntances"
@@ -517,6 +525,46 @@ export default {
             .querySelectorAll('path.fill-color')
             .forEach((e) => (e.style.fill = textColor || '#ffffffa6'))
         })
+      document
+        .querySelectorAll('button.collection-button .fill-color')
+        .forEach((e) => (e.style.fill = textColor || '#ffffffa6'))
+      document.querySelector('button.collection-button').style.color =
+        textColor || '#ffffffa6'
+      document
+        .querySelectorAll('.user-dropdown-icon .fill-color')
+        .forEach((e) => (e.style.fill = textColor || '#ffffffa6'))
+      document.querySelector('a#profileDropdown').style.color =
+        textColor || '#ffffffa6'
+
+      this.observer = new MutationObserver((mutations) => {
+        for (const m of mutations) {
+          const newValue = m.target.getAttribute(m.attributeName)
+          this.$nextTick(() => {
+            this.onCollectionDropdown(newValue, m.oldValue)
+          })
+        }
+      })
+
+      this.observer.observe(this.$refs.collectionDropdown, {
+        attributes: true,
+        attributeOldValue: true,
+        attributeFilter: ['class'],
+      })
+
+      this.observer2 = new MutationObserver((mutations) => {
+        for (const m of mutations) {
+          const newValue = m.target.getAttribute(m.attributeName)
+          this.$nextTick(() => {
+            this.onUserDropdown(newValue, m.oldValue)
+          })
+        }
+      })
+
+      this.observer2.observe(this.$refs.userDropdown, {
+        attributes: true,
+        attributeOldValue: true,
+        attributeFilter: ['class'],
+      })
     })
     const workspace = this.$auth.user.accessibleInstances.find(
       ({ workspace_id }) =>
@@ -524,7 +572,47 @@ export default {
     )
     this.userLogo = workspace.logo
   },
+  beforeDestroy() {
+    this.observer.disconnect()
+    this.observer2.disconnect()
+  },
   methods: {
+    onCollectionDropdown(classAttrValue) {
+      const textColor = this.$auth.user.themes_option.header_text_color
+      const hoverColor = this.$auth.user.themes_option.header_text_hover_color
+      const classList = classAttrValue.split(' ')
+      if (classList.includes('show')) {
+        document
+          .querySelectorAll('button.collection-button .fill-color')
+          .forEach((e) => (e.style.fill = hoverColor || '#ffffff'))
+        document.querySelector('button.collection-button').style.color =
+          hoverColor || '#ffffff'
+      } else {
+        document
+          .querySelectorAll('button.collection-button .fill-color')
+          .forEach((e) => (e.style.fill = textColor || '#ffffffa6'))
+        document.querySelector('button.collection-button').style.color =
+          textColor || '#ffffffa6'
+      }
+    },
+    onUserDropdown(classAttrValue) {
+      const textColor = this.$auth.user.themes_option.header_text_color
+      const hoverColor = this.$auth.user.themes_option.header_text_hover_color
+      const classList = classAttrValue.split(' ')
+      if (classList.includes('show')) {
+        document
+          .querySelectorAll('a#profileDropdown .fill-color')
+          .forEach((e) => (e.style.fill = hoverColor || '#ffffff'))
+        document.querySelector('a#profileDropdown').style.color =
+          hoverColor || '#ffffff'
+      } else {
+        document
+          .querySelectorAll('a#profileDropdown .fill-color')
+          .forEach((e) => (e.style.fill = textColor || '#ffffffa6'))
+        document.querySelector('a#profileDropdown').style.color =
+          textColor || '#ffffffa6'
+      }
+    },
     headerTxtHover(id) {
       const hoverColor = this.$auth.user.themes_option.header_text_hover_color
       document.getElementById(id).style.color = hoverColor || '#ffffff'
