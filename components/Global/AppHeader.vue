@@ -1,5 +1,12 @@
 <template>
-  <header class="header-sec row no-gutters">
+  <header
+    class="header-sec row no-gutters"
+    :style="
+      $auth.user.themes_option.header_background_color
+        ? `background-color:${$auth.user.themes_option.header_background_color}`
+        : ''
+    "
+  >
     <div class="main-logo col">
       <nuxt-link :to="`/${$getBrandName()}`">
         <img
@@ -10,13 +17,23 @@
       </nuxt-link>
     </div>
     <div class="main-menu col-7">
-      <ul>
+      <ul class="header-nav">
         <li
           v-for="link in headerLinks"
           :key="link.name"
           :class="{ active: $route.hash == link.tagName ? true : false }"
         >
-          <a href="javascript:void(0)" @click="changeCategory(link.to)"
+          <a
+            :id="link.name"
+            href="javascript:void(0)"
+            :style="
+              $auth.user.themes_option.header_text_color
+                ? `color:${$auth.user.themes_option.header_text_color}`
+                : ''
+            "
+            @click="changeCategory(link.to)"
+            @mouseover="headerTxtHover(link.name)"
+            @mouseout="headerTxtHoverOut(link.name)"
             ><span>{{ link.name }}</span
             ><span v-html="link.imageUrl"></span
           ></a>
@@ -490,6 +507,16 @@ export default {
   mounted() {
     this.$nextTick(() => {
       window.$(this.$el).find('.dropdown-toggle').dropdown()
+      const textColor = this.$auth.user.themes_option.header_text_color
+      this.headerLinks
+        .map((e) => e.name)
+        .forEach((id) => {
+          document.getElementById(id).style.color = textColor || '#ffffffa6'
+          document
+            .getElementById(id)
+            .querySelectorAll('path.fill-color')
+            .forEach((e) => (e.style.fill = textColor || '#ffffffa6'))
+        })
     })
     const workspace = this.$auth.user.accessibleInstances.find(
       ({ workspace_id }) =>
@@ -498,6 +525,22 @@ export default {
     this.userLogo = workspace.logo
   },
   methods: {
+    headerTxtHover(id) {
+      const hoverColor = this.$auth.user.themes_option.header_text_hover_color
+      document.getElementById(id).style.color = hoverColor || '#ffffff'
+      document
+        .getElementById(id)
+        .querySelectorAll('path.fill-color')
+        .forEach((e) => (e.style.fill = hoverColor || '#ffffff'))
+    },
+    headerTxtHoverOut(id) {
+      const textColor = this.$auth.user.themes_option.header_text_color
+      document.getElementById(id).style.color = textColor || '#ffffffa6'
+      document
+        .getElementById(id)
+        .querySelectorAll('path.fill-color')
+        .forEach((e) => (e.style.fill = textColor || '#ffffffa6'))
+    },
     changeCategory(toData) {
       this.$emit('resetList')
       this.$router.push(toData)
