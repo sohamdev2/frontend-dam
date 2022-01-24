@@ -7,12 +7,12 @@
       <div
         class="btns mb20 d-flex align-items-center"
         :class="{
-          'justify-content-between': breadcrumb.length,
-          'justify-content-end': !breadcrumb.length,
+          'justify-content-between': breadcrumbs.length,
+          'justify-content-end': !breadcrumbs.length,
         }"
       >
-        <div v-if="breadcrumb.length">
-          <a href="share-inner.html" class="home-icon">
+        <div v-if="breadcrumbs.length">
+          <a class="home-icon" @click="goToHomeList()">
             <svg
               id="Layer_1"
               class="home-icon orange"
@@ -45,11 +45,12 @@
           <div class="breadcrumb-links">
             <ul>
               <li>&nbsp;</li>
-              <li><a href="#">New Folder</a></li>
-              <li><a href="#">New Folder 2</a></li>
-              <li><a href="#">New Folder 3</a></li>
-              <li><a href="#">New Folder 4</a></li>
-              <li><span>Ambulance Lead Times</span></li>
+              <li v-for="(crumb, i) in breadcrumbs" :key="i">
+                <a v-if="crumb.url" @click="nextStack(crumb.folderId)">{{
+                  crumb.name
+                }}</a>
+                <span v-else>{{ crumb.name }}</span>
+              </li>
             </ul>
           </div>
         </div>
@@ -225,7 +226,7 @@ export default {
       mode: 'column',
       deleting: false,
       loading: false,
-      breadcrumb: [],
+      breadcrumb: null,
     }
   },
   computed: {
@@ -244,6 +245,35 @@ export default {
     },
     allAssetsCount() {
       return this.files.length + this.subFolders.length
+    },
+    breadcrumbs() {
+      const breadcrumbs = []
+
+      const recursivePush = (item, array) => {
+        if (!item) return
+
+        array.push({
+          name: item.folder_name,
+          folderId: item.id,
+          url:
+            btoa(String(item.id)).toString() !== this.hashParam.toString()
+              ? {
+                  query: {
+                    status: this.$route.query.status,
+                    file: btoa(String(item.id)),
+                  },
+                }
+              : null,
+        })
+
+        recursivePush(item.parent, array)
+      }
+
+      recursivePush(this.breadcrumb, breadcrumbs)
+      return breadcrumbs.reverse()
+    },
+    hashParam() {
+      return this.$route.query.file ? this.$route.query.file : ''
     },
   },
   watch: {
@@ -284,7 +314,7 @@ export default {
     async nextStack(folderId) {
       if (this.loading) return
       this.loading = true
-
+      this.selectNone()
       this.$router.push({
         query: {
           status: this.$route.query.status,
@@ -301,7 +331,7 @@ export default {
           this.subFolders = makeFolder(data.folder || [])
 
           this.files = data.category_assets || []
-
+          this.breadcrumb = data.breadcrumb
           this.stack.push({
             subFolders: this.subFolders,
             files: this.files,
@@ -310,6 +340,15 @@ export default {
         .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
 
       this.loading = false
+    },
+    goToHomeList() {
+      this.breadcrumb = null
+      this.$router.push({
+        query: {
+          status: this.$route.query.status,
+        },
+      })
+      this.showSharedAssetsList()
     },
     selectAll() {
       this.selectedFiles = [...this.files]
@@ -332,6 +371,29 @@ export default {
           shareId: this.shareId,
         })
       }
+    },
+    showSharedAssetsList() {
+      this.$axios
+        .$get(
+          `show-share-assets?type=${this.$route.params.type}&status=${this.$route.query.status}`
+        )
+        .then(({ data }) => {
+          if (!data.category?.length && !data.assets?.length)
+            this.$nuxt.error({
+              statusCode: 404,
+              path: this.$route.path,
+              message: 'Requested files or folders were removed.',
+            })
+          this.subFolders = makeFolder(data.category || [])
+          this.files = data.assets || []
+          this.shareId = data.share_id
+          this.workspaceId = data.workspace_id
+          this.stack.push({
+            subFolders: this.subFolders,
+            files: this.files,
+          })
+        })
+        .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
     },
   },
   head() {
