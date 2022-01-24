@@ -515,6 +515,31 @@ export default {
   created() {
     this.loadCollection()
   },
+  updated() {
+    this.$nextTick(() => {
+      window.$(this.$el).find('.dropdown-toggle').dropdown()
+      const textColor = this.$auth.user.themes_option.header_text_color
+      this.headerLinks
+        .map((e) => e.name)
+        .forEach((id) => {
+          document.getElementById(id).style.color = textColor || '#ffffffa6'
+          document
+            .getElementById(id)
+            .querySelectorAll('path.fill-color')
+            .forEach((e) => (e.style.fill = textColor || '#ffffffa6'))
+        })
+      document
+        .querySelectorAll('button.collection-button .fill-color')
+        .forEach((e) => (e.style.fill = textColor || '#ffffffa6'))
+      document.querySelector('button.collection-button').style.color =
+        textColor || '#ffffffa6'
+      document
+        .querySelectorAll('.user-dropdown-icon .fill-color')
+        .forEach((e) => (e.style.fill = textColor || '#ffffffa6'))
+      document.querySelector('a#profileDropdown').style.color =
+        textColor || '#ffffffa6'
+    })
+  },
   mounted() {
     this.$nextTick(() => {
       window.$(this.$el).find('.dropdown-toggle').dropdown()
