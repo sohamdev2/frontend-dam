@@ -41,6 +41,9 @@
       </ul>
     </div>
     <div class="col d-flex align-items-center justify-content-end">
+      <style type="text/css">
+        {{ customStyles() }}
+      </style>
       <div class="dropdown mycollection">
         <button
           type="button"
@@ -577,6 +580,19 @@ export default {
     this.observer2.disconnect()
   },
   methods: {
+    customStyles() {
+      const textColor = this.$auth.user.themes_option.header_text_color
+      return `header .user-dropdown:before {
+        position: absolute;
+        content: '';
+        width: 1px;
+        height: 30px;
+        top: 50%;
+        left: 0px;
+        transform: translate(0px,-50%);
+        background-color: ${textColor || '#ffffff80'};
+      }`
+    },
     onCollectionDropdown(classAttrValue) {
       const textColor = this.$auth.user.themes_option.header_text_color
       const hoverColor = this.$auth.user.themes_option.header_text_hover_color
