@@ -152,7 +152,7 @@
       </div>
       <div
         v-if="!user.is_slider && tileData && tileData.length"
-        class="trending-sec grid-tile resource-wrapper tiles-list"
+        class="trending-sec grid-tile resource-wrapper tiles-list mt2"
       >
         <div class="common-box">
           <div class="table-list-view">
@@ -173,7 +173,7 @@
       </div>
       <div
         v-if="user.is_slider && tileData && tileData.length"
-        class="trending-sec grid-tile resource-wrapper tiles-list"
+        class="trending-sec grid-tile resource-wrapper tiles-list mt2"
       >
         <div class="common-box">
           <div class="table-list-view">
