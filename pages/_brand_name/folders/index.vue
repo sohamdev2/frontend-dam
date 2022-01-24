@@ -1,123 +1,104 @@
 <template>
   <div class="body-content two-part">
-    <div v-if="folderList.length" class="body-content-left">
-      <h4>Folders</h4>
-
-      <div class="category-list customscrollbar">
-        <!-- <h4
-          v-if="
-            currentFolder &&
-            $refs.folderList &&
-            $refs.folderList.getCurrentFolderName()
-          "
-          class="title"
+    <div
+      v-if="folderList.length"
+      class="body-content-left"
+      :class="{ open: leftMenuOpen }"
+    >
+      <a
+        href="javascript:void(0);"
+        class="menu-show"
+        @click="$store.dispatch('appData/setLeftMenuOpen', !leftMenuOpen)"
+      >
+        <svg
+          id="Layer_1"
+          class="right-arrow-icon white"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          x="0px"
+          y="0px"
+          viewBox="0 0 18 18"
+          xml:space="preserve"
         >
-          <nuxt-link
-            :to="{
-              name: 'brand_name-folders',
-              params: { brand_name: $getBrandName() },
-              hash: `#${currentFolder.parent_id || ''}`,
-            }"
-            class="back"
-          >
-            <svg
-              id="Layer_1"
-              class="back-icon blue"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              xmlns:xlink="http://www.w3.org/1999/xlink"
-              x="0px"
-              y="0px"
-              viewBox="0 0 18 18"
-              xml:space="preserve"
+          <g id="Group_4476" transform="translate(-921 -421)">
+            <rect
+              id="Rectangle_3014"
+              x="921"
+              y="421"
+              class="fill-hide"
+              width="18"
+              height="18"
+            ></rect>
+            <g
+              id="Icon_feather-chevron-down"
+              transform="translate(925.75 422.25)"
             >
-              <g id="Group_4468" transform="translate(-577 -181)">
-                <rect
-                  id="Rectangle_3007"
-                  x="577"
-                  y="181"
-                  class="fill-hide"
-                  width="18"
-                  height="18"
-                ></rect>
-                <g id="Group_4425" transform="translate(-514.168 -476.583)">
-                  <path
-                    id="Icon_material-backspace"
-                    class="fill-color"
-                    d="M1107.7,659.8h-11.3c-0.5,0-0.9,0.3-1.2,0.7l-4.1,6.1l4.1,6.1c0.3,0.4,0.7,0.7,1.2,0.7h11.3c0.8,0,1.5-0.7,1.5-1.5v-10.5C1109.2,660.5,1108.5,659.8,1107.7,659.8z"
-                  ></path>
-                  <g id="Group_4424">
-                    <g id="Group_4422">
-                      <path
-                        id="Path_3527"
-                        class="fill-white"
-                        d="M1099.7,669.8c-0.4,0-0.7-0.3-0.7-0.8c0-0.2,0.1-0.4,0.2-0.5l5-5c0.3-0.3,0.8-0.3,1.1,0c0.3,0.3,0.3,0.7,0,1l-5,5C1100.1,669.8,1099.9,669.8,1099.7,669.8z"
-                      ></path>
-                    </g>
-                    <g id="Group_4423">
-                      <path
-                        id="Path_3528"
-                        class="fill-white"
-                        d="M1104.7,669.8c-0.2,0-0.4-0.1-0.5-0.2l-5-5c-0.3-0.3-0.3-0.8,0-1.1c0.3-0.3,0.8-0.3,1.1,0c0,0,0,0,0,0l5,5c0.3,0.3,0.3,0.8,0,1.1C1105.1,669.8,1104.9,669.8,1104.7,669.8L1104.7,669.8z"
-                      ></path>
-                    </g>
-                  </g>
-                </g>
-              </g></svg
-          ></nuxt-link>
-          {{ $refs.folderList.getCurrentFolderName() }}
-        </h4> -->
-        <FolderList></FolderList>
+              <path
+                id="Path_3433"
+                class="fill-color"
+                d="M0.8,15.5c0.2,0,0.4-0.1,0.5-0.2l7-7c0.3-0.3,0.3-0.8,0-1.1c0,0,0,0,0,0l-7-7C1-0.1,0.5-0.1,0.2,0.2c-0.3,0.3-0.3,0.8,0,1l6.5,6.5l-6.5,6.5c-0.3,0.3-0.3,0.8,0,1.1C0.4,15.4,0.6,15.5,0.8,15.5z"
+              ></path>
+            </g>
+          </g>
+        </svg>
+      </a>
+      <div v-show="!!leftMenuOpen" class="frontend-left-menu">
+        <h4>Folders</h4>
+
+        <div class="category-list customscrollbar">
+          <FolderList></FolderList>
+        </div>
+        <ul class="quick-links">
+          <li v-if="showRecentUploads">
+            <span
+              :style="
+                dashboardData &&
+                (dashboardData.recent_uploads.images.length ||
+                  dashboardData.recent_uploads.documents.length ||
+                  dashboardData.recent_uploads.videos.length ||
+                  dashboardData.recent_uploads.audios.length)
+                  ? 'pointer-events: auto'
+                  : 'pointer-events: none'
+              "
+              @click.capture.stop="scrollToRecent"
+              >Recent Uploads</span
+            >
+          </li>
+          <li v-if="showTrending">
+            <span
+              :style="
+                dashboardData &&
+                dashboardData.trending_data &&
+                dashboardData.trending_data.length
+                  ? 'pointer-events: auto'
+                  : 'pointer-events: none'
+              "
+              @click.capture.stop="scrollToTrending"
+              >Trending</span
+            >
+          </li>
+          <li>
+            <nuxt-link
+              :to="{
+                name: 'brand_name-collection',
+                params: { brand_name: $getBrandName() },
+              }"
+              >All Collections</nuxt-link
+            >
+          </li>
+          <li>
+            <nuxt-link
+              v-if="!user.is_backend_user"
+              :to="{
+                name: 'brand_name-shared-urls',
+                params: { brand_name: this.$getBrandName() },
+              }"
+              >Shared URLs</nuxt-link
+            >
+          </li>
+        </ul>
       </div>
-      <ul class="quick-links">
-        <li>
-          <span
-            :style="
-              dashboardData &&
-              (dashboardData.recent_uploads.images.length ||
-                dashboardData.recent_uploads.documents.length ||
-                dashboardData.recent_uploads.videos.length ||
-                dashboardData.recent_uploads.audios.length)
-                ? 'pointer-events: auto'
-                : 'pointer-events: none'
-            "
-            @click.capture.stop="scrollToRecent"
-            >Recent Uploads</span
-          >
-        </li>
-        <li>
-          <span
-            :style="
-              dashboardData &&
-              dashboardData.trending_data &&
-              dashboardData.trending_data.length
-                ? 'pointer-events: auto'
-                : 'pointer-events: none'
-            "
-            @click.capture.stop="scrollToTrending"
-            >Trending</span
-          >
-        </li>
-        <li>
-          <nuxt-link
-            :to="{
-              name: 'brand_name-collection',
-              params: { brand_name: $getBrandName() },
-            }"
-            >All Collections</nuxt-link
-          >
-        </li>
-        <li>
-          <nuxt-link
-            v-if="!user.is_backend_user"
-            :to="{
-              name: 'brand_name-shared-urls',
-              params: { brand_name: this.$getBrandName() },
-            }"
-            >Shared URLs</nuxt-link
-          >
-        </li>
-      </ul>
     </div>
     <div class="body-content-right customscrollbar">
       <SearchBar ref="searchbar" />
@@ -161,14 +142,10 @@
             <rect x="117.4" y="15" rx="1" ry="1" width="112.4" height="112.4" />
             <rect x="234.9" y="15" rx="1" ry="1" width="112.4" height="112.4" />
             <rect x="352.3" y="15" rx="1" ry="1" width="112.4" height="112.4" />
-            <!-- <rect x="0" y="60" rx="1" ry="1" width="40" height="40" />
-                  <rect x="0" y="105" rx="1" ry="1" width="40" height="40" />
-                  <rect x="0" y="105" rx="1" ry="1" width="40" height="40" /> -->
           </template>
         </ContentLoader>
       </div>
       <template>
-        <!-- <template v-show="!loading"> -->
         <div v-if="noData" key="no-data" class="no-data-found">
           <div class="inner w-100">
             <svg
@@ -342,6 +319,15 @@ export default {
     }
   },
   computed: {
+    leftMenuOpen() {
+      return this.$store.state.appData.leftMenuOpen
+    },
+    showTrending() {
+      return this.$auth.user.themes_option?.is_trading
+    },
+    showRecentUploads() {
+      return this.$auth.user.themes_option?.is_recent_upload
+    },
     dashboardData() {
       return this.$store.state.appData.dashboardData
     },
@@ -490,8 +476,8 @@ export default {
     },
     // dropdown functionality
     dropDown(file, type, resourceType) {
-      this.selectedFiles = []
-      this.selectedFolders = []
+      // this.selectedFiles = []
+      // this.selectedFolders = []
     },
     nextLocalPage($state) {
       if (this.localPage > this.localTotalPages) {
