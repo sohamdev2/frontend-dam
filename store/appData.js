@@ -14,6 +14,7 @@ const _state = () => ({
   tileData: [],
   scrollToRecent: false,
   scrollTo: '',
+  leftMenuOpen: true,
 })
 
 export { _state as state }
@@ -27,7 +28,8 @@ export const mutations = {
     'logo',
     'brand',
     'tileData',
-    'loading.tile'
+    'loading.tile',
+    'leftMenuOpen'
   ),
 
   // brandDetails(state, item) {
@@ -166,5 +168,8 @@ export const actions = {
     }
 
     commit('loading.folders', false)
+  },
+  setLeftMenuOpen({ commit }, open) {
+    commit('leftMenuOpen', !!open)
   },
 }
