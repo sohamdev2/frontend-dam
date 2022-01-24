@@ -8,7 +8,7 @@
       <a
         href="javascript:void(0);"
         class="menu-show"
-        @click="leftMenuOpen = !leftMenuOpen"
+        @click="$store.dispatch('appData/setLeftMenuOpen', !leftMenuOpen)"
       >
         <svg
           id="Layer_1"
@@ -50,7 +50,7 @@
           <FolderList></FolderList>
         </div>
         <ul class="quick-links">
-          <li>
+          <li v-if="showRecentUploads">
             <span
               :style="
                 dashboardData &&
@@ -65,7 +65,7 @@
               >Recent Uploads</span
             >
           </li>
-          <li>
+          <li v-if="showTrending">
             <span
               :style="
                 dashboardData &&
@@ -316,10 +316,18 @@ export default {
       localPage: 1,
       identifier: Date.now(),
       breadcrumb: null,
-      leftMenuOpen: true,
     }
   },
   computed: {
+    leftMenuOpen() {
+      return this.$store.state.appData.leftMenuOpen
+    },
+    showTrending() {
+      return this.$auth.user.themes_option?.is_trading
+    },
+    showRecentUploads() {
+      return this.$auth.user.themes_option?.is_recent_upload
+    },
     dashboardData() {
       return this.$store.state.appData.dashboardData
     },

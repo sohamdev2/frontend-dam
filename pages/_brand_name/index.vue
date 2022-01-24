@@ -8,7 +8,7 @@
       <a
         href="javascript:void(0);"
         class="menu-show"
-        @click="leftMenuOpen = !leftMenuOpen"
+        @click="$store.dispatch('appData/setLeftMenuOpen', !leftMenuOpen)"
       >
         <svg
           id="Layer_1"
@@ -410,10 +410,12 @@ export default {
     return {
       shareFile: null,
       heroNavigateTo: 0,
-      leftMenuOpen: true,
     }
   },
   computed: {
+    leftMenuOpen() {
+      return this.$store.state.appData.leftMenuOpen
+    },
     showTrending() {
       return this.$auth.user.themes_option?.is_trading
     },
@@ -466,6 +468,7 @@ export default {
     onHeroChanged() {
       this.$nextTick(() => {
         const hero = this.$refs.hero
+        if (!hero) return
         const page = hero.currentPage
         if (page === this.bannerData.length - 1) {
           this.heroNavigateTo = [page, false]
