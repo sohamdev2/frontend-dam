@@ -5,26 +5,74 @@
         <h2 class="title pl0">Shared File and folders</h2>
       </div>
       <div
-        v-if="allAssetsCount"
-        class="btns mb20 d-flex align-items-center justify-content-end"
+        class="btns mb20 d-flex align-items-center"
+        :class="{
+          'justify-content-between': breadcrumbs.length,
+          'justify-content-end': !breadcrumbs.length,
+        }"
       >
-        <a
-          v-if="
-            allAssetsCount &&
-            (selectedCount == 0 || selectedCount == allAssetsCount)
-          "
-          href="javascript:void(0);"
-          class="btn"
-          @click="downloadSelectedMultipleFiles()"
-          >Download All</a
-        >
-        <a
-          v-if="selectedCount && selectedCount != allAssetsCount"
-          href="javascript:void(0);"
-          class="btn"
-          @click="downloadSelectedMultipleFiles()"
-          >Download ({{ selectedCount }})</a
-        >
+        <div v-if="breadcrumbs.length">
+          <a class="home-icon" @click="goToHomeList()">
+            <svg
+              id="Layer_1"
+              class="home-icon orange"
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              x="0px"
+              y="0px"
+              viewBox="0 0 16.2 18"
+              xml:space="preserve"
+            >
+              <g id="Group_4409" transform="translate(-871.194 -659.595)">
+                <g id="Path_3470">
+                  <path
+                    id="Path_3514"
+                    class="fill-color"
+                    d="M879.3,661.5l6.6,5.1v9.2c0,0.2-0.1,0.3-0.3,0.3H873c-0.2,0-0.3-0.1-0.3-0.3v-9.2L879.3,661.5M879.3,659.6l-8.1,6.3v9.9c0,1,0.8,1.8,1.8,1.8h12.6c1,0,1.8-0.8,1.8-1.8v-9.9L879.3,659.6z"
+                  ></path>
+                </g>
+                <g id="Path_3471">
+                  <path
+                    id="Path_3515"
+                    class="fill-color"
+                    d="M882,677.3c-0.4,0-0.8-0.3-0.8-0.8v-7.2h-3.9v7.2c0,0.4-0.3,0.8-0.8,0.8s-0.8-0.3-0.8-0.8v-8c0-0.4,0.3-0.8,0.8-0.8h5.4c0.4,0,0.8,0.3,0.8,0.8v8C882.7,677,882.4,677.3,882,677.3z"
+                  ></path>
+                </g>
+              </g>
+            </svg>
+          </a>
+          <div class="breadcrumb-links">
+            <ul>
+              <li>&nbsp;</li>
+              <li v-for="(crumb, i) in breadcrumbs" :key="i">
+                <a v-if="crumb.url" @click="nextStack(crumb.folderId)">{{
+                  crumb.name
+                }}</a>
+                <span v-else>{{ crumb.name }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div v-if="allAssetsCount">
+          <a
+            v-if="
+              allAssetsCount &&
+              (selectedCount == 0 || selectedCount == allAssetsCount)
+            "
+            href="javascript:void(0);"
+            class="btn"
+            @click="downloadSelectedMultipleFiles()"
+            >Download All</a
+          >
+          <a
+            v-if="selectedCount && selectedCount != allAssetsCount"
+            href="javascript:void(0);"
+            class="btn"
+            @click="downloadSelectedMultipleFiles()"
+            >Download ({{ selectedCount }})</a
+          >
+        </div>
       </div>
 
       <div
@@ -178,6 +226,7 @@ export default {
       mode: 'column',
       deleting: false,
       loading: false,
+      breadcrumb: null,
     }
   },
   computed: {
@@ -196,6 +245,35 @@ export default {
     },
     allAssetsCount() {
       return this.files.length + this.subFolders.length
+    },
+    breadcrumbs() {
+      const breadcrumbs = []
+
+      const recursivePush = (item, array) => {
+        if (!item) return
+
+        array.push({
+          name: item.folder_name,
+          folderId: item.id,
+          url:
+            btoa(String(item.id)).toString() !== this.hashParam.toString()
+              ? {
+                  query: {
+                    status: this.$route.query.status,
+                    file: btoa(String(item.id)),
+                  },
+                }
+              : null,
+        })
+
+        recursivePush(item.parent, array)
+      }
+
+      recursivePush(this.breadcrumb, breadcrumbs)
+      return breadcrumbs.reverse()
+    },
+    hashParam() {
+      return this.$route.query.file ? this.$route.query.file : ''
     },
   },
   watch: {
@@ -225,18 +303,24 @@ export default {
       })
   },
   methods: {
-    prevStack() {
-      if (this.stack.length > 1) this.stack.pop()
+    async prevStack() {
+      this.selectNone()
+      /* if (this.stack.length > 1) this.stack.pop()
 
       const { subFolders, files } = this.stack[this.stack.length - 1]
 
       this.subFolders = subFolders
-      this.files = files
+      this.files = files */
+      if (this.$route.query.file) {
+        await this.sharedFilesList(atob(String(this.$route.query.file)))
+      } else {
+        this.goToHomeList()
+      }
     },
     async nextStack(folderId) {
       if (this.loading) return
       this.loading = true
-
+      this.selectNone()
       this.$router.push({
         query: {
           status: this.$route.query.status,
@@ -244,6 +328,11 @@ export default {
         },
       })
 
+      await this.sharedFilesList(folderId)
+
+      this.loading = false
+    },
+    async sharedFilesList(folderId) {
       await this.$axios
         .$get(
           'view-share-files-with-category?' +
@@ -253,15 +342,22 @@ export default {
           this.subFolders = makeFolder(data.folder || [])
 
           this.files = data.category_assets || []
-
+          this.breadcrumb = data.breadcrumb
           this.stack.push({
             subFolders: this.subFolders,
             files: this.files,
           })
         })
         .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
-
-      this.loading = false
+    },
+    goToHomeList() {
+      this.breadcrumb = null
+      this.$router.push({
+        query: {
+          status: this.$route.query.status,
+        },
+      })
+      this.showSharedAssetsList()
     },
     selectAll() {
       this.selectedFiles = [...this.files]
@@ -284,6 +380,29 @@ export default {
           shareId: this.shareId,
         })
       }
+    },
+    showSharedAssetsList() {
+      this.$axios
+        .$get(
+          `show-share-assets?type=${this.$route.params.type}&status=${this.$route.query.status}`
+        )
+        .then(({ data }) => {
+          if (!data.category?.length && !data.assets?.length)
+            this.$nuxt.error({
+              statusCode: 404,
+              path: this.$route.path,
+              message: 'Requested files or folders were removed.',
+            })
+          this.subFolders = makeFolder(data.category || [])
+          this.files = data.assets || []
+          this.shareId = data.share_id
+          this.workspaceId = data.workspace_id
+          this.stack.push({
+            subFolders: this.subFolders,
+            files: this.files,
+          })
+        })
+        .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
     },
   },
   head() {
