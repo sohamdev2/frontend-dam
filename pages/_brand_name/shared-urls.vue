@@ -30,6 +30,7 @@
                   v-model="select_filter_by"
                   :options="sharedUrlFilter"
                   :custom-event="true"
+                  :attrs="{ minimumResultsForSearch: -1 }"
                   @changeSelect2="changeSharedUrlFilter(...arguments)"
                 />
               </div>
