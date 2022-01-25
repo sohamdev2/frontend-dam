@@ -303,13 +303,19 @@ export default {
       })
   },
   methods: {
-    prevStack() {
-      if (this.stack.length > 1) this.stack.pop()
+    async prevStack() {
+      this.selectNone()
+      /* if (this.stack.length > 1) this.stack.pop()
 
       const { subFolders, files } = this.stack[this.stack.length - 1]
 
       this.subFolders = subFolders
-      this.files = files
+      this.files = files */
+      if (this.$route.query.file) {
+        await this.sharedFilesList(atob(String(this.$route.query.file)))
+      } else {
+        this.goToHomeList()
+      }
     },
     async nextStack(folderId) {
       if (this.loading) return
@@ -322,6 +328,11 @@ export default {
         },
       })
 
+      await this.sharedFilesList(folderId)
+
+      this.loading = false
+    },
+    async sharedFilesList(folderId) {
       await this.$axios
         .$get(
           'view-share-files-with-category?' +
@@ -338,8 +349,6 @@ export default {
           })
         })
         .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
-
-      this.loading = false
     },
     goToHomeList() {
       this.breadcrumb = null
