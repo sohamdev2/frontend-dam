@@ -58,13 +58,13 @@ export default {
       if (!ext) return GENERAL_ICON
 
       if (this.$isPdf(ext)) {
-        return imageThumb || compressedImage || url
+        return imageThumb || compressedImage || thumb
       } else if (this.$isAudio(ext))
         return require('@/assets/img/icon/file/audio.svg')
-      else if (this.$isImage(ext)) return imageThumb || compressedImage || url
+      else if (this.$isImage(ext)) return imageThumb || compressedImage || thumb
       else if (this.isDoc) {
-        return imageThumb || compressedImage || url
-      } else if (this.isHtml) return imageThumb || compressedImage || url
+        return imageThumb || compressedImage || thumb
+      } else if (this.isHtml) return imageThumb || compressedImage || thumb
       else
         try {
           return require(`@/assets/img/icon/file/${ext}.svg`)
@@ -82,18 +82,18 @@ export default {
       if (!ext) return GENERAL_ICON
 
       if (this.$isPdf(ext)) {
-        return compressedImage || imageThumb || url
+        return compressedImage || imageThumb || thumb
       } else if (this.$isAudio(ext))
         return require('@/assets/img/icon/file/audio.svg')
       else if (this.$isImage(ext)) {
         if (this.file.file_type === 'gif') {
           return url
         } else {
-          return compressedImage || imageThumb || url
+          return compressedImage || imageThumb || thumb
         }
       } else if (this.isDoc) {
-        return compressedImage || imageThumb || url
-      } else if (this.isHtml) return compressedImage || imageThumb || url
+        return compressedImage || imageThumb || thumb
+      } else if (this.isHtml) return compressedImage || imageThumb || thumb
       else
         try {
           return require(`@/assets/img/icon/file/${ext}.svg`)
