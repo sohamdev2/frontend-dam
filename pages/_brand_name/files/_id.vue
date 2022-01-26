@@ -1148,7 +1148,6 @@ export default {
         }, {})
     },
     async getExif() {
-      console.log(1)
       const vue = this
       vue.metaData = sortObject({
         ...vue.metaData,
