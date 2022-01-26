@@ -428,7 +428,7 @@
             <div
               v-else
               :class="{
-                icons: !hasZipCompressedImage && (!isImage || filePreview),
+                icons: !hasZipCompressedImage && (!isImage || !__image_thumb),
               }"
             >
               <img
