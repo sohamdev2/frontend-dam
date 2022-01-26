@@ -798,11 +798,12 @@ header .user-dropdown.show .dropdown-toggle{color: #ffffff;}
 .overview-table li + li {margin-top: 15px;}
 .overview-table li > span {color: #737B88;font-weight: 400;width: 175px;font-size: 13px;}
 .overview-table li >  span + span {color: #172B4D;font-weight: 600;display: flex;font-size: 14px;width: calc(100% - 175px);}
-.overview-table .breadcrumb-links{margin-left: 3px;}
-.overview-table .breadcrumb-links ul li{margin: 0;font-weight: 600;}
-.overview-table .breadcrumb-links ul li span{font-size: 14px;}
-.overview-table .breadcrumb-links ul li + li {padding-left: 20px;}
-.overview-table .breadcrumb-links ul li + li::before {width: 20px;}
+.overview-table .breadcrumb-links {display: flex;margin-left: 3px;flex-wrap: wrap;}
+.overview-table .breadcrumb-links a{position: relative;padding-right: 20px;color:#737B88;font-weight:400;}
+.overview-table .breadcrumb-links a:hover {color: #FF8A01;}
+.overview-table .breadcrumb-links a::before {position: absolute;content: '';right: 0;display: inline-block;vertical-align: top;width: 20px;height: 20px;background-image: url(../img/arrow-right.svg);background-size: 13px;background-position: center;background-repeat: no-repeat;top: 1px;}
+.overview-table .breadcrumb-links span {color: #172B4D;font-weight: 600;}
+
 .tabbing-inner .tag-add-box {border: 1px solid #D8DCE2;border-radius: 4px;padding: 7px;min-height: 254px;}
 .tabbing-inner .added-tag {margin: 4px;display: inline-block;vertical-align: top;border: 1px solid #D8DCE2;border-radius: 4px;position: relative;padding: 5px 14px;font-size: 13px;font-weight: 500;background-color: #ffffff;}
 .detail-right-actions {padding: 20px;background-color: #fff;border-top: 1px solid rgba(112,112,112,0.2);border-radius:  0 0 4px 4px;display: flex;}
