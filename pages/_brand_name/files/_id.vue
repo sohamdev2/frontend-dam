@@ -160,16 +160,35 @@
                 />
               </div>
             </div>
-            <div v-else-if="isImage" class="asset-detail-img">
+            <div
+              v-else-if="isImage"
+              :class="
+                __compressed_preview || __image_thumb
+                  ? 'asset-detail-img'
+                  : 'no-preview'
+              "
+            >
+              <div
+                v-if="!(__compressed_preview || __image_thumb)"
+                class="icons"
+              >
+                <img
+                  ref="sourceImage"
+                  :src="previewImage"
+                  :alt="file.display_file_name"
+                  @error="imageErrorHandle"
+                />
+                <p>
+                  {{ 'No preview available for this file.' }}
+                </p>
+              </div>
               <img
+                v-else
                 ref="sourceImage"
                 :src="previewImage"
                 :alt="file.display_file_name"
                 @error="imageErrorHandle"
               />
-              <p v-if="previewIcon">
-                {{ 'No preview available for this file.' }}
-              </p>
             </div>
             <div v-else-if="isVideo" class="asset-detail-img">
               <div v-if="isVideo" class="preview-video">
