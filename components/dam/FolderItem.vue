@@ -156,7 +156,7 @@
       class="menu-expand"
       @click.capture.stop="leftMenuUpdate(folder.id)"
     >
-      <i class="fa fa-angle-right" aria-hidden="true"></i>
+      <!--      <i class="fa fa-angle-right" aria-hidden="true"></i>-->
     </span>
     <transition-group
       v-show="folderOpen"
