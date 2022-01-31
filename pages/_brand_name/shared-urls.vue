@@ -5,7 +5,7 @@
         class="common-box-header d-flex align-items-center justify-content-between"
       >
         <h2 class="title">Shared URLs</h2>
-        <div v-if="total > 0" class="table-filter">
+        <div class="table-filter">
           <ul>
             <li>{{ total }} Shared Url(s)</li>
             <li>
@@ -21,6 +21,17 @@
                   ]"
                   :attrs="{ minimumResultsForSearch: -1 }"
                   @input="updatePageSize"
+                />
+              </div>
+            </li>
+            <li>
+              <div class="search-by">
+                <Select2
+                  v-model="select_filter_by"
+                  :options="sharedUrlFilter"
+                  :custom-event="true"
+                  :attrs="{ minimumResultsForSearch: -1 }"
+                  @changeSelect2="changeSharedUrlFilter(...arguments)"
                 />
               </div>
             </li>
@@ -41,7 +52,10 @@
           <ul class="thead">
             <li>
               <div class="sorting flex3">
-                <label class="check-label">
+                <label
+                  v-if="!!urls.some((e) => e.is_active == 0)"
+                  class="check-label"
+                >
                   <input
                     type="checkbox"
                     :checked="allSelected"
@@ -92,6 +106,7 @@
                 :selected="selectedIds.includes(url.id)"
                 :deleting="deleting && selectedIds.includes(url.id)"
                 @deleted="onUrlDeleted"
+                @revoked="onUrlRevoked"
                 @selection-change="updateSelection(url.id, $event)"
               />
             </transition-group>
@@ -155,7 +170,7 @@ export default {
   asyncData({ $axios, $getWorkspaceId, error, $sortBy }) {
     return $axios
       .$get(
-        `digital/list-share-assets-url?workspace_id=${$getWorkspaceId()}&total_record=12`
+        `digital/list-share-assets-url?workspace_id=${$getWorkspaceId()}&total_record=12&filter_by=active`
       )
       .then(({ data = {} }) => ({
         current_page: data.current_page,
@@ -182,6 +197,12 @@ export default {
       sortDesc: false,
       selectedIds: [],
       allSelected: false,
+      filter_by: 'active',
+      select_filter_by: '1',
+      sharedUrlFilter: [
+        { text: 'Active URLs', id: '1', name: 'active' },
+        { text: 'Revoked URLs', id: '2', name: 'revoked' },
+      ],
     }
   },
   watch: {
@@ -215,7 +236,7 @@ export default {
         .$get(
           `digital/list-share-assets-url?workspace_id=${this.$getWorkspaceId()}&page=${
             this.current_page
-          }&total_record=${this.per_page || 12}`
+          }&total_record=${this.per_page || 12}&filter_by=${this.filter_by}`
         )
         .then(({ data = {} }) => {
           this.allSelected = false
@@ -236,7 +257,9 @@ export default {
         .catch(console.error)
     },
     onHeaderSelect(selected) {
-      this.selectedIds = selected ? this.urls.map((e) => e.id) : []
+      this.selectedIds = selected
+        ? this.urls.filter((e) => e.is_active === 0).map((e) => e.id)
+        : []
       this.allSelected = selected
     },
     sort(value) {
@@ -294,6 +317,11 @@ export default {
       }
       this.allSelected = this.urls.every((e) => this.selectedIds.includes(e.id))
     },
+    onUrlRevoked(url) {
+      this.getData()
+      this.updateSelection(url.id, false)
+      url.is_active = 0
+    },
     onUrlDeleted(urlId) {
       this.urls = this.urls.filter(({ id }) => id !== urlId)
       this.updateSelection(urlId, false)
@@ -307,6 +335,11 @@ export default {
         }
         this.getData()
       }
+    },
+    changeSharedUrlFilter(data) {
+      this.filter_by = data.name
+      this.current_page = 1
+      this.getData()
     },
   },
   head() {

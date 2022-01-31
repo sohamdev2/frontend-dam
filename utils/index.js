@@ -233,6 +233,7 @@ export const imageExtensions = [
   'ppm',
   'nef',
   'orf',
+  'bmp',
 ]
 export const videoExtensions = [
   'mp4',

@@ -160,16 +160,35 @@
                 />
               </div>
             </div>
-            <div v-else-if="isImage" class="asset-detail-img">
+            <div
+              v-else-if="isImage"
+              :class="
+                __compressed_preview || __image_thumb
+                  ? 'asset-detail-img'
+                  : 'no-preview'
+              "
+            >
+              <div
+                v-if="!(__compressed_preview || __image_thumb)"
+                class="icons"
+              >
+                <img
+                  ref="sourceImage"
+                  :src="previewImage"
+                  :alt="file.display_file_name"
+                  @error="imageErrorHandle"
+                />
+                <p>
+                  {{ 'No preview available for this file.' }}
+                </p>
+              </div>
               <img
+                v-else
                 ref="sourceImage"
                 :src="previewImage"
                 :alt="file.display_file_name"
                 @error="imageErrorHandle"
               />
-              <p v-if="previewIcon">
-                {{ 'No preview available for this file.' }}
-              </p>
             </div>
             <div v-else-if="isVideo" class="asset-detail-img">
               <div v-if="isVideo" class="preview-video">
@@ -273,16 +292,15 @@
                         <span
                           >:
                           <div class="breadcrumb-links">
-                            <ul>
-                              <li v-for="(crumb, i) in breadcrumbs" :key="i">
-                                <component
-                                  :is="crumb.url ? 'nuxt-link' : 'span'"
-                                  :to="crumb.url"
-                                >
-                                  {{ crumb.name }}
-                                </component>
-                              </li>
-                            </ul>
+                            <template v-for="(crumb, i) in breadcrumbs">
+                              <component
+                                :is="crumb.url ? 'nuxt-link' : 'span'"
+                                :key="i"
+                                :to="crumb.url"
+                              >
+                                {{ crumb.name }}
+                              </component>
+                            </template>
                           </div>
                         </span>
                       </li>
@@ -643,7 +661,7 @@ const IMAGE_MIMETYPES = {
 
 const categoriesObject = [
   { text: 'Home', id: '' },
-  { text: 'Audio', id: 'audio' },
+  { text: 'Audios', id: 'audio' },
   { text: 'Documents', id: 'application' },
   { text: 'Images', id: 'image' },
   { text: 'Videos', id: 'video' },
@@ -1055,7 +1073,7 @@ export default {
           }
         })
     },
-    removeTagFromFile(tag) {
+    /* removeTagFromFile(tag) {
       this.$axios
         .$post('digital-assets/delete-tag', {
           workspace_id: this.$getWorkspaceId(),
@@ -1075,7 +1093,7 @@ export default {
           this.tags.push(data)
         })
         .catch(this.onError)
-    },
+    }, */
     async archiveFile() {
       if (this.ui.archiving) return
 

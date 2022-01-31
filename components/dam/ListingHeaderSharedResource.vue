@@ -1,8 +1,23 @@
 <template>
   <ListingHeaderTemplate>
-    <div class="preview-img pb-1 no-pointer flex10"></div>
     <div
-      class="categary-name sorting sortarrow flex27"
+      class="selectbox sorting flex3"
+      :class="{ semicheck: selectedCount != 0 && assetsCount != selectedCount }"
+    >
+      <label class="check-label">
+        <input
+          type="checkbox"
+          :checked="selectedAll"
+          @input="
+            (ev) =>
+              $emit(`click:${ev.target.checked ? 'select-all' : 'select-none'}`)
+          "
+        />
+        <span class="check-span"></span>
+      </label>
+    </div>
+    <div
+      class="categary-name sorting sortarrow flex49"
       :class="sortingClass('display_file_name')"
     >
       <span
@@ -13,7 +28,7 @@
             ['files', 'display_file_name', $sortToUpperCase],
           ])
         "
-        >Name</span
+        >Asset Name</span
       >
     </div>
     <!--    <div class="assets sorting flex18" :class="sortingClass('file_type')">
@@ -52,16 +67,16 @@
         >Size</span
       >
     </div>-->
-    <div class="assets sorting flex18">
-      <span>Assets</span>
+    <div class="assets sorting flex15">
+      <span>Asset Type</span>
     </div>
-    <div class="update-date sorting flex18">
+    <div class="update-date sorting flex15">
       <span>Date</span>
     </div>
-    <div class="size sorting flex12">
+    <div class="size sorting flex10">
       <span>Size</span>
     </div>
-    <div class="categary-action sorting no-pointer flex15 text-right">
+    <div class="categary-action sorting no-pointer flex8 text-right">
       <span>Action</span>
     </div>
   </ListingHeaderTemplate>
@@ -72,6 +87,11 @@ import ListingHeaderTemplate from '~/components/dam/ListingHeaderTemplate'
 export default {
   components: { ListingHeaderTemplate },
   extends: ListingHeaderTemplate,
+  props: {
+    assetsCount: { type: [Number, String], default: 0 },
+    selectedCount: { type: [Number, String], default: 0 },
+    selectedAll: { type: Boolean, default: false },
+  },
   // props: { sorting: { type: String, required: false, default: null } },
   // data() {
   //   return {

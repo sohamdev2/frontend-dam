@@ -409,18 +409,18 @@
                 @error="errorHandle"
               />
             </div>
-            <div v-else-if="isPdf" :class="{ icons: !isPdf || filePreview }">
+            <div v-else-if="isPdf" :class="{ icons: !__image_thumb }">
               <img
                 v-show="!imageLoading"
-                :src="previewImage"
+                :src="__image_thumb || previewImage"
                 @load="imageLoading = false"
                 @error="errorHandle"
               />
             </div>
-            <div v-else-if="isHtml" :class="{ icons: !isHtml || filePreview }">
+            <div v-else-if="isHtml" :class="{ icons: !__image_thumb }">
               <img
                 v-show="!imageLoading"
-                :src="previewImage"
+                :src="__image_thumb || previewImage"
                 @load="imageLoading = false"
                 @error="errorHandle"
               />
@@ -428,7 +428,7 @@
             <div
               v-else
               :class="{
-                icons: !hasZipCompressedImage && (!isImage || filePreview),
+                icons: !hasZipCompressedImage && (!isImage || !__image_thumb),
               }"
             >
               <img
