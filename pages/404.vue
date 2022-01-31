@@ -6,12 +6,15 @@
           <div class="sign-screen-content">
             <div class="sign-body">
               <div class="error-text">
-                <h2>
+                <!--                <h2>
                   {{
                     (error.statusCode || error.code || error.status) == 404
                       ? 'Page not found'
                       : error.status || 'Oops'
                   }}
+                </h2>-->
+                <h2>
+                  {{ error.statusCode || error.code || error.status }}
                 </h2>
                 <h4>
                   {{
