@@ -63,7 +63,7 @@
                   : 'pointer-events: none'
               "
               @click.capture.stop="scrollToRecent"
-              >Recent Uploads</span
+              >Recent Uploaded</span
             >
           </li>
           <li v-if="showTrending">
@@ -244,7 +244,7 @@
           ref="recent"
           class="section-title"
         >
-          <h4>Recent Uploads</h4>
+          <h4>Recent Uploaded</h4>
         </div>
 
         <template v-for="(files, key) in dashboardData.recent_uploads">
