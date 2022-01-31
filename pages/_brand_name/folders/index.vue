@@ -19,7 +19,7 @@
                 : 'pointer-events: none'
             "
             @click.capture.stop="scrollToRecent"
-            >Recent Uploads</span
+            >Recent Uploaded</span
           >
         </li>
         <li>
