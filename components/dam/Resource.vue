@@ -16,25 +16,6 @@
         : {}),
     }"
   >
-    <!-- v-on="{
-        ...(isVideo
-          ? {
-              mouseenter: () =>
-                !paused &&
-                $suppressError(() => {
-                  playingModel = true
-                  $refs.video.play()
-                }),
-              mouseleave: () =>
-                !paused &&
-                isPlaying &&
-                $suppressError(() => {
-                  playingModel = false
-                  $refs.video.pause()
-                }),
-            }
-          : {}),
-      }" -->
     <div
       class="preview-img tb-column flex10"
       :class="{ video: isVideo, image: isImage }"
@@ -393,7 +374,10 @@
                   }
             "
           >
-            <div v-if="isDoc" :class="{ icons: !isDoc }">
+            <div
+              v-if="isDoc"
+              :class="{ icons: !isDoc ? true : !__image_thumb }"
+            >
               <img
                 v-show="!imageLoading"
                 :src="previewImage"
@@ -466,16 +450,6 @@
           <div class="video-info">
             <div class="upper-info">
               <span :inner-html.prop="file.file_type || '&dash;'"></span>
-              <!-- <a
-                v-if="!shareMode"
-                @click="
-                  emitShare
-                    ? $emit('share', file)
-                    : $refs.shareDialog.toggleModel()
-                "
-              >
-                <img src="~/assets/img/share.svg" alt="" class="white-icon" />
-              </a> -->
               <div class="d-flex align-items-center">
                 <div
                   class="dropdown more-options"
@@ -629,7 +603,7 @@
               </a>
 
               <a
-                v-if="isImage"
+                v-if="isImage && (__compressed_preview || __image_thumb)"
                 @click.stop="
                   $refs.expandButton.click()
                   viewAssetsCount()
