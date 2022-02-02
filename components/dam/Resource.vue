@@ -18,7 +18,7 @@
   >
     <div
       class="preview-img tb-column flex10"
-      :class="{ video: isVideo, image: isImage }"
+      :class="{ image: isImage || isVideo }"
     >
       <label v-if="!shareMode && !hideSelect" class="check-label">
         <input :checked="selected" type="checkbox" />
@@ -27,7 +27,7 @@
           @click="$emit('click:selected', file)"
         ></label>
       </label>
-      <template @focus="$refs.video.play()" @blur="$refs.video.pause()">
+      <template>
         <div
           v-if="isVideo"
           class="categary-image"
@@ -62,6 +62,7 @@
               <img :src="videoThumbnail" @load="imageLoading = false" />
             </div>
             <video
+              v-if="0"
               ref="video"
               class="thevideo"
               :src="file.display_file + '#t=0,5'"
@@ -252,9 +253,8 @@
               </div>
             </div>
             <div class="down-info" style="z-index: 4">
-              <template v-if="isVideo">
+              <template v-if="0 && isVideo">
                 <video
-                  :id="`file-video-${file.id}`"
                   width="640"
                   height="320"
                   controlsList="nodownload"
@@ -267,8 +267,8 @@
                 </video>
               </template>
 
-              <template v-if="isVideo">
-                <a @click.capture.prevent.stop="paused = !paused">
+              <template v-if="0 && isVideo">
+                <a>
                   <svg
                     v-if="paused"
                     id="Layer_1"
@@ -307,9 +307,9 @@
                   </svg>
                 </a>
                 <a
+                  v-if="0"
                   ref="expandButton"
                   :href="`#file-video-${file.id}`"
-                  data-fancybox
                   @click="viewAssetsCount()"
                   ><svg
                     id="Layer_1"
@@ -591,7 +591,7 @@
               </div>
             </div>
             <div class="down-info" style="z-index: 4">
-              <a
+              <!-- <a
                 ref="expandButton"
                 style="display: none"
                 data-fancybox="image-preview"
@@ -600,7 +600,7 @@
                 :data-href="__compressed_preview || __url"
                 :href="__compressed_preview || __url"
               >
-              </a>
+              </a> -->
 
               <a
                 v-if="isImage && (__compressed_preview || __image_thumb)"
@@ -930,20 +930,20 @@ export default {
       if (this.isVideo) {
         this.getThumbnail()
 
-        window
-          .$(this.$el)
-          .find('[data-fancybox]')
-          .fancybox({
-            video: {
-              tpl:
-                `<video class="fancybox-video" data-id="file-${this.file.id}" controlsList="nodownload" controls poster="${this.videoThumbnail}">` +
-                '<source src="{{src}}"  />' +
-                'Sorry, your browser doesn\'t support embedded videos, <a href="{{src}}">download</a> and watch with your favorite video player!' +
-                '</video>',
-              autoStart: true,
-            },
-            buttons: ['close'],
-          })
+        // window
+        //   .$(this.$el)
+        //   .find('[data-fancybox]')
+        //   .fancybox({
+        //     video: {
+        //       tpl:
+        //         `<video class="fancybox-video" data-id="file-${this.file.id}" controlsList="nodownload" controls poster="${this.videoThumbnail}">` +
+        //         '<source src="{{src}}"  />' +
+        //         'Sorry, your browser doesn\'t support embedded videos, <a href="{{src}}">download</a> and watch with your favorite video player!' +
+        //         '</video>',
+        //       autoStart: true,
+        //     },
+        //     buttons: ['close'],
+        //   })
       } else if (this.isImage)
         window
           .$(this.$el)
@@ -991,62 +991,58 @@ export default {
       this.dropDownList = !this.dropDownList
     },
     isPlaying() {
-      if (!this.isVideo) return false
-
-      const video = this.$refs.video
-      if (!video) return false
-
-      return (
-        (video.currentTime > 0 &&
-          !video.paused &&
-          !video.ended &&
-          video.readyState > 2) ||
-        this.playingModel
-      )
+      // if (!this.isVideo) return false
+      // const video = this.$refs.video
+      // if (!video) return false
+      // return (
+      //   (video.currentTime > 0 &&
+      //     !video.paused &&
+      //     !video.ended &&
+      //     video.readyState > 2) ||
+      //   this.playingModel
+      // )
     },
 
     pauseVideo() {
-      if (!this.paused && this.isPlaying) {
-        const video = this.$refs.video
-
-        this.$suppressError(() => {
-          this.playingModel = false
-          // this.playtime = video.currentTime
-          video.pause()
-        })
-      }
+      // if (!this.paused && this.isPlaying) {
+      //   const video = this.$refs.video
+      //   this.$suppressError(() => {
+      //     this.playingModel = false
+      //     // this.playtime = video.currentTime
+      //     video.pause()
+      //   })
+      // }
     },
     playVideo() {
-      if (!this.paused) {
-        const video = this.$refs.video
-        video.ontimeupdate = function () {
-          if (video.currentTime >= 5) {
-            const src = video.src
-
-            video.src = ''
-            video.src = src
-            video.currentTime = 0
-            video.play()
-          }
-        }
-        this.$suppressError(() => {
-          this.playingModel = true
-          video.play()
-          // video.play()?.catch(() => {
-          //   this.videoError = true
-          // })
-        })
-      }
+      // if (!this.paused) {
+      //   const video = this.$refs.video
+      //   video.ontimeupdate = function () {
+      //     if (video.currentTime >= 5) {
+      //       const src = video.src
+      //       video.src = ''
+      //       video.src = src
+      //       video.currentTime = 0
+      //       video.play()
+      //     }
+      //   }
+      //   this.$suppressError(() => {
+      //     this.playingModel = true
+      //     video.play()
+      //     // video.play()?.catch(() => {
+      //     //   this.videoError = true
+      //     // })
+      //   })
+      // }
     },
     setPlaytime() {
-      setTimeout(() => {
-        try {
-          window.$(`[data-id="file-${this.file.id}"]`)[0].currentTime =
-            this.$refs.video.currentTime
-        } catch {
-          //
-        }
-      }, 250)
+      // setTimeout(() => {
+      //   try {
+      //     window.$(`[data-id="file-${this.file.id}"]`)[0].currentTime =
+      //       this.$refs.video.currentTime
+      //   } catch {
+      //     //
+      //   }
+      // }, 250)
     },
     async viewAssetsCount() {
       await this.$axios
