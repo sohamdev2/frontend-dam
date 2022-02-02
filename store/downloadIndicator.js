@@ -151,7 +151,14 @@ export const actions = {
       callCountApi: false,
       multiple: true,
       extras: { orgUrl },
-    }).then()
+    }).then(() => {
+      if (files.length !== 1 || folders.length !== 0) {
+        this.$axios.$post('delete-file', {
+          workspace_id: this.$getWorkspaceId(),
+          file_name: orgUrl,
+        })
+      }
+    })
   },
   downloadFile(
     { commit, state: { files: stateFiles } },
