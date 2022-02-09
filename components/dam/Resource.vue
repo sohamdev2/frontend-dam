@@ -939,25 +939,39 @@ export default {
   watch: {
     galleryMode(n) {
       if (!n || this.display_file) return
-      this.$axios
-        .$post('digital/view-detail', {
-          digital_assets_id: this.file.id,
-          workspace_id: this.$getWorkspaceId(),
-        })
-        .then(({ data }) => {
-          if (!data.display_file) return
-          this.display_file = data.display_file
-          const video = this.$refs.galleryVideo
-          if (!video) return
-          const currentTime = video.currentTime
-          const paused = video.paused
-          video.querySelector('source').src = this.display_file
-          video.load()
-          setTimeout(() => {
-            video.currentTime = currentTime
-            if (!paused) video.play()
-          }, 250)
-        })
+      this.$nextTick(() => {
+        this.$axios
+          .$post('digital/view-detail', {
+            digital_assets_id: this.file.id,
+            workspace_id: this.$getWorkspaceId(),
+          })
+          .then(({ data }) => {
+            if (!data.display_file) return
+            this.display_file = data.display_file
+            const video = this.$refs.galleryVideo
+            // TODO: remove fancybox
+            // dynamically updating fancybox'd source does not reflect on fancybox
+            const fancyBoxVideo = document.querySelector(
+              `.fancybox-content video#file-video-${this.file.id}`
+            )
+            if (!fancyBoxVideo) return
+            const currentTime = video.currentTime
+            const paused = video.paused
+            const sameSource =
+              fancyBoxVideo.querySelector('source').src === data.display_file ||
+              fancyBoxVideo.src === data.display_file
+            if (sameSource) return
+            fancyBoxVideo
+              .querySelector('source')
+              .setAttribute('src', data.display_file)
+            setTimeout(() => {
+              fancyBoxVideo.load()
+              fancyBoxVideo.currentTime = currentTime
+              if (!paused) fancyBoxVideo.play()
+            }, 250)
+          })
+          .catch(console.error)
+      })
     },
   },
 
@@ -1050,28 +1064,27 @@ export default {
     },
 
     pauseVideo() {
-      const video = this.$refs.video
-      if (!video) return
-      this.$suppressError(() => {
+      try {
+        const video = this.$refs.video
+        if (!video) return
         video.pause()
-      })
+      } catch (_) {}
     },
     playVideo() {
-      if (this.paused || this.videoError) return
-
-      const video = this.$refs.video
-      if (!video) return
-      this.$suppressError(() => {
+      try {
+        if (this.paused || this.videoError) return
+        const video = this.$refs.video
+        if (!video) return
         video.play()
-      })
+      } catch (_) {}
     },
     async viewAssetsCount() {
-      await this.$axios
-        .$post('digital/view-asset-count', {
-          workspace_id: this.$getWorkspaceId(),
-          asset_id: this.file.id,
-        })
-        .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
+      // await this.$axios
+      //   .$post('digital/view-asset-count', {
+      //     workspace_id: this.$getWorkspaceId(),
+      //     asset_id: this.file.id,
+      //   })
+      //   .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
     },
     downloadFile() {
       this.$store.dispatch('downloadIndicator/downloadFile', {
