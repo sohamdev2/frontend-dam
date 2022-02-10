@@ -132,7 +132,7 @@ export const actions = {
         workspace_id: this.$getWorkspaceId(),
         digital_assets_id: files,
         category_id: folders,
-        share_Id: shareId,
+        share_id: shareId,
         download_by: 'desktop',
       })
       orgUrl = file_name
