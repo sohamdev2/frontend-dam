@@ -92,7 +92,7 @@ export const actions = {
   },
   async downloadMultipleSharedFiles(
     { dispatch, commit, state: { files: stateFiles } },
-    { files, folders, shareId, shareMode = false }
+    { files, folders, shareId, shareWorkspaceId, shareMode = false }
   ) {
     const id = btoa(JSON.stringify({ files, folders }))
 
@@ -129,7 +129,7 @@ export const actions = {
       const {
         data: { url, file_name },
       } = await this.$axios.$post('share-assets-download', {
-        workspace_id: this.$getWorkspaceId(),
+        workspace_id: shareWorkspaceId,
         digital_assets_id: files,
         category_id: folders,
         share_id: shareId,

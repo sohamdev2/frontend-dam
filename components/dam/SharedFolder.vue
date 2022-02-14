@@ -145,6 +145,7 @@ export default {
         files: [],
         folders: [this.folder.id],
         shareId: this.shareId,
+        shareWorkspaceId: this.shareWorkspaceId,
       })
     },
   },
