@@ -300,6 +300,7 @@ export default {
         files: [this.file.id],
         folders: [],
         shareId: this.shareId,
+        shareWorkspaceId: this.shareWorkspaceId,
       })
     },
   },

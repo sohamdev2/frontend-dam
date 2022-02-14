@@ -372,12 +372,14 @@ export default {
           files: this.files.map(({ id }) => id),
           folders: this.subFolders.map(({ id }) => id),
           shareId: this.shareId,
+          shareWorkspaceId: this.workspaceId,
         })
       } else {
         this.$store.dispatch('downloadIndicator/downloadMultipleSharedFiles', {
           files: this.selectedFiles.map(({ id }) => id),
           folders: this.selectedFolders.map(({ id }) => id),
           shareId: this.shareId,
+          shareWorkspaceId: this.workspaceId,
         })
       }
     },
