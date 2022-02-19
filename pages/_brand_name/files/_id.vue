@@ -292,16 +292,15 @@
                         <span
                           >:
                           <div class="breadcrumb-links">
-                            <ul>
-                              <li v-for="(crumb, i) in breadcrumbs" :key="i">
-                                <component
-                                  :is="crumb.url ? 'nuxt-link' : 'span'"
-                                  :to="crumb.url"
-                                >
-                                  {{ crumb.name }}
-                                </component>
-                              </li>
-                            </ul>
+                            <template v-for="(crumb, i) in breadcrumbs">
+                              <component
+                                :is="crumb.url ? 'nuxt-link' : 'span'"
+                                :key="i"
+                                :to="crumb.url"
+                              >
+                                {{ crumb.name }}
+                              </component>
+                            </template>
                           </div>
                         </span>
                       </li>
@@ -1074,7 +1073,7 @@ export default {
           }
         })
     },
-    removeTagFromFile(tag) {
+    /* removeTagFromFile(tag) {
       this.$axios
         .$post('digital-assets/delete-tag', {
           workspace_id: this.$getWorkspaceId(),
@@ -1094,7 +1093,7 @@ export default {
           this.tags.push(data)
         })
         .catch(this.onError)
-    },
+    }, */
     async archiveFile() {
       if (this.ui.archiving) return
 

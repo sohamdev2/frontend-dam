@@ -90,6 +90,76 @@ export const actions = {
       })
     )
   },
+  async downloadMultipleSharedFiles(
+    { dispatch, commit, state: { files: stateFiles } },
+    { files, folders, shareId, shareWorkspaceId, shareMode = false }
+  ) {
+    const id = btoa(JSON.stringify({ files, folders }))
+
+    if (stateFiles[id] && stateFiles[id].downloading) return
+
+    // const baseUrl =
+    //   this.$config.backendUrl ||
+    //   process.env.BACKEND_URL ||
+    //   process.env.BACKAND_URL ||
+    //   'http://marcom3-dev.whitelabeliq.net'
+
+    const item = {
+      id,
+      url: id,
+      name:
+        files.length === 1 && folders.length === 0
+          ? ''
+          : 'Zipping selected files/folders',
+      progress: 0,
+      loaded: 0,
+      total: 0,
+      downloading: false,
+    }
+
+    commit('setDownloadingItem', { id, item })
+    commit('pinned', true)
+    commit('expanded', true)
+
+    let zipUrl = ''
+    let name
+    let orgUrl
+
+    try {
+      const {
+        data: { url, file_name },
+      } = await this.$axios.$post('share-assets-download', {
+        workspace_id: shareWorkspaceId,
+        digital_assets_id: files,
+        category_id: folders,
+        share_id: shareId,
+        download_by: 'desktop',
+      })
+      orgUrl = file_name
+      zipUrl = url
+      name = file_name
+    } catch (e) {
+      this.$showErrorToast(e)
+      commit('removeDownloadingItem', id)
+      return
+    }
+
+    return dispatch('downloadFile', {
+      id,
+      name,
+      url: zipUrl,
+      callCountApi: false,
+      multiple: true,
+      extras: { orgUrl },
+    }).then(() => {
+      if (files.length !== 1 || folders.length !== 0) {
+        this.$axios.$post('delete-file', {
+          workspace_id: this.$getWorkspaceId(),
+          file_name: orgUrl,
+        })
+      }
+    })
+  },
   downloadFile(
     { commit, state: { files: stateFiles } },
     {

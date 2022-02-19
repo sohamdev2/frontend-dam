@@ -1,52 +1,70 @@
 <template>
-  <li>
-    <div
-      class="preview-img tb-column flex10"
-      :class="{ selected, video: isVideo, image: isImage }"
-      v-on="{
-        ...(isVideo
-          ? {
-              mouseenter: () =>
-                !paused &&
-                $suppressError(() => {
-                  playingModel = true
-                  $refs.video.play()
-                }),
-              mouseleave: () =>
-                !paused &&
-                isPlaying &&
-                $suppressError(() => {
-                  playingModel = false
-                  $refs.video.pause()
-                }),
-            }
-          : {}),
-      }"
-    >
-      <div class="media">
+  <li
+    :style="selected || shareMode ? '' : 'cursor: pointer !important'"
+    :class="{
+      selected,
+    }"
+  >
+    <div class="selectbox tb-column flex3">
+      <div class="top-column">
+        <label class="check-label">
+          <input
+            type="checkbox"
+            :checked="selected"
+            @input="$emit('click:selected', file)"
+          />
+          <span class="check-span"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="categary-name tb-column flex49">
+      <div
+        class="media"
+        :class="{ selected, video: isVideo, image: isImage }"
+        v-on="{
+          ...(isVideo
+            ? {
+                mouseenter: () =>
+                  !paused &&
+                  $suppressError(() => {
+                    playingModel = true
+                    $refs.video.play()
+                  }),
+                mouseleave: () =>
+                  !paused &&
+                  isPlaying &&
+                  $suppressError(() => {
+                    playingModel = false
+                    $refs.video.pause()
+                  }),
+              }
+            : {}),
+        }"
+      >
         <div class="media-left">
           <div v-if="isVideo" class="categary-image">
             <div :class="{ icons: !videoThumbnail }">
               <img :src="videoThumbnail" />
             </div>
             <!-- <video
-              v-show="playingModel"
-              ref="video"
-              class="thevideo"
-              :data-video="file.display_file"
-              style="
-                width: 100%;
-                height: auto;
-                object-fit: contain;
-                margin: auto;
-              "
-              playsinline
-              muted
-              loop
-            >
-              <source :src="file.display_file" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video> -->
+                v-show="playingModel"
+                ref="video"
+                class="thevideo"
+                :data-video="file.display_file"
+                style="
+                  width: 100%;
+                  height: auto;
+                  object-fit: contain;
+                  margin: auto;
+                "
+                playsinline
+                muted
+                loop
+              >
+                <source :src="file.display_file" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video> -->
           </div>
           <div v-else class="categary-image">
             <img
@@ -56,33 +74,19 @@
             />
           </div>
         </div>
+        <div class="media-body">
+          <div class="top-column">
+            <a
+              v-tooltip="file.display_file_name"
+              style="cursor: default !important"
+            >
+              {{ file.display_file_name }}
+            </a>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="categary-name tb-column flex27">
-      <div class="top-column">
-        <nuxt-link
-          :is="shareMode ? 'a' : 'nuxt-link'"
-          v-tooltip="file.display_file_name"
-          :event="selected || shareMode ? '' : 'click'"
-          :to="
-            shareMode
-              ? ''
-              : {
-                  name: 'brand_name-files-id',
-                  params: {
-                    id: file.id,
-                    brand_name: $getBrandName(),
-                    came_from_hash: hashParam,
-                    folder: $route.params.folder_name,
-                  },
-                }
-          "
-        >
-          <span>{{ file.display_file_name }}</span>
-        </nuxt-link>
-      </div>
-    </div>
-    <div class="assets tb-column flex18">
+    <div class="assets tb-column flex15">
       <div class="top-column">
         <span
           style="text-transform: uppercase"
@@ -90,24 +94,24 @@
         ></span>
       </div>
     </div>
-    <div class="update-date tb-column flex18">
+    <div class="update-date tb-column flex15">
       <div class="top-column">
         <label style="font-size: 13px">{{
           $moment(file.updated_at).format('Do MMM, YYYY')
         }}</label>
       </div>
     </div>
-    <div class="size tb-column flex12">
+    <div class="size tb-column flex10">
       <div class="top-column">
         <label style="font-size: 13px">{{
           $toHumanlySize(file.file_size)
         }}</label>
       </div>
     </div>
-    <div class="categary-action tb-column flex15">
+    <div class="categary-action tb-column flex8">
       <div class="top-column">
         <div class="categary-actions text-right">
-          <a class="action-btn download-link" @click="downloadFile">
+          <a href="javascript:void(0);" @click="downloadSharedFile">
             <svg
               id="Layer_1"
               class="download-icon h-orange"
@@ -159,7 +163,7 @@ export default {
     emitShare: { type: Boolean, default: false },
     mode: { type: String, default: 'row' },
     shareId: { type: Number, default: 0 },
-    shareWorkspaceId: { type: String, required: true },
+    shareWorkspaceId: { type: String, required: false, default: null },
   },
   data() {
     return {
@@ -277,7 +281,7 @@ export default {
       if (this.$route.name.includes('shared-assets')) {
         this.$axios
           .$post(`share-link-download`, {
-            workspace_id: this.shareWorkspaceId,
+            workspace_id: this.shareWorkspaceId || this.$getWorkspaceId(),
             share_id: this.shareId,
             asset_id: this.file.id,
           })
@@ -289,6 +293,14 @@ export default {
         name: this.file.display_file_name,
         callCountApi: !this.shareMode,
         useModernDownload: true,
+      })
+    },
+    downloadSharedFile() {
+      this.$store.dispatch('downloadIndicator/downloadMultipleSharedFiles', {
+        files: [this.file.id],
+        folders: [],
+        shareId: this.shareId,
+        shareWorkspaceId: this.shareWorkspaceId,
       })
     },
   },

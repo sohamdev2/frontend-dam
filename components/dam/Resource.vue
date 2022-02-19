@@ -3,8 +3,8 @@
     :style="selected || shareMode ? '' : 'cursor: pointer !important'"
     :class="{
       selected,
-      video: isVideo,
-      image: isImage,
+      video: !!(isVideo && file.video_preview),
+      image: isImage || !!(isVideo && !file.video_preview),
       'assets-private': file.is_public === 0,
     }"
     v-on="{
@@ -16,28 +16,12 @@
         : {}),
     }"
   >
-    <!-- v-on="{
-        ...(isVideo
-          ? {
-              mouseenter: () =>
-                !paused &&
-                $suppressError(() => {
-                  playingModel = true
-                  $refs.video.play()
-                }),
-              mouseleave: () =>
-                !paused &&
-                isPlaying &&
-                $suppressError(() => {
-                  playingModel = false
-                  $refs.video.pause()
-                }),
-            }
-          : {}),
-      }" -->
     <div
       class="preview-img tb-column flex10"
-      :class="{ video: isVideo, image: isImage }"
+      :class="{
+        video: !!(isVideo && file.video_preview),
+        image: isImage || !!(isVideo && !file.video_preview),
+      }"
     >
       <label v-if="!shareMode && !hideSelect" class="check-label">
         <input :checked="selected" type="checkbox" />
@@ -46,15 +30,15 @@
           @click="$emit('click:selected', file)"
         ></label>
       </label>
-      <template @focus="$refs.video.play()" @blur="$refs.video.pause()">
+      <template>
         <div
           v-if="isVideo"
           class="categary-image"
-          :class="{ 'no-image': !videoThumbnail }"
+          :class="{ 'no-image': !file.video_preview }"
         >
           <nuxt-link
             :is="shareMode ? 'a' : 'nuxt-link'"
-            v-if="!imageLoading && !videoThumbnailFetching"
+            v-if="!imageLoading"
             class="img-link"
             :event="selected || shareMode ? '' : 'click'"
             :to="
@@ -71,22 +55,20 @@
                   }
             "
           >
-            <div
-              :class="{
-                icons:
-                  videoThumbnail.split(/[#?]/)[0].split('.').pop().trim() ==
-                  'svg',
-              }"
-            >
-              <img :src="videoThumbnail" @load="imageLoading = false" />
+            <div :class="{ icons: !__image_thumb }">
+              <img
+                :src="__image_thumb || __thumb"
+                @load="imageLoading = false"
+              />
             </div>
             <video
               ref="video"
               class="thevideo"
-              :src="file.display_file + '#t=0,5'"
+              :src="file.video_preview"
               playsinline
               muted
               preload="metadata"
+              loop
             >
               <!-- <source :src="file.display_file" type="video/mp4" /> -->
               Your browser does not support the video tag.
@@ -104,7 +86,7 @@
               "
             >
               <ContentLoader
-                v-if="imageLoading || (isVideo && videoThumbnailFetching)"
+                v-if="imageLoading"
                 style="position: absolute; top: 0; right: 0; left: 0; bottom: 0"
                 :speed="1"
                 :width="100"
@@ -271,23 +253,26 @@
               </div>
             </div>
             <div class="down-info" style="z-index: 4">
-              <template v-if="isVideo">
+              <template v-if="file.video_preview">
                 <video
                   :id="`file-video-${file.id}`"
+                  ref="galleryVideo"
                   width="640"
                   height="320"
                   controlsList="nodownload"
                   controls
                   :data-id="`file-${file.id}`"
                   style="display: none"
+                  class="fancybox-video"
+                  disablepictureinpicture
                 >
-                  <source :src="__url" type="video/mp4" />
+                  <source :src="file.video_preview" type="video/mp4" />
                   Your browser doesn't support HTML5 video tag.
                 </video>
-              </template>
+                <!-- </template> -->
 
-              <template v-if="isVideo">
-                <a @click.capture.prevent.stop="paused = !paused">
+                <!-- <template v-if="isVideo"> -->
+                <a @click.capture.stop="toggleVideoPlay()">
                   <svg
                     v-if="paused"
                     id="Layer_1"
@@ -329,8 +314,12 @@
                   ref="expandButton"
                   :href="`#file-video-${file.id}`"
                   data-fancybox
-                  @click="viewAssetsCount()"
-                  ><svg
+                  @click.stop="
+                    galleryMode = 1
+                    viewAssetsCount()
+                  "
+                >
+                  <svg
                     id="Layer_1"
                     class="expand-icon white"
                     version="1.1"
@@ -348,6 +337,28 @@
                     ></path>
                   </svg>
                 </a>
+                <!-- <a @click="
+                  toggleVideoPlay()
+                  viewAssetsCount()
+                "
+                  ><svg
+                    id="Layer_1"
+                    class="expand-icon white"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    x="0px"
+                    y="0px"
+                    viewBox="0 0 16 16"
+                    xml:space="preserve"
+                  >
+                    <path
+                      id="Icon_awesome-expand"
+                      class="fill-color"
+                      d="M0,5.3V0.9C0,0.4,0.4,0,0.9,0c0,0,0,0,0,0h4.4c0.2,0,0.4,0.2,0.4,0.4v1.4c0,0.2-0.2,0.4-0.4,0.4h-3v3c0,0.2-0.2,0.4-0.4,0.4H0.4C0.2,5.7,0,5.5,0,5.3z M10.3,0.4v1.4c0,0.2,0.2,0.4,0.4,0.4h3v3c0,0.2,0.2,0.4,0.4,0.4h1.4c0.2,0,0.4-0.2,0.4-0.4V0.9C16,0.4,15.6,0,15.1,0c0,0,0,0,0,0h-4.4C10.5,0,10.3,0.2,10.3,0.4z M15.6,10.3h-1.4c-0.2,0-0.4,0.2-0.4,0.4v3h-3c-0.2,0-0.4,0.2-0.4,0.4v1.4c0,0.2,0.2,0.4,0.4,0.4h4.4c0.5,0,0.9-0.4,0.9-0.9c0,0,0,0,0,0v-4.4C16,10.5,15.8,10.3,15.6,10.3L15.6,10.3z M5.7,15.6v-1.4c0-0.2-0.2-0.4-0.4-0.4h-3v-3c0-0.2-0.2-0.4-0.4-0.4H0.4c-0.2,0-0.4,0.2-0.4,0.4v4.4C0,15.6,0.4,16,0.9,16c0,0,0,0,0,0h4.4C5.5,16,5.7,15.8,5.7,15.6z"
+                    ></path>
+                  </svg>
+                </a> -->
               </template>
               <component
                 :is="shareMode ? 'a' : 'nuxt-link'"
@@ -393,7 +404,7 @@
                   }
             "
           >
-            <div v-if="isDoc" :class="{ icons: !isDoc }">
+            <div v-if="isDoc" :class="{ icons: !__image_thumb }">
               <img
                 v-show="!imageLoading"
                 :src="previewImage"
@@ -409,18 +420,18 @@
                 @error="errorHandle"
               />
             </div>
-            <div v-else-if="isPdf" :class="{ icons: !isPdf || filePreview }">
+            <div v-else-if="isPdf" :class="{ icons: !__image_thumb }">
               <img
                 v-show="!imageLoading"
-                :src="previewImage"
+                :src="__image_thumb || previewImage"
                 @load="imageLoading = false"
                 @error="errorHandle"
               />
             </div>
-            <div v-else-if="isHtml" :class="{ icons: !isHtml || filePreview }">
+            <div v-else-if="isHtml" :class="{ icons: !__image_thumb }">
               <img
                 v-show="!imageLoading"
-                :src="previewImage"
+                :src="__image_thumb || previewImage"
                 @load="imageLoading = false"
                 @error="errorHandle"
               />
@@ -466,16 +477,6 @@
           <div class="video-info">
             <div class="upper-info">
               <span :inner-html.prop="file.file_type || '&dash;'"></span>
-              <!-- <a
-                v-if="!shareMode"
-                @click="
-                  emitShare
-                    ? $emit('share', file)
-                    : $refs.shareDialog.toggleModel()
-                "
-              >
-                <img src="~/assets/img/share.svg" alt="" class="white-icon" />
-              </a> -->
               <div class="d-flex align-items-center">
                 <div
                   class="dropdown more-options"
@@ -623,13 +624,13 @@
                 data-fancybox="image-preview"
                 data-width="auto"
                 data-height="auto"
-                :data-href="__compressed_preview || __url"
-                :href="__compressed_preview || __url"
+                :data-href="__compressed_preview || __image_thumb || __thumb"
+                :href="__compressed_preview || __image_thumb || __thumb"
               >
               </a>
 
               <a
-                v-if="isImage"
+                v-if="isImage && (__compressed_preview || __image_thumb)"
                 @click.stop="
                   $refs.expandButton.click()
                   viewAssetsCount()
@@ -899,6 +900,8 @@ export default {
       imageLoading: false,
       videoThumbnailFetching: false,
       dropDownList: false,
+      galleryMode: 0,
+      display_file: null,
     }
   },
   computed: {
@@ -934,11 +937,41 @@ export default {
     },
   },
   watch: {
-    paused(paused) {
-      const video = this.$refs.video
-      if (!video) return
-      if (paused) video.pause()
-      else video.play()
+    galleryMode(n) {
+      if (!n || this.display_file) return
+      this.$nextTick(() => {
+        this.$axios
+          .$post('digital/view-detail', {
+            digital_assets_id: this.file.id,
+            workspace_id: this.$getWorkspaceId(),
+          })
+          .then(({ data }) => {
+            if (!data.display_file) return
+            this.display_file = data.display_file
+            const video = this.$refs.galleryVideo
+            // TODO: remove fancybox
+            // dynamically updating fancybox'd source does not reflect on fancybox
+            const fancyBoxVideo = document.querySelector(
+              `.fancybox-content video#file-video-${this.file.id}`
+            )
+            if (!fancyBoxVideo) return
+            const currentTime = video.currentTime
+            const paused = video.paused
+            const sameSource =
+              fancyBoxVideo.querySelector('source').src === data.display_file ||
+              fancyBoxVideo.src === data.display_file
+            if (sameSource) return
+            fancyBoxVideo
+              .querySelector('source')
+              .setAttribute('src', data.display_file)
+            setTimeout(() => {
+              fancyBoxVideo.load()
+              fancyBoxVideo.currentTime = currentTime
+              if (!paused) fancyBoxVideo.play()
+            }, 250)
+          })
+          .catch(console.error)
+      })
     },
   },
 
@@ -950,19 +983,15 @@ export default {
     })
     this.loadJS()
     this.$nextTick(() => {
-      // window.$(this.$el).find('[data-toggle="tooltip"]').tooltip()
-      this.imageLoading = this.isImage
-
+      this.imageLoading = !!this.isImage
       if (this.isVideo) {
-        this.getThumbnail()
-
         window
           .$(this.$el)
           .find('[data-fancybox]')
           .fancybox({
             video: {
               tpl:
-                `<video class="fancybox-video" data-id="file-${this.file.id}" controlsList="nodownload" controls poster="${this.videoThumbnail}">` +
+                `<video class="fancybox-video" data-id="file-${this.file.id}" controlsList="nodownload" controls poster="${this.file.video_preview}">` +
                 '<source src="{{src}}"  />' +
                 'Sorry, your browser doesn\'t support embedded videos, <a href="{{src}}">download</a> and watch with your favorite video player!' +
                 '</video>',
@@ -987,6 +1016,11 @@ export default {
     this.loadJS()
   },
   methods: {
+    toggleVideoPlay() {
+      this.paused = !this.paused
+      if (this.paused) this.$refs.video.pause()
+      else this.$refs.video.play()
+    },
     errorHandle(data) {
       try {
         data.target.src = require(`~/assets/img/icon/file/${this.file.file_type.toLowerCase()}.svg`)
@@ -1018,10 +1052,8 @@ export default {
     },
     isPlaying() {
       if (!this.isVideo) return false
-
       const video = this.$refs.video
       if (!video) return false
-
       return (
         (video.currentTime > 0 &&
           !video.paused &&
@@ -1032,76 +1064,27 @@ export default {
     },
 
     pauseVideo() {
-      if (!this.paused && this.isPlaying) {
+      try {
         const video = this.$refs.video
-
-        this.$suppressError(() => {
-          this.playingModel = false
-          // this.playtime = video.currentTime
-          video.pause()
-        })
-      }
+        if (!video) return
+        video.pause()
+      } catch (_) {}
     },
     playVideo() {
-      if (!this.paused) {
+      try {
+        if (this.paused || this.videoError) return
         const video = this.$refs.video
-        video.ontimeupdate = function () {
-          if (video.currentTime >= 5) {
-            const src = video.src
-
-            video.src = ''
-            video.src = src
-            video.currentTime = 0
-            video.play()
-          }
-        }
-        this.$suppressError(() => {
-          this.playingModel = true
-          video.play()
-          // video.play()?.catch(() => {
-          //   this.videoError = true
-          // })
-        })
-      }
-    },
-    setPlaytime() {
-      setTimeout(() => {
-        try {
-          window.$(`[data-id="file-${this.file.id}"]`)[0].currentTime =
-            this.$refs.video.currentTime
-        } catch {
-          //
-        }
-      }, 250)
+        if (!video) return
+        video.play()
+      } catch (_) {}
     },
     async viewAssetsCount() {
-      await this.$axios
-        .$post('digital/view-asset-count', {
-          workspace_id: this.$getWorkspaceId(),
-          asset_id: this.file.id,
-        })
-        .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
-    },
-    getThumbnail() {
-      if (this.file.thumbnail_file) {
-        this.imageLoading = true
-        return (this.videoThumbnail = this.file.thumbnail_file)
-      }
-
-      this.videoThumbnailAdded = false
-      this.videoThumbnailFetching = true
-
-      return this.$store
-        .dispatch('getThumbnail', {
-          id: this.file.id,
-          url: this.file.display_file,
-        })
-        .then((dataURI) => {
-          this.videoThumbnail = dataURI || this.previewImage
-          this.videoThumbnailAdded = true
-        })
-        .catch(() => (this.videoThumbnail = this.previewImage))
-        .finally(() => (this.videoThumbnailFetching = false))
+      // await this.$axios
+      //   .$post('digital/view-asset-count', {
+      //     workspace_id: this.$getWorkspaceId(),
+      //     asset_id: this.file.id,
+      //   })
+      //   .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
     },
     downloadFile() {
       this.$store.dispatch('downloadIndicator/downloadFile', {
