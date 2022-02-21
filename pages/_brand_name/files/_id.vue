@@ -467,7 +467,7 @@
                       class="dropdown-toggle btn btn-gray btn-icon"
                       :class="{
                         disabledFileConvert:
-                          allButtonDisabled || converting || convertNotAllowed,
+                          allButtonDisabled || converting || convertNotAllowed(),
                       }"
                       :disabled="allButtonDisabled || converting"
                       data-toggle="dropdown"
