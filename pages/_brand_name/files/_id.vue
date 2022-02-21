@@ -457,13 +457,17 @@
                   </button>
                   <div
                     v-if="downloadableFormats.length"
+                    v-tooltip="
+                      !convertNotAllowed() ? 'File size is too large' : ''
+                    "
                     class="dropdown convert-video"
                   >
                     <a
                       href="javascript:void(0);"
                       class="dropdown-toggle btn btn-gray btn-icon"
                       :class="{
-                        disabledFileConvert: allButtonDisabled || converting,
+                        disabledFileConvert:
+                          allButtonDisabled || converting || convertNotAllowed,
                       }"
                       :disabled="allButtonDisabled || converting"
                       data-toggle="dropdown"
@@ -962,7 +966,14 @@ export default {
         .catch(console.error)
         .finally(() => (this.converting = false))
     },
+    convertNotAllowed() {
+      return this.file.file_size < 4000000
+    },
     convertFile(format) {
+      if (!this.convertNotAllowed()) {
+        this.$toast.global.error('File size is too large.')
+        return
+      }
       if (this.converting) return
       if (
         format === this.file.file_type ||
