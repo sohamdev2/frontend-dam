@@ -208,7 +208,7 @@ header.header-sec .main-logo img{max-height: 45px;max-width: 350px;}
 .main-menu > ul > li * {transition: ease-in-out all 0.4s;-webkit-transition: ease-in-out all 0.4s;-ms-transition: ease-in-out all 0.4s;-o-transition: ease-in-out all 0.4s;}
 .main-menu > ul > li > a {padding: 20px 30px;font-size: 16px;color: rgba(255,255,255,0.65);display: flex;align-items: center;justify-content: space-between;transition: ease-in-out all 0s;-webkit-transition: ease-in-out all 0s;-ms-transition: ease-in-out all 0s;-o-transition: ease-in-out all 0s;}
 .main-menu > ul > li > a span {margin-right: 10px;}
-.main-menu > ul > li > a svg {max-height: 16px;margin-top: 2px;}
+.main-menu > ul > li > a svg {max-height: 16px;}
 .main-menu > ul > li:hover a,
 .main-menu > ul > li.active a {color: #ffffff;}
 .main-menu > ul > li:hover a svg .fill-color,
