@@ -440,7 +440,6 @@ header .user-dropdown.show .dropdown-toggle{color: #ffffff;}
 .tiles-carousel:hover .owl-nav .owl-next{right: 10px !important;}
 .tiles-carousel li {position: relative;border-radius: 4px;display: flex;flex-wrap: wrap;align-items: center;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07);-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07);background-color: #fff;}
 
-
 /* Grid List and Tile View ----------------*/
 .section-title {margin: 30px 0 15px;}
 .section-title.dam-detail-title {margin: 15px 0;}
@@ -485,7 +484,7 @@ header .user-dropdown.show .dropdown-toggle{color: #ffffff;}
 .grid-tile .table-list-view .tbody li .categary-image .img-link:before {position: absolute;content: '';top: 0;right: 0;left: 0;bottom: 0;z-index: 4;background-color: rgba(0,0,0,0.3);opacity: 0;visibility: hidden;transition: all 0.3s;border-radius: 0px;}
 .grid-tile .table-list-view .tbody li:hover .categary-image .img-link:before {opacity: 1;visibility: visible;}
 .tiles-list.trending-sec .categary-image{overflow: hidden;border-radius: 0px;display: flex;}
-.tiles-list.trending-sec .categary-image:before{background-color: #445ea7;}
+.tiles-list.trending-sec .categary-image:before{background-color: #445ea7;border-top-left-radius: 5px;border-top-right-radius: 5px;}
 .tiles-list.trending-sec .categary-image .icons img {max-height: 60%;width: auto;}
 .tiles-list.trending-sec .categary-image .img-link > img{width: 100%;}
 .tiles-list.trending-sec .table-list-view .tbody > li {flex: 0 0 calc(25% - 20px) !important;max-width: calc(25% - 20px) !important;margin: 10px !important;}
