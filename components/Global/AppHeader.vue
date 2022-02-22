@@ -17,6 +17,7 @@
       </nuxt-link>
     </div>
     <div class="main-menu col-7">
+      <component :is="`style`" v-html="css"></component>
       <ul class="header-nav">
         <li
           v-for="link in headerLinks"
@@ -34,8 +35,8 @@
             @click="changeCategory(link.to)"
             @mouseover="headerTxtHover(link.name)"
             @mouseout="headerTxtHoverOut(link.name)"
-            ><span>{{ link.name }}</span
-            ><span v-html="link.imageUrl"></span
+            ><span>{{ link.name }}</span>
+            <p class="mb0" v-html="link.imageUrl"></p
           ></a>
         </li>
       </ul>
@@ -505,6 +506,16 @@ export default {
     },
     accessibleIntances() {
       return this.$auth.user.accessibleInstances
+    },
+    css() {
+      return `
+         .main-menu > ul > li.active > a {
+            color: ${this.$auth.user.themes_option.header_text_hover_color} !important;
+         }
+         .main-menu > ul > li.active > a svg .fill-color{
+            fill: ${this.$auth.user.themes_option.header_text_hover_color}!important;
+         }
+         `
     },
   },
   watch: {
