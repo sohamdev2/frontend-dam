@@ -456,7 +456,7 @@
                     Download
                   </button>
                   <div
-                    v-if="downloadableFormats.length"
+                    v-if="0 && downloadableFormats.length"
                     v-tooltip="
                       convertNotAllowed() ? 'File size is too large' : ''
                     "
@@ -584,8 +584,8 @@
 <script>
 import EXIF from 'exif-js'
 import axios from 'axios'
-import FileSaver from 'file-saver'
-import Jimp from 'jimp'
+// import FileSaver from 'file-saver'
+// import Jimp from 'jimp'
 import fileType from '~/mixins/fileType'
 
 const categories = ['video', 'audio', 'image', 'application', 'archive']
@@ -650,20 +650,20 @@ const IMAGE_FORMATS = [
   'avif',
 ]
 const UNSUPPORTED_FORMATS_FROM_SVG = ['bmp', 'jfif']
-const IMAGE_MIMETYPES = {
-  tif: 'image/tiff',
-  tiff: 'image/tiff',
-  bmp: 'image/bmp',
-  jpg: 'image/jpeg',
-  jpeg: 'image/jpeg',
-  jfif: 'image/jpeg',
-  pjpeg: 'image/pjpeg',
-  png: 'image/png',
-  eps: 'application/postscript',
-  svg: 'image/svg+xml',
-  webp: 'image/webp',
-  ico: 'image/vnd.microsoft.icon',
-}
+// const IMAGE_MIMETYPES = {
+//   tif: 'image/tiff',
+//   tiff: 'image/tiff',
+//   bmp: 'image/bmp',
+//   jpg: 'image/jpeg',
+//   jpeg: 'image/jpeg',
+//   jfif: 'image/jpeg',
+//   pjpeg: 'image/pjpeg',
+//   png: 'image/png',
+//   eps: 'application/postscript',
+//   svg: 'image/svg+xml',
+//   webp: 'image/webp',
+//   ico: 'image/vnd.microsoft.icon',
+// }
 
 const categoriesObject = [
   { text: 'Home', id: '' },
@@ -944,96 +944,96 @@ export default {
       })
     },
     convertOtherImage(format) {
-      axios
-        .post(
-          '/convert',
-          {
-            url: this.file.display_file,
-            format,
-            fileType: 'image',
-          },
-          {
-            responseType: 'blob',
-          }
-        )
-        .then((r) => {
-          const targetName =
-            this.file.display_file_name.substring(
-              0,
-              this.file.display_file_name.lastIndexOf('.') + 1
-            ) + format
-          FileSaver.saveAs(r.data, targetName)
-          this.updateDownloadCount(this.file.id, 'asset')
-        })
-        .catch(console.error)
-        .finally(() => (this.converting = false))
+      // axios
+      //   .post(
+      //     '/convert',
+      //     {
+      //       url: this.file.display_file,
+      //       format,
+      //       fileType: 'image',
+      //     },
+      //     {
+      //       responseType: 'blob',
+      //     }
+      //   )
+      //   .then((r) => {
+      //     const targetName =
+      //       this.file.display_file_name.substring(
+      //         0,
+      //         this.file.display_file_name.lastIndexOf('.') + 1
+      //       ) + format
+      //     FileSaver.saveAs(r.data, targetName)
+      //     this.updateDownloadCount(this.file.id, 'asset')
+      //   })
+      //   .catch(console.error)
+      //   .finally(() => (this.converting = false))
     },
     convertNotAllowed() {
       return this.file.file_size > 4000000
     },
     convertFile(format) {
-      if (this.convertNotAllowed()) {
-        this.$toast.global.error('File size is too large.')
-        return
-      }
-      if (this.converting) return
-      if (
-        format === this.file.file_type ||
-        !['audio', 'video', 'image'].includes(this.file.type)
-      ) {
-        return this.downloadFile()
-      }
-      const targetName =
-        this.file.display_file_name.substring(
-          0,
-          this.file.display_file_name.lastIndexOf('.') + 1
-        ) + format
-      this.converting = true
-      if (['audio', 'video'].includes(this.file.type)) {
-        axios
-          .post(
-            '/convert',
-            {
-              url: this.file.display_file,
-              format,
-              fileType: this.file.type,
-            },
-            {
-              responseType: 'blob',
-            }
-          )
-          .then((r) => {
-            FileSaver.saveAs(r.data, targetName)
-            this.updateDownloadCount(this.file.id, 'asset')
-          })
-          .catch(console.error)
-          .finally(() => (this.converting = false))
-      } else if (['jfif', 'bmp'].includes(format)) {
-        Jimp.read(this.file.display_file)
-          .then((image) => {
-            const mime = IMAGE_MIMETYPES[format]
-            if (!mime) {
-              this.$toast.error('Could not retrieve mimeType')
-              this.converting = false
-              return
-            }
-            image.getBase64(mime, (e, d) => {
-              if (e) {
-                this.$toast.error('Could not convert image')
-                this.converting = false
-                return
-              }
-              FileSaver.saveAs(d, targetName)
-              this.updateDownloadCount(this.file.id, 'asset')
-            })
-          })
-          .catch(console.error)
-          .finally(() => {
-            this.converting = false
-          })
-      } else {
-        this.convertOtherImage(format)
-      }
+      // if (this.convertNotAllowed()) {
+      //   this.$toast.global.error('File size is too large.')
+      //   return
+      // }
+      // if (this.converting) return
+      // if (
+      //   format === this.file.file_type ||
+      //   !['audio', 'video', 'image'].includes(this.file.type)
+      // ) {
+      //   return this.downloadFile()
+      // }
+      // const targetName =
+      //   this.file.display_file_name.substring(
+      //     0,
+      //     this.file.display_file_name.lastIndexOf('.') + 1
+      //   ) + format
+      // this.converting = true
+      // if (['audio', 'video'].includes(this.file.type)) {
+      //   axios
+      //     .post(
+      //       '/convert',
+      //       {
+      //         url: this.file.display_file,
+      //         format,
+      //         fileType: this.file.type,
+      //       },
+      //       {
+      //         responseType: 'blob',
+      //       }
+      //     )
+      //     .then((r) => {
+      //       FileSaver.saveAs(r.data, targetName)
+      //       this.updateDownloadCount(this.file.id, 'asset')
+      //     })
+      //     .catch(console.error)
+      //     .finally(() => (this.converting = false))
+      // } else if (['jfif', 'bmp'].includes(format)) {
+      //   Jimp.read(this.file.display_file)
+      //     .then((image) => {
+      //       const mime = IMAGE_MIMETYPES[format]
+      //       if (!mime) {
+      //         this.$toast.error('Could not retrieve mimeType')
+      //         this.converting = false
+      //         return
+      //       }
+      //       image.getBase64(mime, (e, d) => {
+      //         if (e) {
+      //           this.$toast.error('Could not convert image')
+      //           this.converting = false
+      //           return
+      //         }
+      //         FileSaver.saveAs(d, targetName)
+      //         this.updateDownloadCount(this.file.id, 'asset')
+      //       })
+      //     })
+      //     .catch(console.error)
+      //     .finally(() => {
+      //       this.converting = false
+      //     })
+      // } else {
+      //   this.convertOtherImage(format)
+      // }
     },
     imageErrorHandle(data) {
       if (this.isPdf || this.isTxt || this.isDoc || this.isHtml) {
