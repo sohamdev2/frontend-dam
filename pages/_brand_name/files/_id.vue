@@ -456,7 +456,7 @@
                     Download
                   </button>
                   <div
-                    v-if="downloadableFormats.length"
+                    v-if="0 && downloadableFormats.length"
                     v-tooltip="
                       convertNotAllowed() ? 'File size is too large' : ''
                     "
