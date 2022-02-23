@@ -32,7 +32,7 @@
     </div>
     <div class="update-date tb-column flex12">
       <div class="top-column">
-        <label>{{ $auth.user.name }}</label>
+        <label>{{ file.user ? file.user.name : '-' }}</label>
       </div>
     </div>
     <div class="size tb-column flex8">
