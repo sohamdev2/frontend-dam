@@ -9,11 +9,12 @@
   >
     <div class="main-logo col">
       <nuxt-link :to="`/${$getBrandName()}`">
-        <img
+        <!-- <img
           :src="userLogo || require('~/assets/img/lariat-logo.svg')"
           alt="Logo"
           height="24"
-        />
+        /> -->
+        <h2>{{ $getBrandName() }}</h2>
       </nuxt-link>
     </div>
     <div class="main-menu col-7">

@@ -105,15 +105,18 @@
       <SearchBar />
       <div v-if="dashboardData" class="hero-section">
         <client-only>
+          <!-- 
+            The current implementation of vue-carousel jumps back to the first slide when last one is reached,
+            it does not make the transition to behave infinite.
+            See this PR: https://github.com/SSENSE/vue-carousel/issues/12#issuecomment-360815826
+           -->
           <carousel
             ref="hero"
             autoplay
             :per-page="1"
             navigation-enabled
-            :loop="false"
-            :navigate-to="heroNavigateTo"
+            loop
             :pagination-enabled="false"
-            @transition-end="onHeroChanged"
           >
             <slide v-for="banner in bannerData" :key="banner.id">
               <!-- <div
@@ -131,7 +134,7 @@
                     backgroundImage: `url('${banner.image}')`,
                   }"
                 ></div>
-                <div class="content">
+                <div v-if="banner.description" class="content">
                   <div class="content-wepper">
                     <p>
                       {{ banner.description }}
@@ -466,17 +469,17 @@ export default {
   },
   methods: {
     onHeroChanged() {
-      this.$nextTick(() => {
-        const hero = this.$refs.hero
-        if (!hero) return
-        const page = hero.currentPage
-        if (page === this.bannerData.length - 1) {
-          this.heroNavigateTo = [page, false]
-          setTimeout(() => {
-            this.heroNavigateTo = [0, false]
-          }, 1500)
-        }
-      })
+      // this.$nextTick(() => {
+      //   const hero = this.$refs.hero
+      //   if (!hero) return
+      //   const page = hero.currentPage
+      //   if (page === this.bannerData.length - 1) {
+      //     this.heroNavigateTo = [page, false]
+      //     setTimeout(() => {
+      //       this.heroNavigateTo = [0, false]
+      //     }, 1500)
+      //   }
+      // })
     },
     scrollToTrending() {
       this.$refs.trending.scrollIntoView()
