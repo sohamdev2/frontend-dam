@@ -10,7 +10,7 @@
     <div class="main-logo col">
       <nuxt-link :to="`/${$getBrandName()}`">
         <img v-if="userLogo" :src="userLogo" alt="Logo" height="24" />
-        <h2 v-else>{{ $getBrandName() }}</h2>
+        <h2 v-else>{{ $brandName() }}</h2>
       </nuxt-link>
     </div>
     <div class="main-menu col-7">
