@@ -18,7 +18,7 @@
                 alt=""
                 class="img-responsive img-center"
               />
-              <h2 v-else>{{ $getBrandName() }}</h2>
+              <h2 v-else>{{ $brandDetail().brand_name }}</h2>
             </div>
             <div class="sign-body">
               <p>Please login to your account</p>
