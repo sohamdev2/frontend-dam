@@ -202,7 +202,7 @@ span.input-control {font-size: 14px;display: block;border-radius: 4px;border: 1p
 header.header-sec {position: fixed;left: 0;right: 0;top: 0;padding: 0 14px;background-color: #030422;display: flex;flex-wrap: wrap;align-items: center;justify-content: space-between;width: 100%;z-index: 9;height: 62px;}
 header.header-sec .main-logo img{max-height: 45px;max-width: 350px;}
 .main-logo a {display: inline-block;vertical-align: top;line-height: 0;}
-.main-logo h2 {color: rgba(255,255,255,0.65);font-size: 2.5em;}
+.main-logo h2 {color: rgba(255,255,255,0.65);font-size: 2em;}
 .main-menu  {display: flex;justify-content: center;flex-wrap: wrap;}
 .main-menu > ul {display: flex;overflow: hidden;}
 .main-menu > ul li {margin:0;list-style: none;}
@@ -743,7 +743,7 @@ header .user-dropdown.show .dropdown-toggle{color: #ffffff;}
 .sign-screen-content {padding: 3em 0px 5em;}
 .sign-heading-text{margin-bottom: 50px;}
 .sign-heading-text img{max-height: 50px;}
-.sign-heading-text h2{font-size: 2.5em;}
+.sign-heading-text h2{font-size: 2em;}
 .signin-more{display: block;margin: 25px auto;}
 .signin-more p {font-size: 16px;z-index: 1;position: relative;display: block;margin: 0;text-align: center;}
 .bottom-fix-link-center {position: absolute;bottom: 25px;left: 0;right: 0;text-align: center;}
@@ -1045,7 +1045,7 @@ header .user-dropdown.show .dropdown-toggle{color: #ffffff;}
   .dam-detail .inner-detail-right{width: 45%;}
   .hero-section .owl-item .content-wepper h1,
   .hero-section .VueCarousel-slide .content-wepper h1 {font-size: 3em;}
-  .main-logo h2, .sign-heading-text h2 {font-size: 2em;}
+  .main-logo h2, .sign-heading-text h2 {font-size: 1.5em;}
 }
 
 .btn-icon svg {display: inline-flex;height: 13px;margin-left: -4px;margin-bottom: -1px;margin-right: 6px;}
