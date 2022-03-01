@@ -1,5 +1,5 @@
 <template>
-  <ShowWhenReady class="qqqqq" :show="show">
+  <ShowWhenReady :show="show">
     <AppHeader @resetList="key++" />
     <nuxt :key="key"></nuxt>
   </ShowWhenReady>
