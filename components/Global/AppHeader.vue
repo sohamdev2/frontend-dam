@@ -9,11 +9,8 @@
   >
     <div class="main-logo col">
       <nuxt-link :to="`/${$getBrandName()}`">
-        <img
-          :src="userLogo || require('~/assets/img/lariat-logo.svg')"
-          alt="Logo"
-          height="24"
-        />
+        <img v-if="userLogo" :src="userLogo" alt="Logo" height="24" />
+        <h2 v-else>{{ $brandName() }}</h2>
       </nuxt-link>
     </div>
     <div class="main-menu col-7">
@@ -511,6 +508,9 @@ export default {
       return `
          .main-menu > ul > li.active > a {
             color: ${this.$auth.user.themes_option.header_text_hover_color} !important;
+         }
+         .main-logo h2 {
+            color: ${this.$auth.user.themes_option.header_text_color} !important;
          }
          .main-menu > ul > li.active > a svg .fill-color{
             fill: ${this.$auth.user.themes_option.header_text_hover_color}!important;

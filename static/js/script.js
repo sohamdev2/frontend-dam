@@ -74,18 +74,6 @@ $(document).ready(function () {
 		}
 	});*/
 
-  // Owl Carousel
-  if ($('.owl-carousel').length > 0) {
-    $('.owl-carousel').owlCarousel({
-      loop: true,
-      nav: true,
-      responsive: {
-        0: {
-          items: 1,
-        },
-      },
-    })
-  }
 
   // Video Hover js
   $('.video').each(function () {

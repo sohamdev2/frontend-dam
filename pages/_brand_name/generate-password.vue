@@ -29,14 +29,12 @@
             <div class="sign-heading-text text-center">
               <nuxt-link to="/">
                 <img
-                  :src="
-                    form.logo
-                      ? form.logo
-                      : require('~/assets/img/lariat-marketing-hub.svg')
-                  "
+                  v-if="form.logo"
+                  :src="form.logo"
                   alt=""
                   class="img-responsive img-center"
                 />
+                <h2 v-else>{{ $brandDetail().brand_name }}</h2>
               </nuxt-link>
             </div>
             <div class="sign-body bg-white">
