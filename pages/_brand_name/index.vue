@@ -105,7 +105,7 @@
       <SearchBar />
       <div v-if="dashboardData" class="hero-section">
         <client-only>
-          <!-- 
+          <!--
             The current implementation of vue-carousel jumps back to the first slide when last one is reached,
             it does not make the transition to behave infinite.
             See this PR: https://github.com/SSENSE/vue-carousel/issues/12#issuecomment-360815826
@@ -117,6 +117,8 @@
             navigation-enabled
             loop
             :pagination-enabled="false"
+            :autoplay-timeout="3000"
+            :speed="800"
           >
             <slide v-for="banner in bannerData" :key="banner.id">
               <!-- <div
@@ -127,18 +129,19 @@
                 }"
               ></div> -->
               <a :href="banner.url" target="_blank">
-                <div
+                <!--                <div
                   class="banner-item"
                   :title="banner.title"
                   :style="{
                     backgroundImage: `url('${banner.image}')`,
                   }"
-                ></div>
+                ></div>-->
+                <img :src="banner.image" :alt="banner.title" />
                 <div v-if="banner.description" class="content">
                   <div class="content-wepper">
-                    <p>
+                    <h1>
                       {{ banner.description }}
-                    </p>
+                    </h1>
                   </div>
                 </div>
               </a>

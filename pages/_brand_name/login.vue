@@ -13,12 +13,12 @@
               </div> -->
             <div class="sign-heading-text text-center">
               <img
-                :src="
-                  logo ? logo : require('~/assets/img/lariat-marketing-hub.svg')
-                "
+                v-if="logo"
+                :src="logo"
                 alt=""
                 class="img-responsive img-center"
               />
+              <h2 v-else>{{ $brandDetail().brand_name }}</h2>
             </div>
             <div class="sign-body">
               <p>Please login to your account</p>
