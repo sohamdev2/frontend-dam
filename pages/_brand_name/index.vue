@@ -103,13 +103,25 @@
     </div>
     <div ref="rightSide" class="body-content-right customscrollbar">
       <SearchBar />
-      <div v-if="dashboardData" class="hero-section">
-        <client-only>
-          <!--
+      <!--      <div class="hero-section hero-carousel owl-carousel">
+        <client-only v-if="dashboardData">
+          <div v-for="banner in bannerData" :key="banner.id" class="item">
+            <a :href="banner.url" target="_blank">
+              <img :src="banner.image" :alt="banner.title" />
+              <div v-if="banner.description" class="content">
+                <div class="content-wepper">
+                  <h1>
+                    {{ banner.description }}
+                  </h1>
+                </div>
+              </div>
+            </a>
+          </div>
+          &lt;!&ndash;
             The current implementation of vue-carousel jumps back to the first slide when last one is reached,
             it does not make the transition to behave infinite.
             See this PR: https://github.com/SSENSE/vue-carousel/issues/12#issuecomment-360815826
-           -->
+           &ndash;&gt;
           <carousel
             ref="hero"
             autoplay
@@ -121,21 +133,21 @@
             :speed="800"
           >
             <slide v-for="banner in bannerData" :key="banner.id">
-              <!-- <div
+              &lt;!&ndash; <div
                 class="banner-item"
                 :title="banner.title"
                 :style="{
                   backgroundImage: `url('${banner.image}')`,
                 }"
-              ></div> -->
+              ></div> &ndash;&gt;
               <a :href="banner.url" target="_blank">
-                <!--                <div
+                &lt;!&ndash;                <div
                   class="banner-item"
                   :title="banner.title"
                   :style="{
                     backgroundImage: `url('${banner.image}')`,
                   }"
-                ></div>-->
+                ></div>&ndash;&gt;
                 <img :src="banner.image" :alt="banner.title" />
                 <div v-if="banner.description" class="content">
                   <div class="content-wepper">
@@ -148,6 +160,23 @@
             </slide>
           </carousel>
         </client-only>
+      </div>-->
+      <div
+        v-if="dashboardData"
+        class="hero-section hero-carousel owl-carousel mainBannerSlider"
+      >
+        <div v-for="banner in bannerData" :key="banner.id" class="item">
+          <a :href="banner.url" target="_blank">
+            <img :src="banner.image" :alt="banner.title" />
+            <div v-if="banner.description" class="content">
+              <div class="content-wepper">
+                <h1>
+                  {{ banner.description }}
+                </h1>
+              </div>
+            </div>
+          </a>
+        </div>
       </div>
 
       <div
@@ -183,18 +212,10 @@
       >
         <div class="common-box">
           <div class="table-list-view">
-            <ul class="tbody owl-carousel tiles-carousel">
-              <client-only>
-                <carousel
-                  :per-page="4"
-                  navigation-enabled
-                  :pagination-enabled="false"
-                >
-                  <slide v-for="tile in tileData" :key="tile.id">
-                    <Tile :tile="tile" />
-                  </slide>
-                </carousel>
-              </client-only>
+            <ul class="tbody owl-carousel tiles-carousel fourSlide">
+              <template v-for="tile in tileData">
+                <Tile :key="tile.id" :tile="tile" />
+              </template>
             </ul>
           </div>
         </div>
@@ -214,26 +235,16 @@
         <div class="trending-sec grid-tile resource-wrapper">
           <div class="common-box bg-gray">
             <div class="table-list-view">
-              <ul class="tbody">
-                <client-only>
-                  <carousel
-                    :per-page="4"
-                    navigation-enabled
-                    :pagination-enabled="false"
-                  >
-                    <slide
-                      v-for="file in dashboardData.trending_data"
-                      :key="file.id"
-                    >
-                      <Resource
-                        :file="file"
-                        emit-share
-                        hide-select
-                        @share="onShareFile"
-                      />
-                    </slide>
-                  </carousel>
-                </client-only>
+              <ul class="tbody fourSlide owl-carousel tiles-carousel pl10 pr10">
+                <template v-for="file in dashboardData.trending_data">
+                  <Resource
+                    :key="file.id"
+                    :file="file"
+                    emit-share
+                    hide-select
+                    @share="onShareFile"
+                  />
+                </template>
               </ul>
             </div>
           </div>
@@ -278,23 +289,18 @@
             >
               <div class="common-box bg-gray">
                 <div class="table-list-view">
-                  <ul class="tbody">
-                    <client-only>
-                      <carousel
-                        :per-page="4"
-                        navigation-enabled
-                        :pagination-enabled="false"
-                      >
-                        <slide v-for="file in files" :key="file.id">
-                          <Resource
-                            :file="file"
-                            emit-share
-                            hide-select
-                            @share="onShareFile"
-                          />
-                        </slide>
-                      </carousel>
-                    </client-only>
+                  <ul
+                    class="tbody fourSlide owl-carousel tiles-carousel pl10 pr10"
+                  >
+                    <template v-for="file in files">
+                      <Resource
+                        :key="file.id"
+                        :file="file"
+                        emit-share
+                        hide-select
+                        @share="onShareFile"
+                      />
+                    </template>
                   </ul>
                 </div>
               </div>
@@ -456,6 +462,8 @@ export default {
     },
   },
   mounted() {
+    this.bannerSliderTrigger()
+    this.otherSliderTrigger()
     this.$store.dispatch('appData/fetchDashboardData').then(() => {
       if (this.$store.state.appData.scrollToRecent) {
         if (this.$store.state.appData.scrollTo === 'recent') {
@@ -470,7 +478,64 @@ export default {
     document.querySelector("link[rel~='icon']").href =
       this.$_auth()?.favicon === '' ? '/favicon.png' : this.$_auth()?.favicon
   },
+  updated() {
+    this.bannerSliderTrigger()
+    this.otherSliderTrigger()
+  },
   methods: {
+    bannerSliderTrigger() {
+      const $owl = window.$('.mainBannerSlider')
+      const owl = $owl.owlCarousel({
+        loop: true,
+        nav: true,
+        autoplay: true,
+        responsiveClass: true,
+        autoplayTimeout: 3000,
+        speed: 800,
+        responsiveBaseElement: '.body-content',
+        responsive: {
+          0: {
+            items: 1,
+          },
+        },
+      })
+      window.$(document).on('click', '.menu-show', function () {
+        window
+          .$('.body-content')
+          .one(
+            'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+            function (event) {
+              // alert('h')
+              owl.trigger('refresh.owl.carousel')
+            }
+          )
+      })
+    },
+    otherSliderTrigger() {
+      const $owl = window.$('.fourSlide')
+      const owl = $owl.owlCarousel({
+        nav: true,
+        responsiveClass: true,
+        margin: 10,
+        responsiveBaseElement: '.body-content',
+        responsive: {
+          0: {
+            items: 4,
+          },
+        },
+      })
+      window.$(document).on('click', '.menu-show', function () {
+        window
+          .$('.body-content')
+          .one(
+            'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+            function (event) {
+              // alert('h')
+              owl.trigger('refresh.owl.carousel')
+            }
+          )
+      })
+    },
     onHeroChanged() {
       // this.$nextTick(() => {
       //   const hero = this.$refs.hero
