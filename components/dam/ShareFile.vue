@@ -70,7 +70,7 @@
             :key="folder.id"
             class="share-box d-flex align-items-center"
           >
-            <FolderIcon style="filter: brightness(0.5)" />
+            <FolderIcon />
             <div class="share-name flex-80 pl-2">
               <label v-tooltip="folder.folder_name || folder.category_name">
                 {{

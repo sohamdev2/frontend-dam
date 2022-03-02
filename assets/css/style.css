@@ -726,7 +726,8 @@ header .user-dropdown.show .dropdown-toggle{color: #ffffff;}
 .add-category-btn{padding-right: 20px;}
 .add-category-btn .btn {padding: 7px;width: 32px;text-align: center;margin: 0 auto;}
 .add-category-btn .btn img {margin: 0 auto;}
-.share-box {position: relative;background-color: #fff;box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.07);border-radius: 4px;padding: 5px;}
+.share-box {position: relative;background-color: #fff;box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.07);border-radius: 4px;padding: 5px;min-height: 40px;}
+.share-box .folder-icon{padding-left: 10px;}
 .share-box + .share-box {margin-top: 10px;}
 .share-box .share-name label{text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;word-break: break-all;-webkit-line-clamp: 1;overflow: hidden;white-space: normal;padding-right: 50px;}
 .share-box .locked-icon {position: absolute;right: 15px;}
