@@ -18,17 +18,8 @@
       >
         {{ folder.folder_name || folder.category_name }}
       </component>
-      <div
-        v-if="!selectionMode && !multiple"
-        class="dropdown more-options"
-        :class="{ show: dropDownList }"
-      >
-        <button
-          type="button"
-          class="dropdown-toggle"
-          data-toggle="dropdown"
-          @click.stop="dropDown()"
-        >
+      <div v-if="!selectionMode && !multiple" class="dropdown more-options">
+        <button type="button" class="dropdown-toggle" data-toggle="dropdown">
           <svg
             id="Layer_1"
             class="menu-option-icon h-orange"
@@ -75,7 +66,7 @@
             </g>
           </svg>
         </button>
-        <ul class="dropdown-menu" :class="{ show: dropDownList }">
+        <ul class="dropdown-menu">
           <li>
             <a
               class="dropdown-item"
@@ -216,7 +207,6 @@ export default {
   },
   data() {
     return {
-      dropDownList: false,
       shareAble: [],
       childFolders: [],
       folderOpen: false,
@@ -290,11 +280,6 @@ export default {
     },
   },
   mounted() {
-    this.$bus.$on('closeDropDown', () => {
-      if (this.dropDownList === true) {
-        this.dropDownList = false
-      }
-    })
     this.$nextTick(() => {
       if (this.folder.id === parseInt(this.$route.hash.substring(1))) {
         this.$refs.autoScroll.scrollIntoView()
@@ -325,7 +310,6 @@ export default {
     },
     // dropdown feature for left panel
     selectFromPanel(folder, type) {
-      this.dropDown()
       if (type === 'share') {
         const folderId = this.folder.id
         this.$axios
@@ -348,10 +332,7 @@ export default {
         this.downloadFile()
       }
     },
-    // display of dropdown menu
-    dropDown() {
-      this.dropDownList = !this.dropDownList
-    },
+
     // download single folder
     downloadFile() {
       this.$store.dispatch('downloadIndicator/downloadMultipleFiles', {
@@ -361,16 +342,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-.dropdown-menu.show {
-  will-change: transform;
-  position: absolute;
-  transform: translate3d(-94px, 35px, 0px);
-  top: 0px;
-  left: 0px;
-}
-.submenu {
-  display: block !important;
-}
-</style>
