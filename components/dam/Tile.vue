@@ -3,10 +3,11 @@
     <div class="preview-img">
       <div class="categary-image">
         <a :href="tile.url" target="_blank" class="img-link">
-          <img v-if="!isSvg" :src="tile.image" alt="Folder Icon" />
-          <div v-else class="icons">
+          <img :src="tile.image" alt="Tile Image" />
+          <!-- <img v-if="!isSvg" :src="tile.image" alt="Folder Icon" /> -->
+          <!-- <div v-else class="icons">
             <img :src="tile.image" alt="Folder Icon" />
-          </div>
+          </div> -->
         </a>
       </div>
     </div>
