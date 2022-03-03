@@ -15,6 +15,7 @@ const _state = () => ({
   scrollToRecent: false,
   scrollTo: '',
   leftMenuOpen: true,
+  allCollectionList: [],
 })
 
 export { _state as state }
@@ -29,7 +30,8 @@ export const mutations = {
     'brand',
     'tileData',
     'loading.tile',
-    'leftMenuOpen'
+    'leftMenuOpen',
+    'allCollectionList'
   ),
 
   // brandDetails(state, item) {
@@ -168,6 +170,18 @@ export const actions = {
     }
 
     commit('loading.folders', false)
+  },
+  // collection list
+  getCollections({ commit }) {
+    if (!this.$auth.loggedIn) return
+    const workspace = this.$getWorkspaceId()
+    return (
+      this.$axios
+        .$get(`/digital/collection/get-all?url_workspace_id=${workspace}`)
+        .then(({ data }) => commit('allCollectionList', data.splice(0, 4)))
+        /* .catch(this.$errorToast) */
+        .catch()
+    )
   },
   setLeftMenuOpen({ commit }, open) {
     commit('leftMenuOpen', !!open)

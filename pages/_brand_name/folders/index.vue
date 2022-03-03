@@ -78,7 +78,7 @@
               >Trending</span
             >
           </li>
-          <li>
+          <li v-if="allCollectionList.length">
             <nuxt-link
               :to="{
                 name: 'brand_name-collection',
@@ -376,6 +376,9 @@ export default {
       const length = this.files.length + this.subFolders.length
       return !!length && this.selectedCount === length
     },
+    allCollectionList() {
+      return this.$store.state.appData.allCollectionList
+    },
   },
   asyncComputed: {
     async currentFolder() {
@@ -445,6 +448,7 @@ export default {
   mounted() {
     this.$store.dispatch('appData/fetchDashboardData')
     this.$store.dispatch('appData/fetchFolders')
+    this.$store.dispatch('appData/getCollections')
     this.getData()
   },
   methods: {
