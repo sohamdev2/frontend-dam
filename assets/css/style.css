@@ -528,6 +528,8 @@ header .user-dropdown.show .dropdown-toggle{color: #ffffff;}
 .categary-image img,
 .preview-img.video video {position: absolute;top: 0;left: 0;bottom: 0;right: 0;margin: auto;max-width: 100%;max-height: 100%;object-fit: cover;}
 .preview-img.video  video {background-color: #000000;opacity: 0;width: 100%;}
+.table-list-view .tbody li:hover .preview-img.video .img-link img {opacity: 0;}
+.table-list-view .tbody li:hover .preview-img.video video {opacity: 1;}
 .preview-img.video .categary-image img{width: 100%;}
 .categary-image:before {display: block;content: " ";width: 100%;padding-top: 74.4%;}
 .categary-image .icons img{max-height: 40%;z-index: 4;width: auto!important;height: 40%;}
