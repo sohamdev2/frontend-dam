@@ -79,7 +79,7 @@
               >Trending</span
             >
           </li>
-          <li>
+          <li v-if="allCollectionList.length">
             <nuxt-link
               :to="{
                 name: 'brand_name-collection',
@@ -453,6 +453,9 @@ export default {
         ({ postion: a, postions: b }) => a - b
       )
     },
+    allCollectionList() {
+      return this.$store.state.appData.allCollectionList
+    },
   },
   watch: {
     leftMenuOpen: {
@@ -475,6 +478,7 @@ export default {
     })
     this.$store.dispatch('appData/fetchFolders')
     this.$store.dispatch('appData/fetchTileData')
+    this.$store.dispatch('appData/getCollections')
     document.querySelector("link[rel~='icon']").href =
       this.$_auth()?.favicon === '' ? '/favicon.png' : this.$_auth()?.favicon
   },
