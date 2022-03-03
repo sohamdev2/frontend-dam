@@ -115,7 +115,7 @@ export default {
         .then((response) => {
           if (response.data?.length === 0) {
             this.$router.replace({
-              name: 'brand_name-collection',
+              name: 'brand_name',
               params: { brand_name: this.$getBrandName() },
             })
           }
