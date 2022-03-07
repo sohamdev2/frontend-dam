@@ -206,8 +206,7 @@
               <template>
                 <div
                   v-if="sortingModel != 'Sort by'"
-                  class="px-2 ml-3 mt-2"
-                  style="cursor: pointer; margin-bottom: 8px"
+                  style="cursor: pointer"
                   @click="emitSortParamsArray()"
                 >
                   <!--                  <img

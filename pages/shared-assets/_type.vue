@@ -2,7 +2,48 @@
   <div class="container">
     <div class="SharedInfo" style="height: 100vh">
       <div class="common-box-header mt20">
-        <h2 class="title pl0">Shared File and folders</h2>
+        <h2 v-if="statusType == 'collection'" class="title pl0">
+          Shared Collection
+        </h2>
+        <h2 v-else class="title pl0">Shared File and folders</h2>
+      </div>
+      <div v-if="allAssetsCount && statusType == 'collection'" class="box">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="control-label">Collection Name</label>
+              <p>{{ collectionName ? collectionName : '-' }}</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="control-label">Last Updated</label>
+              <p>
+                {{
+                  collectionLastModifiedDate
+                    ? $moment(collectionLastModifiedDate).format('Do, MMM YYYY')
+                    : '-'
+                }}
+              </p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="control-label">Collection Owner</label>
+              <p>{{ collectionOwner ? collectionOwner : '-' }}</p>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group mb0">
+              <label class="control-label">Collection Description</label>
+              <p>
+                <strong>{{
+                  collectionDescription ? collectionDescription : '-'
+                }}</strong>
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
       <div
         class="btns mb20 d-flex align-items-center"
@@ -61,16 +102,78 @@
               (selectedCount == 0 || selectedCount == allAssetsCount)
             "
             href="javascript:void(0);"
-            class="btn"
+            class="btn btn-icon"
             @click="downloadSelectedMultipleFiles()"
-            >Download All</a
-          >
+            ><svg
+              id="Layer_1"
+              class="download-icon"
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              x="0px"
+              y="0px"
+              viewBox="0 0 18 18"
+              xml:space="preserve"
+            >
+              <g id="Group_4359" transform="translate(-153.745 -317.549)">
+                <path
+                  id="Path_3427"
+                  class="fill-color"
+                  d="M156.4,335.5c-1.4,0-2.6-1.2-2.6-2.6v-3.7c0-0.4,0.4-0.8,0.8-0.8c0.4,0,0.7,0.3,0.8,0.8v3.7c0,0.6,0.5,1,1,1h12.8c0.6,0,1-0.5,1-1v-3.7c0-0.4,0.4-0.8,0.8-0.8c0.4,0,0.8,0.4,0.8,0.8v3.7c0,1.4-1.2,2.6-2.6,2.6H156.4z"
+                ></path>
+                <path
+                  id="Path_3428"
+                  class="fill-color"
+                  d="M157.6,325.3c-0.3-0.3-0.3-0.8,0-1.1c0.3-0.3,0.8-0.3,1.1,0l4,4l4-4c0.3-0.3,0.8-0.3,1.1,0s0.3,0.8,0,1.1l-5.1,5.1L157.6,325.3z"
+                ></path>
+                <path
+                  id="Path_3429"
+                  class="fill-color"
+                  d="M162.7,330.1c-0.4,0-0.8-0.4-0.8-0.8v-11c0-0.4,0.3-0.8,0.8-0.8c0.4,0,0.8,0.3,0.8,0.8c0,0,0,0,0,0.1v11C163.5,329.7,163.2,330.1,162.7,330.1z"
+                ></path>
+              </g>
+            </svg>
+            <template v-if="statusType == 'collection'"
+              >Download Collection</template
+            >
+            <template v-else>Download All</template>
+          </a>
           <a
             v-if="selectedCount && selectedCount != allAssetsCount"
             href="javascript:void(0);"
-            class="btn"
+            class="btn btn-icon"
             @click="downloadSelectedMultipleFiles()"
-            >Download ({{ selectedCount }})</a
+          >
+            <svg
+              id="Layer_1"
+              class="download-icon"
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              x="0px"
+              y="0px"
+              viewBox="0 0 18 18"
+              xml:space="preserve"
+            >
+              <g id="Group_4359" transform="translate(-153.745 -317.549)">
+                <path
+                  id="Path_3427"
+                  class="fill-color"
+                  d="M156.4,335.5c-1.4,0-2.6-1.2-2.6-2.6v-3.7c0-0.4,0.4-0.8,0.8-0.8c0.4,0,0.7,0.3,0.8,0.8v3.7c0,0.6,0.5,1,1,1h12.8c0.6,0,1-0.5,1-1v-3.7c0-0.4,0.4-0.8,0.8-0.8c0.4,0,0.8,0.4,0.8,0.8v3.7c0,1.4-1.2,2.6-2.6,2.6H156.4z"
+                ></path>
+                <path
+                  id="Path_3428"
+                  class="fill-color"
+                  d="M157.6,325.3c-0.3-0.3-0.3-0.8,0-1.1c0.3-0.3,0.8-0.3,1.1,0l4,4l4-4c0.3-0.3,0.8-0.3,1.1,0s0.3,0.8,0,1.1l-5.1,5.1L157.6,325.3z"
+                ></path>
+                <path
+                  id="Path_3429"
+                  class="fill-color"
+                  d="M162.7,330.1c-0.4,0-0.8-0.4-0.8-0.8v-11c0-0.4,0.3-0.8,0.8-0.8c0.4,0,0.8,0.3,0.8,0.8c0,0,0,0,0,0.1v11C163.5,329.7,163.2,330.1,162.7,330.1z"
+                ></path>
+              </g>
+            </svg>
+            Download ({{ selectedCount }})</a
           >
         </div>
       </div>
@@ -207,7 +310,14 @@ export default {
         const subFolders = makeFolder(data.category || [])
         const files = data.assets || []
         const shareId = data.share_id
+        const statusType = data.status_type
         const workspaceId = data.workspace_id
+        const collectionName = data.collection_name
+        const collectionDescription = data.collection_description
+        const collectionLastModifiedDate = data.collection_updated_at
+        const collectionOwner = data.collection_user
+          ? data.collection_user.name
+          : null
 
         return {
           shareId,
@@ -215,6 +325,11 @@ export default {
           files,
           stack: [{ subFolders, files }],
           workspaceId,
+          statusType,
+          collectionName,
+          collectionDescription,
+          collectionLastModifiedDate,
+          collectionOwner,
         }
       })
       .catch((e) => {
@@ -334,10 +449,10 @@ export default {
     },
     async sharedFilesList(folderId) {
       await this.$axios
-        .$get(
-          'view-share-files-with-category?' +
-            this.$toQueryString({ category_id: folderId })
-        )
+        .$post('view-share-files-with-category?', {
+          category_id: folderId,
+          share_id: this.shareId,
+        })
         .then(({ data }) => {
           this.subFolders = makeFolder(data.folder || [])
 
@@ -399,6 +514,13 @@ export default {
           this.files = data.assets || []
           this.shareId = data.share_id
           this.workspaceId = data.workspace_id
+          this.statusType = data.status_type
+          this.collectionName = data.collection_name
+          this.collectionDescription = data.collection_description
+          this.collectionLastModifiedDate = data.collection_updated_at
+          this.collectionOwner = data.collection_user
+            ? data.collection_user.name
+            : null
           this.stack.push({
             subFolders: this.subFolders,
             files: this.files,
