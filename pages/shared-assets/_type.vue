@@ -2,7 +2,48 @@
   <div class="container">
     <div class="SharedInfo" style="height: 100vh">
       <div class="common-box-header mt20">
-        <h2 class="title pl0">Shared File and folders</h2>
+        <h2 v-if="statusType == 'collection'" class="title pl0">
+          Shared Collection
+        </h2>
+        <h2 v-else class="title pl0">Shared File and folders</h2>
+      </div>
+      <div v-if="allAssetsCount && statusType == 'collection'" class="box">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="control-label">Collection Name</label>
+              <p>{{ collectionName ? collectionName : '-' }}</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="control-label">Last Updated</label>
+              <p>
+                {{
+                  collectionLastModifiedDate
+                    ? $moment(collectionLastModifiedDate).format('Do, MMM YYYY')
+                    : '-'
+                }}
+              </p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="control-label">Collection Owner</label>
+              <p>{{ collectionOwner ? collectionOwner : '-' }}</p>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group mb0">
+              <label class="control-label">Collection Description</label>
+              <p>
+                <strong>{{
+                  collectionDescription ? collectionDescription : '-'
+                }}</strong>
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
       <div
         class="btns mb20 d-flex align-items-center"
@@ -92,8 +133,11 @@
                 ></path>
               </g>
             </svg>
-            Download All</a
-          >
+            <template v-if="statusType == 'collection'"
+              >Download Collection</template
+            >
+            <template v-else>Download All</template>
+          </a>
           <a
             v-if="selectedCount && selectedCount != allAssetsCount"
             href="javascript:void(0);"
@@ -266,7 +310,14 @@ export default {
         const subFolders = makeFolder(data.category || [])
         const files = data.assets || []
         const shareId = data.share_id
+        const statusType = data.status_type
         const workspaceId = data.workspace_id
+        const collectionName = data.collection_name
+        const collectionDescription = data.collection_description
+        const collectionLastModifiedDate = data.collection_updated_at
+        const collectionOwner = data.collection_user
+          ? data.collection_user.name
+          : null
 
         return {
           shareId,
@@ -274,6 +325,11 @@ export default {
           files,
           stack: [{ subFolders, files }],
           workspaceId,
+          statusType,
+          collectionName,
+          collectionDescription,
+          collectionLastModifiedDate,
+          collectionOwner,
         }
       })
       .catch((e) => {
@@ -458,6 +514,13 @@ export default {
           this.files = data.assets || []
           this.shareId = data.share_id
           this.workspaceId = data.workspace_id
+          this.statusType = data.status_type
+          this.collectionName = data.collection_name
+          this.collectionDescription = data.collection_description
+          this.collectionLastModifiedDate = data.collection_updated_at
+          this.collectionOwner = data.collection_user
+            ? data.collection_user.name
+            : null
           this.stack.push({
             subFolders: this.subFolders,
             files: this.files,
