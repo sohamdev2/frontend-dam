@@ -314,10 +314,7 @@
                   ref="expandButton"
                   :href="`#file-video-${file.id}`"
                   data-fancybox
-                  @click.stop="
-                    galleryMode = 1
-                    viewAssetsCount()
-                  "
+                  @click.stop="onExpandAssetsCount()"
                 >
                   <svg
                     id="Layer_1"
@@ -436,6 +433,14 @@
                 @error="errorHandle"
               />
             </div>
+            <!--            <div v-else-if="isAudio" class="icons">
+              <img
+                v-show="!imageLoading"
+                :src="previewImage"
+                @load="imageLoading = false"
+                @error="errorHandle"
+              />
+            </div>-->
             <div
               v-else
               :class="{
@@ -1015,6 +1020,13 @@ export default {
     this.loadJS()
   },
   methods: {
+    onExpandAssetsCount() {
+      if (!this.galleryMode) {
+        this.galleryMode = 1
+      } else {
+        this.viewAssetsCount()
+      }
+    },
     toggleVideoPlay() {
       this.paused = !this.paused
       if (this.paused) this.$refs.video.pause()
@@ -1078,12 +1090,12 @@ export default {
       } catch (_) {}
     },
     async viewAssetsCount() {
-      // await this.$axios
-      //   .$post('digital/view-asset-count', {
-      //     workspace_id: this.$getWorkspaceId(),
-      //     asset_id: this.file.id,
-      //   })
-      //   .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
+      await this.$axios
+        .$post('digital/view-asset-count', {
+          workspace_id: this.$getWorkspaceId(),
+          asset_id: this.file.id,
+        })
+        .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
     },
     downloadFile() {
       this.$store.dispatch('downloadIndicator/downloadFile', {
