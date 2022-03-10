@@ -465,6 +465,7 @@ export default {
     },
   },
   mounted() {
+    this.$store.dispatch('appData/fetchFolders')
     this.$store.dispatch('appData/fetchDashboardData').then(() => {
       if (this.$store.state.appData.scrollToRecent) {
         if (this.$store.state.appData.scrollTo === 'recent') {
@@ -476,7 +477,6 @@ export default {
       this.bannerSliderTrigger()
       this.otherSliderTrigger()
     })
-    this.$store.dispatch('appData/fetchFolders')
     this.$store.dispatch('appData/fetchTileData')
     this.$store.dispatch('appData/getCollections')
     document.querySelector("link[rel~='icon']").href =
