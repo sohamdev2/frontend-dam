@@ -221,7 +221,7 @@ export default {
           .fancybox({
             video: {
               tpl:
-                `<video class="fancybox-video" data-id="file-${this.file.id}" controlsList="nodownload" controls poster="${this.videoThumbnail}">` +
+                `<video disablepictureinpicture class="fancybox-video" data-id="file-${this.file.id}" controlsList="nodownload" controls poster="${this.videoThumbnail}">` +
                 '<source src="{{src}}"  />' +
                 'Sorry, your browser doesn\'t support embedded videos, <a href="{{src}}">download</a> and watch with your favorite video player!' +
                 '</video>',

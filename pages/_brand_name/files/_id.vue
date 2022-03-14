@@ -198,6 +198,7 @@
                   controlsList="nodownload"
                   controls
                   class="thevideo"
+                  disablepictureinpicture
                 >
                   <source :src="__url" type="video/mp4" />
                   Your browser does not support the video tag.
