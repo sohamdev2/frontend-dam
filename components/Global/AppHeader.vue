@@ -1,6 +1,6 @@
 <template>
   <header
-    class="header-sec row no-gutters"
+    class="header-sec row no-gutters app-header"
     :style="
       $auth.user.themes_option.header_background_color
         ? `background-color:${$auth.user.themes_option.header_background_color}`
