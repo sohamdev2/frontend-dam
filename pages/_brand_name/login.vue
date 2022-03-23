@@ -1,5 +1,8 @@
 <template>
   <div class="body-content login">
+    <style type="text/css">
+      {{ customStyles() }}
+    </style>
     <div class="sign-screen loginPage customscrollbar h-100">
       <div class="sign-screen-dtable">
         <div class="sign-screen-dtable-cell">
@@ -123,6 +126,22 @@ export default {
     this.logo = this.$store.state.appData.logo
   },
   methods: {
+    customStyles() {
+      const textColor = this.$brandDetail().themes_option.header_text_color
+      const textHoverColor =
+        this.$brandDetail().themes_option.header_text_hover_color
+      const backgroundColor =
+        this.$brandDetail().themes_option.header_background_color
+      return `.loginPage{
+        background-color: ${backgroundColor};
+      }
+      .loginPage .sign-heading-text h2,.bottom-fix-link-center a{
+        color: ${textColor};
+      }
+      .bottom-fix-link-center a:hover{
+      color: ${textHoverColor};
+      }`
+    },
     async login(e) {
       if ((this.$v.$touch(), this.$v.$invalid)) return
 
