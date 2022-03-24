@@ -88,7 +88,14 @@
                 >
               </a>
             </li>
-            <li v-if="showTrending">
+            <li
+              v-if="
+                showTrending &&
+                dashboardData &&
+                dashboardData.trending_data &&
+                dashboardData.trending_data.length
+              "
+            >
               <a
                 href="javascript:void(0)"
                 @click.capture.stop="scrollToTrending"
