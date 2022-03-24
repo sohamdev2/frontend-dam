@@ -871,7 +871,15 @@
     </div>
     <client-only>
       <ShareFile
-        v-if="!emitShare"
+        v-if="!emitShare && currentRoute == 'brand_name-collection-id'"
+        ref="shareDialog"
+        :files="[file]"
+        collection-assets
+        :collection-assets-id="$route.params.id"
+        type="folder"
+      />
+      <ShareFile
+        v-if="!emitShare && currentRoute != 'brand_name-collection-id'"
         ref="shareDialog"
         :files="[file]"
         type="folder"
@@ -938,6 +946,9 @@ export default {
     },
     workspaceId() {
       return this.$getWorkspaceId()
+    },
+    currentRoute() {
+      return this.$route.name
     },
   },
   watch: {

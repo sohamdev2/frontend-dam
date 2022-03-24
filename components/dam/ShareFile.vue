@@ -199,7 +199,11 @@
             class="btn"
             :class="{ 'btn-disabled': !creating }"
             :disabled="creating"
-            @click="collection ? createCollectionUrl() : createShareUrl()"
+            @click="
+              collection || collectionAssets
+                ? createCollectionUrl()
+                : createShareUrl()
+            "
           >
             {{ creating ? 'Creating...' : 'Create link' }}
           </button>
@@ -220,6 +224,8 @@ export default {
     folders: { type: Array, default: () => [] },
     type: { type: String, required: true, default: 'file' },
     collection: { type: Boolean, default: false },
+    collectionAssets: { type: Boolean, default: false },
+    collectionAssetsId: { type: Number, default: null },
   },
   data() {
     return {
@@ -294,14 +300,13 @@ export default {
     async createCollectionUrl() {
       this.creating = true
       await this.$axios
-        .$get(
-          `/digital/collection/${
-            this.files[0].id
-          }/generate-share-url?url_workspace_id=${this.$getWorkspaceId()}`,
-          {
-            workspace_id: this.$getWorkspaceId(),
-          }
-        )
+        .$post(`/digital/collection/generate-share-url`, {
+          workspace_id: this.$getWorkspaceId(),
+          id: this.collectionAssets
+            ? this.collectionAssetsId
+            : this.files[0].id,
+          assets: this.collectionAssets ? this.files.map(({ id }) => id) : [],
+        })
         .then(({ data }) => {
           // eslint-disable-next-line prefer-const
           let [type, status] = data.share_url.split('?').pop().split('&')
