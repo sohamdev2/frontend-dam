@@ -132,6 +132,36 @@
                         </div>
                       </div> -->
                       <div class="col-sm-12">
+                        <div class="form-group email-notification-info">
+                          <div class="media">
+                            <div class="media-body">
+                              <div class="d-flex align-items-center">
+                                Digital Asset Management Notification
+                                <i
+                                  v-tooltip="
+                                    'You will get an email notification once your DAM admin add/update any asset.'
+                                  "
+                                  class="fa fa-info-circle"
+                                  aria-hidden="true"
+                                ></i>
+                              </div>
+                            </div>
+                            <div class="media-left">
+                              <label class="label-switch no-text">
+                                <SpinLoading v-if="loadingUser" />
+                                <input
+                                  v-else
+                                  v-model="notification"
+                                  type="checkbox"
+                                  class="switch"
+                                />
+                                <span class="lable"></span>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-12">
                         <button
                           class="btn"
                           :disabled="isSame || saving || !canSave"
@@ -301,6 +331,9 @@ export default {
         password: null,
         confirm_password: null,
       },
+      oldNotification: false,
+      notification: false,
+      loadingUser: true,
     }
   },
   computed: {
@@ -311,16 +344,32 @@ export default {
       return (
         !this.logo.src &&
         this.user.name === this.userModel.name &&
-        this.user.default_instance_id === this.userModel.default_instance_id
+        this.user.default_instance_id === this.userModel.default_instance_id &&
+        this.oldNotification === this.notification
       )
     },
     canSave() {
       return (
         !!this.logo.src ||
         !!this.userModel.name ||
-        !!this.userModel.default_instance_id
+        !!this.userModel.default_instance_id ||
+        this.oldNotification !== this.notification
       )
     },
+  },
+  mounted() {
+    this.loadingUser = true
+    this.$axios
+      .$get('/user')
+      .then(({ data }) => {
+        this.oldNotification = !!data.user.enable_notification
+        this.notification = !!data.user.enable_notification
+      })
+      .catch((_) => {
+        this.oldNotification = false
+        this.notification = false
+      })
+      .finally(() => (this.loadingUser = false))
   },
   methods: {
     clear() {
@@ -342,6 +391,7 @@ export default {
       formData.append('name', this.userModel.name)
       // formData.append("email", this.user.email);
       formData.append('phone', this.userModel.phone)
+      formData.append('enable_notification', ~~this.notification)
 
       await this.$axios
         .$post('digital/instance/update-user', formData)
@@ -349,7 +399,7 @@ export default {
           this.$auth.fetchUser()
           // this.$auth.setUser({ ...this.user, ...data })
           this.$toast.success(message)
-
+          this.oldNotification = !!this.notification
           // this.userModel = { ...this.user, ...data }
         })
         .catch(this.$showErrorToast)

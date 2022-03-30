@@ -69,6 +69,7 @@
               muted
               preload="metadata"
               loop
+              disablepictureinpicture
             >
               <!-- <source :src="file.display_file" type="video/mp4" /> -->
               Your browser does not support the video tag.
@@ -1006,7 +1007,7 @@ export default {
           .fancybox({
             video: {
               tpl:
-                `<video class="fancybox-video" data-id="file-${this.file.id}" controlsList="nodownload" controls poster="${this.file.video_preview}">` +
+                `<video disablepictureinpicture class="fancybox-video" data-id="file-${this.file.id}" controlsList="nodownload" controls poster="${this.file.video_preview}">` +
                 '<source src="{{src}}"  />' +
                 'Sorry, your browser doesn\'t support embedded videos, <a href="{{src}}">download</a> and watch with your favorite video player!' +
                 '</video>',

@@ -1,7 +1,7 @@
 <template>
   <ShowWhenReady :show="show">
-    <AppHeader @resetList="key++" />
-    <nuxt :key="key"></nuxt>
+    <AppHeader />
+    <nuxt></nuxt>
   </ShowWhenReady>
 </template>
 
@@ -17,9 +17,6 @@ export default {
       return !!this.$store.state?.appData?.status
     },
   },
-  mounted() {
-    // this.$store.dispatch('appData/fetchDashboardData')
-    // this.$store.dispatch('appData/fetchFolders')
-  },
+  mounted() {},
 }
 </script>
