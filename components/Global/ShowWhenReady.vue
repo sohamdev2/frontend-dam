@@ -1,9 +1,7 @@
 <template>
   <div @click="closeMoreOptions">
-    <div v-if="showModel">
-      <slot></slot>
-    </div>
-    <div v-if="!showModel" class="preloader">
+    <slot v-if="showModel"></slot>
+    <div v-else class="preloader">
       <div class="loading">
         <img
           src="~/assets/img/lariat-loader.svg"
