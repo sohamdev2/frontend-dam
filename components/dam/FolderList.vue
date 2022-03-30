@@ -1,19 +1,17 @@
 <template>
   <client-only v-if="foldersLoading">
-    <div>
-      <ContentLoader
-        :speed="1"
-        :width="240"
-        :height="400"
-        :animate="true"
-        class="normalLoader"
-      >
-        <rect x="10" y="5" rx="2" ry="2" width="220" height="24" />
-        <rect x="10" y="40" rx="2" ry="2" width="220" height="24" />
-        <rect x="10" y="75" rx="2" ry="2" width="220" height="24" />
-        <rect x="10" y="110" rx="2" ry="2" width="220" height="24" />
-      </ContentLoader>
-    </div>
+    <ContentLoader
+      :speed="1"
+      :width="240"
+      :height="400"
+      :animate="true"
+      class="normalLoader"
+    >
+      <rect x="10" y="5" rx="2" ry="2" width="220" height="24" />
+      <rect x="10" y="40" rx="2" ry="2" width="220" height="24" />
+      <rect x="10" y="75" rx="2" ry="2" width="220" height="24" />
+      <rect x="10" y="110" rx="2" ry="2" width="220" height="24" />
+    </ContentLoader>
   </client-only>
   <transition-group
     v-else-if="folderList.length"
@@ -49,19 +47,11 @@ export default {
   data() {
     return {
       loadingModel: this.loading,
-      // sortedFolder: [],
-      // model: this.value,
       currentFolderName: '',
       folderArray: [],
     }
   },
   computed: {
-    // folderLoading() {
-    //   return this.$store.state.appData.loading.folder
-    // },
-    // folders() {
-    //   return this.$store.state.appData.folders
-    // },
     foldersLoading() {
       return this.$store.state.appData.loading.folder
     },
@@ -69,19 +59,6 @@ export default {
       return this.$store.state.appData.folders
     },
   },
-  // watch: {
-  //   folders() {
-  //     this.sortedFolder = [...this.folders].sort(
-  //       this.$sortBy('folder_name', false, null, true)
-  //     )
-  //   },
-  // },
-  // mounted() {
-  //   if (this.folders)
-  //     this.sortedFolder = [...this.folders].sort(
-  //       this.$sortBy('folder_name', false, null, true)
-  //     )
-  // },
   asyncComputed: {
     async folders() {
       // if (this.storeUpdated) {
@@ -164,7 +141,6 @@ export default {
           response.data.map((item) => this.folderArray.push(item))
         })
     }
-    // this.folderArray = [167]
   },
   methods: {
     getCurrentFolderName() {
