@@ -121,6 +121,7 @@ export function downloadAsset(attachment_type, assets_id) {
   const downloadURL = `/get_assets?${this.$toQueryString({
     attachment_type,
     assets_id,
+    is_backend_download: 0,
   })}`
 
   const link = document.createElement('a')

@@ -933,7 +933,7 @@ export default {
       this.$axios.$post('digital/download-count', {
         workspace_id: this.$getWorkspaceId(),
         asset_id: assetId,
-        is_backend_download: true,
+        is_backend_download: false,
         download_by: 'desktop',
         type,
       })
