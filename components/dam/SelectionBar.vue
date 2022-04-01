@@ -178,17 +178,23 @@ export default {
       }
     },
     downloadSelectedFile() {
+      let collectionsId = null
+      if (this.$route.name === 'brand_name-collection-id') {
+        collectionsId = this.$route.params.id
+      }
       if (this.selectedFiles.length === 1 && !this.selectedFolders.length) {
         const [file] = this.selectedFiles
         this.$store.dispatch('downloadIndicator/downloadFile', {
           id: file.id,
           url: file.display_file,
           name: file.display_file_name,
+          collection_id: collectionsId,
         })
       } else {
         this.$store.dispatch('downloadIndicator/downloadMultipleFiles', {
           files: this.selectedFiles.map(({ id }) => id),
           folders: this.selectedFolders.map(({ id }) => id),
+          collection_id: collectionsId,
         })
       }
     },
