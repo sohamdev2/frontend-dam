@@ -1110,12 +1110,17 @@ export default {
         .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
     },
     downloadFile() {
+      let collectionsId = null
+      if (this.$route.name === 'brand_name-collection-id') {
+        collectionsId = this.$route.params.id
+      }
       this.$store.dispatch('downloadIndicator/downloadFile', {
         id: this.file.id,
         url: this.__url,
         name: this.file.display_file_name,
         callCountApi: !this.shareMode,
         useModernDownload: false,
+        collection_id: collectionsId,
       })
     },
   },

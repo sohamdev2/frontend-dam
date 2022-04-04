@@ -29,7 +29,7 @@ export const mutations = {
 export const actions = {
   async downloadMultipleFiles(
     { dispatch, commit, state: { files: stateFiles } },
-    { files, folders, shareMode = false }
+    { files, folders, collection_id, shareMode = false }
   ) {
     const id = btoa(JSON.stringify({ files, folders }))
 
@@ -66,6 +66,7 @@ export const actions = {
         workspace_id: this.$getWorkspaceId(),
         digital_assets_id: files,
         category_id: folders,
+        collection_id,
       })
       orgUrl = file_name
       zipUrl = url
@@ -166,6 +167,7 @@ export const actions = {
       id,
       url,
       name,
+      collection_id,
       callCountApi = true,
       useModernDownload = false,
       extras = {},
@@ -189,9 +191,17 @@ export const actions = {
     //     return
     //   }
 
-    if (!multiple && !useModernDownload)
-      return this.$downloadAsset('Digital Assets', id)
-
+    if (!multiple && !useModernDownload) {
+      if (collection_id) {
+        return this.$downloadCollectionAsset(
+          'Digital Assets',
+          id,
+          collection_id
+        )
+      } else {
+        return this.$downloadAsset('Digital Assets', id)
+      }
+    }
     const item = {
       url,
       name,
