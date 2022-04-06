@@ -288,7 +288,7 @@
                       <li>
                         <span>ID</span><span>: {{ file.id }}</span>
                       </li>
-                      <li v-if="parentFolder">
+                      <li v-if="parentFolder" class="align-items-start">
                         <span>Parent Folder</span>
                         <span
                           >:
