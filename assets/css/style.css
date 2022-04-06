@@ -973,8 +973,8 @@ header .user-dropdown.show .dropdown-toggle{color: #ffffff;}
 .preview-img .more-options .dropdown-menu {right: 0;top: 27px !important;left: auto !important;transform: initial !important;}
 
 .my-collection-body{padding: 62px 0 0;}
-.my-collection-body .tab-content{padding: 14px;height: calc(100% - 70px);display: block;}
-.my-collection-body .common-box{padding-top: 10px;padding-bottom: 10px;border-radius: 6px;height: calc(100% - 45px);width: 100%;}
+.my-collection-body .tab-content{padding: 14px;height: calc(100% - 56px);display: block;}
+.my-collection-body .common-box{padding-top: 10px;padding-bottom: 10px;border-radius: 6px;height: calc(100% - 35px);width: 100%;}
 .my-collection-body .table-list-view{height: 100%;}
 .collection-tabs {padding: 10px 10px 0px;position: relative;}
 .collection-tabs .nav-tabs .nav-item a {padding: 12px 20px;}
