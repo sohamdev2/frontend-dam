@@ -285,6 +285,7 @@
         @click:select-all="selectAll"
         @click:select-none="selectNone"
       />
+      <DownloadingIndicator />
     </template>
   </div>
 </template>
