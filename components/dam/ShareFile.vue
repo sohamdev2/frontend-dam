@@ -225,7 +225,7 @@ export default {
     type: { type: String, required: true, default: 'file' },
     collection: { type: Boolean, default: false },
     collectionAssets: { type: Boolean, default: false },
-    collectionAssetsId: { type: Number, default: null },
+    collectionAssetsId: { type: [Number, String], default: null },
   },
   data() {
     return {
