@@ -142,10 +142,15 @@
         </ul>
       </div>
     </div>
+    <i v-if="loading" class="fa fa-circle-o-notch fa-spin"></i>
     <span
-      v-if="hasSubFolder"
+      v-else-if="hasSubFolder"
       class="menu-expand"
-      @click.capture.stop="leftMenuUpdate(folder.id)"
+      @click.capture.stop="
+        folderOpen || childFolders.length
+          ? (folderOpen = !folderOpen)
+          : leftMenuUpdate(folder.id)
+      "
     >
       <!--      <i class="fa fa-angle-right" aria-hidden="true"></i>-->
     </span>
@@ -155,34 +160,17 @@
       tag="ul"
       class="sub-menu"
       :class="{ submenu: folderOpen }"
+      :style="loading ? 'display:none' : ''"
     >
       <FolderItem
         v-for="_folder in childFolders"
         :key="_folder.id"
         :folder="_folder"
         :parents="parents.slice(1)"
+        :loading="loading"
+        @hashparent="$emit('hashparent', $event)"
       />
     </transition-group>
-    <!-- <template v-if="hasSubFolder">
-      <i
-        v-if="hasSubFolder"
-        class="menu-expand"
-        @click="expanded = !expanded"
-      ></i>
-      <transition-group class="sub-menu" name="slide-up" tag="ul">
-        <div v-if="loading" key="loader" class="text-center">
-          <SpinLoading />
-        </div>
-        <FolderItem
-          v-for="(subFolder, i) in sortedFolders"
-          :key="subFolder.id"
-          :style="{ transitionDelay: `${(i % 12) * 50}ms` }"
-          :folder="subFolder"
-        />
-      </transition-group>
-    </template> -->
-    <!-- </div> -->
-
     <ShareFile ref="shareDialog" :folders="[shareAble]" type="folder" />
   </li>
 </template>
@@ -204,6 +192,7 @@ export default {
     disabled: { type: Boolean, default: null },
     multipleSelection: { type: Array, default: () => [] },
     parents: { type: Array, default: () => [] },
+    loading: { type: Boolean, default: false },
   },
   data() {
     return {
@@ -283,29 +272,42 @@ export default {
     this.$nextTick(() => {
       if (this.folder.id === parseInt(this.$route.hash.substring(1))) {
         this.$refs.autoScroll.scrollIntoView()
+        this.$emit('hashparent', true)
       }
     })
   },
   methods: {
-    leftMenuUpdate(folderId) {
+    async leftMenuUpdate(folderId) {
       if (!this.childFolders.length) {
-        this.$axios
+        this.localLoading = true
+        await this.$axios
           .$post('digital/view-category', {
             workspace_id: this.$getWorkspaceId(),
             category_id: folderId,
           })
           .then(({ data }) => {
-            // makeFolders(data.sub_category_data, data)
             if (data.sub_category_data.length) {
               this.childFolders = data.sub_category_data
               this.folderOpen = true
             }
           })
+          .catch(() => {})
       }
-      if (this.folderOpen) {
-        this.folderOpen = false
-      } else if (this.childFolders.length) {
+      // if (this.folderOpen) {
+      //   this.folderOpen = false
+      // } else if (this.childFolders.length) {
+      //   this.folderOpen = true
+      // }
+      if (
+        this.childFolders.length &&
+        (!this.loading ||
+          this.childFolders
+            .map((e) => parseInt(e.id))
+            .includes(parseInt(this.$route.hash.substring(1))))
+      ) {
         this.folderOpen = true
+      } else if (this.folderOpen) {
+        this.folderOpen = false
       }
     },
     // dropdown feature for left panel

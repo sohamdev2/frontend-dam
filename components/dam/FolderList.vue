@@ -25,14 +25,16 @@
       :selection="value"
       :folder="folder"
       :parents="folderArray"
+      :loading="childLoading"
+      @hashparent="
+        (e) => {
+          if (e) {
+            childLoading = false
+          }
+        }
+      "
     />
   </transition-group>
-  <!-- <div v-else class="no-data-found my-5 pb-5">
-      <div class="inner w-100">
-        <img src="~/assets/img/no-data-image.svg" alt="No Data Found" />
-        <p>You don't have folder...</p>
-      </div>
-    </div> -->
 </template>
 
 <script>
@@ -49,6 +51,7 @@ export default {
       loadingModel: this.loading,
       currentFolderName: '',
       folderArray: [],
+      childLoading: false,
     }
   },
   computed: {
@@ -132,6 +135,7 @@ export default {
   async mounted() {
     const x = parseInt(this.$route.hash.substring(1))
     if (Number.isInteger(x)) {
+      this.childLoading = true
       await this.$axios
         .$post(`digital/get-parent-category`, {
           workspace_id: this.$getWorkspaceId(),
