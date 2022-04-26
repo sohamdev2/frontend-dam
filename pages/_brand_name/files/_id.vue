@@ -771,13 +771,7 @@ export default {
         return [...VIDEO_FORMATS, 'gif'].sort(sortAscending)
       if (this.file.type === 'audio') return AUDIO_FORMATS.sort(sortAscending)
       if (this.file.type === 'image') {
-        if (this.file.file_type === 'svg')
-          return [
-            'svg',
-            ...IMAGE_FORMATS.filter(
-              (e) => !UNSUPPORTED_FORMATS_FROM_SVG.includes(e)
-            ),
-          ].sort(sortAscending)
+        if (this.file.file_type === 'svg') return []
         return this.file.file_type === 'gif'
           ? ['gif', ...IMAGE_FORMATS].sort(sortAscending)
           : IMAGE_FORMATS.sort(sortAscending)
