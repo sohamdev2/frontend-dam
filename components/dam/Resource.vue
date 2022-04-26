@@ -69,6 +69,7 @@
               muted
               preload="metadata"
               loop
+              disablepictureinpicture
             >
               <!-- <source :src="file.display_file" type="video/mp4" /> -->
               Your browser does not support the video tag.
@@ -871,7 +872,15 @@
     </div>
     <client-only>
       <ShareFile
-        v-if="!emitShare"
+        v-if="!emitShare && currentRoute == 'brand_name-collection-id'"
+        ref="shareDialog"
+        :files="[file]"
+        collection-assets
+        :collection-assets-id="$route.params.id"
+        type="folder"
+      />
+      <ShareFile
+        v-if="!emitShare && currentRoute != 'brand_name-collection-id'"
         ref="shareDialog"
         :files="[file]"
         type="folder"
@@ -939,6 +948,9 @@ export default {
     workspaceId() {
       return this.$getWorkspaceId()
     },
+    currentRoute() {
+      return this.$route.name
+    },
   },
   watch: {
     galleryMode(n) {
@@ -995,7 +1007,7 @@ export default {
           .fancybox({
             video: {
               tpl:
-                `<video class="fancybox-video" data-id="file-${this.file.id}" controlsList="nodownload" controls poster="${this.file.video_preview}">` +
+                `<video disablepictureinpicture class="fancybox-video" data-id="file-${this.file.id}" controlsList="nodownload" controls poster="${this.file.video_preview}">` +
                 '<source src="{{src}}"  />' +
                 'Sorry, your browser doesn\'t support embedded videos, <a href="{{src}}">download</a> and watch with your favorite video player!' +
                 '</video>',
@@ -1098,12 +1110,17 @@ export default {
         .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
     },
     downloadFile() {
+      let collectionsId = null
+      if (this.$route.name === 'brand_name-collection-id') {
+        collectionsId = this.$route.params.id
+      }
       this.$store.dispatch('downloadIndicator/downloadFile', {
         id: this.file.id,
         url: this.__url,
         name: this.file.display_file_name,
         callCountApi: !this.shareMode,
         useModernDownload: false,
+        collection_id: collectionsId,
       })
     },
   },

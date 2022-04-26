@@ -198,6 +198,7 @@
                   controlsList="nodownload"
                   controls
                   class="thevideo"
+                  disablepictureinpicture
                 >
                   <source :src="__url" type="video/mp4" />
                   Your browser does not support the video tag.
@@ -287,7 +288,7 @@
                       <li>
                         <span>ID</span><span>: {{ file.id }}</span>
                       </li>
-                      <li v-if="parentFolder">
+                      <li v-if="parentFolder" class="align-items-start">
                         <span>Parent Folder</span>
                         <span
                           >:
@@ -456,20 +457,14 @@
                     Download
                   </button>
                   <div
-                    v-if="0 && downloadableFormats.length"
-                    v-tooltip="
-                      convertNotAllowed() ? 'File size is too large' : ''
-                    "
+                    v-if="downloadableFormats.length"
                     class="dropdown convert-video"
                   >
                     <a
                       href="javascript:void(0);"
                       class="dropdown-toggle btn btn-gray btn-icon"
                       :class="{
-                        disabledFileConvert:
-                          allButtonDisabled ||
-                          converting ||
-                          convertNotAllowed(),
+                        disabledFileConvert: allButtonDisabled || converting,
                       }"
                       :disabled="allButtonDisabled || converting"
                       data-toggle="dropdown"
@@ -501,7 +496,7 @@
                           </g>
                         </g>
                       </svg>
-                      {{ converting ? 'Converting...' : 'Convert' }}
+                      Convert
                     </a>
                     <ul class="dropdown-menu">
                       <li
@@ -776,13 +771,7 @@ export default {
         return [...VIDEO_FORMATS, 'gif'].sort(sortAscending)
       if (this.file.type === 'audio') return AUDIO_FORMATS.sort(sortAscending)
       if (this.file.type === 'image') {
-        if (this.file.file_type === 'svg')
-          return [
-            'svg',
-            ...IMAGE_FORMATS.filter(
-              (e) => !UNSUPPORTED_FORMATS_FROM_SVG.includes(e)
-            ),
-          ].sort(sortAscending)
+        if (this.file.file_type === 'svg') return []
         return this.file.file_type === 'gif'
           ? ['gif', ...IMAGE_FORMATS].sort(sortAscending)
           : IMAGE_FORMATS.sort(sortAscending)
@@ -938,102 +927,30 @@ export default {
       this.$axios.$post('digital/download-count', {
         workspace_id: this.$getWorkspaceId(),
         asset_id: assetId,
-        is_backend_download: true,
+        is_backend_download: false,
         download_by: 'desktop',
         type,
       })
     },
-    convertOtherImage(format) {
-      // axios
-      //   .post(
-      //     '/convert',
-      //     {
-      //       url: this.file.display_file,
-      //       format,
-      //       fileType: 'image',
-      //     },
-      //     {
-      //       responseType: 'blob',
-      //     }
-      //   )
-      //   .then((r) => {
-      //     const targetName =
-      //       this.file.display_file_name.substring(
-      //         0,
-      //         this.file.display_file_name.lastIndexOf('.') + 1
-      //       ) + format
-      //     FileSaver.saveAs(r.data, targetName)
-      //     this.updateDownloadCount(this.file.id, 'asset')
-      //   })
-      //   .catch(console.error)
-      //   .finally(() => (this.converting = false))
-    },
-    convertNotAllowed() {
-      return this.file.file_size > 4000000
-    },
     convertFile(format) {
-      // if (this.convertNotAllowed()) {
-      //   this.$toast.global.error('File size is too large.')
-      //   return
-      // }
-      // if (this.converting) return
-      // if (
-      //   format === this.file.file_type ||
-      //   !['audio', 'video', 'image'].includes(this.file.type)
-      // ) {
-      //   return this.downloadFile()
-      // }
-      // const targetName =
-      //   this.file.display_file_name.substring(
-      //     0,
-      //     this.file.display_file_name.lastIndexOf('.') + 1
-      //   ) + format
-      // this.converting = true
-      // if (['audio', 'video'].includes(this.file.type)) {
-      //   axios
-      //     .post(
-      //       '/convert',
-      //       {
-      //         url: this.file.display_file,
-      //         format,
-      //         fileType: this.file.type,
-      //       },
-      //       {
-      //         responseType: 'blob',
-      //       }
-      //     )
-      //     .then((r) => {
-      //       FileSaver.saveAs(r.data, targetName)
-      //       this.updateDownloadCount(this.file.id, 'asset')
-      //     })
-      //     .catch(console.error)
-      //     .finally(() => (this.converting = false))
-      // } else if (['jfif', 'bmp'].includes(format)) {
-      //   Jimp.read(this.file.display_file)
-      //     .then((image) => {
-      //       const mime = IMAGE_MIMETYPES[format]
-      //       if (!mime) {
-      //         this.$toast.error('Could not retrieve mimeType')
-      //         this.converting = false
-      //         return
-      //       }
-      //       image.getBase64(mime, (e, d) => {
-      //         if (e) {
-      //           this.$toast.error('Could not convert image')
-      //           this.converting = false
-      //           return
-      //         }
-      //         FileSaver.saveAs(d, targetName)
-      //         this.updateDownloadCount(this.file.id, 'asset')
-      //       })
-      //     })
-      //     .catch(console.error)
-      //     .finally(() => {
-      //       this.converting = false
-      //     })
-      // } else {
-      //   this.convertOtherImage(format)
-      // }
+      if (this.converting) return
+      if (
+        format === this.file.file_type ||
+        !['audio', 'video', 'image'].includes(this.file.type)
+      ) {
+        return this.downloadFile()
+      }
+      this.converting = true
+      this.$axios
+        .$post('digital/convert-asset', {
+          workspace_id: this.$getWorkspaceId(),
+          asset_id: this.file.id,
+          asset_type: this.file.file_type,
+          convert_type: format,
+        })
+        .then(({ message }) => this.$toast.global.success(message))
+        .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
+        .finally(() => (this.converting = false))
     },
     imageErrorHandle(data) {
       if (this.isPdf || this.isTxt || this.isDoc || this.isHtml) {
