@@ -25,7 +25,7 @@
         <div class="select-right">
           <ul>
             <li>
-              <a @click="showShare" href="javascript:void(0);">
+              <a href="javascript:void(0);" @click="showShare">
                 Share
                 <svg
                   id="Layer_1"
@@ -96,11 +96,21 @@
     </transition>
     <client-only>
       <ShareFile
+        v-if="currentRoute == 'brand_name-collection-id'"
+        ref="shareDialog"
+        :files="[...selectedFiles]"
+        :folders="[...shareAble]"
+        collection-assets
+        :collection-assets-id="$route.params.id"
+        type="folder"
+      />
+      <ShareFile
+        v-if="currentRoute != 'brand_name-collection-id'"
         ref="shareDialog"
         :files="[...selectedFiles]"
         :folders="[...shareAble]"
         type="folder"
-      ></ShareFile>
+      />
     </client-only>
   </div>
 </template>
@@ -108,13 +118,13 @@
 <script>
 import ShareFile from '~/components/dam/ShareFile'
 export default {
+  components: {
+    ShareFile,
+  },
   props: {
     selectedFiles: { type: Array, default: () => [] },
     selectedFolders: { type: Array, default: () => [] },
     selectedAll: { type: Boolean, default: false },
-  },
-  components: {
-    ShareFile,
   },
   data() {
     return {
@@ -124,6 +134,9 @@ export default {
   computed: {
     count() {
       return this.selectedFiles.length + this.selectedFolders.length
+    },
+    currentRoute() {
+      return this.$route.name
     },
   },
   watch: {
@@ -165,17 +178,23 @@ export default {
       }
     },
     downloadSelectedFile() {
+      let collectionsId = null
+      if (this.$route.name === 'brand_name-collection-id') {
+        collectionsId = this.$route.params.id
+      }
       if (this.selectedFiles.length === 1 && !this.selectedFolders.length) {
         const [file] = this.selectedFiles
         this.$store.dispatch('downloadIndicator/downloadFile', {
           id: file.id,
           url: file.display_file,
           name: file.display_file_name,
+          collection_id: collectionsId,
         })
       } else {
         this.$store.dispatch('downloadIndicator/downloadMultipleFiles', {
           files: this.selectedFiles.map(({ id }) => id),
           folders: this.selectedFolders.map(({ id }) => id),
+          collection_id: collectionsId,
         })
       }
     },
