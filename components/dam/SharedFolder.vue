@@ -47,7 +47,7 @@
     </div>
     <div class="assets tb-column flex15">
       <div class="top-column">
-        <span
+        <span style="text-transform: unset"
           ><template v-if="assetsCount">
             <template v-if="folder.sub_category_count > 0"
               >{{ folder.sub_category_count }} Folder<template
