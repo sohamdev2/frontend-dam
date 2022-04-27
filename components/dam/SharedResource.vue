@@ -88,10 +88,7 @@
     </div>
     <div class="assets tb-column flex15">
       <div class="top-column">
-        <span
-          style="text-transform: uppercase"
-          :inner-html.prop="file.file_type || '&dash;'"
-        ></span>
+        <span :inner-html.prop="file.file_type || '&dash;'"></span>
       </div>
     </div>
     <div class="update-date tb-column flex15">
