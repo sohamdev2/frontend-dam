@@ -237,6 +237,7 @@
                     :mode="mode"
                     share-mode
                     :share-id="shareId"
+                    :share-workspace-id="workspaceId"
                     :selected="folderSelection[folder.id]"
                     @click:selected="toggleFolderSelection"
                     @nextStack="nextStack"

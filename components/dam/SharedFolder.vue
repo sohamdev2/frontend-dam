@@ -128,6 +128,7 @@ export default {
     selected: { type: Boolean, default: false },
     shareMode: { type: Boolean, default: false },
     shareId: { type: Number, default: 0 },
+    shareWorkspaceId: { type: String, required: false, default: null },
   },
   computed: {
     workspaceId() {
