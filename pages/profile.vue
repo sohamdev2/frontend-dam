@@ -136,7 +136,7 @@
                           <div class="media">
                             <div class="media-body">
                               <div class="d-flex align-items-center">
-                                Digital Asset Management Notification
+                                Digital Asset Management Email Notification
                                 <i
                                   v-tooltip="
                                     'You will get an email notification once your DAM admin add/update any asset.'
