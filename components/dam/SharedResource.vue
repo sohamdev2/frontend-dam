@@ -88,10 +88,7 @@
     </div>
     <div class="assets tb-column flex15">
       <div class="top-column">
-        <span
-          style="text-transform: uppercase"
-          :inner-html.prop="file.file_type || '&dash;'"
-        ></span>
+        <span :inner-html.prop="file.file_type || '&dash;'"></span>
       </div>
     </div>
     <div class="update-date tb-column flex15">
@@ -221,7 +218,7 @@ export default {
           .fancybox({
             video: {
               tpl:
-                `<video class="fancybox-video" data-id="file-${this.file.id}" controlsList="nodownload" controls poster="${this.videoThumbnail}">` +
+                `<video disablepictureinpicture class="fancybox-video" data-id="file-${this.file.id}" controlsList="nodownload" controls poster="${this.videoThumbnail}">` +
                 '<source src="{{src}}"  />' +
                 'Sorry, your browser doesn\'t support embedded videos, <a href="{{src}}">download</a> and watch with your favorite video player!' +
                 '</video>',

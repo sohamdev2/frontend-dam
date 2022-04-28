@@ -22,6 +22,9 @@
     </div>
   </div>
   <div v-else class="body-content login">
+    <style type="text/css">
+      {{ customStyles() }}
+    </style>
     <div class="sign-screen customscrollbar h-100">
       <div class="sign-screen-dtable">
         <div class="sign-screen-dtable-cell">
@@ -194,6 +197,22 @@ export default {
   methods: {
     loginPage() {
       this.$router.push('/')
+    },
+    customStyles() {
+      const textColor = this.$brandDetail().themes_option.header_text_color
+      const textHoverColor =
+        this.$brandDetail().themes_option.header_text_hover_color
+      const backgroundColor =
+        this.$brandDetail().themes_option.header_background_color
+      return `.login .sign-screen{
+        background-color: ${backgroundColor};
+      }
+      .login .sign-heading-text h2,.bottom-fix-link-center a{
+        color: ${textColor};
+      }
+      .bottom-fix-link-center a:hover{
+      color: ${textHoverColor};
+      }`
     },
     handleSubmit(e) {
       if ((this.$v.$touch(), this.$v.$invalid) || this.loading) return

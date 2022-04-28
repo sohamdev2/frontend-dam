@@ -1,6 +1,12 @@
 <template>
   <div class="container">
-    <div class="SharedInfo" style="height: 100vh">
+    <div
+      class="SharedInfo"
+      style="height: 100vh"
+      :class="{
+        show: allAssetsCount && statusType == 'collection',
+      }"
+    >
       <div class="common-box-header mt20">
         <h2 v-if="statusType == 'collection'" class="title pl0">
           Shared Collection
@@ -47,6 +53,7 @@
       </div>
       <div
         class="btns mb20 d-flex align-items-center"
+        style="min-height: 32px"
         :class="{
           'justify-content-between': breadcrumbs.length,
           'justify-content-end': !breadcrumbs.length,
@@ -181,7 +188,7 @@
       <div
         class="body-content-main resource-wrapper"
         :class="[`${mode}` == 'row' ? 'grid-tile' : 'grid-list']"
-        style="height: calc(100% - 83px)"
+        style="height: calc(100% - 130px)"
       >
         <div class="common-box bg-gray h-100" style="padding: 8px 0px">
           <div class="table-list-view multi-table-view category-wrapper h-100">
@@ -237,6 +244,7 @@
                     :mode="mode"
                     share-mode
                     :share-id="shareId"
+                    :share-workspace-id="workspaceId"
                     :selected="folderSelection[folder.id]"
                     @click:selected="toggleFolderSelection"
                     @nextStack="nextStack"
