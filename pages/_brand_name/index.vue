@@ -414,7 +414,7 @@ export default {
         {
           rel: 'icon',
           type: 'image/x-icon',
-          href: this.$_auth()?.favicon || '/favicon.png',
+          href: this.$auth.user.branding.brand_favicon || '/favicon.png',
         },
       ],
     }

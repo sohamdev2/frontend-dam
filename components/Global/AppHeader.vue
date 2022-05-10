@@ -521,10 +521,6 @@ export default {
     )
     this.userLogo = workspace.logo
   },
-  beforeDestroy() {
-    this.observer.disconnect()
-    this.observer2.disconnect()
-  },
   methods: {
     hex2rgba(hex, code) {
       let c

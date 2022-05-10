@@ -192,7 +192,7 @@ export default {
         {
           rel: 'icon',
           type: 'image/x-icon',
-          href: this.$brandDetail()?.favicon || '/favicon.png',
+          href: this.$brandDetail()?.branding.brand_favicon || '/favicon.png',
         },
       ],
     }
