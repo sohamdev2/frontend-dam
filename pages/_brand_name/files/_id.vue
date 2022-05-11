@@ -644,7 +644,7 @@ const IMAGE_FORMATS = [
   'heif',
   'avif',
 ]
-const UNSUPPORTED_FORMATS_FROM_SVG = ['bmp', 'jfif']
+// const UNSUPPORTED_FORMATS_FROM_SVG = ['bmp', 'jfif']
 // const IMAGE_MIMETYPES = {
 //   tif: 'image/tiff',
 //   tiff: 'image/tiff',
