@@ -161,6 +161,18 @@ export default {
       this.loading = false
     },
   },
+  head() {
+    return {
+      title: this.$brandDetail()?.brand_name || 'Digital Asset Manager',
+      link: [
+        {
+          rel: 'icon',
+          type: 'image/x-icon',
+          href: this.$brandDetail()?.branding.brand_favicon || '/favicon.png',
+        },
+      ],
+    }
+  },
   validations: {
     form: {
       email: { required, email },
