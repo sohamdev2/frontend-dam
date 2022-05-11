@@ -1,12 +1,5 @@
 <template>
-  <header
-    class="header-sec row no-gutters app-header"
-    :style="
-      $auth.user.themes_option.header_background_color
-        ? `background-color:${$auth.user.themes_option.header_background_color}`
-        : ''
-    "
-  >
+  <header class="header-sec row no-gutters app-header">
     <div class="main-logo col">
       <nuxt-link :to="`/${$getBrandName()}`">
         <img v-if="userLogo" :src="userLogo" alt="Logo" height="24" />
@@ -24,14 +17,7 @@
           <a
             :id="link.name"
             href="javascript:void(0)"
-            :style="
-              $auth.user.themes_option.header_text_color
-                ? `color:${$auth.user.themes_option.header_text_color}`
-                : ''
-            "
             @click="changeCategory(link.to)"
-            @mouseover="headerTxtHover(link.name)"
-            @mouseout="headerTxtHoverOut(link.name)"
             ><span>{{ link.name }}</span>
             <p class="mb0" v-html="link.imageUrl"></p
           ></a>
@@ -39,9 +25,6 @@
       </ul>
     </div>
     <div class="col d-flex align-items-center justify-content-end">
-      <style type="text/css">
-        {{ customStyles() }}
-      </style>
       <div class="dropdown mycollection">
         <button
           type="button"
@@ -505,17 +488,14 @@ export default {
       return this.$auth.user.accessibleInstances
     },
     css() {
-      return `
-         .main-menu > ul > li.active > a {
-            color: ${this.$auth.user.themes_option.header_text_hover_color} !important;
-         }
-         .main-logo h2 {
-            color: ${this.$auth.user.themes_option.header_text_color} !important;
-         }
-         .main-menu > ul > li.active > a svg .fill-color{
-            fill: ${this.$auth.user.themes_option.header_text_hover_color}!important;
-         }
-         `
+      return `:root {
+  --primary: ${this.$auth.user.branding.primary_color} !important;
+  --secondary: ${this.$auth.user.branding.secondary_color} !important;
+  --header-default: ${this.hex2rgba(
+    this.$auth.user.branding.secondary_color,
+    0.6
+  )};
+}`
     },
   },
   watch: {
@@ -529,81 +509,11 @@ export default {
   updated() {
     this.$nextTick(() => {
       window.$(this.$el).find('.dropdown-toggle').dropdown()
-      const textColor = this.$auth.user.themes_option.header_text_color
-      this.headerLinks
-        .map((e) => e.name)
-        .forEach((id) => {
-          document.getElementById(id).style.color = textColor || '#ffffffa6'
-          document
-            .getElementById(id)
-            .querySelectorAll('path.fill-color')
-            .forEach((e) => (e.style.fill = textColor || '#ffffffa6'))
-        })
-      document
-        .querySelectorAll('button.collection-button .fill-color')
-        .forEach((e) => (e.style.fill = textColor || '#ffffffa6'))
-      document.querySelector('button.collection-button').style.color =
-        textColor || '#ffffffa6'
-      document
-        .querySelectorAll('.user-dropdown-icon .fill-color')
-        .forEach((e) => (e.style.fill = textColor || '#ffffffa6'))
-      document.querySelector('a#profileDropdown').style.color =
-        textColor || '#ffffffa6'
     })
   },
   mounted() {
     this.$nextTick(() => {
       window.$(this.$el).find('.dropdown-toggle').dropdown()
-      const textColor = this.$auth.user.themes_option.header_text_color
-      this.headerLinks
-        .map((e) => e.name)
-        .forEach((id) => {
-          document.getElementById(id).style.color = textColor || '#ffffffa6'
-          document
-            .getElementById(id)
-            .querySelectorAll('path.fill-color')
-            .forEach((e) => (e.style.fill = textColor || '#ffffffa6'))
-        })
-      document
-        .querySelectorAll('button.collection-button .fill-color')
-        .forEach((e) => (e.style.fill = textColor || '#ffffffa6'))
-      document.querySelector('button.collection-button').style.color =
-        textColor || '#ffffffa6'
-      document
-        .querySelectorAll('.user-dropdown-icon .fill-color')
-        .forEach((e) => (e.style.fill = textColor || '#ffffffa6'))
-      document.querySelector('a#profileDropdown').style.color =
-        textColor || '#ffffffa6'
-
-      this.observer = new MutationObserver((mutations) => {
-        for (const m of mutations) {
-          const newValue = m.target.getAttribute(m.attributeName)
-          this.$nextTick(() => {
-            this.onCollectionDropdown(newValue, m.oldValue)
-          })
-        }
-      })
-
-      this.observer.observe(this.$refs.collectionDropdown, {
-        attributes: true,
-        attributeOldValue: true,
-        attributeFilter: ['class'],
-      })
-
-      this.observer2 = new MutationObserver((mutations) => {
-        for (const m of mutations) {
-          const newValue = m.target.getAttribute(m.attributeName)
-          this.$nextTick(() => {
-            this.onUserDropdown(newValue, m.oldValue)
-          })
-        }
-      })
-
-      this.observer2.observe(this.$refs.userDropdown, {
-        attributes: true,
-        attributeOldValue: true,
-        attributeFilter: ['class'],
-      })
     })
     const workspace = this.$auth.user.accessibleInstances.find(
       ({ workspace_id }) =>
@@ -611,75 +521,24 @@ export default {
     )
     this.userLogo = workspace.logo
   },
-  beforeDestroy() {
-    this.observer.disconnect()
-    this.observer2.disconnect()
-  },
   methods: {
-    customStyles() {
-      const textColor = this.$auth.user.themes_option.header_text_color
-      return `header .user-dropdown:before {
-        position: absolute;
-        content: '';
-        width: 1px;
-        height: 30px;
-        top: 50%;
-        left: 0px;
-        transform: translate(0px,-50%);
-        background-color: ${textColor || '#ffffff80'};
-      }`
-    },
-    onCollectionDropdown(classAttrValue) {
-      const textColor = this.$auth.user.themes_option.header_text_color
-      const hoverColor = this.$auth.user.themes_option.header_text_hover_color
-      const classList = classAttrValue.split(' ')
-      if (classList.includes('show')) {
-        document
-          .querySelectorAll('button.collection-button .fill-color')
-          .forEach((e) => (e.style.fill = hoverColor || '#ffffff'))
-        document.querySelector('button.collection-button').style.color =
-          hoverColor || '#ffffff'
-      } else {
-        document
-          .querySelectorAll('button.collection-button .fill-color')
-          .forEach((e) => (e.style.fill = textColor || '#ffffffa6'))
-        document.querySelector('button.collection-button').style.color =
-          textColor || '#ffffffa6'
+    hex2rgba(hex, code) {
+      let c
+      if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+        c = hex.substring(1).split('')
+        if (c.length === 3) {
+          c = [c[0], c[0], c[1], c[1], c[2], c[2]]
+        }
+        c = '0x' + c.join('')
+        return (
+          'rgba(' +
+          [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') +
+          ',' +
+          code +
+          ')'
+        )
       }
-    },
-    onUserDropdown(classAttrValue) {
-      const textColor = this.$auth.user.themes_option.header_text_color
-      const hoverColor = this.$auth.user.themes_option.header_text_hover_color
-      const classList = classAttrValue.split(' ')
-      if (classList.includes('show')) {
-        document
-          .querySelectorAll('a#profileDropdown .fill-color')
-          .forEach((e) => (e.style.fill = hoverColor || '#ffffff'))
-        document.querySelector('a#profileDropdown').style.color =
-          hoverColor || '#ffffff'
-      } else {
-        document
-          .querySelectorAll('a#profileDropdown .fill-color')
-          .forEach((e) => (e.style.fill = textColor || '#ffffffa6'))
-        document.querySelector('a#profileDropdown').style.color =
-          textColor || '#ffffffa6'
-      }
-    },
-    headerTxtHover(id) {
-      const hoverColor = this.$auth.user.themes_option.header_text_hover_color
-      document.getElementById(id).style.color = hoverColor || '#ffffff'
-      document
-        .getElementById(id)
-        .querySelectorAll('path.fill-color')
-        .forEach((e) => (e.style.fill = hoverColor || '#ffffff'))
-    },
-    headerTxtHoverOut(id) {
-      const textColor = this.$auth.user.themes_option.header_text_color
-      document.getElementById(id).style.color = textColor || '#ffffffa6'
-      document
-        .getElementById(id)
-        .querySelectorAll('path.fill-color')
-        .forEach((e) => (e.style.fill = textColor || '#ffffffa6'))
+      throw new Error('Bad Hex')
     },
     changeCategory(toData) {
       this.$emit('resetList')
