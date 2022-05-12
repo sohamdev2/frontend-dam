@@ -2,7 +2,7 @@
   <header class="header-sec row no-gutters app-header">
     <div class="main-logo col">
       <nuxt-link :to="`/${$getBrandName()}`">
-        <img v-if="userLogo" :src="userLogo" alt="Logo" height="24" />
+        <img v-if="userLogo" :src="userLogo" alt="Logo" />
         <h2 v-else>{{ $brandName() }}</h2>
       </nuxt-link>
     </div>

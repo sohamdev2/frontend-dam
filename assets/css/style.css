@@ -207,7 +207,7 @@ span.input-control {font-size: 14px;display: block;border-radius: 4px;border: 1p
 
 /* Header ----------------*/
 header.header-sec {position: fixed;left: 0;right: 0;top: 0;padding: 0 14px;background-color: var(--primary);display: flex;flex-wrap: wrap;align-items: center;justify-content: space-between;width: 100%;z-index: 99;height: 62px;}
-header.header-sec .main-logo img{max-height: 45px;max-width: 350px;}
+header.header-sec .main-logo img{max-height: 32px;max-width: 270px;}
 .main-logo a {display: inline-block;vertical-align: top;line-height: 0;}
 .main-logo h2 {color: var(--secondary);font-size: 2em;}
 .main-menu  {display: flex;justify-content: center;flex-wrap: wrap;}
@@ -965,8 +965,8 @@ header .user-dropdown.show .dropdown-toggle{color: var(--secondary);}
 .mycollection.dropdown.show .dropdown-toggle .arrow-down-icon .fill-color,
 .mycollection.dropdown.show .dropdown-toggle .collection-icon .fill-color{fill: var(--secondary);}
 .mycollection.dropdown.show .dropdown-toggle{color: var(--secondary);}
-.mycollection.dropdown .dropdown-menu::before{display: none;}
 .mycollection.dropdown .dropdown-menu {min-width: 250px;max-width: 250px;padding: 15px 0 8px;margin-top: 18px;top: 100% !important;left: 50% !important;transform: translate(-50%, 0) !important;-webkit-transform: translate(-50%, 0) !important;-ms-transform: translate(-50%, 0) !important;box-shadow: 0 6px 16px rgb(0 0 0 / 16%);border: none;border-radius: 4px;}
+.mycollection.dropdown .dropdown-menu::before {content: "";position: absolute;left: 50%;transform: translate(-50%, 0);-webkit-transform: translate(-50%, 0);-ms-transform: translate(-50%, 0);top: -8px;width: 0;height: 0;border-left: 8px solid transparent;border-right: 8px solid transparent;border-bottom: 8px solid #f6f8f9;}
 .mycollection.dropdown .dropdown-menu > p {padding: 5px 20px;font-size: 15px;font-weight: 400;display: flex;margin: 0;}
 .mycollection.dropdown .dropdown-menu > span {padding: 5px 20px;font-size: 13px;font-weight: 400;text-transform: uppercase;color: #737B88;display: flex;}
 .mycollection.dropdown .dropdown-menu ul li{display: flex;}
