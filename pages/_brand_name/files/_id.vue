@@ -417,7 +417,7 @@
                 <div class="detail-right-actions">
                   <button
                     type="button"
-                    class="btn btn-gray btn-icon"
+                    class="btn btn-icon"
                     :disabled="allButtonDisabled"
                     :class="{ 'btn-disable': allButtonDisabled }"
                     @click="downloadFile"
