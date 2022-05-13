@@ -15,7 +15,6 @@ export default {
       'dam.marketinghub.com',
       'uat-damfrontend.herokuapp.com',
       'test-app-dam-front.herokuapp.com',
-      'dam-frontend.herokuapp.com',
     ]
     let hostName = process.server ? req.headers.host : location.host
     if (!url.includes(hostName)) {
