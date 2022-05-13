@@ -538,7 +538,6 @@ export default {
           ')'
         )
       }
-      throw new Error('Bad Hex')
     },
     changeCategory(toData) {
       this.$emit('resetList')

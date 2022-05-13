@@ -154,7 +154,6 @@ export default {
           ')'
         )
       }
-      throw new Error('Bad Hex')
     },
     async login(e) {
       if ((this.$v.$touch(), this.$v.$invalid)) return
