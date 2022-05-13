@@ -140,7 +140,6 @@ export default {
           ')'
         )
       }
-      throw new Error('Bad Hex')
     },
     async submit(e) {
       if ((this.$v.$touch(), this.$v.$invalid) || this.loading) return

@@ -226,7 +226,6 @@ export default {
           ')'
         )
       }
-      throw new Error('Bad Hex')
     },
     handleSubmit(e) {
       if ((this.$v.$touch(), this.$v.$invalid) || this.loading) return
