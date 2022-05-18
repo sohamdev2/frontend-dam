@@ -1140,6 +1140,18 @@ export default {
         .finally(() => (this.videoThumbnailFetching = false))
     },
   },
+  head() {
+    return {
+      title: this.$brandName(),
+      link: [
+        {
+          rel: 'icon',
+          type: 'image/x-icon',
+          href: this.$auth.user.branding.brand_favicon || '/favicon.png',
+        },
+      ],
+    }
+  },
 }
 </script>
 <style scoped>
