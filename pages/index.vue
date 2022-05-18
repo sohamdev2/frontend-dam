@@ -1,5 +1,5 @@
 <template>
-  <div class="body-content login">
+  <div class="body-content login defaultPage">
     <div class="sign-screen customscrollbar h-100">
       <div class="sign-screen-dtable">
         <div class="sign-screen-dtable-cell">
@@ -13,7 +13,7 @@
                 />
               </nuxt-link>
             </div>
-            <div class="sign-body bg-white">
+            <div class="sign-body">
               <p class="small">
                 Please visit
                 <a :href="`${$config.damBackendBaseUrl}`">Lariat</a> in order to

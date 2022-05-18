@@ -417,7 +417,7 @@
                 <div class="detail-right-actions">
                   <button
                     type="button"
-                    class="btn btn-gray btn-icon"
+                    class="btn btn-icon"
                     :disabled="allButtonDisabled"
                     :class="{ 'btn-disable': allButtonDisabled }"
                     @click="downloadFile"
@@ -644,7 +644,7 @@ const IMAGE_FORMATS = [
   'heif',
   'avif',
 ]
-const UNSUPPORTED_FORMATS_FROM_SVG = ['bmp', 'jfif']
+// const UNSUPPORTED_FORMATS_FROM_SVG = ['bmp', 'jfif']
 // const IMAGE_MIMETYPES = {
 //   tif: 'image/tiff',
 //   tiff: 'image/tiff',
@@ -1139,6 +1139,18 @@ export default {
         .catch(() => (this.videoThumbnail = this.previewImage))
         .finally(() => (this.videoThumbnailFetching = false))
     },
+  },
+  head() {
+    return {
+      title: this.$brandName(),
+      link: [
+        {
+          rel: 'icon',
+          type: 'image/x-icon',
+          href: this.$auth.user.branding.brand_favicon || '/favicon.png',
+        },
+      ],
+    }
   },
 }
 </script>
