@@ -581,7 +581,16 @@ export default {
     },
   },
   head() {
-    return { title: 'Folders | ' + this.$brandName() }
+    return {
+      title: 'Folders | ' + this.$brandName(),
+      link: [
+        {
+          rel: 'icon',
+          type: 'image/x-icon',
+          href: this.$auth.user.branding.brand_favicon || '/favicon.png',
+        },
+      ],
+    }
   },
 }
 </script>
