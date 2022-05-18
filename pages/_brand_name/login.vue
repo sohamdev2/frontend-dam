@@ -127,20 +127,33 @@ export default {
   },
   methods: {
     customStyles() {
-      const textColor = this.$brandDetail().themes_option.header_text_color
-      const textHoverColor =
-        this.$brandDetail().themes_option.header_text_hover_color
-      const backgroundColor =
-        this.$brandDetail().themes_option.header_background_color
-      return `.loginPage{
-        background-color: ${backgroundColor};
+      return `:root {
+  --primary: ${this.$brandDetail().branding.primary_color} !important;
+  --secondary: ${this.$brandDetail().branding.secondary_color} !important;
+  --header-default: ${this.hex2rgba(
+    this.$brandDetail().branding.secondary_color
+      ? this.$brandDetail().branding.secondary_color
+      : '#ffffff',
+    0.6
+  )};
+}`
+    },
+    hex2rgba(hex, code) {
+      let c
+      if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+        c = hex.substring(1).split('')
+        if (c.length === 3) {
+          c = [c[0], c[0], c[1], c[1], c[2], c[2]]
+        }
+        c = '0x' + c.join('')
+        return (
+          'rgba(' +
+          [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') +
+          ',' +
+          code +
+          ')'
+        )
       }
-      .loginPage .sign-heading-text h2,.bottom-fix-link-center a{
-        color: ${textColor};
-      }
-      .bottom-fix-link-center a:hover{
-      color: ${textHoverColor};
-      }`
     },
     async login(e) {
       if ((this.$v.$touch(), this.$v.$invalid)) return
@@ -178,7 +191,7 @@ export default {
         {
           rel: 'icon',
           type: 'image/x-icon',
-          href: this.$brandDetail()?.favicon || '/favicon.png',
+          href: this.$brandDetail()?.branding.brand_favicon || '/favicon.png',
         },
       ],
     }
