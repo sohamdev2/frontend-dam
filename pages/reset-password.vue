@@ -160,9 +160,6 @@ export default {
   },
 
   methods: {
-    loginPage() {
-      this.$router.push('/')
-    },
     handleSubmit(e) {
       if ((this.$v.$touch(), this.$v.$invalid) || this.loading) return
 
