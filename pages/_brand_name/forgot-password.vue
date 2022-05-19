@@ -8,7 +8,7 @@
         <div class="sign-screen-dtable-cell">
           <div class="sign-screen-content">
             <div class="sign-heading-text text-center">
-              <nuxt-link to="/">
+              <nuxt-link :to="`/${brandName}/login`">
                 <img
                   v-if="logo"
                   :src="logo"
