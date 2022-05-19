@@ -267,7 +267,11 @@ export default {
             this.$router.replace(`/${url}/login`)
           }
         )
-        .catch(this.$showErrorToast)
+        // .catch(this.$showErrorToast)
+        .catch((err) => {
+          this.$toast.error(this.$getErrorMessage(err))
+          this.$router.replace(`/${this.brandName}/login`)
+        })
 
       this.loading = false
     },
