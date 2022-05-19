@@ -270,7 +270,9 @@ export default {
         // .catch(this.$showErrorToast)
         .catch((err) => {
           this.$toast.error(this.$getErrorMessage(err))
-          this.$router.replace(`/${this.brandName}/login`)
+          setTimeout(() => {
+            this.$router.replace(`/${this.brandName}/login`)
+          }, 5000)
         })
 
       this.loading = false
