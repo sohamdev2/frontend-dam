@@ -5,7 +5,7 @@
         <div class="sign-screen-dtable-cell">
           <div class="sign-screen-content">
             <div class="sign-body">
-              <nuxt-link to="/">
+              <nuxt-link :to="`/${brandName}/login`">
                 <img
                   :src="require('~/assets/img/lariat-marketing-hub.svg')"
                   alt=""
@@ -13,7 +13,41 @@
               </nuxt-link>
               <div class="error-text">
                 <h2>{{ message }}</h2>
-                <h4>This URL is not valid to reset Password.</h4>
+                <h4>
+                  You might have generated password from this link or Your
+                  administrator has revoked your invitation. Please contact your
+                  Administrator for more info.
+                </h4>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="mt-18">
+                    <nuxt-link :to="`/${brandName}/login`" class="forgotPass">
+                      Go to Login
+                      <svg
+                        id="Capa_1"
+                        version="1.1"
+                        class="back-long-arrow-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        x="0px"
+                        y="0px"
+                        viewBox="0 0 50 50"
+                        xml:space="preserve"
+                      >
+                        <g>
+                          <path
+                            class="fill-color"
+                            d="M44.952,22.108c0-1.25-0.478-2.424-1.362-3.308L30.627,5.831c-0.977-0.977-2.561-0.977-3.536,0
+		c-0.978,0.977-0.976,2.568,0,3.546l10.574,10.57H2.484C1.102,19.948,0,21.081,0,22.464c0,0.003,0,0.025,0,0.028
+		c0,1.382,1.102,2.523,2.484,2.523h35.182L27.094,35.579c-0.978,0.978-0.978,2.564,0,3.541c0.977,0.979,2.561,0.978,3.538-0.001
+		l12.958-12.97c0.885-0.882,1.362-2.059,1.362-3.309C44.952,22.717,44.952,22.231,44.952,22.108z"
+                          />
+                        </g>
+                      </svg>
+                    </nuxt-link>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -30,7 +64,7 @@
         <div class="sign-screen-dtable-cell">
           <div class="sign-screen-content">
             <div class="sign-heading-text text-center">
-              <nuxt-link to="/">
+              <nuxt-link :to="`/${brandName}/login`">
                 <img
                   v-if="form.logo"
                   :src="form.logo"
@@ -195,9 +229,6 @@ export default {
     }
   },
   methods: {
-    loginPage() {
-      this.$router.push('/')
-    },
     customStyles() {
       return `:root {
   --primary: ${this.$brandDetail().branding.primary_color} !important;
@@ -253,7 +284,13 @@ export default {
             this.$router.replace(`/${url}/login`)
           }
         )
-        .catch(this.$showErrorToast)
+        // .catch(this.$showErrorToast)
+        .catch((err) => {
+          this.$toast.error(this.$getErrorMessage(err))
+          setTimeout(() => {
+            this.$router.replace(`/${this.brandName}/login`)
+          }, 5000)
+        })
 
       this.loading = false
     },
