@@ -13,7 +13,11 @@
               </nuxt-link>
               <div class="error-text">
                 <h2>{{ message }}</h2>
-                <h4>This URL is not valid to reset Password.</h4>
+                <h4>
+                  You might have generated password from this link or Your
+                  administrator has revoked your invitation. Please contact your
+                  Administrator for more info.
+                </h4>
               </div>
               <div class="row">
                 <div class="col-sm-12">
