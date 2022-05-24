@@ -117,8 +117,16 @@
             </div>
           </div>
           <div class="bottom-fix-link-center">
-            <a href="javascript:void(0);">Term of use.</a>
-            <a href="javascript:void(0);">Privacy policy</a>
+            <a
+              href="https://www.marketinghub.com/terms-conditions/"
+              target="_blank"
+              >Term of use.</a
+            >
+            <a
+              href="https://www.marketinghub.com/privacy-policy/"
+              target="_blank"
+              >Privacy policy</a
+            >
           </div>
         </div>
       </div>
