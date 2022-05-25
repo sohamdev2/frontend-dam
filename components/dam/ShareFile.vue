@@ -193,7 +193,7 @@
         </div>
       </template>
     </div>
-    <div class="modal-footer">
+    <div v-if="!shareUrl" class="modal-footer">
       <button
         :key="creating"
         type="button"
