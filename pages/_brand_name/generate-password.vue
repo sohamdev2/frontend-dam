@@ -19,35 +19,29 @@
                   Administrator for more info.
                 </h4>
               </div>
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="mt-18">
-                    <nuxt-link :to="`/${brandName}/login`" class="forgotPass">
-                      Go to Login
-                      <svg
-                        id="Capa_1"
-                        version="1.1"
-                        class="back-long-arrow-icon"
-                        xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink"
-                        x="0px"
-                        y="0px"
-                        viewBox="0 0 50 50"
-                        xml:space="preserve"
-                      >
-                        <g>
-                          <path
-                            class="fill-color"
-                            d="M44.952,22.108c0-1.25-0.478-2.424-1.362-3.308L30.627,5.831c-0.977-0.977-2.561-0.977-3.536,0
-		c-0.978,0.977-0.976,2.568,0,3.546l10.574,10.57H2.484C1.102,19.948,0,21.081,0,22.464c0,0.003,0,0.025,0,0.028
-		c0,1.382,1.102,2.523,2.484,2.523h35.182L27.094,35.579c-0.978,0.978-0.978,2.564,0,3.541c0.977,0.979,2.561,0.978,3.538-0.001
-		l12.958-12.97c0.885-0.882,1.362-2.059,1.362-3.309C44.952,22.717,44.952,22.231,44.952,22.108z"
-                          />
-                        </g>
-                      </svg>
-                    </nuxt-link>
-                  </div>
-                </div>
+              <div class="mt2">
+                <nuxt-link :to="`/${brandName}/login`" class="forgotPass">
+                  Go to Login
+                  <svg
+                    id="Capa_1"
+                    style="transform: rotate(180deg)"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    x="0px"
+                    y="0px"
+                    viewBox="0 0 512 512"
+                    xml:space="preserve"
+                    class="back-long-arrow-icon"
+                  >
+                    <g>
+                      <path
+                        d="M492,236H68.4l70.2-69.8c7.8-7.8,7.9-20.5,0.1-28.3c-7.8-7.8-20.5-7.9-28.3-0.1L5.9,241.8c0,0,0,0,0,0c-7.8,7.8-7.8,20.5,0,28.3c0,0,0,0,0,0l104.5,104c7.8,7.8,20.5,7.8,28.3-0.1c7.8-7.8,7.8-20.5-0.1-28.3L68.4,276H492c11,0,20-9,20-20C512,245,503,236,492,236z"
+                        class="fill-color"
+                      ></path>
+                    </g>
+                  </svg>
+                </nuxt-link>
               </div>
             </div>
           </div>
