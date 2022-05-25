@@ -1,33 +1,38 @@
 <template>
-  <div class="body-content login">
-    <div class="sign-screen customscrollbar h-100">
+  <div v-if="error" class="body-content expireLink">
+    <div class="sign-screen customscrollbar h-100 w-100">
       <div class="sign-screen-dtable">
-        <div v-if="error" class="sign-screen-dtable-cell">
+        <div class="sign-screen-dtable-cell">
           <div class="sign-screen-content">
-            <div class="sign-heading-text text-center">
-              <nuxt-link to="/">
-                <img
-                  :src="
-                    form.logo
-                      ? form.logo
-                      : require('~/assets/img/lariat-marketing-hub.svg')
-                  "
-                  alt=""
-                  class="img-responsive img-center"
-                />
-              </nuxt-link>
-              <h2>{{ message }}</h2>
-              <h4 class="text-center">
-                This URL is not valid to reset Password.
-              </h4>
+            <div class="sign-body">
+              <img
+                :src="require('~/assets/img/lariat-marketing-hub.svg')"
+                alt=""
+              />
+              <div class="error-text">
+                <h2>{{ message }}</h2>
+                <h4 class="text-center">
+                  This URL is not valid to reset Password.
+                </h4>
+              </div>
             </div>
           </div>
         </div>
-        <div v-else class="sign-screen-dtable-cell">
+      </div>
+    </div>
+  </div>
+  <div v-else class="body-content login">
+    <div class="sign-screen customscrollbar h-100">
+      <div class="sign-screen-dtable">
+        <div class="sign-screen-dtable-cell">
+          <style type="text/css">
+            {{ customStyles() }}
+          </style>
           <div class="sign-screen-content">
             <div class="sign-heading-text text-center">
-              <nuxt-link to="/">
+              <nuxt-link :to="`/${form.brand_name}/login`">
                 <img
+                  v-if="form.logo"
                   :src="
                     form.logo
                       ? form.logo
@@ -36,6 +41,7 @@
                   alt=""
                   class="img-responsive img-center"
                 />
+                <h2 v-else>{{ form.brand_name }}</h2>
               </nuxt-link>
             </div>
             <div class="sign-body bg-white">
@@ -109,7 +115,7 @@
                       type="submit"
                     >
                       Submit
-                      <template #loading>Submiting</template>
+                      <template #loading>Submitting</template>
                     </AppButton>
                   </div>
                 </div>
@@ -156,9 +162,14 @@ export default {
         }
       })
       .catch(({ response, message }) => {
-        const { data, status } = response || {}
+        /* const { data, status } = response || {}
 
-        error({ status: status || 500, message: data?.message || message })
+        error({ status: status || 500, message: data?.message || message }) */
+
+        const { data, status } = response || {}
+        if (data?.message?.includes('This link is expired'))
+          return { message: data.message, status, error: true }
+        else error({ status: status || 500, message: data?.message || message })
       })
   },
   data() {
@@ -168,6 +179,33 @@ export default {
   },
 
   methods: {
+    customStyles() {
+      return `:root {
+  --primary: ${this.form.primaryColor} !important;
+  --secondary: ${this.form.secondaryColor} !important;
+  --header-default: ${this.hex2rgba(
+    this.form.secondaryColor ? this.form.secondaryColor : '#ffffff',
+    0.6
+  )};
+}`
+    },
+    hex2rgba(hex, code) {
+      let c
+      if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+        c = hex.substring(1).split('')
+        if (c.length === 3) {
+          c = [c[0], c[0], c[1], c[1], c[2], c[2]]
+        }
+        c = '0x' + c.join('')
+        return (
+          'rgba(' +
+          [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') +
+          ',' +
+          code +
+          ')'
+        )
+      }
+    },
     handleSubmit(e) {
       if ((this.$v.$touch(), this.$v.$invalid) || this.loading) return
 
@@ -197,6 +235,18 @@ export default {
 
       this.loading = false
     },
+  },
+  head() {
+    return {
+      title: this.form?.brand_name || 'Digital Asset Manager',
+      link: [
+        {
+          rel: 'icon',
+          type: 'image/x-icon',
+          href: this.form?.favicon || '/favicon.png',
+        },
+      ],
+    }
   },
   validations: {
     form: {
