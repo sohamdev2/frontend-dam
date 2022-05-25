@@ -109,7 +109,7 @@
                       type="submit"
                     >
                       Submit
-                      <template #loading>Submiting</template>
+                      <template #loading>Submitting</template>
                     </AppButton>
                   </div>
                 </div>
@@ -149,6 +149,7 @@ export default {
       .post('reset-password-details', { token })
       .then(({ data: { message, data, status } }) => {
         if (!status) return error({ status: status || 500, message })
+        console.log(data)
         return {
           form: { ...data, password: '', confirm_password: '' },
           error: false,
