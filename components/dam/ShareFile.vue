@@ -191,24 +191,23 @@
             are available for internal use only.
           </p>
         </div>
-
-        <div class="modal-footer justify-content-end p-0 pt-3">
-          <button
-            :key="creating"
-            type="button"
-            class="btn"
-            :class="{ 'btn-disabled': !creating }"
-            :disabled="creating"
-            @click="
-              collection || collectionAssets
-                ? createCollectionUrl()
-                : createShareUrl()
-            "
-          >
-            {{ creating ? 'Creating...' : 'Create link' }}
-          </button>
-        </div>
       </template>
+    </div>
+    <div class="modal-footer">
+      <button
+        :key="creating"
+        type="button"
+        class="btn"
+        :class="{ 'btn-disabled': !creating }"
+        :disabled="creating"
+        @click="
+          collection || collectionAssets
+            ? createCollectionUrl()
+            : createShareUrl()
+        "
+      >
+        {{ creating ? 'Creating...' : 'Create link' }}
+      </button>
     </div>
   </Model>
 </template>
