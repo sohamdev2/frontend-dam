@@ -320,6 +320,7 @@ export default {
         const shareId = data.share_id
         const statusType = data.status_type
         const workspaceId = data.workspace_id
+        const faviconIcon = data.brand_favicon
         const collectionName = data.collection_name
         const collectionDescription = data.collection_description
         const collectionLastModifiedDate = data.collection_updated_at
@@ -334,6 +335,7 @@ export default {
           stack: [{ subFolders, files }],
           workspaceId,
           statusType,
+          faviconIcon,
           collectionName,
           collectionDescription,
           collectionLastModifiedDate,
@@ -523,6 +525,7 @@ export default {
           this.shareId = data.share_id
           this.workspaceId = data.workspace_id
           this.statusType = data.status_type
+          this.faviconIcon = data.brand_favicon
           this.collectionName = data.collection_name
           this.collectionDescription = data.collection_description
           this.collectionLastModifiedDate = data.collection_updated_at
@@ -540,6 +543,13 @@ export default {
   head() {
     return {
       title: 'Share assets',
+      link: [
+        {
+          rel: 'icon',
+          type: 'image/x-icon',
+          href: this.faviconIcon || '/favicon.png',
+        },
+      ],
     }
   },
 }
