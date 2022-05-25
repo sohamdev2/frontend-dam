@@ -30,18 +30,18 @@
           </style>
           <div class="sign-screen-content">
             <div class="sign-heading-text text-center">
-              <nuxt-link :to="`/${form.brand_name}/login`">
+              <nuxt-link :to="`/${form.brand_url}/login`">
                 <img
-                  v-if="form.logo"
+                  v-if="form.brand_logo"
                   :src="
-                    form.logo
-                      ? form.logo
+                    form.brand_logo
+                      ? form.brand_logo
                       : require('~/assets/img/lariat-marketing-hub.svg')
                   "
                   alt=""
                   class="img-responsive img-center"
                 />
-                <h2 v-else>{{ form.brand_name }}</h2>
+                <h2 v-else>{{ form.company_name }}</h2>
               </nuxt-link>
             </div>
             <div class="sign-body bg-white">
@@ -181,10 +181,10 @@ export default {
   methods: {
     customStyles() {
       return `:root {
-  --primary: ${this.form.primaryColor} !important;
-  --secondary: ${this.form.secondaryColor} !important;
+  --primary: ${this.form.primary_color} !important;
+  --secondary: ${this.form.secondary_color} !important;
   --header-default: ${this.hex2rgba(
-    this.form.secondaryColor ? this.form.secondaryColor : '#ffffff',
+    this.form.secondary_color ? this.form.secondary_color : '#ffffff',
     0.6
   )};
 }`
@@ -243,7 +243,7 @@ export default {
         {
           rel: 'icon',
           type: 'image/x-icon',
-          href: this.form?.favicon || '/favicon.png',
+          href: this.form?.brand_favicon || '/favicon.png',
         },
       ],
     }
