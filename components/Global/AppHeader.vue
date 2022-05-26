@@ -25,6 +25,7 @@
       </ul>
     </div>
     <div class="col d-flex align-items-center justify-content-end">
+      <DamAnnouncementNotification v-if="!user.is_backend_user" />
       <div class="dropdown mycollection">
         <button
           type="button"
@@ -494,6 +495,14 @@ export default {
   --header-default: ${this.hex2rgba(
     this.$auth.user.branding.secondary_color,
     0.6
+  )};
+  --announcement-hover: ${this.hex2rgba(
+    this.$auth.user.branding.primary_color,
+    0.1
+  )};
+  --announcement: ${this.hex2rgba(
+    this.$auth.user.branding.secondary_color,
+    0.3
   )};
 }`
     },
