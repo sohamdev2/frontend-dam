@@ -3,7 +3,7 @@
     <a
       v-tooltip="{
         html: false,
-        content: 'Notifications',
+        content: 'Announcements',
       }"
       href="javascript:void(0);"
       class="bell-icon-link"
@@ -56,7 +56,7 @@
               :class="{ active: activeTab === 2 }"
               data-toggle="tab"
               @click="changeTab(2)"
-              >Announcement ({{ unreadAnnouncements }})</a
+              >Announcements ({{ unreadAnnouncements }})</a
             >
           </li>
         </ul>
