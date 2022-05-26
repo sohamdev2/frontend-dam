@@ -40,6 +40,14 @@
           <h4>
             {{ `Announcements (${unreadAnnouncements})` }}
           </h4>
+          <div class="readall">
+            <a
+              v-if="showMarkAllAsReadAnnouncement"
+              href="javascript:void(0);"
+              @click="readAllAnnouncements"
+              >Mark all as read</a
+            >
+          </div>
         </div>
         <ul class="nav nav-tabs nav-justified">
           <li class="nav-item">
@@ -96,6 +104,7 @@
                     data-toggle="modal"
                     data-target="#announcement-detail"
                     class="item-link"
+                    @click="announcementClicked(anno)"
                   ></a>
                   <div class="item-wrapper">
                     <div
@@ -311,7 +320,6 @@ export default {
     },
   },
   mounted() {
-    console.log(this.$auth.user)
     this.loadJQ()
     this.getBadgesCount()
   },

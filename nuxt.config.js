@@ -55,6 +55,7 @@ export default {
     '~/plugins/vue-async-computed.js',
     '~/plugins/helper.js',
     '~/plugins/vue-infinite-loading.js',
+    { src: '~/plugins/vue-infinite-scroll.js', mode: 'client', ssr: false },
     { src: '~/plugins/vue-audio-visual.js', mode: 'client' },
     { src: '~/plugins/vue-carousel.js', mode: 'client' },
     { src: '~/plugins/bus' },
