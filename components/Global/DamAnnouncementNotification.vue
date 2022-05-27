@@ -141,9 +141,7 @@
                         {{ htmlToText(anno.announcements_detail.description) }}
                       </a>
                       <div class="path-link">
-                        <!--                        <span v-if="!$_auth().user.project.isClient">{{
-                          anno.workspace_detail.workspace_name
-                        }}</span>-->
+                        <span>{{ anno.brand_name }}</span>
                         <span>{{
                           anno.announcements_detail.publisher.name
                         }}</span>
@@ -273,7 +271,7 @@
 import { isEmpty } from 'lodash'
 import vClickOutside from 'v-click-outside'
 export default {
-  name: 'DamSystemNotification',
+  name: 'DamAnnouncementNotification',
   directives: {
     clickOutside: vClickOutside.directive,
   },
