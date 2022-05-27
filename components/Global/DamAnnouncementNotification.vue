@@ -318,8 +318,20 @@ export default {
     },
   },
   mounted() {
+    this.$echo
+      .private(`user.${this.$auth.user.id}.projectBatchNotification`)
+      .listen('.ProjectUserNotificationBadgesEvent', (e) => {
+        const {
+          data: { dam_badges_count },
+        } = e
+        this.badgesCount = dam_badges_count
+        // this.closeList()
+      })
     this.loadJQ()
     this.getBadgesCount()
+  },
+  beforeDestroy() {
+    this.$echo.leave(`user.${this.$auth.user.id}.projectBatchNotification`)
   },
 
   methods: {
