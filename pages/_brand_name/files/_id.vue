@@ -627,7 +627,7 @@ const IMAGE_FORMATS = [
   // 'jp2',
   // 'gif',//requires libvips with support for ImageMagick
   'jpeg',
-  'jfif', // exclude for svg file
+  // 'jfif', // exclude for svg file
   // 'pjpeg',
   // 'pjp',
   'png',
@@ -641,8 +641,8 @@ const IMAGE_FORMATS = [
   'webp',
   // 'ico',
   // 'cur',
-  'heif',
-  'avif',
+  // 'heif',
+  // 'avif',
 ]
 // const UNSUPPORTED_FORMATS_FROM_SVG = ['bmp', 'jfif']
 // const IMAGE_MIMETYPES = {
