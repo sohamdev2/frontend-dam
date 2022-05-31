@@ -319,8 +319,8 @@ export default {
   },
   mounted() {
     this.$echo
-      .private(`user.${this.$auth.user.id}.projectBatchNotification`)
-      .listen('.ProjectUserNotificationBadgesEvent', (e) => {
+      .private(`user.${this.$auth.user.id}.DAMFrontendAnnouncementNotification`)
+      .listen('.DAMFrontendAnnouncement', (e) => {
         const {
           data: { dam_badges_count },
         } = e
@@ -331,7 +331,9 @@ export default {
     this.getBadgesCount()
   },
   beforeDestroy() {
-    this.$echo.leave(`user.${this.$auth.user.id}.projectBatchNotification`)
+    this.$echo.leave(
+      `user.${this.$auth.user.id}.DAMFrontendAnnouncementNotification`
+    )
   },
 
   methods: {
