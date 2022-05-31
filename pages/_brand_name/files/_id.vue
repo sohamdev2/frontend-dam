@@ -620,8 +620,8 @@ const AUDIO_FORMATS = [
   'aiff',
 ]
 const IMAGE_FORMATS = [
-  'tif',
-  'tiff',
+  // 'tif',
+  // 'tiff',
   'bmp', // exclude for svg file
   'jpg',
   // 'jp2',
@@ -638,7 +638,7 @@ const IMAGE_FORMATS = [
   // 'sr2',
   // 'apng',
   // 'svg',
-  'webp',
+  // 'webp',
   // 'ico',
   // 'cur',
   // 'heif',
