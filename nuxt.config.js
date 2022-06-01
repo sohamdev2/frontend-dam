@@ -55,6 +55,7 @@ export default {
     '~/plugins/vue-async-computed.js',
     '~/plugins/helper.js',
     '~/plugins/vue-infinite-loading.js',
+    { src: '~/plugins/vue-infinite-scroll.js', mode: 'client', ssr: false },
     { src: '~/plugins/vue-audio-visual.js', mode: 'client' },
     { src: '~/plugins/vue-carousel.js', mode: 'client' },
     { src: '~/plugins/bus' },
@@ -77,6 +78,30 @@ export default {
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
     '@nuxtjs/moment',
+    [
+      '@pranavraut033/laravel-echo',
+      {
+        broadcaster: 'pusher',
+        key: process.env.PUSHER_KEY,
+        cluster: process.env.PUSHER_CLUSTER,
+
+        authModule: true,
+        connectOnLogin: true,
+        disconnectOnLogout: true,
+        authEndpoint: process.env.PUSHER_AUTH_ENDPOINT,
+
+        // wsHost: process.env.WEBSOCKET_HOST,
+        // wsPort: process.env.WEBSOCKET_PORT,
+        // encrypted: true,
+        // disableStats: true,
+
+        // Laravel websocket settings
+        /* wsHost: '127.0.0.1',
+      wsPort: 6001,
+      forceTLS: false,
+      disableStats: true, */
+      },
+    ],
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)

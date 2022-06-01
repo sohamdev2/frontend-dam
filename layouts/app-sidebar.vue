@@ -238,7 +238,7 @@ export default {
     },
   },
   mounted() {
-    console.log('sidebar mounted')
+    // console.log('sidebar mounted')
     // this.$store.dispatch('appData/fetchDashboardData')
     // this.$store.dispatch('appData/fetchFolders')
   },
