@@ -1,10 +1,6 @@
 <template>
   <div :class="['notification', showList ? 'show' : '']">
     <a
-      v-tooltip="{
-        html: false,
-        content: 'Announcements',
-      }"
       href="javascript:void(0);"
       class="bell-icon-link"
       @click="enableBellClick && openList()"
