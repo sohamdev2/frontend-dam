@@ -219,10 +219,10 @@ export default {
       return this.$store.state.appData.folders
     },
     showTrending() {
-      return this.$auth.user.themes_option?.is_trading
+      return this.$auth.user.settings?.is_trading
     },
     showRecentUploads() {
-      return this.$auth.user.themes_option?.is_recent_upload
+      return this.$auth.user.settings?.is_recent_upload
     },
     dashboardData() {
       return this.$store.state.appData.dashboardData
@@ -238,7 +238,7 @@ export default {
     },
   },
   mounted() {
-    console.log('sidebar mounted')
+    // console.log('sidebar mounted')
     // this.$store.dispatch('appData/fetchDashboardData')
     // this.$store.dispatch('appData/fetchFolders')
   },

@@ -250,10 +250,10 @@ export default {
   },
   computed: {
     showTrending() {
-      return this.$auth.user.themes_option?.is_trading
+      return this.$auth.user.settings?.is_trading
     },
     showRecentUploads() {
-      return this.$auth.user.themes_option?.is_recent_upload
+      return this.$auth.user.settings?.is_recent_upload
     },
     user() {
       return this.$auth.user
@@ -414,7 +414,7 @@ export default {
         {
           rel: 'icon',
           type: 'image/x-icon',
-          href: this.$_auth()?.favicon || '/favicon.png',
+          href: this.$auth.user.branding.brand_favicon || '/favicon.png',
         },
       ],
     }

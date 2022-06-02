@@ -417,7 +417,7 @@
                 <div class="detail-right-actions">
                   <button
                     type="button"
-                    class="btn btn-gray btn-icon"
+                    class="btn btn-icon"
                     :disabled="allButtonDisabled"
                     :class="{ 'btn-disable': allButtonDisabled }"
                     @click="downloadFile"
@@ -620,14 +620,14 @@ const AUDIO_FORMATS = [
   'aiff',
 ]
 const IMAGE_FORMATS = [
-  'tif',
-  'tiff',
+  // 'tif',
+  // 'tiff',
   'bmp', // exclude for svg file
   'jpg',
   // 'jp2',
   // 'gif',//requires libvips with support for ImageMagick
   'jpeg',
-  'jfif', // exclude for svg file
+  // 'jfif', // exclude for svg file
   // 'pjpeg',
   // 'pjp',
   'png',
@@ -638,11 +638,11 @@ const IMAGE_FORMATS = [
   // 'sr2',
   // 'apng',
   // 'svg',
-  'webp',
+  // 'webp',
   // 'ico',
   // 'cur',
-  'heif',
-  'avif',
+  // 'heif',
+  // 'avif',
 ]
 // const UNSUPPORTED_FORMATS_FROM_SVG = ['bmp', 'jfif']
 // const IMAGE_MIMETYPES = {
@@ -1139,6 +1139,18 @@ export default {
         .catch(() => (this.videoThumbnail = this.previewImage))
         .finally(() => (this.videoThumbnailFetching = false))
     },
+  },
+  head() {
+    return {
+      title: this.$brandName(),
+      link: [
+        {
+          rel: 'icon',
+          type: 'image/x-icon',
+          href: this.$auth.user.branding.brand_favicon || '/favicon.png',
+        },
+      ],
+    }
   },
 }
 </script>
