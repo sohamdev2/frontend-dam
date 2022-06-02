@@ -2,11 +2,12 @@
   <li :class="{ selected }">
     <div class="preview-img tb-column flex10">
       <label v-if="!shareMode" class="check-label">
-        <input :checked="selected" type="checkbox" />
-        <label
-          class="check-span"
-          @click="$emit('click:selected', folder)"
-        ></label>
+        <input
+          :checked="selected"
+          type="checkbox"
+          @input="$emit('click:selected', folder)"
+        />
+        <span class="check-span"></span>
       </label>
       <div class="categary-image folder-image">
         <nuxt-link
