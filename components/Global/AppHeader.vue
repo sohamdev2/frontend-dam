@@ -25,7 +25,6 @@
       </ul>
     </div>
     <div class="col d-flex align-items-center justify-content-end">
-      <DamAnnouncementNotification v-if="!user.is_backend_user" />
       <div class="dropdown mycollection">
         <button
           type="button"
@@ -137,6 +136,7 @@
           </ul>
         </div>
       </div>
+      <DamAnnouncementNotification v-if="!user.is_backend_user" />
       <div class="dropdown user-dropdown">
         <a
           id="profileDropdown"
