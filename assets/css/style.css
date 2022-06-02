@@ -653,12 +653,24 @@ header .user-dropdown.show .dropdown-toggle{color: var(--secondary);}
 .grid-tile .categary-image .video-info .expand-icon {height: 16px;}
 .grid-tile .categary-image span b {position: absolute;bottom: 10%;right: 10%;font-size: 13px;line-height: 20px;font-weight: 600;color: #606F7B;}
 .grid-tile .categary-name {flex:0 0 100%;max-width: 100%;width: 100%;text-overflow: ellipsis;overflow: hidden;}
-.grid-tile .categary-name a {display: block;padding: 15px 40px 15px 15px !important;font-weight: 500;font-size: 15px;line-height: 22px;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
-.grid-tile li .check-label {padding-left: 15px;position: absolute;bottom: 19px;right: 20px;z-index: 2;}
+.grid-tile .categary-name a {display: block;padding: 15px 56px 15px 15px !important;font-weight: 500;font-size: 15px;line-height: 22px;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;position: relative;top: 4px;}
 .grid-tile .table-list-view .tbody  {height: auto;display: flex;flex-wrap: wrap;margin: 0 -5px;}
 .grid-tile .categary-image.folder-image span {top: 0;left: 0;bottom: 0;right: 0;margin: auto;position: absolute;z-index: 5;width: 55%;height: 60%;min-width: 160px;min-height: 130px;}
 .grid-tile .categary-image.folder-image span img {position: static;transform: inherit;-webkit-transform: inherit;width: 100%;}
 .table-list-view .tbody li .categary-name .top-column{overflow: hidden;text-overflow: ellipsis;display: -webkit-inline-box;-webkit-box-orient: vertical;word-break: break-word;-webkit-line-clamp: 1;max-width: 100%;}
+
+.grid-tile .preview-img .check-label{padding: 0px;position: absolute;bottom: 0px;right: 0px;z-index: 2;height: 56px;width: 56px;}
+.grid-tile .preview-img .check-label .check-span {top: 19px;left: 19px;height: 20px;width: 20px;line-height: 20px;}
+.grid-list .thead .check-label,
+.grid-list .tbody .check-label {height: 20px;padding-left: 20px;line-height: 20px;min-height: 20px;}
+.grid-list .thead .check-label .check-span,
+.grid-list .tbody .check-label .check-span {height: 20px;width: 20px;line-height: 20px;}
+.grid-tile .preview-img .check-label .check-span:after,
+.grid-list .thead .check-label .check-span:after,
+.grid-list .tbody .check-label .check-span:after{left: 6px;top: 3px;width: 5px;height: 10px;}
+.grid-list .thead .check-label .check-span{top: -2px;}
+.grid-list .tbody .check-label{margin-right: 25px;}
+
 .categary-image{position: relative;border-radius: 4px 4px 0 0;}
 .categary-image img,
 .preview-img.video video {position: absolute;top: 0;left: 0;bottom: 0;right: 0;margin: auto;max-width: 100%;max-height: 100%;object-fit: cover;}
