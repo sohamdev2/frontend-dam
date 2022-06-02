@@ -24,11 +24,12 @@
       }"
     >
       <label v-if="!shareMode && !hideSelect" class="check-label">
-        <input :checked="selected" type="checkbox" />
-        <label
-          class="check-span"
-          @click="$emit('click:selected', file)"
-        ></label>
+        <input
+          :checked="selected"
+          type="checkbox"
+          @input="$emit('click:selected', file)"
+        />
+        <span class="check-span"></span>
       </label>
       <template>
         <div
