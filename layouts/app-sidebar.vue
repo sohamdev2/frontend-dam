@@ -241,7 +241,8 @@ export default {
     // console.log('sidebar mounted')
     // this.$store.dispatch('appData/fetchDashboardData')
     // this.$store.dispatch('appData/fetchFolders')
-    if (this.$route.query?.tab === 'recent' && this.showRecentUploads) this.scrollToRecent()
+    if (this.$route.query?.tab === 'recent' && this.showRecentUploads)
+      this.scrollToRecent()
   },
   methods: {
     scrollToRecent() {
@@ -255,9 +256,11 @@ export default {
         name: 'brand_name',
         params: { brand_name: this.$getBrandName() },
       })
-      this.$axios.$post('digital/dashboard/recent-upload-url', {
-        workspace_id: this.$getWorkspaceId(),
-      }).catch(() => {})
+      this.$axios
+        .$post('digital/dashboard/recent-upload-url', {
+          workspace_id: this.$getWorkspaceId(),
+        })
+        .catch(() => {})
     },
     scrollToTrending() {
       const scrollingState = true
