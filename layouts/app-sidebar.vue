@@ -252,15 +252,22 @@ export default {
         scrollingState,
         scrollTo,
       })
-      this.$router.push({
-        name: 'brand_name',
-        params: { brand_name: this.$getBrandName() },
-      })
-      this.$axios
-        .$post('digital/dashboard/recent-upload-url', {
-          workspace_id: this.$getWorkspaceId(),
+      this.$nextTick(() => {
+        this.$router.push({
+          name: 'brand_name',
+          params: { brand_name: this.$getBrandName() },
         })
-        .catch(() => {})
+        this.$axios
+          .$post('digital/dashboard/recent-upload-url', {
+            workspace_id: this.$getWorkspaceId(),
+          })
+          .catch(() => {})
+      })
+      if (this.$route.query?.tab === 'recent') {
+        document
+          .querySelector("h4[data-target='recent-uploaded']")
+          .scrollIntoView({ behavior: 'smooth' })
+      }
     },
     scrollToTrending() {
       const scrollingState = true
