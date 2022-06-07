@@ -349,6 +349,7 @@ export default {
         {
           rel: 'icon',
           type: 'image/x-icon',
+          hid: 'favicon',
           href: this.$auth.user.branding.brand_favicon || '/favicon.png',
         },
       ],

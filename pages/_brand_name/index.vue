@@ -304,8 +304,8 @@ export default {
     })
     this.$store.dispatch('appData/fetchTileData')
     this.$store.dispatch('appData/getCollections')
-    document.querySelector("link[rel~='icon']").href =
-      this.$_auth()?.favicon === '' ? '/favicon.png' : this.$_auth()?.favicon
+    // document.querySelector("link[rel~='icon']").href =
+    //   this.$_auth()?.favicon === '' ? '/favicon.png' : this.$_auth()?.favicon
   },
   /* updated() {
     this.bannerSliderTrigger()
@@ -414,6 +414,7 @@ export default {
         {
           rel: 'icon',
           type: 'image/x-icon',
+          hid: 'favicon',
           href: this.$auth.user.branding.brand_favicon || '/favicon.png',
         },
       ],
