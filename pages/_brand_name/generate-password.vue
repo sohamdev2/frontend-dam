@@ -314,6 +314,7 @@ export default {
         {
           rel: 'icon',
           type: 'image/x-icon',
+          hid: 'favicon',
           href: this.$brandDetail()?.branding.brand_favicon || '/favicon.png',
         },
       ],
