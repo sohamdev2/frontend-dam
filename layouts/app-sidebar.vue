@@ -241,6 +241,8 @@ export default {
     // console.log('sidebar mounted')
     // this.$store.dispatch('appData/fetchDashboardData')
     // this.$store.dispatch('appData/fetchFolders')
+    if (this.$route.query?.tab === 'recent' && this.showRecentUploads)
+      this.scrollToRecent()
   },
   methods: {
     scrollToRecent() {
@@ -250,10 +252,22 @@ export default {
         scrollingState,
         scrollTo,
       })
-      this.$router.push({
-        name: 'brand_name',
-        params: { brand_name: this.$getBrandName() },
+      this.$nextTick(() => {
+        this.$router.push({
+          name: 'brand_name',
+          params: { brand_name: this.$getBrandName() },
+        })
+        this.$axios
+          .$post('digital/dashboard/recent-upload-url', {
+            workspace_id: this.$getWorkspaceId(),
+          })
+          .catch(() => {})
       })
+      if (this.$route.query?.tab === 'recent') {
+        document
+          .querySelector("h4[data-target='recent-uploaded']")
+          .scrollIntoView({ behavior: 'smooth' })
+      }
     },
     scrollToTrending() {
       const scrollingState = true

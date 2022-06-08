@@ -241,6 +241,7 @@ export default {
       title: this.form?.brand_name || 'Digital Asset Manager',
       link: [
         {
+          hid: 'favicon',
           rel: 'icon',
           type: 'image/x-icon',
           href: this.form?.brand_favicon || '/favicon.png',

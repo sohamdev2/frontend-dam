@@ -298,7 +298,6 @@ import Resource from '~/components/dam/Resource'
 import fileSelection from '~/mixins/fileSelection'
 import SelectionBar from '~/components/dam/SelectionBar'
 import ErrorPage from '~/pages/404.vue'
-
 export default {
   layout: 'app',
   middleware: ['check-url', 'check-auth'],
@@ -383,6 +382,7 @@ export default {
         {
           rel: 'icon',
           type: 'image/x-icon',
+          hid: 'favicon',
           href: this.$auth.user.branding.brand_favicon || '/favicon.png',
         },
       ],
