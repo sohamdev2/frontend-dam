@@ -547,6 +547,7 @@ export default {
         {
           rel: 'icon',
           type: 'image/x-icon',
+          hid: 'favicon',
           href: this.faviconIcon || '/favicon.png',
         },
       ],
