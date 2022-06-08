@@ -691,7 +691,6 @@ const recursivePush = (item, array, workspaceId) => {
     name: item.folder_name,
     url: {
       name: 'brand_name-folders',
-      // params: { brand_name: $getBrandName() },
       hash: `#${item.id}`,
     },
   })
@@ -814,7 +813,6 @@ export default {
       recursivePush(this.file.breadcrumb, breadcrumbs, workspaceId)
 
       return breadcrumbs[0]
-      // return breadcrumbs[breadcrumbs.length - 1]
     },
     breadcrumbs() {
       const breadcrumbs = [
@@ -824,24 +822,9 @@ export default {
         },
       ]
 
-      // if (this.$route.params.is_coming_from_home) return breadcrumbs
-
       const workspaceId = this.$getWorkspaceId()
 
-      // if (this.inCategory)
-      //   breadcrumbs.push({
-      //     name: 'All ' + this.category.text?.toLowerCase(),
-      //     url: {
-      //       name: 'workspace_id-dam-folders',
-      //       params: { workspace_id: workspaceId },
-      //       hash: `#${this.hashParam}`,
-      //     },
-      //   })
-      // else {
-
       recursivePush(this.file.breadcrumb, breadcrumbs, workspaceId)
-
-      // }
 
       return breadcrumbs.reverse()
     },
@@ -886,11 +869,8 @@ export default {
           })
           .then(({ data }) => {
             folder = data
-            // this.$store.commit("dam/setFolderItem", data);
           })
           .catch()
-      // .catch((e) => this.$toast.global.error(this.$getErrorMessage(e)))
-      // .finally(() => (this.loading = false));
 
       if (folder)
         return {
@@ -1003,27 +983,6 @@ export default {
           }
         })
     },
-    /* removeTagFromFile(tag) {
-      this.$axios
-        .$post('digital-assets/delete-tag', {
-          workspace_id: this.$getWorkspaceId(),
-          tag_id: tag.id,
-        })
-        .catch(this.onError)
-    },
-    addTagToFile(tag) {
-      this.$axios
-        .$post('digital-assets/add-tag-to-file', {
-          workspace_id: this.$getWorkspaceId(),
-          digital_assets_id: this.file.id,
-          tag_name: tag.tag_name,
-        })
-        .then(({ data }) => {
-          this.tags = this.tags.filter(({ id }) => tag.id !== id)
-          this.tags.push(data)
-        })
-        .catch(this.onError)
-    }, */
     async archiveFile() {
       if (this.ui.archiving) return
 
@@ -1147,6 +1106,7 @@ export default {
         {
           rel: 'icon',
           type: 'image/x-icon',
+          hid: 'favicon',
           href: this.$auth.user.branding.brand_favicon || '/favicon.png',
         },
       ],
