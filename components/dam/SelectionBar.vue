@@ -4,23 +4,25 @@
       <div v-if="!!count" class="select-bar">
         <div class="select-left">
           <div class="select-all">
-            <span>Select</span>
-            <div class="custom-radio" @click="$emit('click:select-all')">
+            <span>Select All</span>
+            <label class="check-label">
               <input
-                type="radio"
-                name="selectAll"
-                spellcheck="false"
+                type="checkbox"
+                name=""
                 :checked="selectedAll"
+                @click="
+                  $event.target.checked
+                    ? $emit('click:select-all')
+                    : $emit('click:select-none')
+                "
               />
-              <label>All</label>
-            </div>
-            <div class="custom-radio" @click="$emit('click:select-none')">
-              <input type="radio" name="selectAll" spellcheck="false" />
-              <label>None</label>
-            </div>
+              <span class="check-span"></span>
+            </label>
+            <a href="#" @click="$emit('click:select-none')">Remove selection</a>
           </div>
           <span class="select-counter">{{ count }} selected</span>
         </div>
+
         <div class="select-center"></div>
         <div class="select-right">
           <ul>
