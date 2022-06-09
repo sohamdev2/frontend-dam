@@ -221,7 +221,7 @@ span.input-control {font-size: 14px;display: block;border-radius: 4px;border: 1p
 .success-msg .alert-warning .alert-icon .fill-color{fill: #856404;}
 
 /* Header ----------------*/
-header.header-sec {position: fixed;left: 0;right: 0;top: 0;padding: 0 14px;background-color: var(--primary);display: flex;flex-wrap: wrap;align-items: center;justify-content: space-between;width: 100%;height: 62px;z-index: 9999999999;}
+header.header-sec {position: fixed;left: 0;right: 0;top: 0;padding: 0 14px;background-color: var(--primary);border-bottom: 1px solid #D8DCE2;display: flex;flex-wrap: wrap;align-items: center;justify-content: space-between;width: 100%;height: 62px;z-index: 9999999999;}
 header.header-sec .main-logo img{max-height: 32px;max-width: 270px;}
 .main-logo a {display: inline-block;vertical-align: top;line-height: 0;}
 .main-logo h2 {color: var(--secondary);font-size: 2em;}
@@ -229,14 +229,14 @@ header.header-sec .main-logo img{max-height: 32px;max-width: 270px;}
 .main-menu > ul {display: flex;overflow: hidden;}
 .main-menu > ul li {margin:0;list-style: none;}
 .main-menu > ul > li * {transition: ease-in-out all 0.4s;-webkit-transition: ease-in-out all 0.4s;-ms-transition: ease-in-out all 0.4s;-o-transition: ease-in-out all 0.4s;}
-.main-menu > ul > li > a {padding: 20px 30px;font-size: 16px;color: var(--header-default);display: flex;align-items: center;justify-content: space-between;transition: ease-in-out all 0s;-webkit-transition: ease-in-out all 0s;-ms-transition: ease-in-out all 0s;-o-transition: ease-in-out all 0s;}
+.main-menu > ul > li > a {padding: 20px 30px;font-size: 16px;color: var(--secondary);display: flex;align-items: center;justify-content: space-between;transition: ease-in-out all 0s;-webkit-transition: ease-in-out all 0s;-ms-transition: ease-in-out all 0s;-o-transition: ease-in-out all 0s;}
 .main-menu > ul > li > a span {margin-right: 10px;}
 .main-menu > ul > li > a svg {max-height: 16px;}
 .main-menu > ul > li:hover a,
-.main-menu > ul > li.active a {color: var(--secondary);}
-.main-menu > ul > li a svg .fill-color{fill: var(--header-default);}
+.main-menu > ul > li.active a {color: var(--header-default);}
+.main-menu > ul > li a svg .fill-color{fill: var(--secondary);}
 .main-menu > ul > li:hover a svg .fill-color,
-.main-menu > ul > li.active a svg .fill-color{fill: var(--secondary);}
+.main-menu > ul > li.active a svg .fill-color{fill: var(--header-default);}
 
 header .user-dropdown {position: relative;padding-left: 20px;margin-left: 20px;}
 header .user-dropdown:before {position: absolute;content: '';width: 1px;height: 30px;top: 50%;left: 0px;transform: translate(0px,-50%);background-color: var(--header-default);}
@@ -266,7 +266,7 @@ header .user-dropdown ul.workspace-menu {background-color: #F8F9FA;max-height: 1
 header .user-dropdown.show .dropdown-toggle{color: var(--secondary);}
 
 .notification {position: relative;margin-left: 40px;margin-right: 5px;}
-.notification .bell-icon-link {position: relative;display: flex;align-items: center;justify-content: center;border-radius: 8px;padding: 8px;border: 0.15rem solid var(--announcement);}
+.notification .bell-icon-link {position: relative;display: flex;align-items: center;justify-content: center;border-radius: 8px;padding: 8px;border: 0.15rem solid var(--secondary);}
 .notification .bell-icon-link:hover,
 .notification .bell-icon-link:focus,
 .notification.show .bell-icon-link{background-color:  var(--announcement);}
@@ -1117,7 +1117,7 @@ header .user-dropdown.show .dropdown-toggle{color: var(--secondary);}
 .mycollection.dropdown .dropdown-toggle {color: var(--secondary);background-color: transparent;border: none;outline: none;outline-offset: 0;padding: 0;font-size: 16px;transition: 0.2s;-webkit-transition: 0.2s;-ms-transition: 0.2s;}
 .mycollection.dropdown .dropdown-toggle:after{display: none;}
 .mycollection.dropdown .dropdown-toggle .arrow-down-icon {margin: 1px 0px 0px 4px;height: 16px;transition: 0.2s;-webkit-transition: 0.2s;-ms-transition: 0.2s;}
-.mycollection.dropdown .dropdown-toggle .collection-icon {margin: -2px 3px 0px 0px;height: 15px;transition: 0.2s;-webkit-transition: 0.2s;-ms-transition: 0.2s;}
+.mycollection.dropdown .dropdown-toggle .collection-icon {margin: -2px 3px 0px 0px;height: 13px;transition: 0.2s;-webkit-transition: 0.2s;-ms-transition: 0.2s;}
 .mycollection.dropdown.show .dropdown-toggle .arrow-down-icon{transform: rotate(180deg);}
 .mycollection.dropdown .dropdown-toggle .arrow-down-icon .fill-color,
 .mycollection.dropdown .dropdown-toggle .collection-icon .fill-color,
