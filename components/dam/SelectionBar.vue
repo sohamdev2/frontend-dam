@@ -18,9 +18,13 @@
               />
               <span class="check-span"></span>
             </label>
-            <a href="#" @click="$emit('click:select-none')">Remove selection</a>
+            <a href="javascript:;" @click="$emit('click:select-none')"
+              >Remove selection</a
+            >
           </div>
-          <span class="select-counter">{{ count }} selected</span>
+          <span class="select-counter"
+            ><span>{{ count }}</span> selected</span
+          >
         </div>
 
         <div class="select-center"></div>
