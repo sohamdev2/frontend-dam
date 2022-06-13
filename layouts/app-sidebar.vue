@@ -266,7 +266,7 @@ export default {
       if (this.$route.query?.tab === 'recent') {
         document
           .querySelector("h4[data-target='recent-uploaded']")
-          .scrollIntoView({ behavior: 'smooth' })
+          .scrollIntoView({ behavior: 'smooth', block: 'start' })
       }
     },
     scrollToTrending() {

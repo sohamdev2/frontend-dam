@@ -599,6 +599,10 @@ export default {
     })
     this.getSearchData()
     this.loadJs()
+    if (this.$route.query?.uploaded === 'yesterday') {
+      this.searchParams.value = '24hr'
+      this.search()
+    }
   },
   destroyed() {
     if (this.moreOptions) document.removeEventListener('keyup', this.keyEvent)
