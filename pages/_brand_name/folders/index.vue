@@ -123,6 +123,7 @@
                     :selected="selection[file.id]"
                     @click:selected="toggleSelection"
                     @selectedDrop="dropDown"
+                    @emitCart="addToCart(file)"
                   />
                 </template>
               </ul>
@@ -164,6 +165,7 @@
       @click:select-all="selectAll"
       @click:select-none="selectNone"
     />
+    <AddToCartModal v-if="file" ref="cartDialog" :file="file" />
   </div>
 </template>
 
@@ -200,7 +202,7 @@ export default {
       files: [],
       subFolders: [],
       noData: false,
-
+      file: null,
       // ** UI **
       mode: 'row', // list Style
 
@@ -335,6 +337,12 @@ export default {
     this.getData()
   },
   methods: {
+    addToCart(file) {
+      this.file = file
+      this.$nextTick(() => {
+        this.$refs.cartDialog.toggleModel()
+      })
+    },
     // dropdown functionality
     dropDown(file, type, resourceType) {
       // this.selectedFiles = []
