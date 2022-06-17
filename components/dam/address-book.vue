@@ -31,7 +31,7 @@
               <div class="general-settings-box customscrollbar">
                 <div class="row">
                   <div class="col-sm-12">
-                    <div class="form-group">
+                    <div class="form-group required">
                       <label class="control-label">Address Line 1</label>
                       <input
                         v-model="address.address1"
@@ -40,10 +40,18 @@
                         placeholder=""
                         class="form-control"
                       />
+                      <div
+                        v-if="
+                          $v.address.$error && !$v.address.address1.required
+                        "
+                        class="input-error"
+                      >
+                        Field is required
+                      </div>
                     </div>
                   </div>
                   <div class="col-sm-12">
-                    <div class="form-group">
+                    <div class="form-group required">
                       <label class="control-label">Address Line 2</label>
                       <input
                         v-model="address.address2"
@@ -52,10 +60,18 @@
                         placeholder=""
                         class="form-control"
                       />
+                      <div
+                        v-if="
+                          $v.address.$error && !$v.address.address2.required
+                        "
+                        class="input-error"
+                      >
+                        Field is required
+                      </div>
                     </div>
                   </div>
                   <div class="col-sm-12">
-                    <div class="form-group w-75">
+                    <div class="form-group w-75 required">
                       <label class="control-label">City</label>
                       <input
                         v-model="address.city"
@@ -64,10 +80,16 @@
                         placeholder=""
                         class="form-control"
                       />
+                      <div
+                        v-if="$v.address.$error && !$v.address.city.required"
+                        class="input-error"
+                      >
+                        Field is required
+                      </div>
                     </div>
                   </div>
                   <div class="col-sm-12">
-                    <div class="form-group w-75">
+                    <div class="form-group w-75 required">
                       <label class="control-label">State/Province</label>
                       <input
                         v-model="address.state"
@@ -76,10 +98,16 @@
                         placeholder=""
                         class="form-control"
                       />
+                      <div
+                        v-if="$v.address.$error && !$v.address.state.required"
+                        class="input-error"
+                      >
+                        Field is required
+                      </div>
                     </div>
                   </div>
                   <div class="col-sm-12">
-                    <div class="form-group w-50">
+                    <div class="form-group w-50 required">
                       <label class="control-label">ZIP</label>
                       <input
                         v-model="address.zip_code"
@@ -88,16 +116,30 @@
                         placeholder=""
                         class="form-control"
                       />
+                      <div
+                        v-if="
+                          $v.address.$error && !$v.address.zip_code.required
+                        "
+                        class="input-error"
+                      >
+                        Field is required
+                      </div>
                     </div>
                   </div>
                   <div class="col-sm-12">
-                    <div class="form-group">
+                    <div class="form-group required">
                       <label class="control-label">Country</label>
                       <Select2
                         v-model="address.county"
                         :options="['United States', 'Canada']"
                         placeholder="Country"
                       ></Select2>
+                      <div
+                        v-if="$v.address.$error && !$v.address.county.required"
+                        class="input-error"
+                      >
+                        Field is required
+                      </div>
                     </div>
                   </div>
                   <div class="col-sm-12">
@@ -107,9 +149,14 @@
                       class="btn"
                       @click="saveAddress"
                     >
-                      Save Address
+                      {{ edit ? 'Update address' : 'Save Address' }}
                     </button>
-                    <button type="reset" name="reset" class="btn btn-gray">
+                    <button
+                      type="reset"
+                      name="reset"
+                      class="btn btn-gray"
+                      @click="$router.push('/address-book')"
+                    >
                       Cancel
                     </button>
                   </div>
@@ -124,6 +171,7 @@
 </template>
 
 <script>
+import { required } from 'vuelidate/lib/validators'
 export default {
   props: {
     edit: {
@@ -166,19 +214,54 @@ export default {
           workspace_id: this.$getWorkspaceId(),
         })
         .then(({ data }) => {
-          console.log(data)
+          this.address = data
         })
     },
     saveAddress() {
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        return
+      }
       const url = this.edit ? 'update-address' : 'create-address'
+      if (this.edit) {
+        this.address.address_id = this.address.id
+        this.address.workspace_id = this.$getWorkspaceId()
+        delete this.address.id
+      }
       this.$axios
         .$post(`digital/user-address/${url}`, {
           ...this.address,
         })
         .then(({ message }) => {
-          console.log(message)
+          this.$toast.success(message)
+          this.$router.push('/address-book')
         })
+        .catch(console.error)
     },
+  },
+  validations() {
+    return {
+      address: {
+        address1: {
+          required,
+        },
+        address2: {
+          required,
+        },
+        city: {
+          required,
+        },
+        state: {
+          required,
+        },
+        county: {
+          required,
+        },
+        zip_code: {
+          required,
+        },
+      },
+    }
   },
 }
 </script>

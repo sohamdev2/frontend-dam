@@ -57,12 +57,7 @@
                           }"
                           class="table-a"
                           >{{
-                            address.zip_code +
-                            address.address1 +
-                            address.address2 +
-                            address.city +
-                            address.state +
-                            address.county
+                            address.address1 + ',' + address.address2
                           }}</nuxt-link
                         >
                       </div>
