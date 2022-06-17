@@ -451,7 +451,7 @@
                         </g>
                       </g>
                     </svg>
-                    Order
+                    Add to cart
                   </a>
                   <button
                     type="button"
