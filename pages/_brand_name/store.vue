@@ -443,7 +443,9 @@ export default {
     addToCart(file) {
       this.file = file
       this.$nextTick(() => {
-        this.$refs.cartDialog.toggleModel()
+        setTimeout(() => {
+          this.$refs.cartDialog.toggleModel()
+        }, 200)
       })
     },
     removeSelectedFiles() {
