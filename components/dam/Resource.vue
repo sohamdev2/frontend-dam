@@ -250,6 +250,75 @@
                         >Download</a
                       >
                     </li>
+                    <li v-if="file.asset_product">
+                      <a
+                        class="dropdown-item"
+                        href="javascript:void(0);"
+                        @click="addToCart"
+                      >
+                        <span class="dropdown-item-icon">
+                          <svg
+                            id="Layer_1"
+                            class="cart-icon"
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                            x="0px"
+                            y="0px"
+                            viewBox="0 0 18 18"
+                            xml:space="preserve"
+                          >
+                            <g id="Add_to_Cart_1">
+                              <g
+                                id="shopping-cart_1_"
+                                transform="translate(0 -21.006)"
+                              >
+                                <g
+                                  id="Group_39446"
+                                  transform="translate(12.008 33.69)"
+                                >
+                                  <g id="Group_39445">
+                                    <path
+                                      id="Path_40275"
+                                      class="fill-color"
+                                      d="M2.2,0C1,0,0,1,0,2.2s1,2.2,2.2,2.2s2.2-1,2.2-2.2v0C4.5,1,3.5,0,2.2,0z M2.2,3.1c-0.5,0-0.9-0.4-0.9-0.9c0-0.5,0.4-0.9,0.9-0.9c0.5,0,0.9,0.4,0.9,0.9l0,0C3.1,2.7,2.7,3.1,2.2,3.1z"
+                                    ></path>
+                                  </g>
+                                </g>
+                                <g
+                                  id="Group_39448"
+                                  transform="translate(0 21.705)"
+                                >
+                                  <g
+                                    id="Group_39447"
+                                    transform="translate(0 0)"
+                                  >
+                                    <path
+                                      id="Path_40276"
+                                      class="fill-color"
+                                      d="M17.9,3.3c-0.1-0.2-0.3-0.3-0.5-0.3H4.2L3.5,0.5C3.5,0.2,3.2,0,2.9,0H0.7C0.3,0,0,0.3,0,0.7s0.3,0.7,0.7,0.7h1.7l2.2,9.2C4.6,10.8,4.9,11,5.2,11h10.5c0.3,0,0.6-0.2,0.7-0.5L18,3.9C18,3.7,18,3.5,17.9,3.3z M15.2,9.7H5.7L4.5,4.4h12L15.2,9.7z"
+                                    ></path>
+                                  </g>
+                                </g>
+                                <g
+                                  id="Group_39450"
+                                  transform="translate(3.86 33.69)"
+                                >
+                                  <g id="Group_39449">
+                                    <path
+                                      id="Path_40277"
+                                      class="fill-color"
+                                      d="M2.2,0C1,0,0,1,0,2.2c0,1.2,1,2.2,2.2,2.2s2.2-1,2.2-2.2l0,0C4.5,1,3.5,0,2.2,0z M2.2,3.1c-0.5,0-0.9-0.4-0.9-0.9c0-0.5,0.4-0.9,0.9-0.9c0.5,0,0.9,0.4,0.9,0.9l0,0C3.1,2.7,2.7,3.1,2.2,3.1z"
+                                    ></path>
+                                  </g>
+                                </g>
+                              </g>
+                            </g>
+                          </svg>
+                        </span>
+                        Add to cart
+                      </a>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -620,6 +689,75 @@
                         >Download</a
                       >
                     </li>
+                    <li v-if="file.asset_product">
+                      <a
+                        class="dropdown-item"
+                        href="javascript:void(0);"
+                        @click="addToCart"
+                      >
+                        <span class="dropdown-item-icon">
+                          <svg
+                            id="Layer_1"
+                            class="cart-icon"
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                            x="0px"
+                            y="0px"
+                            viewBox="0 0 18 18"
+                            xml:space="preserve"
+                          >
+                            <g id="Add_to_Cart_1">
+                              <g
+                                id="shopping-cart_1_"
+                                transform="translate(0 -21.006)"
+                              >
+                                <g
+                                  id="Group_39446"
+                                  transform="translate(12.008 33.69)"
+                                >
+                                  <g id="Group_39445">
+                                    <path
+                                      id="Path_40275"
+                                      class="fill-color"
+                                      d="M2.2,0C1,0,0,1,0,2.2s1,2.2,2.2,2.2s2.2-1,2.2-2.2v0C4.5,1,3.5,0,2.2,0z M2.2,3.1c-0.5,0-0.9-0.4-0.9-0.9c0-0.5,0.4-0.9,0.9-0.9c0.5,0,0.9,0.4,0.9,0.9l0,0C3.1,2.7,2.7,3.1,2.2,3.1z"
+                                    ></path>
+                                  </g>
+                                </g>
+                                <g
+                                  id="Group_39448"
+                                  transform="translate(0 21.705)"
+                                >
+                                  <g
+                                    id="Group_39447"
+                                    transform="translate(0 0)"
+                                  >
+                                    <path
+                                      id="Path_40276"
+                                      class="fill-color"
+                                      d="M17.9,3.3c-0.1-0.2-0.3-0.3-0.5-0.3H4.2L3.5,0.5C3.5,0.2,3.2,0,2.9,0H0.7C0.3,0,0,0.3,0,0.7s0.3,0.7,0.7,0.7h1.7l2.2,9.2C4.6,10.8,4.9,11,5.2,11h10.5c0.3,0,0.6-0.2,0.7-0.5L18,3.9C18,3.7,18,3.5,17.9,3.3z M15.2,9.7H5.7L4.5,4.4h12L15.2,9.7z"
+                                    ></path>
+                                  </g>
+                                </g>
+                                <g
+                                  id="Group_39450"
+                                  transform="translate(3.86 33.69)"
+                                >
+                                  <g id="Group_39449">
+                                    <path
+                                      id="Path_40277"
+                                      class="fill-color"
+                                      d="M2.2,0C1,0,0,1,0,2.2c0,1.2,1,2.2,2.2,2.2s2.2-1,2.2-2.2l0,0C4.5,1,3.5,0,2.2,0z M2.2,3.1c-0.5,0-0.9-0.4-0.9-0.9c0-0.5,0.4-0.9,0.9-0.9c0.5,0,0.9,0.4,0.9,0.9l0,0C3.1,2.7,2.7,3.1,2.2,3.1z"
+                                    ></path>
+                                  </g>
+                                </g>
+                              </g>
+                            </g>
+                          </svg>
+                        </span>
+                        Add to cart
+                      </a>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -759,115 +897,334 @@
     <div class="categary-action tb-column flex15">
       <div class="top-column">
         <div class="categary-actions text-right">
-          <a
-            href="javascript:void(0);"
-            data-toggle="tooltip"
-            title=""
-            data-original-title="For internal use only"
-          >
-            <svg
-              v-if="(mode === 'column' || 'list') && file.is_public === 0"
-              id="_x31__x2C_5"
-              class="locked-icon h-orange"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              xmlns:xlink="http://www.w3.org/1999/xlink"
-              x="0px"
-              y="0px"
-              viewBox="0 0 512 512"
-              xml:space="preserve"
-            >
-              <path
-                class="fill-color"
-                d="M400,512H112c-26.5,0-48-21.5-48-48V240c0-26.5,21.5-48,48-48h288c26.5,0,48,21.5,48,48v224C448,490.5,426.5,512,400,512zM112,224c-8.8,0-16,7.2-16,16v224c0,8.8,7.2,16,16,16h288c8.8,0,16-7.2,16-16V240c0-8.8-7.2-16-16-16H112z"
-              />
-              <path
-                class="fill-color"
-                d="M368,224c-8.8,0-16-7.2-16-16v-80c0-52.9-43.1-96-96-96s-96,43.1-96,96v80c0,8.8-7.2,16-16,16s-16-7.2-16-16v-80C128,57.4,185.4,0,256,0s128,57.4,128,128v80C384,216.8,376.8,224,368,224z"
-              />
-              <path
-                class="fill-color"
-                d="M256,362.7c-23.5,0-42.7-19.1-42.7-42.7c0-23.5,19.1-42.7,42.7-42.7s42.7,19.1,42.7,42.7C298.7,343.5,279.5,362.7,256,362.7z M256,309.3c-5.9,0-10.7,4.8-10.7,10.7s4.8,10.7,10.7,10.7c5.9,0,10.7-4.8,10.7-10.7S261.9,309.3,256,309.3z"
-              />
-              <path
-                class="fill-color"
-                d="M256,426.7c-8.8,0-16-7.2-16-16V352c0-8.8,7.2-16,16-16c8.8,0,16,7.2,16,16v58.7C272,419.5,264.8,426.7,256,426.7z"
-              />
-            </svg>
-          </a>
-          <a
-            v-if="!shareMode && file.is_public === 1"
-            class="share-it action-btn"
-            @click="
-              emitShare ? $emit('share', file) : $refs.shareDialog.toggleModel()
-            "
-          >
-            <svg
-              id="Layer_1"
-              data-original-title="Share File"
-              class="share-icon h-orange"
+          <template v-if="$route.name === 'brand_name-store'">
+            <div class="dropdown">
+              <a
+                href="javascript:void(0);"
+                class="dropdown-toggle"
+                data-toggle="dropdown"
+                aria-expanded="true"
+              >
+                <svg
+                  id="Layer_1"
+                  class="menu-option-icon h-orange"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  x="0px"
+                  y="0px"
+                  viewBox="0 0 18 18"
+                  xml:space="preserve"
+                >
+                  <g id="Group_4482" transform="translate(-872 -801)">
+                    <rect
+                      id="Rectangle_3020"
+                      x="872"
+                      y="801"
+                      class="fill-hide"
+                      width="18"
+                      height="18"
+                    ></rect>
+                    <g id="Group_4348" transform="translate(588.166 653.684)">
+                      <circle
+                        id="Ellipse_203"
+                        class="fill-color"
+                        cx="292.8"
+                        cy="148.9"
+                        r="1.5"
+                      ></circle>
+                      <circle
+                        id="Ellipse_203-2"
+                        class="fill-color"
+                        cx="292.8"
+                        cy="163.8"
+                        r="1.5"
+                      ></circle>
+                      <circle
+                        id="Ellipse_203-3"
+                        class="fill-color"
+                        cx="292.8"
+                        cy="156.3"
+                        r="1.5"
+                      ></circle>
+                    </g>
+                  </g>
+                </svg>
+              </a>
+              <ul
+                class="dropdown-menu"
+                style="
+                  will-change: transform;
+                  position: absolute;
+                  transform: translate3d(-116px, 26px, 0px);
+                  top: 0px;
+                  left: 0px;
+                "
+                x-placement="bottom-start"
+              >
+                <li v-if="!shareMode && file.is_public === 1">
+                  <a
+                    class="dropdown-item"
+                    href="javascript:void(0);"
+                    @click="
+                      emitShare
+                        ? $emit('share', file)
+                        : $refs.shareDialog.toggleModel()
+                    "
+                  >
+                    <span class="dropdown-item-icon">
+                      <svg
+                        id="Layer_1"
+                        class="share-icon"
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        x="0px"
+                        y="0px"
+                        viewBox="0 0 18 18"
+                        xml:space="preserve"
+                      >
+                        <g id="Group_4473" transform="translate(-871 -230)">
+                          <rect
+                            id="Rectangle_3012"
+                            x="871"
+                            y="230"
+                            class="fill-hide"
+                            width="18"
+                            height="18"
+                          ></rect>
+                          <path
+                            id="Icon_open-share"
+                            class="fill-color"
+                            d="M883.9,234.4l3.2,3.1l-3.2,3.4v-2.3h-3.8c-2.1,0-4.3,0.5-6.1,1.6c1.4-2,3.9-3.2,8.4-3.2h1.5L883.9,234.4 M883.1,231.8c-0.4,0-0.7,0.3-0.7,0.7c0,0,0,0,0,0v3c-8.8,0-11.2,4.3-11.4,10.6c0,0.1,0,0.1,0.1,0.1c0.1,0,0.1,0,0.1-0.1c1.4-4,4.6-6,8.9-6h2.3v2.9c0,0.4,0.3,0.7,0.7,0.7c0,0,0,0,0,0c0.2,0,0.4-0.1,0.5-0.2l5.2-5.5c0.3-0.3,0.2-0.7,0-1c0,0,0,0,0,0l-5.2-4.9C883.4,231.9,883.3,231.8,883.1,231.8L883.1,231.8z"
+                          ></path>
+                        </g>
+                      </svg>
+                    </span>
+                    Share
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="javascript:void(0);"
+                    @click="downloadFile"
+                  >
+                    <span class="dropdown-item-icon">
+                      <svg
+                        id="Layer_1"
+                        class="download-icon"
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        x="0px"
+                        y="0px"
+                        viewBox="0 0 18 18"
+                        xml:space="preserve"
+                      >
+                        <g
+                          id="Group_4359"
+                          transform="translate(-153.745 -317.549)"
+                        >
+                          <path
+                            id="Path_3427"
+                            class="fill-color"
+                            d="M156.4,335.5c-1.4,0-2.6-1.2-2.6-2.6v-3.7c0-0.4,0.4-0.8,0.8-0.8c0.4,0,0.7,0.3,0.8,0.8v3.7c0,0.6,0.5,1,1,1h12.8c0.6,0,1-0.5,1-1v-3.7c0-0.4,0.4-0.8,0.8-0.8c0.4,0,0.8,0.4,0.8,0.8v3.7c0,1.4-1.2,2.6-2.6,2.6H156.4z"
+                          ></path>
+                          <path
+                            id="Path_3428"
+                            class="fill-color"
+                            d="M157.6,325.3c-0.3-0.3-0.3-0.8,0-1.1c0.3-0.3,0.8-0.3,1.1,0l4,4l4-4c0.3-0.3,0.8-0.3,1.1,0s0.3,0.8,0,1.1l-5.1,5.1L157.6,325.3z"
+                          ></path>
+                          <path
+                            id="Path_3429"
+                            class="fill-color"
+                            d="M162.7,330.1c-0.4,0-0.8-0.4-0.8-0.8v-11c0-0.4,0.3-0.8,0.8-0.8c0.4,0,0.8,0.3,0.8,0.8c0,0,0,0,0,0.1v11C163.5,329.7,163.2,330.1,162.7,330.1z"
+                          ></path>
+                        </g>
+                      </svg>
+                    </span>
+                    Download
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="javascript:void(0);"
+                    @click="addToCart"
+                  >
+                    <span class="dropdown-item-icon">
+                      <svg
+                        id="Layer_1"
+                        class="cart-icon"
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        x="0px"
+                        y="0px"
+                        viewBox="0 0 18 18"
+                        xml:space="preserve"
+                      >
+                        <g id="Add_to_Cart_1">
+                          <g
+                            id="shopping-cart_1_"
+                            transform="translate(0 -21.006)"
+                          >
+                            <g
+                              id="Group_39446"
+                              transform="translate(12.008 33.69)"
+                            >
+                              <g id="Group_39445">
+                                <path
+                                  id="Path_40275"
+                                  class="fill-color"
+                                  d="M2.2,0C1,0,0,1,0,2.2s1,2.2,2.2,2.2s2.2-1,2.2-2.2v0C4.5,1,3.5,0,2.2,0z M2.2,3.1c-0.5,0-0.9-0.4-0.9-0.9c0-0.5,0.4-0.9,0.9-0.9c0.5,0,0.9,0.4,0.9,0.9l0,0C3.1,2.7,2.7,3.1,2.2,3.1z"
+                                ></path>
+                              </g>
+                            </g>
+                            <g id="Group_39448" transform="translate(0 21.705)">
+                              <g id="Group_39447" transform="translate(0 0)">
+                                <path
+                                  id="Path_40276"
+                                  class="fill-color"
+                                  d="M17.9,3.3c-0.1-0.2-0.3-0.3-0.5-0.3H4.2L3.5,0.5C3.5,0.2,3.2,0,2.9,0H0.7C0.3,0,0,0.3,0,0.7s0.3,0.7,0.7,0.7h1.7l2.2,9.2C4.6,10.8,4.9,11,5.2,11h10.5c0.3,0,0.6-0.2,0.7-0.5L18,3.9C18,3.7,18,3.5,17.9,3.3z M15.2,9.7H5.7L4.5,4.4h12L15.2,9.7z"
+                                ></path>
+                              </g>
+                            </g>
+                            <g
+                              id="Group_39450"
+                              transform="translate(3.86 33.69)"
+                            >
+                              <g id="Group_39449">
+                                <path
+                                  id="Path_40277"
+                                  class="fill-color"
+                                  d="M2.2,0C1,0,0,1,0,2.2c0,1.2,1,2.2,2.2,2.2s2.2-1,2.2-2.2l0,0C4.5,1,3.5,0,2.2,0z M2.2,3.1c-0.5,0-0.9-0.4-0.9-0.9c0-0.5,0.4-0.9,0.9-0.9c0.5,0,0.9,0.4,0.9,0.9l0,0C3.1,2.7,2.7,3.1,2.2,3.1z"
+                                ></path>
+                              </g>
+                            </g>
+                          </g>
+                        </g>
+                      </svg>
+                    </span>
+                    Add to Cart
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </template>
+          <template v-else>
+            <a
+              v-tooltip="'For internal use only'"
+              href="javascript:void(0);"
               data-toggle="tooltip"
-              title=""
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              xmlns:xlink="http://www.w3.org/1999/xlink"
-              x="0px"
-              y="0px"
-              viewBox="0 0 18 18"
-              xml:space="preserve"
-              aria-describedby="tooltip469646"
             >
-              <g id="Group_4473" transform="translate(-871 -230)">
-                <rect
-                  id="Rectangle_3012"
-                  x="871"
-                  y="230"
-                  class="fill-hide"
-                  width="18"
-                  height="18"
-                ></rect>
+              <svg
+                v-if="(mode === 'column' || 'list') && file.is_public === 0"
+                id="_x31__x2C_5"
+                class="locked-icon h-orange"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px"
+                y="0px"
+                viewBox="0 0 512 512"
+                xml:space="preserve"
+              >
                 <path
-                  id="Icon_open-share"
                   class="fill-color"
-                  d="M883.9,234.4l3.2,3.1l-3.2,3.4v-2.3h-3.8c-2.1,0-4.3,0.5-6.1,1.6c1.4-2,3.9-3.2,8.4-3.2h1.5L883.9,234.4 M883.1,231.8c-0.4,0-0.7,0.3-0.7,0.7c0,0,0,0,0,0v3c-8.8,0-11.2,4.3-11.4,10.6c0,0.1,0,0.1,0.1,0.1c0.1,0,0.1,0,0.1-0.1c1.4-4,4.6-6,8.9-6h2.3v2.9c0,0.4,0.3,0.7,0.7,0.7c0,0,0,0,0,0c0.2,0,0.4-0.1,0.5-0.2l5.2-5.5c0.3-0.3,0.2-0.7,0-1c0,0,0,0,0,0l-5.2-4.9C883.4,231.9,883.3,231.8,883.1,231.8L883.1,231.8z"
-                ></path>
-              </g>
-            </svg>
-          </a>
-          <a @click="downloadFile">
-            <svg
-              id="Layer_1"
-              data-original-title="Download File"
-              class="download-icon h-orange"
-              data-toggle="tooltip"
-              title=""
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              xmlns:xlink="http://www.w3.org/1999/xlink"
-              x="0px"
-              y="0px"
-              viewBox="0 0 18 18"
-              xml:space="preserve"
+                  d="M400,512H112c-26.5,0-48-21.5-48-48V240c0-26.5,21.5-48,48-48h288c26.5,0,48,21.5,48,48v224C448,490.5,426.5,512,400,512zM112,224c-8.8,0-16,7.2-16,16v224c0,8.8,7.2,16,16,16h288c8.8,0,16-7.2,16-16V240c0-8.8-7.2-16-16-16H112z"
+                />
+                <path
+                  class="fill-color"
+                  d="M368,224c-8.8,0-16-7.2-16-16v-80c0-52.9-43.1-96-96-96s-96,43.1-96,96v80c0,8.8-7.2,16-16,16s-16-7.2-16-16v-80C128,57.4,185.4,0,256,0s128,57.4,128,128v80C384,216.8,376.8,224,368,224z"
+                />
+                <path
+                  class="fill-color"
+                  d="M256,362.7c-23.5,0-42.7-19.1-42.7-42.7c0-23.5,19.1-42.7,42.7-42.7s42.7,19.1,42.7,42.7C298.7,343.5,279.5,362.7,256,362.7z M256,309.3c-5.9,0-10.7,4.8-10.7,10.7s4.8,10.7,10.7,10.7c5.9,0,10.7-4.8,10.7-10.7S261.9,309.3,256,309.3z"
+                />
+                <path
+                  class="fill-color"
+                  d="M256,426.7c-8.8,0-16-7.2-16-16V352c0-8.8,7.2-16,16-16c8.8,0,16,7.2,16,16v58.7C272,419.5,264.8,426.7,256,426.7z"
+                />
+              </svg>
+            </a>
+            <a
+              v-if="!shareMode && file.is_public === 1"
+              class="share-it action-btn"
+              @click="
+                emitShare
+                  ? $emit('share', file)
+                  : $refs.shareDialog.toggleModel()
+              "
             >
-              <g id="Group_4359" transform="translate(-153.745 -317.549)">
-                <path
-                  id="Path_3427"
-                  class="fill-color"
-                  d="M156.4,335.5c-1.4,0-2.6-1.2-2.6-2.6v-3.7c0-0.4,0.4-0.8,0.8-0.8c0.4,0,0.7,0.3,0.8,0.8v3.7c0,0.6,0.5,1,1,1h12.8c0.6,0,1-0.5,1-1v-3.7c0-0.4,0.4-0.8,0.8-0.8c0.4,0,0.8,0.4,0.8,0.8v3.7c0,1.4-1.2,2.6-2.6,2.6H156.4z"
-                ></path>
-                <path
-                  id="Path_3428"
-                  class="fill-color"
-                  d="M157.6,325.3c-0.3-0.3-0.3-0.8,0-1.1c0.3-0.3,0.8-0.3,1.1,0l4,4l4-4c0.3-0.3,0.8-0.3,1.1,0s0.3,0.8,0,1.1l-5.1,5.1L157.6,325.3z"
-                ></path>
-                <path
-                  id="Path_3429"
-                  class="fill-color"
-                  d="M162.7,330.1c-0.4,0-0.8-0.4-0.8-0.8v-11c0-0.4,0.3-0.8,0.8-0.8c0.4,0,0.8,0.3,0.8,0.8c0,0,0,0,0,0.1v11C163.5,329.7,163.2,330.1,162.7,330.1z"
-                ></path>
-              </g>
-            </svg>
-          </a>
+              <svg
+                id="Layer_1"
+                data-original-title="Share File"
+                class="share-icon h-orange"
+                data-toggle="tooltip"
+                title=""
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px"
+                y="0px"
+                viewBox="0 0 18 18"
+                xml:space="preserve"
+                aria-describedby="tooltip469646"
+              >
+                <g id="Group_4473" transform="translate(-871 -230)">
+                  <rect
+                    id="Rectangle_3012"
+                    x="871"
+                    y="230"
+                    class="fill-hide"
+                    width="18"
+                    height="18"
+                  ></rect>
+                  <path
+                    id="Icon_open-share"
+                    class="fill-color"
+                    d="M883.9,234.4l3.2,3.1l-3.2,3.4v-2.3h-3.8c-2.1,0-4.3,0.5-6.1,1.6c1.4-2,3.9-3.2,8.4-3.2h1.5L883.9,234.4 M883.1,231.8c-0.4,0-0.7,0.3-0.7,0.7c0,0,0,0,0,0v3c-8.8,0-11.2,4.3-11.4,10.6c0,0.1,0,0.1,0.1,0.1c0.1,0,0.1,0,0.1-0.1c1.4-4,4.6-6,8.9-6h2.3v2.9c0,0.4,0.3,0.7,0.7,0.7c0,0,0,0,0,0c0.2,0,0.4-0.1,0.5-0.2l5.2-5.5c0.3-0.3,0.2-0.7,0-1c0,0,0,0,0,0l-5.2-4.9C883.4,231.9,883.3,231.8,883.1,231.8L883.1,231.8z"
+                  ></path>
+                </g>
+              </svg>
+            </a>
+            <a @click="downloadFile">
+              <svg
+                id="Layer_1"
+                data-original-title="Download File"
+                class="download-icon h-orange"
+                data-toggle="tooltip"
+                title=""
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px"
+                y="0px"
+                viewBox="0 0 18 18"
+                xml:space="preserve"
+              >
+                <g id="Group_4359" transform="translate(-153.745 -317.549)">
+                  <path
+                    id="Path_3427"
+                    class="fill-color"
+                    d="M156.4,335.5c-1.4,0-2.6-1.2-2.6-2.6v-3.7c0-0.4,0.4-0.8,0.8-0.8c0.4,0,0.7,0.3,0.8,0.8v3.7c0,0.6,0.5,1,1,1h12.8c0.6,0,1-0.5,1-1v-3.7c0-0.4,0.4-0.8,0.8-0.8c0.4,0,0.8,0.4,0.8,0.8v3.7c0,1.4-1.2,2.6-2.6,2.6H156.4z"
+                  ></path>
+                  <path
+                    id="Path_3428"
+                    class="fill-color"
+                    d="M157.6,325.3c-0.3-0.3-0.3-0.8,0-1.1c0.3-0.3,0.8-0.3,1.1,0l4,4l4-4c0.3-0.3,0.8-0.3,1.1,0s0.3,0.8,0,1.1l-5.1,5.1L157.6,325.3z"
+                  ></path>
+                  <path
+                    id="Path_3429"
+                    class="fill-color"
+                    d="M162.7,330.1c-0.4,0-0.8-0.4-0.8-0.8v-11c0-0.4,0.3-0.8,0.8-0.8c0.4,0,0.8,0.3,0.8,0.8c0,0,0,0,0,0.1v11C163.5,329.7,163.2,330.1,162.7,330.1z"
+                  ></path>
+                </g>
+              </svg>
+            </a>
+          </template>
         </div>
       </div>
     </div>
@@ -893,7 +1250,6 @@
 <script>
 import { ContentLoader } from 'vue-content-loader'
 import fileType from '~/mixins/fileType'
-
 export default {
   components: { ContentLoader },
   mixins: [fileType],
@@ -1033,6 +1389,9 @@ export default {
     this.loadJS()
   },
   methods: {
+    addToCart() {
+      this.$emit('emitCart', true)
+    },
     onExpandAssetsCount() {
       if (!this.galleryMode) {
         this.galleryMode = 1

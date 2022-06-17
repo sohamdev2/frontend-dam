@@ -71,6 +71,7 @@
                   emit-share
                   hide-select
                   @share="onShareFile"
+                  @emitCart="toggleCart(file)"
                 />
               </template>
             </ul>
@@ -127,6 +128,7 @@
                       emit-share
                       hide-select
                       @share="onShareFile"
+                      @emitCart="toggleCart(file)"
                     />
                   </template>
                 </ul>
@@ -231,6 +233,7 @@
         type="folder"
       />
     </client-only>
+    <AddToCartModal v-if="selectedFile" ref="cartDialog" :file="selectedFile" />
   </div>
 </template>
 
@@ -246,6 +249,7 @@ export default {
     return {
       shareFile: null,
       heroNavigateTo: 0,
+      selectedFile: null,
     }
   },
   computed: {
@@ -312,6 +316,12 @@ export default {
     this.otherSliderTrigger()
   }, */
   methods: {
+    toggleCart(file) {
+      this.selectedFile = file
+      this.$nextTick(() => {
+        this.$refs.cartDialog.toggleModel()
+      })
+    },
     bannerSliderTrigger() {
       const $owl = window.$('.mainBannerSlider')
       const owl = $owl.owlCarousel({
