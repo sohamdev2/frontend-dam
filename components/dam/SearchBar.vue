@@ -482,13 +482,19 @@ export default {
             name: `Upload Date: <strong>${text}</strong>`,
           })
         } else if (this.searchParams.start_date || this.searchParams.end_date) {
-          if (this.$refs.dateRangePicker)
+          if (this.$refs.dateRangePicker) {
+            if (this.$refs.dateRangePicker.fp) {
+              this.$refs.dateRangePicker.fp.setDate([
+                this.searchParams.start_date,
+                this.searchParams.nd_date,
+              ])
+            }
             filters.push({
               key: 'date',
               type: 'custom_date',
               name: `Upload Date: <strong>${this.$refs.dateRangePicker.getValueText()}</strong>`,
             })
-          else if (this.$route.params.filterItems) {
+          } else if (this.$route.params.filterItems) {
             const a = this.$route.params.filterItems.find(
               ({ key }) => key === 'date'
             )
@@ -591,14 +597,21 @@ export default {
     },
   },
   mounted() {
+    this.searchParams = this.$route.params.searchParams || new SearchParams()
     this.$nextTick(() => {
-      this.searchParams = this.$route.params.searchParams || new SearchParams()
       if (this.hashParam !== 'search')
         this.searchParams.filter =
           filterOptions.find(({ id }) => this.hashParam === id)?.id || 'all'
     })
     this.getSearchData()
     this.loadJs()
+    if (this.$route.query?.uploaded === 'yesterday') {
+      const yesterday = moment().subtract(1, 'day').format(DATE_FORMAT)
+      this.searchParams.date = ''
+      this.searchParams.start_date = yesterday
+      this.searchParams.end_date = yesterday
+      this.search()
+    }
   },
   destroyed() {
     if (this.moreOptions) document.removeEventListener('keyup', this.keyEvent)
