@@ -84,6 +84,18 @@ h2.title {font-size: 22px;font-weight: 500;color: #070E22;margin: 0;}
 .btn-gray-invert .fill-color{fill: #070E22 !important;}
 .btn-gray-invert:hover .fill-color{fill: #ffffff !important;}
 
+.btn-red,
+.btn-red:active {background-color: #e82c2c !important;color: #ffffff;border-color: #e82c2c !important;outline: none;outline-offset: 0;box-shadow: none !important;}
+.btn-red:hover {background-color: transparent !important;color: #e82c2c;border-color: #e82c2c !important;outline: none;outline-offset: 0;box-shadow: none !important;}
+.btn-red .fill-color{fill: #ffffff !important;}
+.btn-red:hover .fill-color{fill: #e82c2c !important;}
+
+.btn-red-invert,
+.btn-red-invert:active{background-color: transparent !important;border-color: #e82c2c !important;color: #e82c2c !important;}
+.btn-red-invert:hover{background-color: #e82c2c !important;border-color: #e82c2c !important;color: #ffffff !important;}
+.btn-red-invert .fill-color{fill: #e82c2c !important;}
+.btn-red-invert:hover .fill-color{fill: #ffffff !important;}
+
 .cs-btn-orange,
 .cs-btn-orange:focus,
 .cs-btn-orange.btn-disable:hover,
@@ -1108,7 +1120,6 @@ header .user-dropdown.show .dropdown-toggle{color: var(--secondary);}
 
 .order-status {display: inline-flex;border-radius: 4px;}
 .order-status span {font-size: 10px;padding: 0 12px;height: 24px;line-height: 24px;white-space: nowrap;border-radius: 4px;display: block;font-weight: 500;}
-
 .border-bottom{border-bottom: 1px solid #dfe0e2;}
 .general-settings {display: flex;align-items: flex-start;}
 .general-settings-title {display: table;padding: 12px 14px;min-height: 60px;width: 100%;}
@@ -1117,16 +1128,18 @@ header .user-dropdown.show .dropdown-toggle{color: var(--secondary);}
 .general-settings-title h4 strong {font-weight: 600;}
 .general-settings-title .right-side{float: right;display: flex;align-items: center;flex: 0% 1 1;}
 .general-settings-title .right-side>*{margin-left: 15px;}
-.general-settings-title .right-side > strong{font-weight: 600;}
-.general-settings-title .right-side > strong span{color: #737B88;}
+.general-settings-title .right-side .track-ship{margin-right: 4em;display: flex;align-items: center;}
+.general-settings-title .right-side .track-ship .tags {margin-right: 2em;display: flex;align-items: center;}
+.general-settings-title .right-side .track-ship span{color: #737B88;font-weight: 600;}
+.general-settings-title .right-side .track-ship span + span {font-size: 12px;padding: 5px 12px;white-space: nowrap;border-radius: 4px;display: block;font-weight: 600;background-color: #efefef;color: #070E22;margin-left: 5px;}
 
 .bg-gray-light {background-color: rgba(239,241,243,0.5);}
 .media {align-items: center;}
 .media-left {padding-right: 10px;}
 .order-title {font-weight: 600;font-size: 22px;margin-bottom: 1em;}
 .billing-info,.shipping-info {margin-bottom: 1em;}
-.billing-info label,.shipping-info label {font-size: 13px;font-weight: 600;color: #757A85;margin-bottom: 3px;}
-.billing-info strong,.shipping-info strong,.shipping-info p,.billing-info a,.shipping-info a {font-weight: 600;}
+.billing-info label,.shipping-info label {font-size: 13px;color: #757A85;margin-bottom: 3px;}
+.billing-info strong,.shipping-info strong,.shipping-info p,.billing-info a,.shipping-info a {font-weight: 500;}
 .form-group .input-price,
 .form-group .input-weight{position: relative;}
 .form-group .input-price .form-control,
