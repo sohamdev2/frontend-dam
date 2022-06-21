@@ -71,7 +71,11 @@
             </ContentLoader>
           </div>
           <ul v-else class="tbody">
-            <li v-for="cartItem in cartList" :key="cartItem.id">
+            <li
+              v-for="cartItem in cartList"
+              :key="cartItem.id"
+              :class="!cartItem.is_public ? 'productNotAvailable disabled' : ''"
+            >
               <div class="tb-column flex40">
                 <div class="media">
                   <div class="media-left">
@@ -91,6 +95,9 @@
                       class="table-a"
                       >{{ cartItem.display_file_name }}</nuxt-link
                     >
+                    <span v-if="!cartItem.is_public" class="altmsg"
+                      >Product is not available.</span
+                    >
                   </div>
                 </div>
               </div>
@@ -99,6 +106,7 @@
                   <div
                     v-if="cartItem.product.pricing_option === '1'"
                     class="quantity"
+                    :class="!cartItem.is_public ? 'disabled' : ''"
                   >
                     <div class="quantity-button quantity-down">
                       <svg
@@ -176,6 +184,7 @@
                   </div>
                   <Select2
                     v-else
+                    :class="!cartItem.is_public ? 'disabled' : ''"
                     :options="getPriceOptions(cartItem.product.options)"
                     :attrs="{ minimumResultsForSearch: -1 }"
                     :value="cartItem.selected_option"
@@ -200,6 +209,8 @@
                   <ul class="action">
                     <li>
                       <a
+                        v-tooltip="`Remove product`"
+                        style="pointer-events: all"
                         href="javascript:void(0);"
                         data-toggle="modal"
                         data-target="#product-remove"
@@ -323,7 +334,9 @@ export default {
   computed: {
     getTotalPrice() {
       return this.cartList.reduce((prev, current) => {
-        return parseFloat(prev + parseFloat(current.price))
+        return parseFloat(
+          prev + (current.is_public ? parseFloat(current.price) : 0)
+        )
       }, 0)
     },
     getPriceOptions() {
@@ -443,5 +456,9 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type='number'] {
   -moz-appearance: textfield;
+}
+.disabled {
+  pointer-events: none;
+  cursor: default;
 }
 </style>
