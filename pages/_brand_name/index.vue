@@ -347,6 +347,10 @@ export default {
         responsiveClass: true,
         margin: 10,
         responsiveBaseElement: '.body-content',
+        navText: [
+          '<span><svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" width="25.811" height="50.121" viewBox="0 0 25.811 50.121"><path id="Icon_feather-chevron-down" data-name="Icon feather-chevron-down" d="M0,0,24,24,48,0" transform="translate(24.75 1.061) rotate(90)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg></span>',
+          '<span><svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" width="25.811" height="50.121" viewBox="0 0 25.811 50.121"><path id="Icon_feather-chevron-down" data-name="Icon feather-chevron-down" d="M0,0,24,24,48,0" transform="translate(24.75 1.061) rotate(90)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg></span>',
+        ],
         responsive: {
           0: {
             items: 4,
