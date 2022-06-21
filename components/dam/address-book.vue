@@ -71,7 +71,7 @@
                     </div>
                   </div>
                   <div class="col-sm-12">
-                    <div class="form-group w-75 required">
+                    <div class="form-group required">
                       <label class="control-label">City</label>
                       <input
                         v-model="address.city"
@@ -89,7 +89,7 @@
                     </div>
                   </div>
                   <div class="col-sm-12">
-                    <div class="form-group w-75 required">
+                    <div class="form-group required">
                       <label class="control-label">State/Province</label>
                       <input
                         v-model="address.state"
@@ -107,7 +107,7 @@
                     </div>
                   </div>
                   <div class="col-sm-12">
-                    <div class="form-group w-50 required">
+                    <div class="form-group required">
                       <label class="control-label">ZIP</label>
                       <input
                         v-model="address.zip_code"
