@@ -1,11 +1,23 @@
 <template>
   <div class="body-content user-profile">
-    <div class="general-settings h-100 w-100">
-      <div class="general-settings-right w-100 h-100">
-        <div class="general-settings-title">
-          <h2 class="title">User Profile</h2>
-        </div>
-        <div class="workspace-settings">
+    <div class="tabs-view h-100">
+      <ul class="nav" role="tablist">
+        <li class="nav-item">
+          <nuxt-link class="nav-link active" to="/profile"
+            >User Profile</nuxt-link
+          >
+        </li>
+        <li class="nav-item">
+          <nuxt-link class="nav-link" to="/my-orders">My Orders</nuxt-link>
+        </li>
+        <li class="nav-item">
+          <nuxt-link class="nav-link" to="/address-book"
+            >Address Book</nuxt-link
+          >
+        </li>
+      </ul>
+      <div id="user-profile" class="tab-pane active">
+        <div class="workspace-settings h-100">
           <div class="row no-gutters h-100">
             <div class="col-lg-8 col-md-12 h-100">
               <div class="workspace-setting-left">
@@ -82,55 +94,55 @@
                         </div>
                       </div>
                       <!-- <div class="col-sm-12">
-                        <div class="form-group">
-                          <ul class="choose-workspce">
-                            <li class="media">
-                              <div class="media-left media-middle">&nbsp;</div>
-                              <div class="media-right media-middle">
-                                <div class="default-workspace">
-                                  <label class="control-label mb0"
-                                    >Default Instance</label
-                                  >
+                          <div class="form-group">
+                            <ul class="choose-workspce">
+                              <li class="media">
+                                <div class="media-left media-middle">&nbsp;</div>
+                                <div class="media-right media-middle">
+                                  <div class="default-workspace">
+                                    <label class="control-label mb0"
+                                      >Default Instance</label
+                                    >
+                                  </div>
                                 </div>
-                              </div>
-                            </li>
-                            <li
-                              v-for="instance in userModel.accessibleInstances"
-                              :key="instance.instance_id"
-                              class="media"
-                            >
-                              <div class="media-left media-middle">
-                                <label class="radio-label">
-                                  <input
-                                    type="radio"
-                                    name="profile-workspace"
-                                    :checked="
-                                      userModel.default_instance_id ==
-                                      instance.instance_id
-                                    "
-                                    @click="
-                                      userModel.default_instance_id =
+                              </li>
+                              <li
+                                v-for="instance in userModel.accessibleInstances"
+                                :key="instance.instance_id"
+                                class="media"
+                              >
+                                <div class="media-left media-middle">
+                                  <label class="radio-label">
+                                    <input
+                                      type="radio"
+                                      name="profile-workspace"
+                                      :checked="
+                                        userModel.default_instance_id ==
                                         instance.instance_id
-                                    "
-                                  />
-                                  <span class="radio-span"></span>
-                                </label>
-                              </div>
-                              <div class="media-right media-middle">
-                                <div class="default-workspace">
-                                  <input
-                                    type="text"
-                                    name="workspace"
-                                    :value="instance.brand_name"
-                                    disabled="disabled"
-                                    class="form-control"
-                                  />
+                                      "
+                                      @click="
+                                        userModel.default_instance_id =
+                                          instance.instance_id
+                                      "
+                                    />
+                                    <span class="radio-span"></span>
+                                  </label>
                                 </div>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                      </div> -->
+                                <div class="media-right media-middle">
+                                  <div class="default-workspace">
+                                    <input
+                                      type="text"
+                                      name="workspace"
+                                      :value="instance.brand_name"
+                                      disabled="disabled"
+                                      class="form-control"
+                                    />
+                                  </div>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </div> -->
                       <div class="col-sm-12">
                         <div class="form-group email-notification-info">
                           <div class="media">
@@ -272,20 +284,20 @@
                     </div>
                     <div class="col-sm-12">
                       <!-- <button
-                        class="btn"
-                        :disabled="password_loading"
-                        :class="{
-                          'btn-disable': password_loading,
-                        }"
-                        type="submit"
-                        @click="generateUserPassword"
-                      >
-                        <template v-if="password_loading">
-                          <SpinLoading />
-                          Saving...
-                        </template>
-                        <template v-else> Save </template>
-                      </button> -->
+                          class="btn"
+                          :disabled="password_loading"
+                          :class="{
+                            'btn-disable': password_loading,
+                          }"
+                          type="submit"
+                          @click="generateUserPassword"
+                        >
+                          <template v-if="password_loading">
+                            <SpinLoading />
+                            Saving...
+                          </template>
+                          <template v-else> Save </template>
+                        </button> -->
                       <button
                         type="submit"
                         :class="{
@@ -299,7 +311,6 @@
                           v-if="password_loading"
                           class="fa fa-circle-o-notch fa-spin"
                         ></i>
-
                         Save
                       </button>
                     </div>
