@@ -96,7 +96,7 @@
                             >
                               <svg
                                 id="Layer_1"
-                                v-tooltip="`Edit Address Book`"
+                                v-tooltip="`Edit Address`"
                                 class="edit-icon h-orange"
                                 version="1.1"
                                 xmlns="http://www.w3.org/2000/svg"
@@ -127,7 +127,12 @@
                           <li>
                             <a
                               href="javascript:void(0);"
-                              @click="deleteAddress(address.id)"
+                              @click="
+                                () => {
+                                  showDeleteDialog = true
+                                  deletionId = address.id
+                                }
+                              "
                             >
                               <svg
                                 id="Layer_1"
@@ -267,6 +272,13 @@
         </div>
       </div>
     </div>
+    <confirmation-dialog
+      v-model="showDeleteDialog"
+      @click:confirm-button="removeCartItem"
+    >
+      <template slot="header">Delete Address</template>
+      Are you sure you want to Delete the <strong>Address</strong>?
+    </confirmation-dialog>
   </div>
 </template>
 <script>
@@ -285,6 +297,7 @@ export default {
       noProduct: false,
       page: 0,
       last_page: null,
+      showDeleteDialog: false,
     }
   },
   computed: {
@@ -325,14 +338,16 @@ export default {
           $state.error(e)
         })
     },
-    deleteAddress(id) {
+    removeCartItem() {
       this.$axios
         .$post('digital/user-address/delete-address', {
-          address_id: id,
+          address_id: this.deletionId,
           workspace_id: this.$getWorkspaceId(),
         })
         .then(({ message }) => {
-          const index = this.addressList.findIndex((i) => i.id === id)
+          const index = this.addressList.findIndex(
+            (i) => i.id === this.deletionId
+          )
           this.addressList.splice(index, 1)
           this.$toast.success(message)
         })
