@@ -76,7 +76,7 @@
                 <div class="media">
                   <div class="media-left">
                     <div class="categary-image">
-                      <img src="img/resource-img1.jpg" alt="" />
+                      <img :src="cartItem.asset.preview_image" alt="" />
                     </div>
                   </div>
                   <div class="media-body">
@@ -180,6 +180,7 @@
                     :attrs="{ minimumResultsForSearch: -1 }"
                     :value="cartItem.selected_option"
                     placeholder="Select pricing option"
+                    @input="updatePriceOption($event, cartItem)"
                   />
                 </div>
               </div>
@@ -345,6 +346,14 @@ export default {
       this.deletionId = id
       this.showDeleteDialog = true
     },
+    updatePriceOption(id, item) {
+      const option = JSON.parse(item.product.options)
+      const { price, qty } = option.find((i) => i.id === id)
+      item.price = price
+      item.qty = qty
+      item.selected_option = id
+      this.updateCart(item, id)
+    },
     incrementQty(item, option) {
       const initialQuantity = JSON.parse(option)[0].qty
       const initialPrice = JSON.parse(option)[0].price
@@ -364,21 +373,18 @@ export default {
       item.price = parseFloat(item.qty * pricePerQuantity)
       this.updateCart(item)
     },
-    updateCart(item) {
+    updateCart(item, id = '') {
       this.$axios
         .$post(`digital/cart/update`, {
           workspace_id: this.$getWorkspaceId(),
           cart_product_id: item.id,
           qty: item.qty,
           price: item.price,
+          selected_option: id || '',
         })
         .then(({ message, data }) => {
-          // this.cartList.splice(
-          //   this.cartList.findIndex((i) => i.id === item.id),
-          //   1,
-          //   data
-          // )
-          this.$toast.success(message)
+          item.amount = data.amount
+          // this.$toast.success(message)
         })
         .catch(console.log)
     },
@@ -413,7 +419,7 @@ export default {
   },
   head() {
     return {
-      title: 'Store | ' + this.$brandName() || 'Digital Asset Manager',
+      title: 'Cart | ' + this.$brandName() || 'Digital Asset Manager',
       link: [
         {
           rel: 'icon',
