@@ -80,7 +80,7 @@
                 <div class="media">
                   <div class="media-left">
                     <div class="categary-image">
-                      <img :src="cartItem.asset.preview_image" alt="" />
+                      <img :src="cartItem.file_name" alt="" />
                     </div>
                   </div>
                   <div class="media-body">
@@ -201,7 +201,7 @@
               </div>
               <div class="tb-column flex10">
                 <div class="top-column">
-                  <label>${{ cartItem.price }}</label>
+                  <label>${{ cartItem.price }}.00</label>
                 </div>
               </div>
               <div class="tb-column text-center flex10">
@@ -292,7 +292,7 @@
                 <label>Total Amount : </label>
               </div>
               <div class="flex20">
-                <strong>${{ getTotalPrice }}</strong>
+                <strong>${{ getTotalPrice }}.00</strong>
               </div>
             </li>
           </ul>
@@ -303,7 +303,7 @@
       <nuxt-link to="/brand_name/store" class="btn btn-gray"
         >Continue Shopping</nuxt-link
       >
-      <nuxt-link v-if="cartList.length" to="/brand_name/checkout" class="btn"
+      <nuxt-link v-if="getTotalPrice > 0" to="/brand_name/checkout" class="btn"
         >Checkout</nuxt-link
       >
     </div>

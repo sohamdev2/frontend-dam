@@ -359,7 +359,7 @@
                       ></path>
                     </g>
                   </g></svg
-                >User Profile
+                >My Account
               </nuxt-link>
             </li>
             <li>

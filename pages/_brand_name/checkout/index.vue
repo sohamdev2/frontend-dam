@@ -204,7 +204,7 @@
                 </div>
               </div>
               <div class="col-md-6">
-                <div class="form-group">
+                <div class="form-group required">
                   <label class="control-label">Address Line 2</label>
                   <input
                     v-model="shippingInfo.address2"
@@ -330,7 +330,7 @@
                 class="d-flex align-items-center justify-content-between mt-2"
               >
                 <label>Sub Total</label>
-                <h5>${{ shippingInfo.sub_total }}</h5>
+                <h5>${{ shippingInfo.sub_total }}.00</h5>
               </div>
               <div
                 class="d-flex align-items-center justify-content-between mt-2"
@@ -343,7 +343,7 @@
                 class="d-flex align-items-center justify-content-between mt-2"
               >
                 <strong>Grand Total</strong>
-                <h5>${{ shippingInfo.grand_total }}</h5>
+                <h5>${{ shippingInfo.grand_total }}.00</h5>
               </div>
             </div>
           </div>

@@ -38,7 +38,7 @@
             <div class="track-ship">
               <div class="tags">
                 <span>Tracking ID - </span>
-                <span>{{ orderDetails.traking_id || '-' }}</span>
+                <span>{{ orderDetails.shipping_tracking_id || '-' }}</span>
               </div>
               <div class="tags">
                 <span>Shipping Method - </span>
@@ -89,15 +89,15 @@
                   <div class="sorting flex40">
                     <span>Product Name</span>
                   </div>
-                  <div class="sorting flex30">
+                  <div class="sorting flex50">
                     <span>Qty</span>
                   </div>
-                  <div class="sorting flex20">
+                  <div class="sorting flex10">
                     <span>Amount</span>
                   </div>
-                  <div class="sorting flex10">
+                  <!-- <div class="sorting flex10">
                     <span>Total</span>
-                  </div>
+                  </div> -->
                 </li>
               </ul>
               <div class="customscrollbar">
@@ -110,7 +110,7 @@
                       <div class="media">
                         <div class="media-left">
                           <div class="categary-image">
-                            <img src="img/resource-img1.jpg" alt="" />
+                            <img :src="orderItem.file_name" alt="" />
                           </div>
                         </div>
                         <div class="media-body">
@@ -128,7 +128,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="tb-column flex30">
+                    <div class="tb-column flex50">
                       <div class="top-column">
                         <label
                           >{{ orderItem.qty }} (1 Qty =
@@ -136,16 +136,16 @@
                         >
                       </div>
                     </div>
-                    <div class="tb-column flex20">
+                    <div class="tb-column flex10">
                       <div class="top-column">
                         <label>${{ orderItem.price }}</label>
                       </div>
                     </div>
-                    <div class="tb-column flex10">
+                    <!-- <div class="tb-column flex10">
                       <div class="top-column">
                         <label>${{ orderItem.total_amount }}</label>
                       </div>
-                    </div>
+                    </div> -->
                   </li>
                 </ul>
                 <ul class="tfooter">
