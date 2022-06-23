@@ -123,7 +123,7 @@
                   </p>
                   <p>
                     {{
-                      orderDetails.shpping_info.county +
+                      orderDetails.shpping_info.country +
                       ',' +
                       orderDetails.shpping_info.zip_code
                     }}
