@@ -58,7 +58,7 @@
           </div>
         </div>
         <div class="success-msg pl10 pr10 mb0">
-          <div class="alert alert-primary">
+          <div class="alert alert-warning">
             <svg
               id="Layer_1"
               class="alert-icon mr-2"
@@ -84,162 +84,111 @@
           </div>
         </div>
         <div class="workspace-settings customscrollbar">
-          <h4 class="mt1">Order Summary</h4>
-          <div class="common-box bg-gray h-auto pl0 pr0 mb2">
-            <div class="table-list-view table-list-scrolling">
-              <ul class="thead">
-                <li>
-                  <div class="sorting flex40">
-                    <span>Product Name</span>
-                  </div>
-                  <div class="sorting flex50">
-                    <span>Qty</span>
-                  </div>
-                  <div class="sorting flex10">
-                    <span>Amount</span>
-                  </div>
-                  <!-- <div class="sorting flex10">
-                    <span>Total</span>
-                  </div> -->
-                </li>
-              </ul>
-              <div class="customscrollbar">
-                <ul class="tbody">
-                  <li
-                    v-for="orderItem in orderDetails.order_item"
-                    :key="orderItem.id"
-                  >
-                    <div class="tb-column flex40">
-                      <div class="media">
-                        <div class="media-left">
-                          <div class="categary-image">
-                            <img :src="orderItem.file_name" alt="" />
-                          </div>
-                        </div>
-                        <div class="media-body">
-                          <nuxt-link
-                            :to="{
-                              name: 'brand_name-files-id',
-                              params: {
-                                id: orderItem.asset_id,
-                                brand_name: $getBrandName(),
-                              },
-                            }"
-                            class="table-a"
-                            >{{ orderItem.display_file_name }}</nuxt-link
-                          >
-                        </div>
-                      </div>
-                    </div>
-                    <div class="tb-column flex50">
-                      <div class="top-column">
-                        <label
-                          >{{ orderItem.qty }} (1 Qty =
-                          {{ orderItem.unit }} Units)</label
-                        >
-                      </div>
-                    </div>
-                    <div class="tb-column flex10">
-                      <div class="top-column">
-                        <label>${{ orderItem.price }}.00</label>
-                      </div>
-                    </div>
-                    <!-- <div class="tb-column flex10">
-                      <div class="top-column">
-                        <label>${{ orderItem.total_amount }}</label>
-                      </div>
-                    </div> -->
-                  </li>
-                </ul>
-                <ul class="tfooter">
-                  <li class="d-flex align-items-center justify-content-center">
-                    <div class="flex70"></div>
-                    <div class="flex20 text-right pr1">
-                      <label>Total Amount : </label>
-                    </div>
-                    <div class="flex10">
-                      <strong>${{ orderDetails.total_amount }}.00</strong>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="row mb1">
-            <div class="col-md-6">
-              <div class="box bg-gray-light has-relative h-100">
-                <h4>Billing Info</h4>
-                <div class="billing-info">
-                  <label>Dealer Name : </label>
-                  <strong>{{ orderDetails.user_name }}</strong>
-                </div>
-                <div class="billing-info">
-                  <label>Email : </label>
+          <div v-if="!isLoading" class="order_summary">
+            <h3 class="mt1 mb1">Order Summary</h3>
+            <div class="d-flex justify-content-between mb2">
+              <div class="billed_shippe d-flex">
+                <div class="billed_to">
+                  <strong>BILLED TO</strong>
+                  <p>{{ orderDetails.user_name }}</p>
                   <a :href="`mailto:${orderDetails.user_email}`">{{
                     orderDetails.user_email
                   }}</a>
-                </div>
-                <div class="billing-info">
-                  <label>Phone : </label>
                   <a :href="`tel:${orderDetails.user_phone}`">{{
                     orderDetails.user_phone
                   }}</a>
                 </div>
-              </div>
-            </div>
-            <div v-if="!isLoading" class="col-md-6">
-              <div class="box bg-gray-light has-relative h-100">
-                <h4>Shipping Info</h4>
-                <div class="shipping-info">
-                  <label>Company Name : </label>
-                  <strong>{{
-                    orderDetails.shpping_info.shipping_company_name
-                  }}</strong>
-                </div>
-                <div class="shipping-info">
-                  <label>Name : </label>
-                  <strong>{{
-                    orderDetails.shpping_info.shipping_user_name
-                  }}</strong>
-                </div>
-                <div class="shipping-info">
-                  <label>Email : </label>
+                <div class="shipped_to">
+                  <strong>SHIPPED TO</strong>
+                  <p>{{ orderDetails.shpping_info.shipping_company_name }}</p>
+                  <p>{{ orderDetails.shpping_info.shipping_user_name }}</p>
                   <a
                     :href="`mailto:${orderDetails.shpping_info.shipping_user_email}`"
                     >{{ orderDetails.shpping_info.shipping_user_email }}</a
                   >
-                </div>
-                <div class="shipping-info">
-                  <label>Phone : </label>
                   <a
                     :href="`tel:${orderDetails.shpping_info.shipping_user_phone}`"
                     >{{ orderDetails.shpping_info.shipping_user_phone }}</a
                   >
-                </div>
-                <div class="shipping-info">
-                  <label>Address : </label>
-                  <strong>{{
-                    orderDetails.shpping_info.address1 +
-                    ',' +
-                    orderDetails.shpping_info.address2 +
-                    ',' +
-                    orderDetails.shpping_info.city +
-                    ',' +
-                    orderDetails.shpping_info.state +
-                    ',' +
-                    orderDetails.shpping_info.county +
-                    ',' +
-                    orderDetails.shpping_info.zip_code
-                  }}</strong>
-                </div>
-                <div class="shipping-info mt1">
-                  <label>Special Instruction : </label>
                   <p>
-                    {{ orderDetails.user_note }}
+                    {{
+                      orderDetails.shpping_info.address1 +
+                      ',' +
+                      orderDetails.shpping_info.address2 +
+                      ',' +
+                      orderDetails.shpping_info.city +
+                      ',' +
+                      orderDetails.shpping_info.state
+                    }}
+                  </p>
+                  <p>
+                    {{
+                      orderDetails.shpping_info.county +
+                      ',' +
+                      orderDetails.shpping_info.zip_code
+                    }}
                   </p>
                 </div>
               </div>
+              <div class="order_to">
+                <p>
+                  <span>Order No. # : </span>
+                  <strong>{{ orderId }}</strong>
+                </p>
+                <p>
+                  <span>Order Date : </span>
+                  <strong>
+                    {{
+                      $moment(orderDetails.created_at).format('Do MMM, YYYY')
+                    }}</strong
+                  >
+                </p>
+              </div>
             </div>
+            <table class="tables" width="100%" cellspacing="0" cellpadding="0">
+              <thead>
+                <tr>
+                  <th align="left">PRODUCT NAME</th>
+                  <th width="10%" align="right">QTY</th>
+                  <th width="10%" align="right">QTY PRICE</th>
+                  <th width="10%" align="right">AMOUNT (USD)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="orderItem in orderDetails.order_item"
+                  :key="orderItem.id"
+                >
+                  <td align="left">
+                    <strong>{{ orderItem.display_file_name }}</strong>
+                  </td>
+                  <td width="10%" align="right">{{ orderItem.qty }}</td>
+                  <td width="10%" align="right">${{ orderItem.price }}.00</td>
+                  <td width="10%" align="right">
+                    <strong>${{ orderItem.price }}.00</strong>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="3" align="right">Sub Total</td>
+                  <td width="10%" align="right">
+                    ${{ orderDetails.total_amount }}.00
+                  </td>
+                </tr>
+                <tr>
+                  <td>&nbsp;</td>
+                  <td colspan="2" align="right">Total Amount (USD)</td>
+                  <td width="10%" align="right">
+                    <strong>${{ orderDetails.total_amount }}.00</strong>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+            <h4 class="mt2 mb-2">Special Instruction</h4>
+            <p>
+              {{ orderDetails.user_note }}
+            </p>
           </div>
         </div>
       </div>
