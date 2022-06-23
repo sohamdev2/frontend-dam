@@ -424,6 +424,7 @@ export default {
         sub_total: 0,
       },
       addressOptions: [],
+      loading: false,
     }
   },
   mounted() {
