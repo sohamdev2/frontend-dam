@@ -30,7 +30,7 @@
           </h4>
           <div
             class="order-status ml1"
-            style="background-color: #d3d3d3; color: #070e22"
+            :style="`background-color: ${orderDetails.status_background_color}; color: ${orderDetails.status_color}`"
           >
             <span>{{ orderDetails.status || '-' }}</span>
           </div>
@@ -46,7 +46,10 @@
               </div>
             </div>
             <a
-              v-if="orderDetails.status !== 'Cancelled'"
+              v-if="
+                orderDetails.status !== 'Cancelled' &&
+                orderDetails.status !== 'Shipped'
+              "
               href="javascript:void(0);"
               class="btn btn-red-invert"
               @click="showDeleteDialog = true"
@@ -138,7 +141,7 @@
                     </div>
                     <div class="tb-column flex10">
                       <div class="top-column">
-                        <label>${{ orderItem.price }}</label>
+                        <label>${{ orderItem.price }}.00</label>
                       </div>
                     </div>
                     <!-- <div class="tb-column flex10">
@@ -155,7 +158,7 @@
                       <label>Total Amount : </label>
                     </div>
                     <div class="flex10">
-                      <strong>${{ orderDetails.total_amount }}</strong>
+                      <strong>${{ orderDetails.total_amount }}.00</strong>
                     </div>
                   </li>
                 </ul>

@@ -80,7 +80,7 @@
                       <div class="top-column">
                         <div
                           class="order-status"
-                          style="background-color: #818d9a; color: #ffffff"
+                          :style="`background-color: ${order.status_background_color}; color: ${order.status_color}`"
                         >
                           <span>{{ order.status }}</span>
                         </div>

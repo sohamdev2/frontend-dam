@@ -374,12 +374,15 @@
             </div>
           </div>
           <div class="mt2">
-            <a
+            <button
               href="javascript:;"
               class="btn btn-big btn-block"
+              :disabled="loading"
               @click="placeOrder"
-              >Place Order</a
             >
+              <i v-if="loading" class="fa fa-circle-o-notch fa-spin"></i>Place
+              Order
+            </button>
           </div>
         </div>
       </div>
