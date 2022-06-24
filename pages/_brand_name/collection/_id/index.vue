@@ -268,6 +268,7 @@
                       :deleting="deleting"
                       @selectedDrop="dropDown"
                       @click:selected="toggleSelection"
+                      @emitCart="addToCart(file)"
                     />
                   </template>
                 </transition-group>
@@ -287,6 +288,7 @@
       />
       <DownloadingIndicator />
     </template>
+    <AddToCartModal v-if="file" ref="cartDialog" :file="file" />
   </div>
 </template>
 
@@ -313,6 +315,7 @@ export default {
     return {
       assetList: {},
       files: [],
+      file: null,
       mode: 'tile', // [tile, list] Style
       loading: true,
       deleting: false,
@@ -335,6 +338,12 @@ export default {
     this.getCollectionAssets()
   },
   methods: {
+    addToCart(file) {
+      this.file = file
+      this.$nextTick(() => {
+        this.$refs.cartDialog.toggleModel()
+      })
+    },
     selectAll() {
       this.selectedFiles = [...this.files]
     },
