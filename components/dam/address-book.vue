@@ -71,7 +71,7 @@
                     </div>
                   </div>
                   <div class="col-sm-12">
-                    <div class="form-group w-75 required">
+                    <div class="form-group required">
                       <label class="control-label">City</label>
                       <input
                         v-model="address.city"
@@ -89,7 +89,7 @@
                     </div>
                   </div>
                   <div class="col-sm-12">
-                    <div class="form-group w-75 required">
+                    <div class="form-group required">
                       <label class="control-label">State/Province</label>
                       <input
                         v-model="address.state"
@@ -107,7 +107,7 @@
                     </div>
                   </div>
                   <div class="col-sm-12">
-                    <div class="form-group w-50 required">
+                    <div class="form-group required">
                       <label class="control-label">ZIP</label>
                       <input
                         v-model="address.zip_code"
@@ -130,12 +130,12 @@
                     <div class="form-group required">
                       <label class="control-label">Country</label>
                       <Select2
-                        v-model="address.county"
+                        v-model="address.country"
                         :options="['United States', 'Canada']"
                         placeholder="Country"
                       ></Select2>
                       <div
-                        v-if="$v.address.$error && !$v.address.county.required"
+                        v-if="$v.address.$error && !$v.address.country.required"
                         class="input-error"
                       >
                         Field is required
@@ -188,7 +188,7 @@ export default {
         address2: '',
         city: '',
         state: '',
-        county: '',
+        country: '',
         zip_code: '',
       },
     }
@@ -254,7 +254,7 @@ export default {
         state: {
           required,
         },
-        county: {
+        country: {
           required,
         },
         zip_code: {
