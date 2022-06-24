@@ -55,7 +55,7 @@
                             },
                           }"
                           class="table-a text-underline"
-                          >#{{ order.order_id }}</nuxt-link
+                          >{{ order.order_id }}</nuxt-link
                         >
                       </div>
                     </div>
@@ -192,6 +192,9 @@ export default {
             params: {
               url_workspace_id: this.$getWorkspaceId(),
               user_id: this.user.user_id,
+              sortValue: 'id',
+              sortBy: 'DESC',
+              page: this.page,
             },
           }
         )

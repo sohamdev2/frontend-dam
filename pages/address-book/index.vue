@@ -56,9 +56,7 @@
                             },
                           }"
                           class="table-a"
-                          >{{
-                            address.address1 + ',' + address.address2
-                          }}</nuxt-link
+                          >{{ getAddressConcat(address) }}</nuxt-link
                         >
                       </div>
                     </div>
@@ -304,6 +302,18 @@ export default {
     user() {
       return this.$auth.user
     },
+    getAddressConcat() {
+      return (address) => {
+        let concat = ''
+        if (address.address1) {
+          concat += address.address1
+        }
+        if (address.address2) {
+          concat += ',' + address.address2
+        }
+        return concat
+      }
+    },
   },
   methods: {
     infiniteHandler($state) {
@@ -317,6 +327,7 @@ export default {
             params: {
               workspace_id: this.$getWorkspaceId(),
               user_id: this.user.user_id,
+              page: this.page,
             },
           }
         )
