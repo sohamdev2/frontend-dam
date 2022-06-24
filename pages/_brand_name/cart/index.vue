@@ -209,7 +209,7 @@
                   <ul class="action">
                     <li>
                       <a
-                        v-tooltip="`Remove product`"
+                        v-tooltip="`Remove Product`"
                         style="pointer-events: all"
                         href="javascript:void(0);"
                         data-toggle="modal"
