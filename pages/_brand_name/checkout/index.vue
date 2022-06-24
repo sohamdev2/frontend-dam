@@ -433,9 +433,11 @@ export default {
       selectedAddressOption: '',
     }
   },
+  created() {
+    this.getCartList()
+  },
   mounted() {
     this.getAddressList()
-    this.getCartList()
     this.getUserInfo()
   },
   methods: {
@@ -466,6 +468,11 @@ export default {
         .then(({ data }) => {
           this.shippingInfo.grand_total = data.grand_total
           this.shippingInfo.sub_total = data.sub_total
+          if (data.grand_total <= 0) {
+            this.$router.push({
+              name: 'brand_name',
+            })
+          }
         })
         .catch(console.log)
         .finally(() => {
