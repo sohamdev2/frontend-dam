@@ -108,7 +108,20 @@
                     class="quantity"
                     :class="!cartItem.is_public ? 'disabled' : ''"
                   >
-                    <div class="quantity-button quantity-down">
+                    <div
+                      class="quantity-button quantity-down"
+                      :class="[
+                        !Boolean(parseInt(cartItem.product.is_customize))
+                          ? 'disabled'
+                          : '',
+                        parseInt(cartItem.qty) ===
+                        parseInt(
+                          getPriceOptions(cartItem.product.options)[0].qty
+                        )
+                          ? 'disabled'
+                          : '',
+                      ]"
+                    >
                       <svg
                         id="Layer_1"
                         class="quantity-minus-icon"
@@ -209,7 +222,7 @@
                   <ul class="action">
                     <li>
                       <a
-                        v-tooltip="`Remove product`"
+                        v-tooltip="`Remove Product`"
                         style="pointer-events: all"
                         href="javascript:void(0);"
                         data-toggle="modal"
@@ -255,33 +268,67 @@
             </li>
             <div v-if="!cartList.length" key="no-data" class="no-data-found">
               <div class="inner w-100">
-                <svg
-                  id="Layer_1"
-                  class="no-record-icon darkgray"
-                  style="height: 150px"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
-                  x="0px"
-                  y="0px"
-                  viewBox="0 0 131.3 156.8"
-                  xml:space="preserve"
+                <div
+                  class="cart-empty d-flex align-items-center justify-content-center"
                 >
-                  <g id="Group_4457" transform="translate(-190.348 -177.624)">
-                    <path
-                      id="Path_3564"
-                      class="fill-color"
-                      d="M285.2,214.4c-1.5,0-2.6,1.2-2.6,2.6c0,1.5,1.2,2.6,2.6,2.6h4.4v4.4c0,1.5,1.2,2.6,2.6,2.6s2.6-1.2,2.6-2.6l0,0l0,0v-4.4h4.4c1.5,0,2.6-1.2,2.6-2.6s-1.2-2.6-2.6-2.6l0,0h-4.4V210c0-1.5-1.2-2.6-2.6-2.6s-2.6,1.2-2.6,2.6v4.4H285.2z"
-                    />
-                    <path
-                      id="Path_3565"
-                      class="fill-color"
-                      d="M321.6,199.8c0.3-1.5-9.1-9.6-15.5-16.4c-3.9-3.7-7.4-9-9.5-3.1v15.5c0,3.8,3.1,6.8,6.8,6.8h12.8v95.1c0,0.9-0.7,1.6-1.6,1.6H227c-0.9,0-1.6-0.7-1.6-1.6V184.5c0-0.9,0.7-1.6,1.6-1.6h59.4c1.5,0,2.6-1.2,2.6-2.6s-1.2-2.6-2.6-2.6l0,0H227c-3.8,0-6.8,3.1-6.8,6.8v8.1h-8.1c-3.8,0-6.8,3.1-6.8,6.8v8.1h-8.1c-3.8,0-6.8,3.1-6.8,6.8v113.2c0,3.8,3.1,6.8,6.8,6.8H285c3.8,0,6.8-3.1,6.8-6.8v-8.1h8.1c3.8,0,6.8-3.1,6.8-6.8v-8.1h8.1c3.8,0,6.8-3.1,6.8-6.8V200C321.7,199.9,321.7,199.9,321.6,199.8L321.6,199.8z M301.5,312.6c0,0.9-0.7,1.6-1.6,1.6h-65.2c-1.5,0-2.6,1.2-2.6,2.6s1.2,2.6,2.6,2.6h51.8v8.1c0,0.9-0.7,1.6-1.6,1.6h-87.8c-0.9,0-1.6-0.7-1.6-1.6V214.3c0-0.9,0.7-1.6,1.6-1.6h8.1v99.9c0,3.8,3.1,6.8,6.8,6.8h10.4c1.5,0,2.6-1.2,2.6-2.6s-1.2-2.6-2.6-2.6l0,0h-10.4c-0.9,0-1.6-0.7-1.6-1.6V199.4c0-0.9,0.7-1.6,1.6-1.6h8.1v99.9c0,3.8,3.1,6.8,6.8,6.8h74.4L301.5,312.6L301.5,312.6z M303.5,197.3c-0.9,0-1.6-0.7-1.6-1.6v-9.1l10.7,10.7L303.5,197.3z"
-                    />
-                  </g>
-                </svg>
-
-                <p>Your cart is empty please add some product first.</p>
+                  <div class="text-center">
+                    <svg
+                      id="Layer_1"
+                      class="cart-icon"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                      x="0px"
+                      y="0px"
+                      viewBox="0 0 18 18"
+                      xml:space="preserve"
+                    >
+                      <g id="Add_to_Cart_1">
+                        <g
+                          id="shopping-cart_1_"
+                          transform="translate(0 -21.006)"
+                        >
+                          <g
+                            id="Group_39446"
+                            transform="translate(12.008 33.69)"
+                          >
+                            <g id="Group_39445">
+                              <path
+                                id="Path_40275"
+                                class="fill-color"
+                                d="M2.2,0C1,0,0,1,0,2.2s1,2.2,2.2,2.2s2.2-1,2.2-2.2v0C4.5,1,3.5,0,2.2,0z M2.2,3.1c-0.5,0-0.9-0.4-0.9-0.9c0-0.5,0.4-0.9,0.9-0.9c0.5,0,0.9,0.4,0.9,0.9l0,0C3.1,2.7,2.7,3.1,2.2,3.1z"
+                              ></path>
+                            </g>
+                          </g>
+                          <g id="Group_39448" transform="translate(0 21.705)">
+                            <g id="Group_39447" transform="translate(0 0)">
+                              <path
+                                id="Path_40276"
+                                class="fill-color"
+                                d="M17.9,3.3c-0.1-0.2-0.3-0.3-0.5-0.3H4.2L3.5,0.5C3.5,0.2,3.2,0,2.9,0H0.7C0.3,0,0,0.3,0,0.7s0.3,0.7,0.7,0.7h1.7l2.2,9.2C4.6,10.8,4.9,11,5.2,11h10.5c0.3,0,0.6-0.2,0.7-0.5L18,3.9C18,3.7,18,3.5,17.9,3.3z M15.2,9.7H5.7L4.5,4.4h12L15.2,9.7z"
+                              ></path>
+                            </g>
+                          </g>
+                          <g id="Group_39450" transform="translate(3.86 33.69)">
+                            <g id="Group_39449">
+                              <path
+                                id="Path_40277"
+                                class="fill-color"
+                                d="M2.2,0C1,0,0,1,0,2.2c0,1.2,1,2.2,2.2,2.2s2.2-1,2.2-2.2l0,0C4.5,1,3.5,0,2.2,0z M2.2,3.1c-0.5,0-0.9-0.4-0.9-0.9c0-0.5,0.4-0.9,0.9-0.9c0.5,0,0.9,0.4,0.9,0.9l0,0C3.1,2.7,2.7,3.1,2.2,3.1z"
+                              ></path>
+                            </g>
+                          </g>
+                        </g>
+                      </g>
+                    </svg>
+                    <h2>Your cart is empty.</h2>
+                    <nuxt-link
+                      :to="{ name: 'brand_name-store' }"
+                      class="btn mt1"
+                      >Go to store</nuxt-link
+                    >
+                  </div>
+                </div>
               </div>
             </div>
           </ul>
@@ -300,10 +347,13 @@
       </div>
     </div>
     <div class="mt2 d-flex align-items-center justify-content-end">
-      <nuxt-link to="/brand_name/store" class="btn btn-gray"
+      <nuxt-link :to="{ name: 'brand_name-store' }" class="btn btn-gray"
         >Continue Shopping</nuxt-link
       >
-      <nuxt-link v-if="getTotalPrice > 0" to="/brand_name/checkout" class="btn"
+      <nuxt-link
+        v-if="getTotalPrice > 0"
+        :to="{ name: 'brand_name-checkout' }"
+        class="btn"
         >Checkout</nuxt-link
       >
     </div>

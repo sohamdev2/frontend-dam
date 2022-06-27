@@ -36,12 +36,12 @@
         ></span>
       </button>
     </div>
-    <div v-if="cartAdded" class="modal-body text-center">
-      <div class="box mt20 mb20">
-        <h4 class="mb0">
+    <div v-if="cartAdded" class="modal-body">
+      <div class="success-msg">
+        <div class="alert alert-success">
           <svg
-            id="Capa_1"
-            class="not-info-icon"
+            id="Layer_1"
+            class="alert-icon mr-1"
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -50,40 +50,23 @@
             viewBox="0 0 512 512"
             xml:space="preserve"
           >
-            <g>
-              <g>
-                <path
-                  class="fill-color"
-                  d="M256,0C114.5,0,0,114.5,0,256c0,141.5,114.5,256,256,256c141.5,0,256-114.5,256-256C512,114.5,397.5,0,256,0z M256,472c-119.4,0-216-96.6-216-216c0-119.4,96.6-216,216-216c119.4,0,216,96.6,216,216C472,375.4,375.4,472,256,472z"
-                ></path>
-              </g>
-            </g>
-            <g>
-              <g>
-                <path
-                  class="fill-color"
-                  d="M256,128.9c-11,0-20,9-20,20v128.8c0,11,9,20,20,20c11,0,20-9,20-20V148.9C276,137.8,267,128.9,256,128.9z"
-                ></path>
-              </g>
-            </g>
-            <g>
-              <g>
-                <circle class="fill-color" cx="256" cy="349.2" r="27"></circle>
-              </g>
-            </g>
+            <path
+              class="fill-color"
+              d="M369.2,174.8c7.8,7.8,7.8,20.5,0,28.3L235,337.2c-7.8,7.8-20.5,7.8-28.3,0l-63.9-63.9c-7.8-7.8-7.8-20.5,0-28.3c7.8-7.8,20.5-7.8,28.3,0l49.7,49.7l120-120C348.7,167,361.4,167,369.2,174.8z M512,256c0,141.5-114.5,256-256,256C114.5,512,0,397.5,0,256C0,114.5,114.5,0,256,0C397.5,0,512,114.5,512,256z M472,256c0-119.4-96.6-216-216-216C136.6,40,40,136.6,40,256c0,119.4,96.6,216,216,216C375.4,472,472,375.4,472,256z"
+            ></path>
           </svg>
-          Product is added to cart
-        </h4>
-        <nuxt-link to="/brand_name/cart" class="btn">View Cart</nuxt-link>
+          Product is added to cart.
+        </div>
       </div>
-      <button
-        type="button"
-        class="btn"
-        data-dismiss="modal"
-        @click="active = false"
-      >
-        Close
-      </button>
+      <div class="d-flex align-items-center justify-content-center">
+        <nuxt-link
+          :to="{
+            name: 'brand_name-cart',
+          }"
+          class="btn"
+          >View Cart</nuxt-link
+        >
+      </div>
     </div>
     <div v-else class="modal-body">
       <h4 class="mb20">{{ file && file.display_file_name }}</h4>
@@ -102,7 +85,14 @@
           <template v-if="assetProduct.pricing_option === '1'">
             <label class="control-label">Qty</label>
             <div class="quantity">
-              <div class="quantity-button quantity-down">
+              <div
+                class="quantity-button quantity-down"
+                :class="
+                  !Boolean(parseInt(assetProduct.is_customize))
+                    ? 'disabled'
+                    : ''
+                "
+              >
                 <svg
                   id="Layer_1"
                   class="quantity-minus-icon"
@@ -125,11 +115,19 @@
                 </svg>
               </div>
               <input
+                v-if="!Boolean(parseInt(assetProduct.is_customize))"
+                type="number"
+                :min="getPriceOptions[0].qty"
+                :value="cartQuantity"
+                class="form-control"
+                disabled
+              />
+              <input
+                v-else
                 v-model="cartQuantity"
                 type="number"
                 :min="getPriceOptions[0].qty"
                 class="form-control"
-                disabled=""
               />
               <div
                 class="quantity-button quantity-up"
@@ -219,7 +217,12 @@
             Add to Cart
           </a>
         </div>
-        <p v-if="assetProduct.pricing_option === '1'">
+        <p
+          v-if="
+            assetProduct.pricing_option === '1' &&
+            assetProduct.is_customize === '1'
+          "
+        >
           <strong class="text-danger">*</strong> Qty is allowed to adjust
           addition by <span>{{ getPriceOptions[0].qty }}</span>
         </p>
@@ -308,6 +311,9 @@ export default {
       }
     },
     incrementQty() {
+      if (!this.assetProduct.is_customize) {
+        return
+      }
       this.pricePerQuantity = this.minPrice / this.initialQuantity
       this.cartQuantity += parseInt(this.initialQuantity)
       this.calculatedPrice = parseFloat(
@@ -316,6 +322,9 @@ export default {
     },
     decrementQty() {
       if (this.cartQuantity === this.initialQuantity) {
+        return
+      }
+      if (!this.assetProduct.is_customize) {
         return
       }
       this.cartQuantity -= this.initialQuantity

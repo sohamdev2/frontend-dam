@@ -26,7 +26,7 @@
             </svg>
           </nuxt-link>
           <h4 class="mb0">
-            Orders - <strong>#{{ orderId }}</strong>
+            Orders <strong># {{ orderId }}</strong>
           </h4>
           <div
             class="order-status ml1"
@@ -37,24 +37,28 @@
           <div class="right-side justify-content-end">
             <div class="track-ship">
               <div class="tags">
-                <span>Tracking ID - </span>
-                <span>{{ orderDetails.shipping_tracking_id || '-' }}</span>
+                <span>Tracking ID&nbsp;# -</span>
+                <strong>{{ orderDetails.shipping_tracking_id || '-' }}</strong>
               </div>
               <div class="tags">
                 <span>Shipping Method - </span>
                 <span>{{ orderDetails.shipping_method || '-' }}</span>
               </div>
             </div>
-            <a
-              v-if="
-                orderDetails.status !== 'Cancelled' &&
-                orderDetails.status !== 'Shipped'
+            <button
+              v-tooltip="
+                orderDetails.status === 'Shipped' &&
+                `You can not Cancel the Order as it is already Shipped.`
               "
-              href="javascript:void(0);"
+              :disabled="
+                orderDetails.status === 'Cancelled' ||
+                orderDetails.status === 'Shipped'
+              "
               class="btn btn-red-invert"
               @click="showDeleteDialog = true"
-              >Cancel Order</a
             >
+              Cancel Order
+            </button>
           </div>
         </div>
         <div class="success-msg pl10 pr10 mb0">
@@ -111,20 +115,12 @@
                     >{{ orderDetails.shpping_info.shipping_user_phone }}</a
                   >
                   <p>
-                    {{
-                      orderDetails.shpping_info.address1 +
-                      ',' +
-                      orderDetails.shpping_info.address2 +
-                      ',' +
-                      orderDetails.shpping_info.city +
-                      ',' +
-                      orderDetails.shpping_info.state
-                    }}
+                    {{ getAddressConcat(orderDetails.shpping_info) }}
                   </p>
                   <p>
                     {{
                       orderDetails.shpping_info.country +
-                      ',' +
+                      ' , ' +
                       orderDetails.shpping_info.zip_code
                     }}
                   </p>
@@ -160,7 +156,25 @@
                   :key="orderItem.id"
                 >
                   <td align="left">
-                    <strong>{{ orderItem.display_file_name }}</strong>
+                    <div class="media">
+                      <div class="media-left">
+                        <div class="categary-image">
+                          <img :src="orderItem.file_name" alt="" />
+                        </div>
+                      </div>
+                      <div class="media-right">
+                        <nuxt-link
+                          :to="{
+                            name: 'brand_name-files-id',
+                            params: {
+                              id: orderItem.asset_id,
+                              brand_name: $getBrandName(),
+                            },
+                          }"
+                          >{{ orderItem.display_file_name }}</nuxt-link
+                        >
+                      </div>
+                    </div>
                   </td>
                   <td width="10%" align="right">{{ orderItem.qty }}</td>
                   <td width="10%" align="right">${{ orderItem.price }}.00</td>
@@ -173,7 +187,18 @@
                 <tr>
                   <td colspan="3" align="right">Sub Total</td>
                   <td width="10%" align="right">
-                    ${{ orderDetails.total_amount }}.00
+                    ${{ orderDetails.sub_total }}.00
+                  </td>
+                </tr>
+                <tr>
+                  <td>&nbsp;</td>
+                  <td colspan="2" align="right">Shipping Rate</td>
+                  <td width="10%" align="right">
+                    <strong>{{
+                      orderDetails.shipping_amount
+                        ? '$' + orderDetails.shipping_amount + '.00'
+                        : '-'
+                    }}</strong>
                   </td>
                 </tr>
                 <tr>
@@ -221,6 +246,24 @@ export default {
   computed: {
     user() {
       return this.$auth.user
+    },
+    getAddressConcat() {
+      let concat = ''
+      return (address) => {
+        if (address.address1) {
+          concat += address.address1
+        }
+        if (address.address2) {
+          concat += ', ' + address.address2
+        }
+        if (address.city) {
+          concat += ', ' + address.city
+        }
+        if (address.state) {
+          concat += ', ' + address.state
+        }
+        return concat
+      }
     },
   },
   created() {

@@ -51,7 +51,7 @@
                     </div>
                   </div>
                   <div class="col-sm-12">
-                    <div class="form-group required">
+                    <div class="form-group">
                       <label class="control-label">Address Line 2</label>
                       <input
                         v-model="address.address2"
@@ -60,14 +60,6 @@
                         placeholder=""
                         class="form-control"
                       />
-                      <div
-                        v-if="
-                          $v.address.$error && !$v.address.address2.required
-                        "
-                        class="input-error"
-                      >
-                        Field is required
-                      </div>
                     </div>
                   </div>
                   <div class="col-sm-12">
@@ -147,6 +139,7 @@
                       type="submit"
                       name="submit"
                       class="btn"
+                      :disabled="loading"
                       @click="saveAddress"
                     >
                       {{ edit ? 'Update address' : 'Save Address' }}
@@ -191,6 +184,7 @@ export default {
         country: '',
         zip_code: '',
       },
+      loading: false,
     }
   },
   computed: {
@@ -222,6 +216,7 @@ export default {
       if (this.$v.$invalid) {
         return
       }
+      this.loading = true
       const url = this.edit ? 'update-address' : 'create-address'
       if (this.edit) {
         this.address.address_id = this.address.id
@@ -235,17 +230,18 @@ export default {
         .then(({ message }) => {
           this.$toast.success(message)
           this.$router.push('/address-book')
+          this.loading = false
         })
-        .catch(console.error)
+        .catch((err) => {
+          this.$toast.error(this.$getErrorMessage(err))
+          this.loading = false
+        })
     },
   },
   validations() {
     return {
       address: {
         address1: {
-          required,
-        },
-        address2: {
           required,
         },
         city: {

@@ -18,12 +18,37 @@
       </ul>
       <div id="my-order" class="tab-pane active">
         <div class="workspace-settings h-100">
+          <div class="general-settings-title" data-select2-id="6">
+            <div class="right-side" data-select2-id="5">
+              <Select2
+                v-model="filter.status"
+                placeholder="Select status"
+                :options="statusList"
+              />
+              <DateRangePicker
+                class="daterange form-control flatpickr-input"
+                :start-date.sync="filter.start_date"
+                :end-date.sync="filter.end_date"
+                placeholder="Custom Date Range"
+                human
+                custom-event
+                @dateChanged="() => handleFetch()"
+              />
+            </div>
+          </div>
           <div class="common-box bg-gray h-100 pl0 pr0">
             <div class="table-list-view table-list-scrolling">
               <ul class="thead">
                 <li>
-                  <div class="sorting flex20">
-                    <span>Order #</span>
+                  <div
+                    class="sorting sortarrow flex20"
+                    :class="
+                      sortValue === 'id' && sortBy === 'DESC'
+                        ? 'active descending'
+                        : ''
+                    "
+                  >
+                    <span @click="handleSort('id')">Order #</span>
                   </div>
                   <div class="sorting flex20">
                     <span>Total Items</span>
@@ -31,11 +56,27 @@
                   <div class="sorting flex20">
                     <span>Total Amount</span>
                   </div>
-                  <div class="sorting flex25">
-                    <span>Order Placed Date</span>
+                  <div
+                    class="sorting sortarrow flex25"
+                    :class="
+                      sortValue === 'created_at' && sortBy === 'DESC'
+                        ? 'active descending'
+                        : ''
+                    "
+                  >
+                    <span @click="handleSort('created_at')"
+                      >Order Placed Date</span
+                    >
                   </div>
-                  <div class="sorting flex15">
-                    <span>Status</span>
+                  <div
+                    class="sorting sortarrow flex15"
+                    :class="
+                      sortValue === 'status' && sortBy === 'DESC'
+                        ? 'active descending'
+                        : ''
+                    "
+                  >
+                    <span @click="handleSort('status')">Status</span>
                   </div>
                 </li>
               </ul>
@@ -55,7 +96,7 @@
                             },
                           }"
                           class="table-a text-underline"
-                          >#{{ order.order_id }}</nuxt-link
+                          >{{ order.order_id }}</nuxt-link
                         >
                       </div>
                     </div>
@@ -172,7 +213,15 @@ export default {
       contentLoaderData: [0, 15, 31, 47, 63, 79, 95, 111, 127, 143],
       noOrders: false,
       page: 0,
-      last_page: null,
+      lastPage: 0,
+      statusList: [],
+      sortValue: 'id',
+      sortBy: 'DESC',
+      filter: {
+        start_date: '',
+        end_date: '',
+        status: '',
+      },
     }
   },
   computed: {
@@ -180,7 +229,46 @@ export default {
       return this.$auth.user
     },
   },
+  watch: {
+    'filter.status': {
+      handler() {
+        this.handleFetch()
+      },
+    },
+  },
+  mounted() {
+    this.getOrderStatus()
+  },
   methods: {
+    handleSort(sortVal) {
+      this.sortValue = sortVal
+      this.sortBy =
+        this.sortBy === 'ASC' ? (this.sortBy = 'DESC') : (this.sortBy = 'ASC')
+      this.handleFetch()
+    },
+    getOrderStatus() {
+      this.$axios
+        .$get('digital/order/order-status', {
+          params: {
+            url_workspace_id: this.$getWorkspaceId(),
+          },
+        })
+        .then(({ data }) => {
+          data.unshift({
+            name: 'All',
+            id: 0,
+            text: 'All',
+          })
+          this.statusList = data
+        })
+        .catch(console.error)
+    },
+    handleFetch() {
+      this.orders = []
+      this.page = 0
+      this.lastPage = 0
+      this.infiniteId = new Date()
+    },
     infiniteHandler($state) {
       this.noProduct = false
       this.page += 1
@@ -192,6 +280,12 @@ export default {
             params: {
               url_workspace_id: this.$getWorkspaceId(),
               user_id: this.user.user_id,
+              sortValue: this.sortValue,
+              sortBy: this.sortBy,
+              page: this.page,
+              status: this.filter.status,
+              start_date: this.filter.start_date,
+              end_date: this.filter.end_date,
             },
           }
         )
