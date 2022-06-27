@@ -108,7 +108,14 @@
                     class="quantity"
                     :class="!cartItem.is_public ? 'disabled' : ''"
                   >
-                    <div class="quantity-button quantity-down">
+                    <div
+                      class="quantity-button quantity-down"
+                      :class="
+                        !Boolean(parseInt(cartItem.product.is_customize))
+                          ? 'disabled'
+                          : ''
+                      "
+                    >
                       <svg
                         id="Layer_1"
                         class="quantity-minus-icon"
