@@ -110,11 +110,17 @@
                   >
                     <div
                       class="quantity-button quantity-down"
-                      :class="
+                      :class="[
                         !Boolean(parseInt(cartItem.product.is_customize))
                           ? 'disabled'
-                          : ''
-                      "
+                          : '',
+                        parseInt(cartItem.qty) ===
+                        parseInt(
+                          getPriceOptions(cartItem.product.options)[0].qty
+                        )
+                          ? 'disabled'
+                          : '',
+                      ]"
                     >
                       <svg
                         id="Layer_1"
