@@ -187,7 +187,7 @@
                 <tr>
                   <td colspan="3" align="right">Sub Total</td>
                   <td width="10%" align="right">
-                    ${{ orderDetails.total_amount }}.00
+                    ${{ orderDetails.sub_total }}.00
                   </td>
                 </tr>
                 <tr>
