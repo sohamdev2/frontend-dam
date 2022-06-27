@@ -91,10 +91,24 @@
                 <div class="form-group">
                   <label class="control-label">Existing Address</label>
                   <select2
-                    :options="addressOptions"
+                    v-model="selectedAddressOption"
                     placeholder="Select Existing Address or Enter New Address"
                     @input="getAddress"
-                  />
+                  >
+                    <optgroup
+                      v-for="(group, name) in addressOptions"
+                      :key="name"
+                      :label="group.name"
+                    >
+                      <option
+                        v-for="(option, index) in group.type"
+                        :key="index"
+                        :value="option.id"
+                      >
+                        {{ option.name }}
+                      </option>
+                    </optgroup></select2
+                  >
                 </div>
               </div>
             </div>
@@ -204,7 +218,7 @@
                 </div>
               </div>
               <div class="col-md-6">
-                <div class="form-group required">
+                <div class="form-group">
                   <label class="control-label">Address Line 2</label>
                   <input
                     v-model="shippingInfo.address2"
@@ -212,15 +226,6 @@
                     name="address2"
                     class="form-control"
                   />
-                  <div
-                    v-if="
-                      $v.shippingInfo.$error &&
-                      !$v.shippingInfo.address2.required
-                    "
-                    class="input-error"
-                  >
-                    Field is required
-                  </div>
                 </div>
               </div>
             </div>
@@ -380,8 +385,8 @@
               :disabled="loading"
               @click="placeOrder"
             >
-              <i v-if="loading" class="fa fa-circle-o-notch fa-spin"></i>Place
-              Order
+              <i v-if="loading" class="fa fa-circle-o-notch fa-spin"></i>
+              Place Order
             </button>
           </div>
         </div>
@@ -425,13 +430,35 @@ export default {
       },
       addressOptions: [],
       loading: false,
+      selectedAddressOption: '',
     }
+  },
+  created() {
+    this.getCartList()
   },
   mounted() {
     this.getAddressList()
-    this.getCartList()
+    this.getUserInfo()
   },
   methods: {
+    getUserInfo() {
+      this.loading = true
+      this.$axios
+        .$get(`digital/order/user-details`, {
+          params: {
+            url_workspace_id: this.$getWorkspaceId(),
+          },
+        })
+        .then(({ data }) => {
+          this.billingInfo.user_name = data.userName
+          this.billingInfo.user_email = data.userEmail
+          this.billingInfo.user_phone = data.userPhone
+        })
+        .catch(console.log)
+        .finally(() => {
+          this.loading = false
+        })
+    },
     getCartList() {
       this.loading = true
       this.$axios
@@ -441,6 +468,11 @@ export default {
         .then(({ data }) => {
           this.shippingInfo.grand_total = data.grand_total
           this.shippingInfo.sub_total = data.sub_total
+          if (data.grand_total <= 0) {
+            this.$router.push({
+              name: 'brand_name',
+            })
+          }
         })
         .catch(console.log)
         .finally(() => {
@@ -467,9 +499,27 @@ export default {
               name: address.full_address,
             }
           })
+          this.addressOptions = [
+            {
+              type: [
+                { name: 'Add New Address', id: '0', text: 'Add New Address' },
+              ],
+              name: 'Add New Address',
+            },
+            { type: [...this.addressOptions], name: 'Existing Address' },
+          ]
         })
     },
     getAddress(id) {
+      if (parseInt(id) === 0) {
+        this.shippingInfo.address1 = ''
+        this.shippingInfo.address2 = ''
+        this.shippingInfo.city = ''
+        this.shippingInfo.state = ''
+        this.shippingInfo.country = ''
+        this.shippingInfo.zip_code = ''
+        return
+      }
       this.$axios
         .$post(`digital/user-address/view-address`, {
           address_id: id,
@@ -508,10 +558,11 @@ export default {
                 order_id: data.id,
               },
             })
+            this.loading = false
           }
         })
-        .catch(console.log)
-        .finally(() => {
+        .catch((err) => {
+          this.$toast.error(this.$getErrorMessage(err))
           this.loading = false
         })
     },
@@ -529,9 +580,6 @@ export default {
         shipping_user_email: { required },
         shipping_user_phone: { required },
         address1: {
-          required,
-        },
-        address2: {
           required,
         },
         city: {
