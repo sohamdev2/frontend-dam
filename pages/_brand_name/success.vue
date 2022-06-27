@@ -20,10 +20,19 @@
             >. <br />Also, Order details have been sent over your email.
           </p>
           <div class="mt2 d-flex align-items-center justify-content-center">
-            <nuxt-link to="/brand_name" class="btn">Back to Home</nuxt-link>
+            <nuxt-link
+              :to="{
+                name: 'brand_name',
+                params: { brand_name: $getBrandName() },
+              }"
+              class="btn"
+              >Back to Home</nuxt-link
+            >
             <strong class="ml-4">OR</strong>
             <p class="mb0 ml-4">
-              <nuxt-link to="/my-orders">Go to My Orders Page</nuxt-link>
+              <nuxt-link :to="{ name: 'my-orders' }"
+                >Go to My Orders Page</nuxt-link
+              >
             </p>
           </div>
         </div>

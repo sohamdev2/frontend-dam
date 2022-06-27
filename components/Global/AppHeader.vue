@@ -137,7 +137,12 @@
         </div>
       </div>
       <div class="cart-list">
-        <nuxt-link to="/brand_name/cart">
+        <nuxt-link
+          :to="{
+            name: 'brand_name-cart',
+            params: { brand_name: $getBrandName() },
+          }"
+        >
           <svg
             id="Layer_1"
             class="cart-icon"

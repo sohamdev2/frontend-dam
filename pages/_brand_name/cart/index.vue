@@ -300,10 +300,13 @@
       </div>
     </div>
     <div class="mt2 d-flex align-items-center justify-content-end">
-      <nuxt-link to="/brand_name/store" class="btn btn-gray"
+      <nuxt-link :to="{ name: 'brand_name-store' }" class="btn btn-gray"
         >Continue Shopping</nuxt-link
       >
-      <nuxt-link v-if="getTotalPrice > 0" to="/brand_name/checkout" class="btn"
+      <nuxt-link
+        v-if="getTotalPrice > 0"
+        :to="{ name: 'brand_name-checkout' }"
+        class="btn"
         >Checkout</nuxt-link
       >
     </div>

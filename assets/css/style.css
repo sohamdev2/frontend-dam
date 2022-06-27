@@ -1129,8 +1129,14 @@ header .user-dropdown.show .dropdown-toggle{color: var(--secondary);}
 .user-profile .tab-content{height: calc(100% - 56px);}
 .user-profile .tab-pane{height: 100%;}
 .user-profile .workspace-settings {height: calc(100% - 70px);}
-.user-profile .workspace-settings .add-address-btn {position: fixed;right: 15px;margin-top: -44px;z-index: 9;}
+.user-profile .workspace-settings .add-address-btn,
+.user-profile .workspace-settings .general-settings-title .right-side {position: fixed;right: 15px;margin-top: -45px;z-index: 9;}
 .user-profile.warning-massage .workspace-settings {height: calc(100% - 105px);}
+.user-profile .workspace-settings .general-settings-title{padding: 0px;min-height: auto;}
+.user-profile .workspace-settings .general-settings-title .select2 {min-width: 200px;}
+.user-profile .workspace-settings .general-settings-title .select2 .select2-selection__rendered {font-size: 14px;line-height: 22px;}
+.user-profile .workspace-settings .general-settings-title .datepicker,
+.user-profile .workspace-settings .general-settings-title .daterange {margin-left: 15px;max-height: 34px;padding-right: 30px;background-size: 14px;background-position: 95%;min-width: 200px;}
 
 .order-status {display: inline-flex;border-radius: 4px;}
 .order-status span {font-size: 10px;padding: 0 12px;height: 24px;line-height: 24px;white-space: nowrap;border-radius: 4px;display: block;font-weight: 500;}

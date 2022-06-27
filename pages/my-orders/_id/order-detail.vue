@@ -26,7 +26,7 @@
             </svg>
           </nuxt-link>
           <h4 class="mb0">
-            Orders<strong># {{ orderId }}</strong>
+            Orders <strong># {{ orderId }}</strong>
           </h4>
           <div
             class="order-status ml1"
@@ -37,8 +37,8 @@
           <div class="right-side justify-content-end">
             <div class="track-ship">
               <div class="tags">
-                <span>Tracking ID - </span>
-                <span>{{ orderDetails.shipping_tracking_id || '-' }}</span>
+                <span>Tracking ID&nbsp;# -</span>
+                <strong>{{ orderDetails.shipping_tracking_id || '-' }}</strong>
               </div>
               <div class="tags">
                 <span>Shipping Method - </span>
@@ -254,13 +254,13 @@ export default {
           concat += address.address1
         }
         if (address.address2) {
-          concat += ' , ' + address.address2
+          concat += ', ' + address.address2
         }
         if (address.city) {
-          concat += ' , ' + address.city
+          concat += ', ' + address.city
         }
         if (address.state) {
-          concat += ' , ' + address.state
+          concat += ', ' + address.state
         }
         return concat
       }
