@@ -117,20 +117,20 @@
                 </svg>
               </div>
               <input
-                v-if="!Boolean(parseInt(assetProduct.is_customize))"
                 type="number"
                 :min="getPriceOptions[0].qty"
                 :value="cartQuantity"
                 class="form-control"
                 disabled
               />
-              <input
+              <!-- <input
                 v-else
-                v-model="cartQuantity"
+                disabled
                 type="number"
                 :min="getPriceOptions[0].qty"
+                :value="cartQuantity"
                 class="form-control"
-              />
+              /> -->
               <div
                 class="quantity-button quantity-up"
                 :class="
@@ -314,6 +314,17 @@ export default {
       }
       return price
     },
+    // changeQuantity() {
+    //   if (this.cartQuantity < parseInt(this.initialQuantity)) {
+    //     this.cartQuantity = this.initialQuantity
+    //   }
+    //   this.pricePerQuantity = this.minPrice / this.initialQuantity
+    //   console.log(this.pricePerQuantity)
+    //   this.calculatedPrice = Number(
+    //     parseFloat(this.cartQuantity * this.pricePerQuantity).toFixed(2)
+    //   )
+    //   console.log(this.calculatedPrice)
+    // },
     initProduct() {
       if (this.file && this.getPriceOptions.length) {
         this.cartQuantity = parseFloat(this.getPriceOptions[0].qty)
