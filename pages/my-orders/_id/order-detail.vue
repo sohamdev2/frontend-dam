@@ -53,12 +53,14 @@
                   ? `You can not Cancel the Order as it is already Shipped.`
                   : ''
               "
-              :disabled="
-                orderDetails.status === 'Cancelled' ||
-                orderDetails.status === 'Shipped'
-              "
+              :class="orderDetails.status === 'Shipped' ? 'disabled' : ''"
+              :disabled="orderDetails.status === 'Cancelled'"
               class="btn btn-red-invert"
-              @click="showDeleteDialog = true"
+              @click="
+                orderDetails.status !== 'Shipped'
+                  ? (showDeleteDialog = true)
+                  : ''
+              "
             >
               Cancel Order
             </button>
