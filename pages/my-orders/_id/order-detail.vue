@@ -37,18 +37,21 @@
           <div class="right-side justify-content-end">
             <div class="track-ship">
               <div class="tags">
-                <span>Tracking ID&nbsp;# -</span>
-                <strong>{{ orderDetails.shipping_tracking_id || '-' }}</strong>
+                <span>Tracking ID&nbsp;# </span>
+                <strong v-if="!orderDetails.shipping_tracking_id">-</strong>
+                <span v-else>{{ orderDetails.shipping_tracking_id }}</span>
               </div>
               <div class="tags">
-                <span>Shipping Method - </span>
-                <span>{{ orderDetails.shipping_method || '-' }}</span>
+                <span>Shipping Method</span>
+                <strong v-if="!orderDetails.shipping_method">-</strong>
+                <span v-else>{{ orderDetails.shipping_method }}</span>
               </div>
             </div>
             <button
               v-tooltip="
-                orderDetails.status === 'Shipped' &&
-                `You can not Cancel the Order as it is already Shipped.`
+                orderDetails.status === 'Shipped'
+                  ? `You can not Cancel the Order as it is already Shipped.`
+                  : ''
               "
               :disabled="
                 orderDetails.status === 'Cancelled' ||
@@ -61,7 +64,10 @@
             </button>
           </div>
         </div>
-        <div class="success-msg pl10 pr10 mb0">
+        <div
+          v-if="!orderDetails.invoice_status"
+          class="success-msg pl10 pr10 mb0"
+        >
           <div class="alert alert-warning">
             <svg
               id="Layer_1"
@@ -139,6 +145,20 @@
                     }}</strong
                   >
                 </p>
+                <p v-if="orderDetails.invoice_status">
+                  <span>Invoice # : </span>
+                  <strong>{{ orderDetails.invoice_number }}</strong>
+                </p>
+                <p v-if="orderDetails.invoice_status">
+                  <span>Invoice Date : </span>
+                  <strong>{{
+                    $moment(orderDetails.invoice_date).format('Do MMM, YYYY')
+                  }}</strong>
+                </p>
+                <p v-if="orderDetails.invoice_status">
+                  <span>Invoice Amount : </span>
+                  <strong> {{ getPrice(orderDetails.total_amount) }}</strong>
+                </p>
               </div>
             </div>
             <table class="tables" width="100%" cellspacing="0" cellpadding="0">
@@ -177,9 +197,11 @@
                     </div>
                   </td>
                   <td width="10%" align="right">{{ orderItem.qty }}</td>
-                  <td width="10%" align="right">${{ orderItem.price }}.00</td>
                   <td width="10%" align="right">
-                    <strong>${{ orderItem.price }}.00</strong>
+                    {{ getPrice(orderItem.price) }}
+                  </td>
+                  <td width="10%" align="right">
+                    <strong>{{ getPrice(orderItem.price) }}</strong>
                   </td>
                 </tr>
               </tbody>
@@ -187,7 +209,7 @@
                 <tr>
                   <td colspan="3" align="right">Sub Total</td>
                   <td width="10%" align="right">
-                    ${{ orderDetails.sub_total }}.00
+                    {{ getPrice(orderDetails.sub_total) }}
                   </td>
                 </tr>
                 <tr>
@@ -195,9 +217,7 @@
                   <td colspan="2" align="right">Shipping Rate</td>
                   <td width="10%" align="right">
                     <strong>{{
-                      orderDetails.shipping_amount
-                        ? '$' + orderDetails.shipping_amount + '.00'
-                        : '-'
+                      getPrice(orderDetails.shipping_amount)
                     }}</strong>
                   </td>
                 </tr>
@@ -205,7 +225,7 @@
                   <td>&nbsp;</td>
                   <td colspan="2" align="right">Total Amount (USD)</td>
                   <td width="10%" align="right">
-                    <strong>${{ orderDetails.total_amount }}.00</strong>
+                    <strong>{{ getPrice(orderDetails.total_amount) }}</strong>
                   </td>
                 </tr>
               </tfoot>
@@ -270,6 +290,17 @@ export default {
     this.getOrderDetail()
   },
   methods: {
+    getPrice(val) {
+      let price = ''
+      if (!val) return '-'
+      if (val) {
+        price = '$' + val
+      }
+      if (val % 1 === 0) {
+        price += '.00'
+      }
+      return price
+    },
     cancelOrder() {
       this.$axios
         .$get(

@@ -214,7 +214,7 @@
               </div>
               <div class="tb-column flex10">
                 <div class="top-column">
-                  <label>${{ cartItem.price }}.00</label>
+                  <label>{{ getPrice(cartItem.price) }}</label>
                 </div>
               </div>
               <div class="tb-column text-center flex10">
@@ -339,7 +339,7 @@
                 <label>Total Amount : </label>
               </div>
               <div class="flex20">
-                <strong>${{ getTotalPrice }}.00</strong>
+                <strong>{{ getPrice(getTotalPrice) }}</strong>
               </div>
             </li>
           </ul>
@@ -402,12 +402,25 @@ export default {
     },
   },
   mounted() {
+    this.$store.dispatch('product/fetchBadgeCount')
+    this.$store.dispatch('appData/fetchFolders')
     this.getCartList()
   },
   methods: {
     setDeletedId(id) {
       this.deletionId = id
       this.showDeleteDialog = true
+    },
+    getPrice(val) {
+      let price = ''
+      if (!val) return '-'
+      if (val) {
+        price = '$' + val
+      }
+      if (val % 1 === 0) {
+        price += '.00'
+      }
+      return price
     },
     updatePriceOption(id, item) {
       const option = JSON.parse(item.product.options)
@@ -422,7 +435,7 @@ export default {
       const initialPrice = JSON.parse(option)[0].price
       const pricePerQuantity = initialPrice / initialQuantity
       item.qty = parseInt(item.qty) + parseInt(initialQuantity)
-      item.price = parseFloat(item.qty * pricePerQuantity)
+      item.price = Number(parseFloat(item.qty * pricePerQuantity).toFixed(2))
       this.updateCart(item)
     },
     decrementQty(item, option) {
@@ -433,7 +446,7 @@ export default {
       const initialPrice = JSON.parse(option)[0].price
       const pricePerQuantity = initialPrice / initialQuantity
       item.qty = parseInt(item.qty) - parseInt(initialQuantity)
-      item.price = parseFloat(item.qty * pricePerQuantity)
+      item.price = Number(parseFloat(item.qty * pricePerQuantity).toFixed(2))
       this.updateCart(item)
     },
     updateCart(item, id = '') {
