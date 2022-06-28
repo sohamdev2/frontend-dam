@@ -5,8 +5,7 @@
         <div class="thank-for-order">
           <h2>Thank You!</h2>
           <p>
-            Your Order is successfully placed. Your order ref. Id is
-            <nuxt-link
+            Your Order is successfully placed. Your order ref. Id is #<nuxt-link
               :to="{
                 name: 'my-orders-id-order-detail',
                 params: {
@@ -16,7 +15,7 @@
                   orderId: $route.query.order_id,
                 },
               }"
-              >#{{ $route.query.id }}</nuxt-link
+              >{{ $route.query.id }}</nuxt-link
             >. <br />Also, Order details have been sent over your email.
           </p>
           <div class="mt2 d-flex align-items-center justify-content-center">
@@ -46,6 +45,9 @@ export default {
   middleware: ['check-url', 'check-auth'],
   components: {
     // ContentLoader,
+  },
+  mounted() {
+    this.$store.dispatch('appData/fetchFolders')
   },
   head() {
     return {
