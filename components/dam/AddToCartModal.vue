@@ -73,8 +73,10 @@
       <div class="form-group">
         <label class="control-label">Price:</label>
         <strong
-          >${{
-            assetProduct.pricing_option === '1' ? calculatedPrice : minPrice
+          >{{
+            assetProduct.pricing_option === '1'
+              ? getPrice(calculatedPrice)
+              : getPrice(minPrice)
           }}
           (1 Qty = {{ assetProduct.unit }} Units)</strong
         >
@@ -301,13 +303,24 @@ export default {
     this.initProduct()
   },
   methods: {
+    getPrice(val) {
+      let price = ''
+      if (!val) return '-'
+      if (val) {
+        price = '$' + val
+      }
+      if (val % 1 === 0) {
+        price += '.00'
+      }
+      return price
+    },
     initProduct() {
       if (this.file && this.getPriceOptions.length) {
-        this.cartQuantity = parseInt(this.getPriceOptions[0].qty)
-        this.initialQuantity = parseInt(this.getPriceOptions[0].qty)
+        this.cartQuantity = parseFloat(this.getPriceOptions[0].qty)
+        this.initialQuantity = parseFloat(this.getPriceOptions[0].qty)
         this.selectedOption = this.getPriceOptions[0].id
-        this.minPrice = parseInt(this.getPriceOptions[0].price)
-        this.calculatedPrice = parseInt(this.getPriceOptions[0].price)
+        this.minPrice = parseFloat(this.getPriceOptions[0].price)
+        this.calculatedPrice = parseFloat(this.getPriceOptions[0].price)
       }
     },
     incrementQty() {
@@ -316,8 +329,8 @@ export default {
       }
       this.pricePerQuantity = this.minPrice / this.initialQuantity
       this.cartQuantity += parseInt(this.initialQuantity)
-      this.calculatedPrice = parseFloat(
-        this.cartQuantity * this.pricePerQuantity
+      this.calculatedPrice = Number(
+        parseFloat(this.cartQuantity * this.pricePerQuantity).toFixed(2)
       )
     },
     decrementQty() {
@@ -328,8 +341,8 @@ export default {
         return
       }
       this.cartQuantity -= this.initialQuantity
-      this.calculatedPrice = parseFloat(
-        this.cartQuantity * this.pricePerQuantity
+      this.calculatedPrice = Number(
+        parseFloat(this.cartQuantity * this.pricePerQuantity).toFixed(2)
       )
     },
     addToCart() {

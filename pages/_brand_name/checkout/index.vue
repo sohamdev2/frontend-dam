@@ -89,7 +89,7 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label class="control-label">Existing Address</label>
+                  <!-- <label class="control-label">Existing Address</label> -->
                   <select2
                     v-model="selectedAddressOption"
                     placeholder="Select Existing Address or Enter New Address"
@@ -335,7 +335,7 @@
                 class="d-flex align-items-center justify-content-between mt-2"
               >
                 <label>Sub Total</label>
-                <h5>${{ shippingInfo.sub_total }}.00</h5>
+                <h5>{{ getPrice(shippingInfo.sub_total) }}</h5>
               </div>
               <div
                 class="d-flex align-items-center justify-content-between mt-2"
@@ -348,7 +348,7 @@
                 class="d-flex align-items-center justify-content-between mt-2"
               >
                 <strong>Grand Total</strong>
-                <h5>${{ shippingInfo.grand_total }}.00</h5>
+                <h5>{{ getPrice(shippingInfo.grand_total) }}</h5>
               </div>
             </div>
           </div>
@@ -438,9 +438,21 @@ export default {
   },
   mounted() {
     this.getAddressList()
+    this.$store.dispatch('appData/fetchFolders')
     this.getUserInfo()
   },
   methods: {
+    getPrice(val) {
+      let price = ''
+      if (!val) return '-'
+      if (val) {
+        price = '$' + val
+      }
+      if (val % 1 === 0) {
+        price += '.00'
+      }
+      return price
+    },
     getUserInfo() {
       this.loading = true
       this.$axios
@@ -558,6 +570,7 @@ export default {
                 order_id: data.id,
               },
             })
+            this.$store.dispatch('product/fetchBadgeCount')
             this.loading = false
           }
         })
