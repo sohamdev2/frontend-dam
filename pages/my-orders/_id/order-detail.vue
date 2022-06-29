@@ -168,7 +168,7 @@
                 <tr>
                   <th align="left">PRODUCT NAME</th>
                   <th width="10%" align="right">QTY</th>
-                  <th width="10%" align="right">QTY PRICE</th>
+                  <th width="20%" align="right">QTY PRICE</th>
                   <th width="10%" align="right">AMOUNT (USD)</th>
                 </tr>
               </thead>
@@ -198,12 +198,19 @@
                       </div>
                     </div>
                   </td>
-                  <td width="10%" align="right">{{ orderItem.qty }}</td>
-                  <td width="10%" align="right">
-                    {{ getPrice(orderItem.price) }}
+                  <td width="10%" align="right">{{ orderItem.base_qty }}</td>
+                  <td width="20%" align="right">
+                    {{
+                      orderItem.base_qty +
+                      ' Qty ' +
+                      'price = ' +
+                      getPrice(orderItem.base_price)
+                    }}
+                    <!-- <br /> -->
+                    <!-- {{ getPrice(orderItem.base_price) }} -->
                   </td>
                   <td width="10%" align="right">
-                    <strong>{{ getPrice(orderItem.price) }}</strong>
+                    <strong>{{ getPrice(orderItem.total_amount) }}</strong>
                   </td>
                 </tr>
               </tbody>
@@ -269,29 +276,27 @@ export default {
     user() {
       return this.$auth.user
     },
-    getAddressConcat() {
-      let concat = ''
-      return (address) => {
-        if (address.address1) {
-          concat += address.address1
-        }
-        if (address.address2) {
-          concat += ', ' + address.address2
-        }
-        if (address.city) {
-          concat += ', ' + address.city
-        }
-        if (address.state) {
-          concat += ', ' + address.state
-        }
-        return concat
-      }
-    },
   },
   created() {
     this.getOrderDetail()
   },
   methods: {
+    getAddressConcat(address) {
+      let concat = ''
+      if (address.address1) {
+        concat += address.address1
+      }
+      if (address.address2) {
+        concat += ', ' + address.address2
+      }
+      if (address.city) {
+        concat += ', ' + address.city
+      }
+      if (address.state) {
+        concat += ', ' + address.state
+      }
+      return concat
+    },
     getPrice(val) {
       let price = ''
       if (!val) return '-'
