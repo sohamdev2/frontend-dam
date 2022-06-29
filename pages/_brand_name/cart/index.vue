@@ -444,7 +444,9 @@ export default {
       const initialPrice = JSON.parse(option)[0].price
       const pricePerQuantity = initialPrice / initialQuantity
       item.qty = parseInt(item.qty) + parseInt(initialQuantity)
-      item.price = Number(parseFloat(item.qty * pricePerQuantity).toFixed(2))
+      item.total_amount = Number(
+        parseFloat(item.qty * pricePerQuantity).toFixed(2)
+      )
       this.updateCart(item)
     },
     decrementQty(item, option) {
@@ -455,7 +457,9 @@ export default {
       const initialPrice = JSON.parse(option)[0].price
       const pricePerQuantity = initialPrice / initialQuantity
       item.qty = parseInt(item.qty) - parseInt(initialQuantity)
-      item.price = Number(parseFloat(item.qty * pricePerQuantity).toFixed(2))
+      item.total_amount = Number(
+        parseFloat(item.qty * pricePerQuantity).toFixed(2)
+      )
       this.updateCart(item)
     },
     updateCart(item, id = '') {
