@@ -28,12 +28,12 @@
           <h4 class="mb0">
             Orders <strong># {{ orderId }}</strong>
           </h4>
-          <div
-            class="order-status ml1"
-            :style="`background-color: ${orderDetails.status_background_color}; color: ${orderDetails.status_color}`"
+          <span
+            v-if="orderDetails.status_id"
+            class="plan-status ml1"
+            :class="[getStatusClass(orderDetails.status_id)]"
+            >{{ orderDetails.status || '-' }}</span
           >
-            <span>{{ orderDetails.status || '-' }}</span>
-          </div>
           <div class="right-side justify-content-end">
             <div class="track-ship">
               <div class="tags">
@@ -54,10 +54,14 @@
                   : ''
               "
               :class="orderDetails.status === 'Shipped' ? 'disabled' : ''"
-              :disabled="orderDetails.status === 'Cancelled'"
+              :disabled="
+                orderDetails.status === 'Cancelled' ||
+                orderDetails.status === 'Delivered'
+              "
               class="btn btn-red-invert"
               @click="
-                orderDetails.status !== 'Shipped'
+                orderDetails.status !== 'Shipped' &&
+                orderDetails.status !== 'Delivered'
                   ? (showDeleteDialog = true)
                   : ''
               "
@@ -135,18 +139,6 @@
                 </div>
               </div>
               <div class="order_to">
-                <p>
-                  <span>Order No. # : </span>
-                  <strong>{{ orderId }}</strong>
-                </p>
-                <p>
-                  <span>Order Date : </span>
-                  <strong>
-                    {{
-                      $moment(orderDetails.created_at).format('Do MMM, YYYY')
-                    }}</strong
-                  >
-                </p>
                 <p v-if="orderDetails.invoice_status">
                   <span>Invoice # : </span>
                   <strong>{{ orderDetails.invoice_number }}</strong>
@@ -161,6 +153,18 @@
                   <span>Invoice Amount : </span>
                   <strong> {{ getPrice(orderDetails.total_amount) }}</strong>
                 </p>
+                <p>
+                  <span>Order No. # : </span>
+                  <strong>{{ orderId }}</strong>
+                </p>
+                <p>
+                  <span>Order Date : </span>
+                  <strong>
+                    {{
+                      $moment(orderDetails.created_at).format('Do MMM, YYYY')
+                    }}</strong
+                  >
+                </p>
               </div>
             </div>
             <table class="tables" width="100%" cellspacing="0" cellpadding="0">
@@ -168,7 +172,7 @@
                 <tr>
                   <th align="left">PRODUCT NAME</th>
                   <th width="10%" align="right">QTY</th>
-                  <th width="10%" align="right">QTY PRICE</th>
+                  <th width="20%" align="right">QTY PRICE</th>
                   <th width="10%" align="right">AMOUNT (USD)</th>
                 </tr>
               </thead>
@@ -199,11 +203,17 @@
                     </div>
                   </td>
                   <td width="10%" align="right">{{ orderItem.qty }}</td>
-                  <td width="10%" align="right">
-                    {{ getPrice(orderItem.price) }}
+                  <td width="20%" align="right">
+                    {{
+                      orderItem.base_qty +
+                      ' Qty = ' +
+                      getPrice(orderItem.base_price)
+                    }}
+                    <!-- <br /> -->
+                    <!-- {{ getPrice(orderItem.base_price) }} -->
                   </td>
                   <td width="10%" align="right">
-                    <strong>{{ getPrice(orderItem.price) }}</strong>
+                    <strong>{{ getPrice(orderItem.total_amount) }}</strong>
                   </td>
                 </tr>
               </tbody>
@@ -263,28 +273,43 @@ export default {
       listOrderId: this.$route.query.orderId,
       isLoading: false,
       showDeleteDialog: false,
+      statusColors: [
+        {
+          id: 1,
+          class: 'alert-secondary',
+          name: 'In-Progress',
+        },
+        {
+          id: 2,
+          class: 'alert-warning',
+          name: 'Shipped',
+        },
+        {
+          id: 3,
+          class: 'alert-success',
+          name: 'Delivered',
+        },
+        {
+          id: 4,
+          class: 'alert-danger',
+          name: 'Cancelled',
+        },
+      ],
     }
   },
   computed: {
     user() {
       return this.$auth.user
     },
-    getAddressConcat() {
-      let concat = ''
-      return (address) => {
-        if (address.address1) {
-          concat += address.address1
+    getStatusClass() {
+      return (statusId) => {
+        const status = this.statusColors.find(
+          ({ id }) => parseInt(id) === parseInt(statusId)
+        )
+        if (status) {
+          return status.class
         }
-        if (address.address2) {
-          concat += ', ' + address.address2
-        }
-        if (address.city) {
-          concat += ', ' + address.city
-        }
-        if (address.state) {
-          concat += ', ' + address.state
-        }
-        return concat
+        return ''
       }
     },
   },
@@ -292,6 +317,22 @@ export default {
     this.getOrderDetail()
   },
   methods: {
+    getAddressConcat(address) {
+      let concat = ''
+      if (address.address1) {
+        concat += address.address1
+      }
+      if (address.address2) {
+        concat += ', ' + address.address2
+      }
+      if (address.city) {
+        concat += ', ' + address.city
+      }
+      if (address.state) {
+        concat += ', ' + address.state
+      }
+      return concat
+    },
     getPrice(val) {
       let price = ''
       if (!val) return '-'

@@ -353,7 +353,7 @@
             </div>
           </div>
           <div class="success-msg mt2">
-            <div class="alert alert-primary">
+            <div class="alert alert-warning">
               <svg
                 id="Layer_1"
                 class="alert-icon"

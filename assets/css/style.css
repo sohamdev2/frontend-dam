@@ -227,6 +227,11 @@ h2.title {font-size: 22px;font-weight: 500;color: #070E22;margin: 0;}
 .form-control:-webkit-autofill:focus {-webkit-text-fill-color: #070E22;-webkit-box-shadow: 0 0 0px 1000px transparent inset;transition: background-color 5000s ease-in-out 0s;}
 div.input-error {font-size: 12px;color: #ff0000 !important;font-weight: normal;line-height: 1.5;opacity: 1;}
 span.input-control {font-size: 14px;display: block;border-radius: 4px;border: 1px solid #DFE0E2;color: #070E22;height: 40px;padding: 9px 12px;box-shadow: none;background-color: rgba(0, 0, 0, 0.03);cursor: not-allowed;}
+input[type='number']::-webkit-inner-spin-button, 
+input[type='number']::-webkit-outer-spin-button {-webkit-appearance: none;appearance: none;}
+input[type='number'],
+input[type='number']:hover,
+input[type='number']:focus {-moz-appearance: textfield;}
 
 .success-msg{width: 100%;margin-bottom: 16px;}
 .success-msg .alert {padding: 6px 30px 6px 15px;font-size: 13px;line-height: 22px;border-radius: 4px;margin-bottom: 0;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;word-break: break-all;-webkit-line-clamp: 1;}
@@ -1138,8 +1143,8 @@ header .user-dropdown.show .dropdown-toggle{color: var(--secondary);}
 .user-profile .workspace-settings .general-settings-title .datepicker,
 .user-profile .workspace-settings .general-settings-title .daterange {margin-left: 15px;max-height: 34px;padding-right: 30px;background-size: 14px;background-position: 95%;min-width: 200px;}
 
-.order-status {display: inline-flex;border-radius: 4px;}
-.order-status span {font-size: 10px;padding: 0 12px;height: 24px;line-height: 24px;white-space: nowrap;border-radius: 4px;display: block;font-weight: 500;}
+.plan-status {font-size: 12px;padding: 5px 12px;white-space: nowrap;border-radius: 4px;font-weight: 600;text-align: center;justify-content: center;}
+.plan-status.alert-dark {background-color: #070E22;color: #ffffff;border-color: #070E22;}
 .border-bottom{border-bottom: 1px solid #dfe0e2;}
 .general-settings {display: flex;align-items: flex-start;}
 .general-settings-title {display: table;padding: 12px 14px;min-height: 60px;width: 100%;}
