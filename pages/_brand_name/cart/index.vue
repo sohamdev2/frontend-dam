@@ -211,8 +211,7 @@
                   <label>
                     {{
                       cartItem.base_qty +
-                      ' Qty ' +
-                      'price = ' +
+                      ' Qty = ' +
                       getPrice(cartItem.base_price)
                     }}</label
                   >

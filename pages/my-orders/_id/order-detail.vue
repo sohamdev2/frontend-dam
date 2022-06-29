@@ -202,8 +202,7 @@
                   <td width="20%" align="right">
                     {{
                       orderItem.base_qty +
-                      ' Qty ' +
-                      'price = ' +
+                      ' Qty = ' +
                       getPrice(orderItem.base_price)
                     }}
                     <!-- <br /> -->
