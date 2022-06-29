@@ -28,12 +28,12 @@
           <h4 class="mb0">
             Orders <strong># {{ orderId }}</strong>
           </h4>
-          <div
-            class="order-status ml1"
-            :style="`background-color: ${orderDetails.status_background_color}; color: ${orderDetails.status_color}`"
+          <span
+            v-if="orderDetails.status_id"
+            class="plan-status ml1"
+            :class="[getStatusClass(orderDetails.status_id)]"
+            >{{ orderDetails.status || '-' }}</span
           >
-            <span>{{ orderDetails.status || '-' }}</span>
-          </div>
           <div class="right-side justify-content-end">
             <div class="track-ship">
               <div class="tags">
@@ -273,11 +273,44 @@ export default {
       listOrderId: this.$route.query.orderId,
       isLoading: false,
       showDeleteDialog: false,
+      statusColors: [
+        {
+          id: 1,
+          class: 'alert-secondary',
+          name: 'In-Progress',
+        },
+        {
+          id: 2,
+          class: 'alert-warning',
+          name: 'Shipped',
+        },
+        {
+          id: 3,
+          class: 'alert-success',
+          name: 'Delivered',
+        },
+        {
+          id: 4,
+          class: 'alert-danger',
+          name: 'Cancelled',
+        },
+      ],
     }
   },
   computed: {
     user() {
       return this.$auth.user
+    },
+    getStatusClass() {
+      return (statusId) => {
+        const status = this.statusColors.find(
+          ({ id }) => parseInt(id) === parseInt(statusId)
+        )
+        if (status) {
+          return status.class
+        }
+        return ''
+      }
     },
   },
   created() {
