@@ -208,13 +208,19 @@
               </div>
               <div class="tb-column text-center flex25">
                 <div class="top-column">
-                  <label>{{ cartItem.amount }}</label>
+                  <label>
+                    {{
+                      cartItem.base_qty +
+                      ' Qty = ' +
+                      getPrice(cartItem.base_price)
+                    }}</label
+                  >
                   <label>{{ cartItem.product_unit }}</label>
                 </div>
               </div>
               <div class="tb-column flex10">
                 <div class="top-column">
-                  <label>{{ getPrice(cartItem.price) }}</label>
+                  <label>{{ getPrice(cartItem.total_amount) }}</label>
                 </div>
               </div>
               <div class="tb-column text-center flex10">
@@ -385,7 +391,7 @@ export default {
     getTotalPrice() {
       return this.cartList.reduce((prev, current) => {
         return parseFloat(
-          prev + (current.is_public ? parseFloat(current.price) : 0)
+          prev + (current.is_public ? parseFloat(current.total_amount) : 0)
         )
       }, 0)
     },
@@ -425,8 +431,10 @@ export default {
     updatePriceOption(id, item) {
       const option = JSON.parse(item.product.options)
       const { price, qty } = option.find((i) => i.id === id)
-      item.price = price
+      item.total_amount = price
       item.qty = qty
+      item.base_qty = qty
+      item.base_price = price
       item.selected_option = id
       this.updateCart(item, id)
     },
@@ -435,7 +443,9 @@ export default {
       const initialPrice = JSON.parse(option)[0].price
       const pricePerQuantity = initialPrice / initialQuantity
       item.qty = parseInt(item.qty) + parseInt(initialQuantity)
-      item.price = Number(parseFloat(item.qty * pricePerQuantity).toFixed(2))
+      item.total_amount = Number(
+        parseFloat(item.qty * pricePerQuantity).toFixed(2)
+      )
       this.updateCart(item)
     },
     decrementQty(item, option) {
@@ -446,7 +456,9 @@ export default {
       const initialPrice = JSON.parse(option)[0].price
       const pricePerQuantity = initialPrice / initialQuantity
       item.qty = parseInt(item.qty) - parseInt(initialQuantity)
-      item.price = Number(parseFloat(item.qty * pricePerQuantity).toFixed(2))
+      item.total_amount = Number(
+        parseFloat(item.qty * pricePerQuantity).toFixed(2)
+      )
       this.updateCart(item)
     },
     updateCart(item, id = '') {
@@ -455,7 +467,7 @@ export default {
           workspace_id: this.$getWorkspaceId(),
           cart_product_id: item.id,
           qty: item.qty,
-          price: item.price,
+          price: item.total_amount,
           selected_option: id || '',
         })
         .then(({ message, data }) => {

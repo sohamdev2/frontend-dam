@@ -119,12 +119,11 @@
                     </div>
                     <div class="tb-column flex15">
                       <div class="top-column">
-                        <div
-                          class="order-status"
-                          :style="`background-color: ${order.status_background_color}; color: ${order.status_color}`"
+                        <span
+                          class="plan-status"
+                          :class="[getStatusClass(order.status_id)]"
+                          >{{ order.status }}</span
                         >
-                          <span>{{ order.status }}</span>
-                        </div>
                       </div>
                     </div>
                   </li>
@@ -222,11 +221,44 @@ export default {
         end_date: '',
         status: '',
       },
+      statusColors: [
+        {
+          id: 1,
+          class: 'alert-secondary',
+          name: 'In-Progress',
+        },
+        {
+          id: 2,
+          class: 'alert-warning',
+          name: 'Shipped',
+        },
+        {
+          id: 3,
+          class: 'alert-success',
+          name: 'Shipped',
+        },
+        {
+          id: 4,
+          class: 'alert-danger',
+          name: 'Shipped',
+        },
+      ],
     }
   },
   computed: {
     user() {
       return this.$auth.user
+    },
+    getStatusClass() {
+      return (statusId) => {
+        const status = this.statusColors.find(
+          ({ id }) => parseInt(id) === parseInt(statusId)
+        )
+        if (status) {
+          return status.class
+        }
+        return ''
+      }
     },
   },
   watch: {
