@@ -198,7 +198,7 @@
                       </div>
                     </div>
                   </td>
-                  <td width="10%" align="right">{{ orderItem.base_qty }}</td>
+                  <td width="10%" align="right">{{ orderItem.qty }}</td>
                   <td width="20%" align="right">
                     {{
                       orderItem.base_qty +
