@@ -107,7 +107,7 @@
                     </div>
                     <div class="tb-column flex20">
                       <div class="top-column">
-                        <label>${{ order.total_amount }}</label>
+                        <label>{{ getPrice(order.total_amount) }}</label>
                       </div>
                     </div>
                     <div class="tb-column flex25">
@@ -272,6 +272,17 @@ export default {
     this.getOrderStatus()
   },
   methods: {
+    getPrice(val) {
+      let price = ''
+      if (!val) return '-'
+      if (val) {
+        price = '$' + val
+      }
+      if (val % 1 === 0) {
+        price += '.00'
+      }
+      return price
+    },
     handleSort(sortVal) {
       this.sortValue = sortVal
       this.sortBy =
