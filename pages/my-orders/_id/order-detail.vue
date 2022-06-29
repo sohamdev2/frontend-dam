@@ -54,10 +54,14 @@
                   : ''
               "
               :class="orderDetails.status === 'Shipped' ? 'disabled' : ''"
-              :disabled="orderDetails.status === 'Cancelled'"
+              :disabled="
+                orderDetails.status === 'Cancelled' ||
+                orderDetails.status === 'Delivered'
+              "
               class="btn btn-red-invert"
               @click="
-                orderDetails.status !== 'Shipped'
+                orderDetails.status !== 'Shipped' &&
+                orderDetails.status !== 'Delivered'
                   ? (showDeleteDialog = true)
                   : ''
               "
@@ -135,18 +139,6 @@
                 </div>
               </div>
               <div class="order_to">
-                <p>
-                  <span>Order No. # : </span>
-                  <strong>{{ orderId }}</strong>
-                </p>
-                <p>
-                  <span>Order Date : </span>
-                  <strong>
-                    {{
-                      $moment(orderDetails.created_at).format('Do MMM, YYYY')
-                    }}</strong
-                  >
-                </p>
                 <p v-if="orderDetails.invoice_status">
                   <span>Invoice # : </span>
                   <strong>{{ orderDetails.invoice_number }}</strong>
@@ -160,6 +152,18 @@
                 <p v-if="orderDetails.invoice_status">
                   <span>Invoice Amount : </span>
                   <strong> {{ getPrice(orderDetails.total_amount) }}</strong>
+                </p>
+                <p>
+                  <span>Order No. # : </span>
+                  <strong>{{ orderId }}</strong>
+                </p>
+                <p>
+                  <span>Order Date : </span>
+                  <strong>
+                    {{
+                      $moment(orderDetails.created_at).format('Do MMM, YYYY')
+                    }}</strong
+                  >
                 </p>
               </div>
             </div>
