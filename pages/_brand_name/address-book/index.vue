@@ -3,20 +3,44 @@
     <div class="tabs-view h-100">
       <ul class="nav" role="tablist">
         <li class="nav-item">
-          <nuxt-link class="nav-link" to="/profile">User Profile</nuxt-link>
+          <nuxt-link
+            class="nav-link"
+            :to="{
+              name: 'brand_name-profile',
+              params: { brand_name: this.$getBrandName() },
+            }"
+            >User Profile</nuxt-link
+          >
         </li>
         <li class="nav-item">
-          <nuxt-link class="nav-link" to="/my-orders">My Orders</nuxt-link>
+          <nuxt-link
+            class="nav-link"
+            :to="{
+              name: 'brand_name-my-orders',
+              params: { brand_name: this.$getBrandName() },
+            }"
+            >My Orders</nuxt-link
+          >
         </li>
         <li class="nav-item">
-          <nuxt-link class="nav-link active" to="/address-book"
+          <nuxt-link
+            class="nav-link active"
+            :to="{
+              name: 'brand_name-address-book',
+              params: { brand_name: this.$getBrandName() },
+            }"
             >Address Book</nuxt-link
           >
         </li>
       </ul>
       <div id="user-profile" class="tab-pane active">
         <div class="workspace-settings h-100">
-          <nuxt-link to="/address-book/add" class="btn add-address-btn"
+          <nuxt-link
+            :to="{
+              name: 'brand_name-address-book-add',
+              params: { brand_name: this.$getBrandName() },
+            }"
+            class="btn add-address-btn"
             >Add New Address</nuxt-link
           >
           <div class="common-box bg-gray h-100 pl0 pr0">
@@ -50,7 +74,7 @@
                       <div class="top-column">
                         <nuxt-link
                           :to="{
-                            name: 'address-book-id-edit',
+                            name: 'brand_name-address-book-id-edit',
                             params: {
                               id: address.id,
                             },
@@ -86,7 +110,7 @@
                           <li>
                             <nuxt-link
                               :to="{
-                                name: 'address-book-id-edit',
+                                name: 'brand_name-address-book-id-edit',
                                 params: {
                                   id: address.id,
                                 },
@@ -227,7 +251,10 @@
                             <p>You haven't added any Address yet!</p>
                             <nuxt-link
                               class="btn btn-icon"
-                              to="/address-book/add"
+                              :to="{
+                                name: 'brand_name-address-book-add',
+                                params: { brand_name: this.$getBrandName() },
+                              }"
                             >
                               <svg
                                 id="Layer_1"

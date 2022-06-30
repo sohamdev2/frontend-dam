@@ -5,7 +5,13 @@
         <div
           class="general-settings-title d-flex align-items-center mb10 border-bottom"
         >
-          <nuxt-link to="/my-orders" class="back-btn">
+          <nuxt-link
+            :to="{
+              name: 'brand_name-my-orders',
+              params: { brand_name: this.$getBrandName() },
+            }"
+            class="back-btn"
+          >
             <svg
               id="Capa_1"
               class="back-long-arrow-icon h-orange"
@@ -354,7 +360,8 @@ export default {
         .then(({ message }) => {
           this.$toast.success(message)
           this.$router.replace({
-            name: 'my-orders',
+            name: 'brand_name-my-orders',
+            params: { brand_name: this.$getBrandName() },
           })
         })
         .catch((error) => {
