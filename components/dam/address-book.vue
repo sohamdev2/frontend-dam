@@ -2,7 +2,13 @@
   <div class="general-settings h-100 w-100">
     <div class="general-settings-right w-100 h-100">
       <div class="general-settings-title d-flex align-items-center">
-        <nuxt-link to="/address-book" class="back-btn">
+        <nuxt-link
+          :to="{
+            name: 'brand_name-address-book',
+            params: { brand_name: this.$getBrandName() },
+          }"
+          class="back-btn"
+        >
           <svg
             id="Capa_1"
             class="back-long-arrow-icon h-orange"

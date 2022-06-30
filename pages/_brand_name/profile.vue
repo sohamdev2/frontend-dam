@@ -3,15 +3,32 @@
     <div class="tabs-view h-100">
       <ul class="nav" role="tablist">
         <li class="nav-item">
-          <nuxt-link class="nav-link active" to="/profile"
+          <nuxt-link
+            class="nav-link active"
+            :to="{
+              name: 'brand_name-profile',
+              params: { brand_name: this.$getBrandName() },
+            }"
             >User Profile</nuxt-link
           >
         </li>
         <li class="nav-item">
-          <nuxt-link class="nav-link" to="/my-orders">My Orders</nuxt-link>
+          <nuxt-link
+            class="nav-link"
+            :to="{
+              name: 'brand_name-my-orders',
+              params: { brand_name: this.$getBrandName() },
+            }"
+            >My Orders</nuxt-link
+          >
         </li>
         <li class="nav-item">
-          <nuxt-link class="nav-link" to="/address-book"
+          <nuxt-link
+            class="nav-link"
+            :to="{
+              name: 'brand_name-address-book',
+              params: { brand_name: this.$getBrandName() },
+            }"
             >Address Book</nuxt-link
           >
         </li>
