@@ -335,7 +335,10 @@
               <nuxt-link
                 v-if="!user.is_backend_user"
                 class="dropdown-item"
-                to="/profile"
+                :to="{
+                  name: 'brand_name-profile',
+                  params: { brand_name: $getBrandName() },
+                }"
               >
                 <svg
                   id="Layer_1"
