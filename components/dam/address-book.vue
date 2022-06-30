@@ -154,7 +154,12 @@
                       type="reset"
                       name="reset"
                       class="btn btn-gray"
-                      @click="$router.push('/address-book')"
+                      @click="
+                        $router.push({
+                          name: 'brand_name-address-book',
+                          params: { brand_name: this.$getBrandName() },
+                        })
+                      "
                     >
                       Cancel
                     </button>
