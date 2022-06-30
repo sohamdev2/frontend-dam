@@ -110,7 +110,7 @@
                           <li>
                             <nuxt-link
                               :to="{
-                                name: 'address-book-id-edit',
+                                name: 'brand_name-address-book-id-edit',
                                 params: {
                                   id: address.id,
                                 },

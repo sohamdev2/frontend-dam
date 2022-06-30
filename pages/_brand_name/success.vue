@@ -7,9 +7,10 @@
           <p>
             Your Order is successfully placed. Your order ref. Id is #<nuxt-link
               :to="{
-                name: 'my-orders-id-order-detail',
+                name: 'brand_name-my-orders-id-order-detail',
                 params: {
                   id: $route.query.id,
+                  brand_name: $getBrandName(),
                 },
                 query: {
                   orderId: $route.query.order_id,
@@ -29,7 +30,7 @@
             >
             <strong class="ml-4">OR</strong>
             <p class="mb0 ml-4">
-              <nuxt-link :to="{ name: 'my-orders' }"
+              <nuxt-link :to="{ name: 'brand_name-my-orders' }"
                 >Go to My Orders Page</nuxt-link
               >
             </p>
