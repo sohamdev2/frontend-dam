@@ -236,7 +236,10 @@ export default {
         })
         .then(({ message }) => {
           this.$toast.success(message)
-          this.$router.push('/address-book')
+          this.$router.replace({
+            name: 'brand_name-address-book',
+            params: { brand_name: this.$getBrandName() },
+          })
           this.loading = false
         })
         .catch((err) => {
