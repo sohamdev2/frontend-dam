@@ -360,7 +360,8 @@ export default {
         .then(({ message }) => {
           this.$toast.success(message)
           this.$router.replace({
-            name: 'my-orders',
+            name: 'brand_name-my-orders',
+            params: { brand_name: this.$getBrandName() },
           })
         })
         .catch((error) => {
