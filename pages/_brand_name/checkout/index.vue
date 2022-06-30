@@ -93,7 +93,6 @@
                   <select2
                     v-model="selectedAddressOption"
                     placeholder="Select Existing Address or Enter New Address"
-                    @input="getAddress"
                   >
                     <optgroup
                       v-for="(group, name) in addressOptions"
@@ -433,6 +432,11 @@ export default {
       selectedAddressOption: '',
     }
   },
+  watch: {
+    selectedAddressOption() {
+      this.getAddress()
+    },
+  },
   created() {
     this.getCartList()
   },
@@ -522,8 +526,8 @@ export default {
           ]
         })
     },
-    getAddress(id) {
-      if (parseInt(id) === 0) {
+    getAddress() {
+      if (parseInt(this.selectedAddressOption) === 0) {
         this.shippingInfo.address1 = ''
         this.shippingInfo.address2 = ''
         this.shippingInfo.city = ''
@@ -534,14 +538,14 @@ export default {
       }
       this.$axios
         .$post(`digital/user-address/view-address`, {
-          address_id: id,
+          address_id: this.selectedAddressOption,
           workspace_id: this.$getWorkspaceId(),
         })
         .then(({ data }) => {
           this.shippingInfo.address1 = data.address1
-          this.shippingInfo.address2 = data.address1
-          this.shippingInfo.city = data.address1
-          this.shippingInfo.state = data.address1
+          this.shippingInfo.address2 = data.address2
+          this.shippingInfo.city = data.city
+          this.shippingInfo.state = data.state
           this.shippingInfo.country = data.country
           this.shippingInfo.zip_code = data.zip_code
         })

@@ -150,19 +150,15 @@
                     >
                       {{ edit ? 'Update address' : 'Save Address' }}
                     </button>
-                    <button
-                      type="reset"
-                      name="reset"
+                    <nuxt-link
                       class="btn btn-gray"
-                      @click="
-                        $router.push({
-                          name: 'brand_name-address-book',
-                          params: { brand_name: this.$getBrandName() },
-                        })
-                      "
+                      :to="{
+                        name: 'brand_name-address-book',
+                        params: { brand_name: this.$getBrandName() },
+                      }"
                     >
                       Cancel
-                    </button>
+                    </nuxt-link>
                   </div>
                 </div>
               </div>
