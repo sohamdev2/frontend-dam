@@ -186,7 +186,9 @@
               </g>
             </g>
           </svg>
-          <span class="count">{{ $store.getters['product/badgeCount'] }}</span>
+          <span v-if="$store.getters['product/badgeCount'] > 0" class="count">{{
+            $store.getters['product/badgeCount']
+          }}</span>
         </nuxt-link>
       </div>
       <DamAnnouncementNotification v-if="!user.is_backend_user" />

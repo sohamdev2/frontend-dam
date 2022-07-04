@@ -47,22 +47,28 @@
             <div class="table-list-view table-list-scrolling">
               <ul class="thead">
                 <li>
-                  <div class="sorting flex50">
+                  <div class="sorting flex15">
+                    <span>Name</span>
+                  </div>
+                  <div class="sorting flex15">
+                    <span>Company Name</span>
+                  </div>
+                  <div class="sorting flex30">
                     <span>Address</span>
                   </div>
-                  <div class="sorting flex10">
+                  <div class="sorting flex8">
                     <span>City</span>
                   </div>
-                  <div class="sorting flex10">
+                  <div class="sorting flex8">
                     <span>State</span>
                   </div>
-                  <div class="sorting flex10">
+                  <div class="sorting flex8">
                     <span>Zip</span>
                   </div>
-                  <div class="sorting flex10">
+                  <div class="sorting flex8">
                     <span>Country</span>
                   </div>
-                  <div class="sorting flex10">
+                  <div class="sorting flex8">
                     <span>Action</span>
                   </div>
                 </li>
@@ -70,7 +76,7 @@
               <div class="customscrollbar no_footer">
                 <ul class="tbody">
                   <li v-for="address in addressList" :key="address.id">
-                    <div class="tb-column flex50">
+                    <div class="tb-column flex15">
                       <div class="top-column">
                         <nuxt-link
                           :to="{
@@ -80,31 +86,41 @@
                             },
                           }"
                           class="table-a"
-                          >{{ getAddressConcat(address) }}</nuxt-link
+                          >{{ address.user_name || '-' }}</nuxt-link
                         >
                       </div>
                     </div>
-                    <div class="tb-column flex10">
+                    <div class="tb-column flex15">
+                      <div class="top-column">
+                        <label>{{ address.company_name || '-' }}</label>
+                      </div>
+                    </div>
+                    <div class="tb-column flex30">
+                      <div class="top-column">
+                        <label>{{ getAddressConcat(address) }}</label>
+                      </div>
+                    </div>
+                    <div class="tb-column flex8">
                       <div class="top-column">
                         <label>{{ address.city }}</label>
                       </div>
                     </div>
-                    <div class="tb-column flex10">
+                    <div class="tb-column flex8">
                       <div class="top-column">
                         <label>{{ address.state }}</label>
                       </div>
                     </div>
-                    <div class="tb-column flex10">
+                    <div class="tb-column flex8">
                       <div class="top-column">
                         <label>{{ address.zip_code }}</label>
                       </div>
                     </div>
-                    <div class="tb-column flex10">
+                    <div class="tb-column flex8">
                       <div class="top-column">
-                        <label>{{ address.county }}</label>
+                        <label>{{ address.country }}</label>
                       </div>
                     </div>
-                    <div class="tb-column flex10">
+                    <div class="tb-column flex8">
                       <div class="top-column">
                         <ul class="action">
                           <li>

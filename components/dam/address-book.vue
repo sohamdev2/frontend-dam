@@ -32,9 +32,67 @@
       </div>
       <div class="workspace-settings">
         <div class="row no-gutters h-100">
-          <div class="col-lg-8 col-md-12 h-100">
-            <div class="workspace-setting-left">
+          <div class="col-lg-6 col-md-12 h-100">
+            <div class="workspace-setting">
               <div class="general-settings-box customscrollbar">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="control-label">Company Name</label>
+                      <input
+                        v-model="address.company_name"
+                        type="text"
+                        name="cname"
+                        placeholder=""
+                        class="form-control"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="control-label">Name</label>
+                      <input
+                        v-model="address.name"
+                        type="text"
+                        name="name"
+                        placeholder=""
+                        class="form-control"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="control-label">Email</label>
+                      <input
+                        v-model="address.email"
+                        type="email"
+                        name="cmail"
+                        placeholder=""
+                        class="form-control"
+                      />
+                      <div
+                        v-if="$v.address.$error && !address.email.email"
+                        class="input-error"
+                      >
+                        Please enter valid email address.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="control-label">Phone</label>
+                      <input
+                        v-model="address.phone"
+                        type="number"
+                        name="phone"
+                        placeholder=""
+                        class="form-control"
+                      />
+                    </div>
+                  </div>
+                </div>
                 <div class="row">
                   <div class="col-sm-12">
                     <div class="form-group required">
@@ -56,6 +114,8 @@
                       </div>
                     </div>
                   </div>
+                </div>
+                <div class="row">
                   <div class="col-sm-12">
                     <div class="form-group">
                       <label class="control-label">Address Line 2</label>
@@ -68,7 +128,9 @@
                       />
                     </div>
                   </div>
-                  <div class="col-sm-12">
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
                     <div class="form-group required">
                       <label class="control-label">City</label>
                       <input
@@ -86,7 +148,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-sm-12">
+                  <div class="col-sm-6">
                     <div class="form-group required">
                       <label class="control-label">State/Province</label>
                       <input
@@ -104,7 +166,9 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-sm-12">
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
                     <div class="form-group required">
                       <label class="control-label">ZIP</label>
                       <input
@@ -124,7 +188,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-sm-12">
+                  <div class="col-sm-6">
                     <div class="form-group required">
                       <label class="control-label">Country</label>
                       <Select2
@@ -140,6 +204,8 @@
                       </div>
                     </div>
                   </div>
+                </div>
+                <div class="row">
                   <div class="col-sm-12">
                     <button
                       type="submit"
@@ -161,6 +227,7 @@
                     </nuxt-link>
                   </div>
                 </div>
+                <!-- End -->
               </div>
             </div>
           </div>
@@ -171,7 +238,7 @@
 </template>
 
 <script>
-import { required } from 'vuelidate/lib/validators'
+import { email, required } from 'vuelidate/lib/validators'
 export default {
   props: {
     edit: {
@@ -184,6 +251,10 @@ export default {
       address: {
         user_id: this.$auth.user.user_id,
         workspace_id: this.$getWorkspaceId(),
+        company_name: '',
+        name: '',
+        email: '',
+        phone: '',
         address1: '',
         address2: '',
         city: '',
@@ -205,9 +276,26 @@ export default {
   mounted() {
     if (this.edit) {
       this.viewAddress()
+    } else {
+      this.getCompanyDetails()
     }
   },
   methods: {
+    getCompanyDetails() {
+      this.$axios
+        .$get(`digital/order/user-details`, {
+          params: {
+            url_workspace_id: this.$getWorkspaceId(),
+          },
+        })
+        .then(({ data }) => {
+          this.address.company_name = data.company_name
+          this.address.email = data.userEmail
+          this.address.name = data.userName
+          this.address.phone = data.userPhone
+        })
+        .catch(console.log)
+    },
     viewAddress() {
       this.$axios
         .$post(`digital/user-address/view-address`, {
@@ -236,7 +324,10 @@ export default {
         })
         .then(({ message }) => {
           this.$toast.success(message)
-          this.$router.push('/address-book')
+          this.$router.replace({
+            name: 'brand_name-address-book',
+            params: { brand_name: this.$getBrandName() },
+          })
           this.loading = false
         })
         .catch((err) => {
@@ -250,6 +341,9 @@ export default {
       address: {
         address1: {
           required,
+        },
+        email: {
+          email,
         },
         city: {
           required,
