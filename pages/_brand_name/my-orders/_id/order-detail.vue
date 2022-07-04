@@ -53,6 +53,44 @@
                 <span v-else>{{ orderDetails.shipping_method }}</span>
               </div>
             </div>
+            <a
+              v-tooltip="orderDetails.invoice_status ? 'Print Invoice' : ''"
+              href="javascript:void(0);"
+              class="print-btn"
+              :class="orderDetails.invoice_status ? '' : 'disabled'"
+              @click="printInvoice"
+            >
+              <svg
+                id="Capa_1"
+                class="print-icon"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px"
+                y="0px"
+                viewBox="0 0 512 512"
+                xml:space="preserve"
+              >
+                <g>
+                  <path
+                    class="fill-color"
+                    d="M437,129h-14V75c0-41.4-33.6-75-75-75H164c-41.4,0-75,33.6-75,75v54H75c-41.4,0-75,33.6-75,75v120c0,41.4,33.6,75,75,75h14v68c0,24.8,20.2,45,45,45h244c24.8,0,45-20.2,45-45v-68h14c41.4,0,75-33.6,75-75V204C512,162.6,478.4,129,437,129z M119,75c0-24.8,20.2-45,45-45h184c24.8,0,45,20.2,45,45v54H119V75z M393,467c0,8.3-6.7,15-15,15H134c-8.3,0-15-6.7-15-15V319h274V467zM482,324c0,24.8-20.2,45-45,45h-14v-50h9c8.3,0,15-6.7,15-15s-6.7-15-15-15H80c-8.3,0-15,6.7-15,15s6.7,15,15,15h9v50H75c-24.8,0-45-20.2-45-45V204c0-24.8,20.2-45,45-45h362c24.8,0,45,20.2,45,45V324z"
+                  ></path>
+                  <path
+                    class="fill-color"
+                    d="M296,353h-80c-8.3,0-15,6.7-15,15s6.7,15,15,15h80c8.3,0,15-6.7,15-15S304.3,353,296,353z"
+                  ></path>
+                  <path
+                    class="fill-color"
+                    d="M296,417h-80c-8.3,0-15,6.7-15,15s6.7,15,15,15h80c8.3,0,15-6.7,15-15S304.3,417,296,417z"
+                  ></path>
+                  <path
+                    class="fill-color"
+                    d="M128,193H80c-8.3,0-15,6.7-15,15s6.7,15,15,15h48c8.3,0,15-6.7,15-15S136.3,193,128,193z"
+                  ></path>
+                </g>
+              </svg>
+            </a>
             <button
               v-tooltip="
                 orderDetails.status === 'Shipped'
@@ -323,6 +361,26 @@ export default {
     this.getOrderDetail()
   },
   methods: {
+    printInvoice() {
+      if (!this.orderDetails.invoice_status) {
+        return
+      }
+      this.$axios
+        .$get('digital/invoice/generate-pdf', {
+          params: {
+            url_workspace_id: this.$getWorkspaceId(),
+            order_id: this.listOrderId,
+          },
+        })
+        .then(({ message, data }) => {
+          this.$toast.success(message)
+          const link = document.createElement('a')
+          link.setAttribute('target', '_blank')
+          link.href = data.pdf_file
+          link.click()
+          link.remove()
+        })
+    },
     getAddressConcat(address) {
       let concat = ''
       if (address.address1) {

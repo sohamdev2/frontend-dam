@@ -101,9 +101,39 @@
             </div>
           </client-only>
 
+          <div v-if="file.asset_product" class="product-tag">
+            <svg
+              id="Layer_1"
+              class="product-icon white"
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              x="0px"
+              y="0px"
+              viewBox="0 0 512 512"
+              xml:space="preserve"
+            >
+              <g>
+                <path
+                  class="fill-color"
+                  d="M510,208.7l-47.9-75.6c-1.3-2.1-3.3-3.8-5.5-4.9l-194.8-92c-3.6-1.7-7.8-1.7-11.4,0.1l-195.2,96c-2,1-3.9,2.6-5.1,4.5L2.1,208.4c-4.1,6.2-2.1,15,4.4,18.7l41.3,23.6V361c0,4.9,2.7,9.3,7,11.6l195,102.9c3.9,2,8.6,2,12.4-0.1l195-107c6.4-3.5,8.7-11.5,5.2-17.8c-3.5-6.4-11.5-8.7-17.8-5.2l-175.6,96.3V284.5l35.6,44.6c3.9,4.9,11.3,6.3,16.8,3.2l184-105.2C511.8,223.5,514,214.9,510,208.7L510,208.7z M256.2,62.7L422.1,141l-166.2,91.1l-166-87.6L256.2,62.7z M65.3,161.2l170.5,90L193.8,304l-162-92.7L65.3,161.2z M74.1,353.1v-87.3l116.4,66.6c5.5,3.1,12.9,1.7,16.8-3.2l35.6-44.6v157.6L74.1,353.1z M318.2,304L276,251l170.5-93.4l34,53.6L318.2,304z"
+                ></path>
+                <circle
+                  class="fill-color"
+                  cx="451"
+                  cy="306.1"
+                  r="15.3"
+                ></circle>
+              </g>
+            </svg>
+          </div>
           <div class="video-info">
             <div class="upper-info">
-              <span :inner-html.prop="file.file_type || '&dash;'"></span>
+              <div class="tags">
+                <span :inner-html.prop="file.file_type || '&dash;'"></span>
+                <span v-if="file.asset_product">Product</span>
+              </div>
+
               <!-- <a
                 v-if="!shareMode"
                 @click="
@@ -550,9 +580,40 @@
               </ContentLoader>
             </div>
           </client-only>
+          <div v-if="file.asset_product" class="product-tag">
+            <svg
+              id="Layer_1"
+              class="product-icon white"
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              x="0px"
+              y="0px"
+              viewBox="0 0 512 512"
+              xml:space="preserve"
+            >
+              <g>
+                <path
+                  class="fill-color"
+                  d="M510,208.7l-47.9-75.6c-1.3-2.1-3.3-3.8-5.5-4.9l-194.8-92c-3.6-1.7-7.8-1.7-11.4,0.1l-195.2,96c-2,1-3.9,2.6-5.1,4.5L2.1,208.4c-4.1,6.2-2.1,15,4.4,18.7l41.3,23.6V361c0,4.9,2.7,9.3,7,11.6l195,102.9c3.9,2,8.6,2,12.4-0.1l195-107c6.4-3.5,8.7-11.5,5.2-17.8c-3.5-6.4-11.5-8.7-17.8-5.2l-175.6,96.3V284.5l35.6,44.6c3.9,4.9,11.3,6.3,16.8,3.2l184-105.2C511.8,223.5,514,214.9,510,208.7L510,208.7z M256.2,62.7L422.1,141l-166.2,91.1l-166-87.6L256.2,62.7z M65.3,161.2l170.5,90L193.8,304l-162-92.7L65.3,161.2z M74.1,353.1v-87.3l116.4,66.6c5.5,3.1,12.9,1.7,16.8-3.2l35.6-44.6v157.6L74.1,353.1z M318.2,304L276,251l170.5-93.4l34,53.6L318.2,304z"
+                ></path>
+                <circle
+                  class="fill-color"
+                  cx="451"
+                  cy="306.1"
+                  r="15.3"
+                ></circle>
+              </g>
+            </svg>
+          </div>
           <div class="video-info">
             <div class="upper-info">
-              <span :inner-html.prop="file.file_type || '&dash;'"></span>
+              <div class="tags">
+                <span style="cursor: default" @click.capture.stop>{{
+                  file.file_type || '&dash;'
+                }}</span>
+                <span v-if="file.asset_product">Product</span>
+              </div>
               <div class="d-flex align-items-center">
                 <div
                   class="dropdown more-options"
@@ -881,7 +942,10 @@
     </div>
     <div class="assets tb-column flex18">
       <div class="top-column">
-        <label :inner-html.prop="file.file_type || '&dash;'"></label>
+        <div class="tags">
+          <span :inner-html.prop="file.file_type || '&dash;'"></span>
+          <span v-if="file.asset_product">Product</span>
+        </div>
       </div>
     </div>
     <div class="update-date tb-column flex18">

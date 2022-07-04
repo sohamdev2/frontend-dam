@@ -101,7 +101,7 @@
                     </div>
                     <div class="tb-column flex10">
                       <div class="top-column">
-                        <label>{{ address.county }}</label>
+                        <label>{{ address.country }}</label>
                       </div>
                     </div>
                     <div class="tb-column flex10">

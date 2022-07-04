@@ -469,6 +469,10 @@ export default {
           this.billingInfo.user_name = data.userName
           this.billingInfo.user_email = data.userEmail
           this.billingInfo.user_phone = data.userPhone
+          this.shippingInfo.shipping_user_email = data.userEmail
+          this.shippingInfo.shipping_user_name = data.userName
+          this.shippingInfo.shipping_user_phone = data.userPhone
+          this.shippingInfo.shipping_company_name = data.company_name
         })
         .catch(console.log)
         .finally(() => {
@@ -533,7 +537,10 @@ export default {
         this.shippingInfo.city = ''
         this.shippingInfo.state = ''
         this.shippingInfo.country = ''
-        this.shippingInfo.zip_code = ''
+        this.shippingInfo.shipping_company_name = ''
+        this.shippingInfo.shipping_user_name = ''
+        this.shippingInfo.shipping_user_email = ''
+        this.shippingInfo.shipping_user_phone = ''
         return
       }
       this.$axios
