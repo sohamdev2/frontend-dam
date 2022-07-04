@@ -58,7 +58,7 @@
           Product is added to cart.
         </div>
       </div>
-      <div class="d-flex align-items-center justify-content-center">
+      <!-- <div class="d-flex align-items-center justify-content-center">
         <nuxt-link
           :to="{
             name: 'brand_name-cart',
@@ -66,7 +66,7 @@
           class="btn"
           >View Cart</nuxt-link
         >
-      </div>
+      </div> -->
     </div>
     <div v-else class="modal-body">
       <h4 class="mb20">{{ file && file.display_file_name }}</h4>
@@ -377,7 +377,12 @@ export default {
           unit: this.assetProduct.unit,
         })
         .then(({ message }) => {
-          this.cartAdded = true
+          // this.cartAdded = true
+          this.active = false
+          this.$toast.success(message)
+          this.$router.push({
+            name: 'brand_name-cart',
+          })
           this.$store.dispatch('product/fetchBadgeCount')
         })
         .catch((error) => {
