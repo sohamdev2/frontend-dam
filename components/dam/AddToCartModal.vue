@@ -377,12 +377,12 @@ export default {
           unit: this.assetProduct.unit,
         })
         .then(({ message }) => {
-          this.cartAdded = true
-          setTimeout(() => {
-            this.$router.push({
-              name: 'brand_name-cart',
-            })
-          }, 300)
+          // this.cartAdded = true
+          this.active = false
+          this.$toast.success(message)
+          this.$router.push({
+            name: 'brand_name-cart',
+          })
           this.$store.dispatch('product/fetchBadgeCount')
         })
         .catch((error) => {

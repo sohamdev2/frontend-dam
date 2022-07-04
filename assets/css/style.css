@@ -1108,6 +1108,8 @@ header .user-dropdown.show .dropdown-toggle{color: var(--secondary);}
 .overview-table .breadcrumb-links span {color: #070E22;font-weight: 600;}
 .overview-table.shop-info li > span {width: 110px;}
 .overview-table.shop-info li > span + span {width: calc(100% - 110px);}
+.overview-table.shop-info li p {margin-bottom: 0px;}
+.overview-table.shop-info li .select2 {width: calc(100% - 110px) !important;max-width: 40%;}
 
 .tabbing-inner .tag-add-box {border: 1px solid #D8DCE2;border-radius: 4px;padding: 7px;min-height: 254px;}
 .tabbing-inner .added-tag {margin: 4px;display: inline-block;vertical-align: top;border: 1px solid #D8DCE2;border-radius: 4px;position: relative;padding: 5px 14px;font-size: 13px;font-weight: 500;background-color: #ffffff;}

@@ -267,7 +267,11 @@
                     v-if="ui.tab == 'metadata' && ui.exifLoading"
                     style="position: absolute; top: 1rem; right: 1rem"
                   />
-                  <shop :class="{ active: ui.tab === 'shop' }" :file="file" />
+                  <shop
+                    v-if="file.asset_product"
+                    :class="{ active: ui.tab === 'shop' }"
+                    :file="file"
+                  />
                   <div
                     id="overview"
                     class="tab-pane"

@@ -101,7 +101,10 @@
             </div>
           </client-only>
 
-          <div v-if="file.asset_product" class="product-tag">
+          <div
+            v-if="file.asset_product && $route.name !== 'brand_name-store'"
+            class="product-tag"
+          >
             <svg
               id="Layer_1"
               class="product-icon white"
@@ -131,7 +134,12 @@
             <div class="upper-info">
               <div class="tags">
                 <span :inner-html.prop="file.file_type || '&dash;'"></span>
-                <span v-if="file.asset_product">Product</span>
+                <span
+                  v-if="
+                    file.asset_product && $route.name !== 'brand_name-store'
+                  "
+                  >Product</span
+                >
               </div>
 
               <!-- <a
@@ -580,7 +588,10 @@
               </ContentLoader>
             </div>
           </client-only>
-          <div v-if="file.asset_product" class="product-tag">
+          <div
+            v-if="file.asset_product && $route.name !== 'brand_name-store'"
+            class="product-tag"
+          >
             <svg
               id="Layer_1"
               class="product-icon white"
@@ -612,7 +623,12 @@
                 <span style="cursor: default" @click.capture.stop>{{
                   file.file_type || '&dash;'
                 }}</span>
-                <span v-if="file.asset_product">Product</span>
+                <span
+                  v-if="
+                    file.asset_product && $route.name !== 'brand_name-store'
+                  "
+                  >Product</span
+                >
               </div>
               <div class="d-flex align-items-center">
                 <div
@@ -944,7 +960,9 @@
       <div class="top-column">
         <div class="tags">
           <span :inner-html.prop="file.file_type || '&dash;'"></span>
-          <span v-if="file.asset_product">Product</span>
+          <span v-if="file.asset_product && $route.name !== 'brand_name-store'"
+            >Product</span
+          >
         </div>
       </div>
     </div>

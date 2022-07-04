@@ -1,21 +1,25 @@
 <template>
   <div id="shop" class="tab-pane">
-    <h4>Precept Floorplan Poster</h4>
+    <h4>{{ file.display_file_name }}</h4>
     <ul class="overview-table shop-info">
       <li>
         <span>SKU</span>
-        <span>BR-97428-1107</span>
+        <span>{{ file.asset_product.sku || '-' }}</span>
       </li>
       <li>
         <span>Price</span>
-        <span>$100.00</span>
+        <span>{{
+          assetProduct.pricing_option === '1'
+            ? getPrice(calculatedPrice)
+            : getPrice(minPrice)
+        }}</span>
       </li>
       <li>
         <span>Unit per Qty</span>
-        <span>100 Units</span>
+        <span>{{ file.asset_product.unit }}</span>
       </li>
       <li>
-        <span v-if="assetProduct.pricing_option === '1'">Qty</span>
+        <span>Qty</span>
         <template v-if="assetProduct.pricing_option === '1'">
           <div class="quantity">
             <div
@@ -99,7 +103,7 @@
           placeholder="Select pricing option"
         />
       </li>
-      <li>
+      <li v-if="assetProduct.pricing_option === '1'">
         <span>&nbsp;</span>
         <p
           v-if="
@@ -112,8 +116,11 @@
         </p>
       </li>
       <li>
-        <span>&nbsp;</span>
-        <a href="javascript:void(0);" class="btn btn-icon" @click="addToCart">
+        <a
+          href="javascript:void(0);"
+          class="btn btn-icon mt1"
+          @click="addToCart"
+        >
           <svg
             id="Layer_1"
             class="cart-icon"

@@ -54,7 +54,11 @@
               </div>
             </div>
             <a
-              v-tooltip="orderDetails.invoice_status ? 'Print Invoice' : ''"
+              v-tooltip="
+                orderDetails.invoice_status
+                  ? 'Print Invoice'
+                  : 'Invoice is not generated yet. '
+              "
               href="javascript:void(0);"
               class="print-btn"
               :class="orderDetails.invoice_status ? '' : 'disabled'"
