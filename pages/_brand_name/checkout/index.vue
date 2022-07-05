@@ -544,6 +544,7 @@ export default {
         this.shippingInfo.shipping_company_name = ''
         this.shippingInfo.shipping_user_name = ''
         this.shippingInfo.shipping_user_email = ''
+        this.shippingInfo.zip_code = ''
         this.shippingInfo.shipping_user_phone = null
         return
       }
