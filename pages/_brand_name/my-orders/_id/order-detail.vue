@@ -104,12 +104,14 @@
               :class="orderDetails.status === 'Shipped' ? 'disabled' : ''"
               :disabled="
                 orderDetails.status === 'Cancelled' ||
-                orderDetails.status === 'Delivered'
+                orderDetails.status === 'Delivered' ||
+                isLoading
               "
               class="btn btn-red-invert"
               @click="
                 orderDetails.status !== 'Shipped' &&
-                orderDetails.status !== 'Delivered'
+                orderDetails.status !== 'Delivered' &&
+                !isLoading
                   ? (showDeleteDialog = true)
                   : ''
               "

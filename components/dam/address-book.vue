@@ -37,7 +37,7 @@
               <div class="general-settings-box customscrollbar">
                 <div class="row">
                   <div class="col-sm-6">
-                    <div class="form-group">
+                    <div class="form-group required">
                       <label class="control-label">Company Name</label>
                       <input
                         v-model="address.company_name"
@@ -46,10 +46,18 @@
                         placeholder=""
                         class="form-control"
                       />
+                      <div
+                        v-if="
+                          $v.address.$error && !$v.address.company_name.required
+                        "
+                        class="input-error"
+                      >
+                        Field is required
+                      </div>
                     </div>
                   </div>
                   <div class="col-sm-6">
-                    <div class="form-group">
+                    <div class="form-group required">
                       <label class="control-label">Name</label>
                       <input
                         v-model="address.name"
@@ -58,12 +66,18 @@
                         placeholder=""
                         class="form-control"
                       />
+                      <div
+                        v-if="$v.address.$error && !$v.address.name.required"
+                        class="input-error"
+                      >
+                        Field is required
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-sm-6">
-                    <div class="form-group">
+                    <div class="form-group required">
                       <label class="control-label">Email</label>
                       <input
                         v-model="address.email"
@@ -72,24 +86,32 @@
                         placeholder=""
                         class="form-control"
                       />
-                      <div
-                        v-if="$v.address.$error && !address.email.email"
-                        class="input-error"
-                      >
-                        Please enter valid email address.
+                      <div v-if="$v.address.$error" class="input-error">
+                        <span v-if="!$v.address.email.required"
+                          >Field is required</span
+                        >
+                        <span v-else-if="!$v.address.email.email"
+                          >Please enter valid email address</span
+                        >
                       </div>
                     </div>
                   </div>
                   <div class="col-sm-6">
-                    <div class="form-group">
+                    <div class="form-group required">
                       <label class="control-label">Phone</label>
                       <input
                         v-model="address.phone"
-                        type="number"
+                        type="text"
                         name="phone"
                         placeholder=""
                         class="form-control"
                       />
+                      <div v-if="$v.address.$error" class="input-error">
+                        <span v-if="!$v.address.phone.numeric"
+                          >Please enter valid phone</span
+                        >
+                        <span v-else>Field is required</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -238,7 +260,8 @@
 </template>
 
 <script>
-import { email, required } from 'vuelidate/lib/validators'
+import { email, required, numeric } from 'vuelidate/lib/validators'
+const checkNull = (value) => value !== 0 && value !== '' && value !== null
 export default {
   props: {
     edit: {
@@ -254,7 +277,7 @@ export default {
         company_name: '',
         name: '',
         email: '',
-        phone: '',
+        phone: null,
         address1: '',
         address2: '',
         city: '',
@@ -276,26 +299,24 @@ export default {
   mounted() {
     if (this.edit) {
       this.viewAddress()
-    } else {
-      this.getCompanyDetails()
     }
   },
   methods: {
-    getCompanyDetails() {
-      this.$axios
-        .$get(`digital/order/user-details`, {
-          params: {
-            url_workspace_id: this.$getWorkspaceId(),
-          },
-        })
-        .then(({ data }) => {
-          this.address.company_name = data.company_name
-          this.address.email = data.userEmail
-          this.address.name = data.userName
-          this.address.phone = data.userPhone
-        })
-        .catch(console.log)
-    },
+    // getCompanyDetails() {
+    //   this.$axios
+    //     .$get(`digital/order/user-details`, {
+    //       params: {
+    //         url_workspace_id: this.$getWorkspaceId(),
+    //       },
+    //     })
+    //     .then(({ data }) => {
+    //       this.address.company_name = data.company_name
+    //       this.address.email = data.userEmail
+    //       this.address.name = data.userName
+    //       this.address.phone = data.userPhone
+    //     })
+    //     .catch(console.log)
+    // },
     viewAddress() {
       this.$axios
         .$post(`digital/user-address/view-address`, {
@@ -339,11 +360,23 @@ export default {
   validations() {
     return {
       address: {
+        company_name: {
+          required,
+        },
+        name: {
+          required,
+        },
         address1: {
           required,
         },
         email: {
           email,
+          required,
+        },
+        phone: {
+          required,
+          numeric,
+          checkNull,
         },
         city: {
           required,
