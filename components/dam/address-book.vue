@@ -110,7 +110,9 @@
                         <span v-if="!$v.address.phone.numeric"
                           >Please enter valid phone</span
                         >
-                        <span v-else>Field is required</span>
+                        <span v-else-if="!$v.address.phone.required"
+                          >Field is required</span
+                        >
                       </div>
                     </div>
                   </div>

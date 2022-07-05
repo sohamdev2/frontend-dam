@@ -40,14 +40,13 @@
                     name="name"
                     class="form-control"
                   />
-                  <div
-                    v-if="
-                      $v.billingInfo.$error &&
-                      !$v.billingInfo.user_email.required
-                    "
-                    class="input-error"
-                  >
-                    Field is required
+                  <div v-if="$v.billingInfo.$error" class="input-error">
+                    <span v-if="!$v.billingInfo.user_email.required"
+                      >Field is required</span
+                    >
+                    <span v-else-if="!$v.billingInfo.user_email.email"
+                      >Please enter valid email address</span
+                    >
                   </div>
                 </div>
               </div>
@@ -60,14 +59,17 @@
                     name="name"
                     class="form-control"
                   />
-                  <div
-                    v-if="
-                      $v.billingInfo.$error &&
-                      !$v.billingInfo.user_phone.required
-                    "
-                    class="input-error"
-                  >
-                    Field is required
+                  <div v-if="$v.billingInfo.$error" class="input-error">
+                    <span v-if="!$v.billingInfo.user_phone.numeric"
+                      >Please enter valid phone</span
+                    >
+                    <span
+                      v-else-if="
+                        $v.billingInfo.user_phone.$error &&
+                        !$v.billingInfo.user_phone.required
+                      "
+                      >Field is required</span
+                    >
                   </div>
                 </div>
               </div>
@@ -163,14 +165,13 @@
                     name="email"
                     class="form-control"
                   />
-                  <div
-                    v-if="
-                      $v.shippingInfo.$error &&
-                      !$v.shippingInfo.shipping_user_email.required
-                    "
-                    class="input-error"
-                  >
-                    Field is required
+                  <div v-if="$v.shippingInfo.$error" class="input-error">
+                    <span v-if="!$v.shippingInfo.shipping_user_email.required"
+                      >Field is required</span
+                    >
+                    <span v-else-if="!$v.shippingInfo.shipping_user_email.email"
+                      >Please enter valid email address</span
+                    >
                   </div>
                 </div>
               </div>
@@ -183,14 +184,17 @@
                     name="phone"
                     class="form-control"
                   />
-                  <div
-                    v-if="
-                      $v.shippingInfo.$error &&
-                      !$v.shippingInfo.shipping_user_phone.required
-                    "
-                    class="input-error"
-                  >
-                    Field is required
+                  <div v-if="$v.shippingInfo.$error" class="input-error">
+                    <span v-if="!$v.shippingInfo.shipping_user_phone.numeric"
+                      >Please enter valid phone</span
+                    >
+                    <span
+                      v-else-if="
+                        $v.shippingInfo.shipping_user_phone.$error &&
+                        !$v.shippingInfo.shipping_user_email.required
+                      "
+                      >Field is required</span
+                    >
                   </div>
                 </div>
               </div>
@@ -394,8 +398,8 @@
   </div>
 </template>
 <script>
-import { required } from 'vuelidate/lib/validators'
-// import { ContentLoader } from 'vue-content-loader'
+import { email, required, numeric } from 'vuelidate/lib/validators'
+const checkNull = (value) => value !== 0 && value !== '' && value !== null
 export default {
   layout: 'app-sidebar',
   middleware: ['check-url', 'check-auth'],
@@ -416,7 +420,7 @@ export default {
         shipping_company_name: '',
         shipping_user_name: '',
         shipping_user_email: '',
-        shipping_user_phone: '',
+        shipping_user_phone: null,
         address1: '',
         address2: '',
         city: '',
@@ -502,17 +506,17 @@ export default {
     getAddressList() {
       this.$axios
         .$get(
-          `digital/user-address/address-list`,
+          `digital/order/existing-address-list`,
 
           {
             params: {
-              workspace_id: this.$getWorkspaceId(),
+              url_workspace_id: this.$getWorkspaceId(),
               user_id: this.$auth.user.user_id,
             },
           }
         )
         .then(({ data }) => {
-          this.addressOptions = data.data.map((address) => {
+          this.addressOptions = data.map((address) => {
             return {
               id: address.id,
               text: address.full_address,
@@ -540,7 +544,7 @@ export default {
         this.shippingInfo.shipping_company_name = ''
         this.shippingInfo.shipping_user_name = ''
         this.shippingInfo.shipping_user_email = ''
-        this.shippingInfo.shipping_user_phone = ''
+        this.shippingInfo.shipping_user_phone = null
         return
       }
       this.$axios
@@ -599,14 +603,14 @@ export default {
     return {
       billingInfo: {
         user_name: { required },
-        user_email: { required },
-        user_phone: { required },
+        user_email: { email, required },
+        user_phone: { required, numeric, checkNull },
       },
       shippingInfo: {
         shipping_company_name: { required },
         shipping_user_name: { required },
-        shipping_user_email: { required },
-        shipping_user_phone: { required },
+        shipping_user_email: { email, required },
+        shipping_user_phone: { required, numeric, checkNull },
         address1: {
           required,
         },

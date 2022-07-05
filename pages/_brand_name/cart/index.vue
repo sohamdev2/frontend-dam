@@ -80,7 +80,24 @@
                 <div class="media">
                   <div class="media-left">
                     <div class="categary-image">
-                      <img :src="cartItem.file_name" alt="" />
+                      <img
+                        v-if="$isImage(cartItem.file_type)"
+                        :src="cartItem.file_name"
+                        alt=""
+                      />
+                      <img
+                        v-else-if="$isVideo(cartItem.file_type)"
+                        :src="cartItem.asset.thumbnail_file"
+                        alt=""
+                      />
+                      <img
+                        v-else
+                        :src="
+                          cartItem.asset.thumbnail_file ||
+                          cartItem.asset.preview_image
+                        "
+                        alt=""
+                      />
                     </div>
                   </div>
                   <div class="media-body">
@@ -374,12 +391,14 @@
 </template>
 <script>
 import { ContentLoader } from 'vue-content-loader'
+import fileType from '~/mixins/fileType'
 export default {
   layout: 'app-sidebar',
   middleware: ['check-url', 'check-auth'],
   components: {
     ContentLoader,
   },
+  mixins: [fileType],
   data() {
     return {
       cartList: [],
@@ -481,7 +500,7 @@ export default {
       this.$axios
         .$get(`digital/cart/view-cart?workspace_id=${this.$getWorkspaceId()}`)
         .then(({ data }) => {
-          this.cartList = data.data || []
+          this.cartList = data || []
         })
         .catch(console.log)
         .finally(() => {
