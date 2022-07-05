@@ -106,7 +106,7 @@
                       class="form-control"
                     />
                     <div v-if="$v.address.$error" class="input-error">
-                      <span v-if="!$v.address.phone.numeric"
+                      <span v-if="!$v.address.phone.alphaNum"
                         >Please enter valid phone</span
                       >
                       <span v-else-if="!$v.address.phone.required"
@@ -256,7 +256,7 @@
 </template>
 
 <script>
-import { email, required, numeric } from 'vuelidate/lib/validators'
+import { email, required, alphaNum } from 'vuelidate/lib/validators'
 const checkNull = (value) => value !== 0 && value !== '' && value !== null
 export default {
   props: {
@@ -371,7 +371,7 @@ export default {
         },
         phone: {
           required,
-          numeric,
+          alphaNum,
           checkNull,
         },
         city: {

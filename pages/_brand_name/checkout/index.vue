@@ -60,7 +60,7 @@
                     class="form-control"
                   />
                   <div v-if="$v.billingInfo.$error" class="input-error">
-                    <span v-if="!$v.billingInfo.user_phone.numeric"
+                    <span v-if="!$v.billingInfo.user_phone.alphaNum"
                       >Please enter valid phone</span
                     >
                     <span
@@ -185,7 +185,7 @@
                     class="form-control"
                   />
                   <div v-if="$v.shippingInfo.$error" class="input-error">
-                    <span v-if="!$v.shippingInfo.shipping_user_phone.numeric"
+                    <span v-if="!$v.shippingInfo.shipping_user_phone.alphaNum"
                       >Please enter valid phone</span
                     >
                     <span
@@ -398,7 +398,7 @@
   </div>
 </template>
 <script>
-import { email, required, numeric } from 'vuelidate/lib/validators'
+import { email, required, alphaNum } from 'vuelidate/lib/validators'
 const checkNull = (value) => value !== 0 && value !== '' && value !== null
 export default {
   layout: 'app-sidebar',
@@ -605,13 +605,13 @@ export default {
       billingInfo: {
         user_name: { required },
         user_email: { email, required },
-        user_phone: { required, numeric, checkNull },
+        user_phone: { required, alphaNum, checkNull },
       },
       shippingInfo: {
         shipping_company_name: { required },
         shipping_user_name: { required },
         shipping_user_email: { email, required },
-        shipping_user_phone: { required, numeric, checkNull },
+        shipping_user_phone: { required, alphaNum, checkNull },
         address1: {
           required,
         },
