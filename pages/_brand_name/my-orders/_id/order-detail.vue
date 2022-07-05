@@ -104,12 +104,14 @@
               :class="orderDetails.status === 'Shipped' ? 'disabled' : ''"
               :disabled="
                 orderDetails.status === 'Cancelled' ||
-                orderDetails.status === 'Delivered'
+                orderDetails.status === 'Delivered' ||
+                isLoading
               "
               class="btn btn-red-invert"
               @click="
                 orderDetails.status !== 'Shipped' &&
-                orderDetails.status !== 'Delivered'
+                orderDetails.status !== 'Delivered' &&
+                !isLoading
                   ? (showDeleteDialog = true)
                   : ''
               "
@@ -233,7 +235,25 @@
                     <div class="media">
                       <div class="media-left">
                         <div class="categary-image">
-                          <img :src="orderItem.file_name" alt="" />
+                          <img
+                            v-if="$isImage(orderItem.file_type)"
+                            :src="orderItem.file_name"
+                            alt=""
+                          />
+                          <img
+                            v-else-if="$isVideo(orderItem.file_type)"
+                            :src="orderItem.asset.thumbnail_file"
+                            alt=""
+                          />
+                          <img
+                            v-else
+                            :src="
+                              orderItem.asset.thumbnail_file ||
+                              orderItem.asset.preview_image
+                            "
+                            alt=""
+                          />
+                          <!-- <img :src="orderItem.file_name" alt="" /> -->
                         </div>
                       </div>
                       <div class="media-right">
