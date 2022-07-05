@@ -555,6 +555,10 @@ export default {
           this.shippingInfo.state = data.state
           this.shippingInfo.country = data.country
           this.shippingInfo.zip_code = data.zip_code
+          this.shippingInfo.shipping_company_name = data.company_name
+          this.shippingInfo.shipping_user_name = data.user_name
+          this.shippingInfo.shipping_user_email = data.user_email
+          this.shippingInfo.shipping_user_phone = data.user_phone
         })
     },
     placeOrder() {
