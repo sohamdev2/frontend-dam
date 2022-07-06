@@ -6,7 +6,7 @@
         <h2 v-else>{{ $brandName() }}</h2>
       </nuxt-link>
     </div>
-    <div class="main-menu col-7">
+    <div class="main-menu col-6">
       <component :is="`style`" v-html="css"></component>
       <ul class="header-nav">
         <li
@@ -135,6 +135,61 @@
             </li>
           </ul>
         </div>
+      </div>
+      <div class="cart-list">
+        <nuxt-link
+          :to="{
+            name: 'brand_name-cart',
+            params: { brand_name: $getBrandName() },
+          }"
+        >
+          <svg
+            id="Layer_1"
+            class="cart-icon"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px"
+            y="0px"
+            viewBox="0 0 18 18"
+            xml:space="preserve"
+          >
+            <g id="Add_to_Cart_1">
+              <g id="shopping-cart_1_" transform="translate(0 -21.006)">
+                <g id="Group_39446" transform="translate(12.008 33.69)">
+                  <g id="Group_39445">
+                    <path
+                      id="Path_40275"
+                      class="fill-color"
+                      d="M2.2,0C1,0,0,1,0,2.2s1,2.2,2.2,2.2s2.2-1,2.2-2.2v0C4.5,1,3.5,0,2.2,0z M2.2,3.1c-0.5,0-0.9-0.4-0.9-0.9c0-0.5,0.4-0.9,0.9-0.9c0.5,0,0.9,0.4,0.9,0.9l0,0C3.1,2.7,2.7,3.1,2.2,3.1z"
+                    ></path>
+                  </g>
+                </g>
+                <g id="Group_39448" transform="translate(0 21.705)">
+                  <g id="Group_39447" transform="translate(0 0)">
+                    <path
+                      id="Path_40276"
+                      class="fill-color"
+                      d="M17.9,3.3c-0.1-0.2-0.3-0.3-0.5-0.3H4.2L3.5,0.5C3.5,0.2,3.2,0,2.9,0H0.7C0.3,0,0,0.3,0,0.7s0.3,0.7,0.7,0.7h1.7l2.2,9.2C4.6,10.8,4.9,11,5.2,11h10.5c0.3,0,0.6-0.2,0.7-0.5L18,3.9C18,3.7,18,3.5,17.9,3.3z M15.2,9.7H5.7L4.5,4.4h12L15.2,9.7z"
+                    ></path>
+                  </g>
+                </g>
+                <g id="Group_39450" transform="translate(3.86 33.69)">
+                  <g id="Group_39449">
+                    <path
+                      id="Path_40277"
+                      class="fill-color"
+                      d="M2.2,0C1,0,0,1,0,2.2c0,1.2,1,2.2,2.2,2.2s2.2-1,2.2-2.2l0,0C4.5,1,3.5,0,2.2,0z M2.2,3.1c-0.5,0-0.9-0.4-0.9-0.9c0-0.5,0.4-0.9,0.9-0.9c0.5,0,0.9,0.4,0.9,0.9l0,0C3.1,2.7,2.7,3.1,2.2,3.1z"
+                    ></path>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </svg>
+          <span v-if="$store.getters['product/badgeCount'] > 0" class="count">{{
+            $store.getters['product/badgeCount']
+          }}</span>
+        </nuxt-link>
       </div>
       <DamAnnouncementNotification v-if="!user.is_backend_user" />
       <div class="dropdown user-dropdown">
@@ -282,7 +337,10 @@
               <nuxt-link
                 v-if="!user.is_backend_user"
                 class="dropdown-item"
-                to="/profile"
+                :to="{
+                  name: 'brand_name-profile',
+                  params: { brand_name: $getBrandName() },
+                }"
               >
                 <svg
                   id="Layer_1"
@@ -311,7 +369,7 @@
                       ></path>
                     </g>
                   </g></svg
-                >User Profile
+                >My Account
               </nuxt-link>
             </li>
             <li>
@@ -479,6 +537,7 @@ export default {
       userLogo: null,
       collectionList: [],
       userModel: { ...this.$auth.user },
+      cartItemCount: 0,
     }
   },
   computed: {
@@ -521,6 +580,7 @@ export default {
     })
   },
   mounted() {
+    this.$store.dispatch('product/fetchBadgeCount')
     this.$nextTick(() => {
       window.$(this.$el).find('.dropdown-toggle').dropdown()
     })

@@ -2,7 +2,13 @@
   <div class="general-settings h-100 w-100">
     <div class="general-settings-right w-100 h-100">
       <div class="general-settings-title d-flex align-items-center">
-        <nuxt-link to="/address-book" class="back-btn">
+        <nuxt-link
+          :to="{
+            name: 'brand_name-address-book',
+            params: { brand_name: this.$getBrandName() },
+          }"
+          class="back-btn"
+        >
           <svg
             id="Capa_1"
             class="back-long-arrow-icon h-orange"
@@ -26,142 +32,221 @@
       </div>
       <div class="workspace-settings">
         <div class="row no-gutters h-100">
-          <div class="col-lg-8 col-md-12 h-100">
-            <div class="workspace-setting-left">
-              <div class="general-settings-box customscrollbar">
-                <div class="row">
-                  <div class="col-sm-12">
-                    <div class="form-group required">
-                      <label class="control-label">Address Line 1</label>
-                      <input
-                        v-model="address.address1"
-                        type="text"
-                        name="address-line1"
-                        placeholder=""
-                        class="form-control"
-                      />
-                      <div
-                        v-if="
-                          $v.address.$error && !$v.address.address1.required
-                        "
-                        class="input-error"
-                      >
-                        Field is required
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-12">
-                    <div class="form-group required">
-                      <label class="control-label">Address Line 2</label>
-                      <input
-                        v-model="address.address2"
-                        type="text"
-                        name="address-line2"
-                        placeholder=""
-                        class="form-control"
-                      />
-                      <div
-                        v-if="
-                          $v.address.$error && !$v.address.address2.required
-                        "
-                        class="input-error"
-                      >
-                        Field is required
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-12">
-                    <div class="form-group w-75 required">
-                      <label class="control-label">City</label>
-                      <input
-                        v-model="address.city"
-                        type="text"
-                        name="city"
-                        placeholder=""
-                        class="form-control"
-                      />
-                      <div
-                        v-if="$v.address.$error && !$v.address.city.required"
-                        class="input-error"
-                      >
-                        Field is required
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-12">
-                    <div class="form-group w-75 required">
-                      <label class="control-label">State/Province</label>
-                      <input
-                        v-model="address.state"
-                        type="text"
-                        name="state"
-                        placeholder=""
-                        class="form-control"
-                      />
-                      <div
-                        v-if="$v.address.$error && !$v.address.state.required"
-                        class="input-error"
-                      >
-                        Field is required
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-12">
-                    <div class="form-group w-50 required">
-                      <label class="control-label">ZIP</label>
-                      <input
-                        v-model="address.zip_code"
-                        type="text"
-                        name="zip"
-                        placeholder=""
-                        class="form-control"
-                      />
-                      <div
-                        v-if="
-                          $v.address.$error && !$v.address.zip_code.required
-                        "
-                        class="input-error"
-                      >
-                        Field is required
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-12">
-                    <div class="form-group required">
-                      <label class="control-label">Country</label>
-                      <Select2
-                        v-model="address.county"
-                        :options="['United States', 'Canada']"
-                        placeholder="Country"
-                      ></Select2>
-                      <div
-                        v-if="$v.address.$error && !$v.address.county.required"
-                        class="input-error"
-                      >
-                        Field is required
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-12">
-                    <button
-                      type="submit"
-                      name="submit"
-                      class="btn"
-                      @click="saveAddress"
+          <div class="col-lg-6 col-md-12 h-100">
+            <div class="general-settings-box customscrollbar">
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group required">
+                    <label class="control-label">Company Name</label>
+                    <input
+                      v-model="address.company_name"
+                      type="text"
+                      name="cname"
+                      placeholder=""
+                      class="form-control"
+                    />
+                    <div
+                      v-if="
+                        $v.address.$error && !$v.address.company_name.required
+                      "
+                      class="input-error"
                     >
-                      {{ edit ? 'Update address' : 'Save Address' }}
-                    </button>
-                    <button
-                      type="reset"
-                      name="reset"
-                      class="btn btn-gray"
-                      @click="$router.push('/address-book')"
+                      Field is required
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group required">
+                    <label class="control-label">Name</label>
+                    <input
+                      v-model="address.name"
+                      type="text"
+                      name="name"
+                      placeholder=""
+                      class="form-control"
+                    />
+                    <div
+                      v-if="$v.address.$error && !$v.address.name.required"
+                      class="input-error"
                     >
-                      Cancel
-                    </button>
+                      Field is required
+                    </div>
                   </div>
                 </div>
               </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group required">
+                    <label class="control-label">Email</label>
+                    <input
+                      v-model="address.email"
+                      type="email"
+                      name="cmail"
+                      placeholder=""
+                      class="form-control"
+                    />
+                    <div v-if="$v.address.$error" class="input-error">
+                      <span v-if="!$v.address.email.required"
+                        >Field is required</span
+                      >
+                      <span v-else-if="!$v.address.email.email"
+                        >Please enter valid email address</span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group required">
+                    <label class="control-label">Phone</label>
+                    <input
+                      v-model="address.phone"
+                      type="text"
+                      name="phone"
+                      placeholder=""
+                      class="form-control"
+                    />
+                    <div v-if="$v.address.$error" class="input-error">
+                      <span v-if="!$v.address.phone.alphaNum"
+                        >Please enter valid phone</span
+                      >
+                      <span v-else-if="!$v.address.phone.required"
+                        >Field is required</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-group required">
+                    <label class="control-label">Address Line 1</label>
+                    <input
+                      v-model="address.address1"
+                      type="text"
+                      name="address-line1"
+                      placeholder=""
+                      class="form-control"
+                    />
+                    <div
+                      v-if="$v.address.$error && !$v.address.address1.required"
+                      class="input-error"
+                    >
+                      Field is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label class="control-label">Address Line 2</label>
+                    <input
+                      v-model="address.address2"
+                      type="text"
+                      name="address-line2"
+                      placeholder=""
+                      class="form-control"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group required">
+                    <label class="control-label">City</label>
+                    <input
+                      v-model="address.city"
+                      type="text"
+                      name="city"
+                      placeholder=""
+                      class="form-control"
+                    />
+                    <div
+                      v-if="$v.address.$error && !$v.address.city.required"
+                      class="input-error"
+                    >
+                      Field is required
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group required">
+                    <label class="control-label">State/Province</label>
+                    <input
+                      v-model="address.state"
+                      type="text"
+                      name="state"
+                      placeholder=""
+                      class="form-control"
+                    />
+                    <div
+                      v-if="$v.address.$error && !$v.address.state.required"
+                      class="input-error"
+                    >
+                      Field is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group required">
+                    <label class="control-label">ZIP</label>
+                    <input
+                      v-model="address.zip_code"
+                      type="text"
+                      name="zip"
+                      placeholder=""
+                      class="form-control"
+                    />
+                    <div
+                      v-if="$v.address.$error && !$v.address.zip_code.required"
+                      class="input-error"
+                    >
+                      Field is required
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group required">
+                    <label class="control-label">Country</label>
+                    <Select2
+                      v-model="address.country"
+                      :options="['United States', 'Canada']"
+                      placeholder="Country"
+                    ></Select2>
+                    <div
+                      v-if="$v.address.$error && !$v.address.country.required"
+                      class="input-error"
+                    >
+                      Field is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <button
+                    type="submit"
+                    name="submit"
+                    class="btn"
+                    :disabled="loading"
+                    @click="saveAddress"
+                  >
+                    {{ edit ? 'Update address' : 'Save Address' }}
+                  </button>
+                  <nuxt-link
+                    class="btn btn-gray"
+                    :to="{
+                      name: 'brand_name-address-book',
+                      params: { brand_name: this.$getBrandName() },
+                    }"
+                  >
+                    Cancel
+                  </nuxt-link>
+                </div>
+              </div>
+              <!-- End -->
             </div>
           </div>
         </div>
@@ -171,7 +256,8 @@
 </template>
 
 <script>
-import { required } from 'vuelidate/lib/validators'
+import { email, required, alphaNum } from 'vuelidate/lib/validators'
+const checkNull = (value) => value !== 0 && value !== '' && value !== null
 export default {
   props: {
     edit: {
@@ -184,13 +270,18 @@ export default {
       address: {
         user_id: this.$auth.user.user_id,
         workspace_id: this.$getWorkspaceId(),
+        company_name: '',
+        name: '',
+        email: '',
+        phone: null,
         address1: '',
         address2: '',
         city: '',
         state: '',
-        county: '',
+        country: '',
         zip_code: '',
       },
+      loading: false,
     }
   },
   computed: {
@@ -207,6 +298,21 @@ export default {
     }
   },
   methods: {
+    // getCompanyDetails() {
+    //   this.$axios
+    //     .$get(`digital/order/user-details`, {
+    //       params: {
+    //         url_workspace_id: this.$getWorkspaceId(),
+    //       },
+    //     })
+    //     .then(({ data }) => {
+    //       this.address.company_name = data.company_name
+    //       this.address.email = data.userEmail
+    //       this.address.name = data.userName
+    //       this.address.phone = data.userPhone
+    //     })
+    //     .catch(console.log)
+    // },
     viewAddress() {
       this.$axios
         .$post(`digital/user-address/view-address`, {
@@ -222,6 +328,7 @@ export default {
       if (this.$v.$invalid) {
         return
       }
+      this.loading = true
       const url = this.edit ? 'update-address' : 'create-address'
       if (this.edit) {
         this.address.address_id = this.address.id
@@ -234,19 +341,38 @@ export default {
         })
         .then(({ message }) => {
           this.$toast.success(message)
-          this.$router.push('/address-book')
+          this.$router.replace({
+            name: 'brand_name-address-book',
+            params: { brand_name: this.$getBrandName() },
+          })
+          this.loading = false
         })
-        .catch(console.error)
+        .catch((err) => {
+          this.$toast.error(this.$getErrorMessage(err))
+          this.loading = false
+        })
     },
   },
   validations() {
     return {
       address: {
+        company_name: {
+          required,
+        },
+        name: {
+          required,
+        },
         address1: {
           required,
         },
-        address2: {
+        email: {
+          email,
           required,
+        },
+        phone: {
+          required,
+          alphaNum,
+          checkNull,
         },
         city: {
           required,
@@ -254,7 +380,7 @@ export default {
         state: {
           required,
         },
-        county: {
+        country: {
           required,
         },
         zip_code: {

@@ -397,6 +397,7 @@ export default {
     },
   },
   mounted() {
+    this.$store.dispatch('appData/fetchFolders')
     this.getData()
   },
   methods: {
@@ -443,9 +444,7 @@ export default {
     addToCart(file) {
       this.file = file
       this.$nextTick(() => {
-        setTimeout(() => {
-          this.$refs.cartDialog.toggleModel()
-        }, 200)
+        this.$refs.cartDialog.toggleModel()
       })
     },
     removeSelectedFiles() {
