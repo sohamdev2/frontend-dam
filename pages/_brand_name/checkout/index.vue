@@ -60,11 +60,8 @@
                     class="form-control"
                   />
                   <div v-if="$v.billingInfo.$error" class="input-error">
-                    <span v-if="!$v.billingInfo.user_phone.alphaNum"
-                      >Please enter valid phone</span
-                    >
                     <span
-                      v-else-if="
+                      v-if="
                         $v.billingInfo.user_phone.$error &&
                         !$v.billingInfo.user_phone.required
                       "
@@ -185,13 +182,10 @@
                     class="form-control"
                   />
                   <div v-if="$v.shippingInfo.$error" class="input-error">
-                    <span v-if="!$v.shippingInfo.shipping_user_phone.alphaNum"
-                      >Please enter valid phone</span
-                    >
                     <span
-                      v-else-if="
+                      v-if="
                         $v.shippingInfo.shipping_user_phone.$error &&
-                        !$v.shippingInfo.shipping_user_email.required
+                        !$v.shippingInfo.shipping_user_phone.required
                       "
                       >Field is required</span
                     >
@@ -398,7 +392,7 @@
   </div>
 </template>
 <script>
-import { email, required, alphaNum } from 'vuelidate/lib/validators'
+import { email, required } from 'vuelidate/lib/validators'
 const checkNull = (value) => value !== 0 && value !== '' && value !== null
 export default {
   layout: 'app-sidebar',
@@ -605,13 +599,13 @@ export default {
       billingInfo: {
         user_name: { required },
         user_email: { email, required },
-        user_phone: { required, alphaNum, checkNull },
+        user_phone: { required, checkNull },
       },
       shippingInfo: {
         shipping_company_name: { required },
         shipping_user_name: { required },
         shipping_user_email: { email, required },
-        shipping_user_phone: { required, alphaNum, checkNull },
+        shipping_user_phone: { required, checkNull },
         address1: {
           required,
         },
