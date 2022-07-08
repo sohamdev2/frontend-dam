@@ -27,6 +27,7 @@
               :class="
                 !Boolean(parseInt(assetProduct.is_customize)) ? 'disabled' : ''
               "
+              @click="decrementQty"
             >
               <svg
                 id="Layer_1"
@@ -38,7 +39,6 @@
                 y="0px"
                 viewBox="0 0 18 18"
                 xml:space="preserve"
-                @click="decrementQty"
               >
                 <g id="Group_4454" transform="translate(-1005 -577.999)">
                   <path
@@ -61,6 +61,7 @@
               :class="
                 !Boolean(parseInt(assetProduct.is_customize)) ? 'disabled' : ''
               "
+              @click="incrementQty"
             >
               <svg
                 id="Layer_1"
@@ -77,7 +78,6 @@
                 y="0px"
                 viewBox="0 0 18 18"
                 xml:space="preserve"
-                @click="incrementQty"
               >
                 <g id="Group_5341" transform="translate(-1005 -577.999)">
                   <path
