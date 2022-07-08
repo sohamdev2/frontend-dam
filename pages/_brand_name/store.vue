@@ -208,8 +208,7 @@
             />
           </g>
         </svg>
-
-        <p>No Data Found</p>
+        <p>No Products Available</p>
       </div>
     </div>
     <div

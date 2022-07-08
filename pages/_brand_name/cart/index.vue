@@ -138,6 +138,7 @@
                           ? 'disabled'
                           : '',
                       ]"
+                      @click="decrementQty(cartItem, cartItem.product.options)"
                     >
                       <svg
                         id="Layer_1"
@@ -149,9 +150,6 @@
                         y="0px"
                         viewBox="0 0 18 18"
                         xml:space="preserve"
-                        @click="
-                          decrementQty(cartItem, cartItem.product.options)
-                        "
                       >
                         <g
                           id="Group_4454"
@@ -179,6 +177,7 @@
                           ? 'disabled'
                           : ''
                       "
+                      @click="incrementQty(cartItem, cartItem.product.options)"
                     >
                       <svg
                         id="Layer_1"
@@ -190,9 +189,6 @@
                         y="0px"
                         viewBox="0 0 18 18"
                         xml:space="preserve"
-                        @click="
-                          incrementQty(cartItem, cartItem.product.options)
-                        "
                       >
                         <g
                           id="Group_5341"
