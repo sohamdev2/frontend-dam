@@ -2,6 +2,138 @@
   <ShowWhenReady>
     <AppHeader />
     <div class="body-content two-part">
+      <div class="success-msg product-alert">
+        <div class="alert alert-info alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert">
+            <span>dismiss</span>
+          </button>
+          <svg
+            id="Layer_1"
+            class="alert-icon mr-2"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px"
+            y="0px"
+            viewBox="0 0 18 18"
+            xml:space="preserve"
+          >
+            <g>
+              <path
+                class="fill-color"
+                d="M0,7.3l6.5,3.7L8.2,9L1.3,5.3L0,7.3z"
+              ></path>
+              <path
+                class="fill-color"
+                d="M9.8,8.9l1.7,2.1L18,7.3l-1.4-2.2L9.8,8.9z"
+              ></path>
+              <path
+                class="fill-color"
+                d="M2.3,4.7L9,8.2l6.7-3.7L9,1.4L2.3,4.7z"
+              ></path>
+              <path
+                class="fill-color"
+                d="M1.7,13l6.8,3.6v-6.3L7,12.1c-0.2,0.2-0.4,0.3-0.7,0.1L1.7,9.5V13z"
+              ></path>
+              <path
+                class="fill-color"
+                d="M9.5,10.3v6.3l6.8-3.7V9.5l-4.7,2.7c-0.2,0.1-0.5,0.1-0.7-0.1L9.5,10.3z"
+              ></path>
+            </g>
+          </svg>
+          Order #<strong>121</strong> status is changed to
+          <strong>Shipped</strong>. Your Shipping Method is
+          <strong>FedEx Overnight Delivery</strong> and Tracking Number is
+          #<strong>34534-54545-454</strong>.
+          <a href="orders-detail.html" class="link">Click here</a> for more
+          details.
+        </div>
+        <div class="alert alert-success alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert">
+            <span>dismiss</span>
+          </button>
+          <svg
+            id="Layer_1"
+            class="alert-icon mr-2"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px"
+            y="0px"
+            viewBox="0 0 18 18"
+            xml:space="preserve"
+          >
+            <g>
+              <path
+                class="fill-color"
+                d="M0,7.3l6.5,3.7L8.2,9L1.3,5.3L0,7.3z"
+              ></path>
+              <path
+                class="fill-color"
+                d="M9.8,8.9l1.7,2.1L18,7.3l-1.4-2.2L9.8,8.9z"
+              ></path>
+              <path
+                class="fill-color"
+                d="M2.3,4.7L9,8.2l6.7-3.7L9,1.4L2.3,4.7z"
+              ></path>
+              <path
+                class="fill-color"
+                d="M1.7,13l6.8,3.6v-6.3L7,12.1c-0.2,0.2-0.4,0.3-0.7,0.1L1.7,9.5V13z"
+              ></path>
+              <path
+                class="fill-color"
+                d="M9.5,10.3v6.3l6.8-3.7V9.5l-4.7,2.7c-0.2,0.1-0.5,0.1-0.7-0.1L9.5,10.3z"
+              ></path>
+            </g>
+          </svg>
+          Order <strong>#121</strong> is Delivered successfully. Please check
+          <a href="orders-detail.html" class="link">order details</a> for more
+          info.
+        </div>
+        <div class="alert alert-danger alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert">
+            <span>dismiss</span>
+          </button>
+          <svg
+            id="Layer_1"
+            class="alert-icon mr-2"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px"
+            y="0px"
+            viewBox="0 0 18 18"
+            xml:space="preserve"
+          >
+            <g>
+              <path
+                class="fill-color"
+                d="M0,7.3l6.5,3.7L8.2,9L1.3,5.3L0,7.3z"
+              ></path>
+              <path
+                class="fill-color"
+                d="M9.8,8.9l1.7,2.1L18,7.3l-1.4-2.2L9.8,8.9z"
+              ></path>
+              <path
+                class="fill-color"
+                d="M2.3,4.7L9,8.2l6.7-3.7L9,1.4L2.3,4.7z"
+              ></path>
+              <path
+                class="fill-color"
+                d="M1.7,13l6.8,3.6v-6.3L7,12.1c-0.2,0.2-0.4,0.3-0.7,0.1L1.7,9.5V13z"
+              ></path>
+              <path
+                class="fill-color"
+                d="M9.5,10.3v6.3l6.8-3.7V9.5l-4.7,2.7c-0.2,0.1-0.5,0.1-0.7-0.1L9.5,10.3z"
+              ></path>
+            </g>
+          </svg>
+          Order <strong>#121</strong> is Cancelled by the Admin Tarang Chokshi.
+          Please check
+          <a href="orders-detail.html" class="link">order details</a> for more
+          info.
+        </div>
+      </div>
       <div
         v-if="folderList.length"
         class="body-content-left"
