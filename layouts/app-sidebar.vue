@@ -61,11 +61,7 @@
             <a
               class="link"
               @click="
-                navigateOrderDetail(
-                  alert.order_url,
-                  alert.order_id,
-                  alert.status_id
-                )
+                navigateOrderDetail(alert.id, alert.order_id, alert.status_id)
               "
               >Click here</a
             >
@@ -76,11 +72,7 @@
             >is Delivered successfully. Please check<a
               class="link"
               @click="
-                navigateOrderDetail(
-                  alert.order_url,
-                  alert.order_id,
-                  alert.status_id
-                )
+                navigateOrderDetail(alert.id, alert.order_id, alert.status_id)
               "
               >Click here</a
             >
@@ -91,11 +83,7 @@
             >is Cancelled by the Admin {{ alert.user_name }}. Please check<a
               class="link"
               @click="
-                navigateOrderDetail(
-                  alert.order_url,
-                  alert.order_id,
-                  alert.status_id
-                )
+                navigateOrderDetail(alert.id, alert.order_id, alert.status_id)
               "
               >Click here</a
             >
@@ -400,9 +388,15 @@ export default {
       this.scrollToRecent()
   },
   methods: {
-    navigateOrderDetail(url, orderId, statusId) {
+    navigateOrderDetail(id, orderId, statusId) {
       this.$router.push({
-        name: url,
+        name: 'brand_name-my-orders-id-order-detail',
+        params: {
+          id: orderId,
+        },
+        query: {
+          orderId: id,
+        },
       })
       this.dismissAlert(orderId, statusId)
     },
