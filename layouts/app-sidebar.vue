@@ -2,7 +2,10 @@
   <ShowWhenReady>
     <AppHeader />
     <div class="body-content two-part">
-      <div class="success-msg product-alert">
+      <div
+        v-if="$route.name === 'brand_name'"
+        class="success-msg product-alert"
+      >
         <div
           v-for="alert in alertList"
           :key="alert.id"
@@ -63,29 +66,29 @@
               @click="
                 navigateOrderDetail(alert.id, alert.order_id, alert.status_id)
               "
-              >Click here</a
+              >Order Details</a
             >
             for more details.
           </template>
           <template v-if="alert.status_id === '3'">
-            Order #<strong>{{ alert.order_id }}</strong
-            >is Delivered successfully. Please check<a
+            Order #<strong>{{ alert.order_id }}</strong> is Delivered
+            successfully. Please check<a
               class="link"
               @click="
                 navigateOrderDetail(alert.id, alert.order_id, alert.status_id)
               "
-              >Click here</a
+              >Order Details</a
             >
             for more details.
           </template>
           <template v-if="alert.status_id === '4'">
-            Order #<strong>{{ alert.order_id }}</strong
-            >is Cancelled by the Admin {{ alert.user_name }}. Please check<a
+            Order #<strong>{{ alert.order_id }}</strong> is Cancelled by the
+            Admin {{ alert.user_name }}. Please check<a
               class="link"
               @click="
                 navigateOrderDetail(alert.id, alert.order_id, alert.status_id)
               "
-              >Click here</a
+              >Order Details</a
             >
             for more details.
           </template>
