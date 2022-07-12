@@ -83,7 +83,7 @@
           </template>
           <template v-if="alert.status_id === '4'">
             Order #<strong>{{ alert.order_id }}</strong> is Cancelled by the
-            Admin {{ alert.user_name }}. Please check<a
+            Admin {{ alert.admin_name }}. Please check<a
               class="link"
               @click="
                 navigateOrderDetail(alert.id, alert.order_id, alert.status_id)
