@@ -16,6 +16,7 @@ const _state = () => ({
   scrollTo: '',
   leftMenuOpen: true,
   allCollectionList: [],
+  subscriptionFeatures: {},
 })
 
 export { _state as state }
@@ -90,6 +91,9 @@ export const mutations = {
   changeScrolling(state, { scrollingState, scrollTo }) {
     state.scrollToRecent = scrollingState
     state.scrollTo = scrollTo
+  },
+  subscriptionFeatures(state, payload) {
+    state.subscriptionFeatures = payload
   },
 }
 
