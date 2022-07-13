@@ -386,7 +386,6 @@ export default {
   mounted() {
     // console.log('sidebar mounted')
     // this.$store.dispatch('appData/fetchDashboardData')
-    this.$store.dispatch('product/fetchOrderAlertList')
     if (this.$route.query?.tab === 'recent' && this.showRecentUploads)
       this.scrollToRecent()
   },
