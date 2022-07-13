@@ -294,6 +294,7 @@ export default {
     },
   },
   mounted() {
+    this.$store.dispatch('product/fetchOrderAlertList')
     this.$store.dispatch('appData/fetchFolders')
     this.$store.dispatch('appData/fetchDashboardData').then(() => {
       if (this.$store.state.appData.scrollToRecent) {

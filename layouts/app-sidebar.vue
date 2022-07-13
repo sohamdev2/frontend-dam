@@ -3,6 +3,98 @@
     <AppHeader />
     <div class="body-content two-part">
       <div
+        v-if="$route.name === 'brand_name'"
+        class="success-msg product-alert"
+      >
+        <div
+          v-for="alert in alertList"
+          :key="alert.id"
+          class="alert alert-dismissible"
+          :class="getAlertType(alert.status_id)"
+        >
+          <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            @click="dismissAlert(alert.order_id, alert.status_id)"
+          >
+            <span>dismiss</span>
+          </button>
+          <svg
+            id="Layer_1"
+            class="alert-icon mr-2"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px"
+            y="0px"
+            viewBox="0 0 18 18"
+            xml:space="preserve"
+          >
+            <g>
+              <path
+                class="fill-color"
+                d="M0,7.3l6.5,3.7L8.2,9L1.3,5.3L0,7.3z"
+              ></path>
+              <path
+                class="fill-color"
+                d="M9.8,8.9l1.7,2.1L18,7.3l-1.4-2.2L9.8,8.9z"
+              ></path>
+              <path
+                class="fill-color"
+                d="M2.3,4.7L9,8.2l6.7-3.7L9,1.4L2.3,4.7z"
+              ></path>
+              <path
+                class="fill-color"
+                d="M1.7,13l6.8,3.6v-6.3L7,12.1c-0.2,0.2-0.4,0.3-0.7,0.1L1.7,9.5V13z"
+              ></path>
+              <path
+                class="fill-color"
+                d="M9.5,10.3v6.3l6.8-3.7V9.5l-4.7,2.7c-0.2,0.1-0.5,0.1-0.7-0.1L9.5,10.3z"
+              ></path>
+            </g>
+          </svg>
+          <template v-if="alert.status_id === '2'">
+            Order #<strong>{{ alert.order_id }}</strong> status is changed to
+            <strong>{{ alert.status }}</strong
+            >. Your Shipping Method is
+            <strong>{{ alert.shipping_method || '-' }}</strong> and Tracking
+            Number is #<strong>{{ alert.shipping_tracking_id }}</strong
+            >.
+            <a
+              class="link"
+              @click="
+                navigateOrderDetail(alert.id, alert.order_id, alert.status_id)
+              "
+              >Order Details</a
+            >
+            for more details.
+          </template>
+          <template v-if="alert.status_id === '3'">
+            Order #<strong>{{ alert.order_id }}</strong> is Delivered
+            successfully. Please check<a
+              class="link"
+              @click="
+                navigateOrderDetail(alert.id, alert.order_id, alert.status_id)
+              "
+              >Order Details</a
+            >
+            for more details.
+          </template>
+          <template v-if="alert.status_id === '4'">
+            Order #<strong>{{ alert.order_id }}</strong> is Cancelled by the
+            Admin {{ alert.admin_name }}. Please check<a
+              class="link"
+              @click="
+                navigateOrderDetail(alert.id, alert.order_id, alert.status_id)
+              "
+              >Order Details</a
+            >
+            for more details.
+          </template>
+        </div>
+      </div>
+      <div
         v-if="folderList.length"
         class="body-content-left"
         :class="{ open: leftMenuOpen }"
@@ -265,15 +357,67 @@ export default {
     user() {
       return this.$auth.user
     },
+    alertList() {
+      return this.$store.state.product.orderAlerts
+    },
+    getAlertType() {
+      return (statusId) => {
+        let alertClass = ''
+        const id = parseInt(statusId)
+        switch (id) {
+          case 2:
+            alertClass = 'alert-info'
+            break
+          case 3:
+            alertClass = 'alert-success'
+            break
+          case 4:
+            alertClass = 'alert-danger'
+            break
+
+          default:
+            alertClass = ''
+            break
+        }
+        return alertClass
+      }
+    },
   },
   mounted() {
     // console.log('sidebar mounted')
     // this.$store.dispatch('appData/fetchDashboardData')
-    // this.$store.dispatch('appData/fetchFolders')
+    this.$store.dispatch('product/fetchOrderAlertList')
     if (this.$route.query?.tab === 'recent' && this.showRecentUploads)
       this.scrollToRecent()
   },
   methods: {
+    navigateOrderDetail(id, orderId, statusId) {
+      this.$router.push({
+        name: 'brand_name-my-orders-id-order-detail',
+        params: {
+          id: orderId,
+        },
+        query: {
+          orderId: id,
+        },
+      })
+      this.dismissAlert(orderId, statusId)
+    },
+    async dismissAlert(orderId, statusId) {
+      try {
+        await this.$axios.$post('digital/alert/dismiss', {
+          workspace_id: this.$getWorkspaceId(),
+          order_id: orderId,
+          status: statusId,
+        })
+        const alertItems = this.alertList.filter(
+          (alert) => alert.order_id !== orderId
+        )
+        this.$store.commit('product/SET_ORDER_ALERT', alertItems)
+      } catch (error) {
+        this.$toast.error(this.$getErrorMessage(error))
+      }
+    },
     scrollToRecent() {
       const scrollingState = true
       const scrollTo = 'recent'
