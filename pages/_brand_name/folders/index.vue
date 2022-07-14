@@ -333,7 +333,7 @@ export default {
   mounted() {
     this.$store.dispatch('appData/fetchDashboardData')
     this.$store.dispatch('appData/fetchFolders')
-    this.$store.dispatch('appData/getCollections')
+    // this.$store.dispatch('appData/getCollections')
     if (this.$route.query?.uploaded !== 'yesterday') this.getData()
   },
   methods: {
