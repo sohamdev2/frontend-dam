@@ -325,7 +325,7 @@
       @click:confirm-button="cancelOrder"
     >
       <template slot="header">Cancel Order</template>
-      Are you sure you want to cancel <strong>order</strong>?
+      Are you sure you want to cancel order?
     </confirmation-dialog>
   </div>
 </template>
