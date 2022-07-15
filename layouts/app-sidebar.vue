@@ -66,29 +66,30 @@
               @click="
                 navigateOrderDetail(alert.id, alert.order_id, alert.status_id)
               "
-              >Order Details</a
+              >Please check</a
             >
             for more details.
           </template>
           <template v-if="alert.status_id === '3'">
             Order #<strong>{{ alert.order_id }}</strong> is Delivered
-            successfully. Please check<a
+            successfully.<a
               class="link"
               @click="
                 navigateOrderDetail(alert.id, alert.order_id, alert.status_id)
               "
-              >Order Details</a
+            >
+              Please check</a
             >
             for more details.
           </template>
           <template v-if="alert.status_id === '4'">
             Order #<strong>{{ alert.order_id }}</strong> is Cancelled by the
-            Admin {{ alert.admin_name }}. Please check<a
+            Admin {{ alert.admin_name }}.<a
               class="link"
               @click="
                 navigateOrderDetail(alert.id, alert.order_id, alert.status_id)
               "
-              >Order Details</a
+              >Please check</a
             >
             for more details.
           </template>
