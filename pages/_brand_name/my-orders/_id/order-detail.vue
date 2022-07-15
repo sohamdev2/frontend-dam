@@ -399,7 +399,6 @@ export default {
           },
         })
         .then(({ message, data }) => {
-          this.$toast.success(message)
           const link = document.createElement('a')
           link.setAttribute('target', '_blank')
           link.href = data.pdf_file
