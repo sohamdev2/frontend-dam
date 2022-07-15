@@ -265,7 +265,9 @@
                               brand_name: $getBrandName(),
                             },
                           }"
-                          >{{ orderItem.display_file_name }}</nuxt-link
+                          >{{
+                            orderItem.display_file_name | shrinkString(60, 3)
+                          }}</nuxt-link
                         >
                       </div>
                     </div>

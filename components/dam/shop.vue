@@ -1,10 +1,10 @@
 <template>
   <div id="shop" class="tab-pane">
-    <h4>{{ file.display_file_name }}</h4>
+    <h4>{{ file.display_file_name | shrinkString(60, 3) }}</h4>
     <ul class="overview-table shop-info">
       <li>
         <span>SKU</span>
-        <span>{{ file.asset_product.sku || '-' }}</span>
+        <span>{{ file.asset_product.sku_number || '-' }}</span>
       </li>
       <li>
         <span>Price</span>
