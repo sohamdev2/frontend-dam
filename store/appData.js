@@ -16,6 +16,7 @@ const _state = () => ({
   scrollTo: '',
   leftMenuOpen: true,
   allCollectionList: [],
+  recentCollectionList: [],
 })
 
 export { _state as state }
@@ -31,7 +32,8 @@ export const mutations = {
     'tileData',
     'loading.tile',
     'leftMenuOpen',
-    'allCollectionList'
+    'allCollectionList',
+    'recentCollectionList'
   ),
 
   // brandDetails(state, item) {
@@ -178,7 +180,13 @@ export const actions = {
     return (
       this.$axios
         .$get(`/digital/collection/get-all?url_workspace_id=${workspace}`)
-        .then(({ data }) => commit('allCollectionList', data.splice(0, 4)))
+        .then(({ data }) => {
+          commit('recentCollectionList', data.splice(0, 4))
+          commit(
+            'allCollectionList',
+            data.sort(this.$sortBy('name', false, null, true))
+          )
+        })
         /* .catch(this.$errorToast) */
         .catch()
     )

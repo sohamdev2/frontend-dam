@@ -535,7 +535,7 @@ export default {
       ],
       auth: this.$_auth(),
       userLogo: null,
-      collectionList: [],
+      // collectionList: [],
       userModel: { ...this.$auth.user },
       cartItemCount: 0,
     }
@@ -543,6 +543,9 @@ export default {
   computed: {
     user() {
       return this.$auth.user
+    },
+    collectionList() {
+      return this.$store.state.appData.recentCollectionList
     },
     accessibleIntances() {
       return this.$auth.user.accessibleInstances
@@ -617,11 +620,7 @@ export default {
       if (!workspace) {
         this.$logout()
       } else {
-        await this.$axios
-          .$get(`/digital/collection/get-all?url_workspace_id=${workspace}`)
-          .then(({ data }) => {
-            this.collectionList = data.splice(0, 4)
-          })
+        await this.$store.dispatch('appData/getCollections')
       }
     },
     async changeInstance(instance) {
