@@ -225,6 +225,9 @@ export default {
     hashParam() {
       return (this.$route.hash || '').replace('#', '')
     },
+    isHashSearch() {
+      return this.$route.hash && this.$route.hash.includes('search')
+    },
     queryTag() {
       return this.$route.query.tag
     },
@@ -299,8 +302,10 @@ export default {
       this.prefetch()
     },
     hashParam(hashParam) {
-      this.resetSort()
-      this.prefetch()
+      if (!this.isHashSearch) {
+        this.resetSort()
+        this.prefetch()
+      }
     },
     '$route.query.searchId'() {
       this.prefetch()
