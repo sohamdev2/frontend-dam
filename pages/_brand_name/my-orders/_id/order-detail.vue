@@ -265,7 +265,9 @@
                               brand_name: $getBrandName(),
                             },
                           }"
-                          >{{ orderItem.display_file_name }}</nuxt-link
+                          >{{
+                            orderItem.display_file_name | shrinkString(60, 3)
+                          }}</nuxt-link
                         >
                       </div>
                     </div>
@@ -323,7 +325,7 @@
       @click:confirm-button="cancelOrder"
     >
       <template slot="header">Cancel Order</template>
-      Are you sure you want to cancel <strong>order</strong>?
+      Are you sure you want to cancel order?
     </confirmation-dialog>
   </div>
 </template>
@@ -397,7 +399,6 @@ export default {
           },
         })
         .then(({ message, data }) => {
-          this.$toast.success(message)
           const link = document.createElement('a')
           link.setAttribute('target', '_blank')
           link.href = data.pdf_file
