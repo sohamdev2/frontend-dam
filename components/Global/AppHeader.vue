@@ -619,7 +619,7 @@ export default {
       const workspace = this.$getWorkspaceId()
       if (!workspace) {
         this.$logout()
-      } else {
+      } else if (!this.$route.name === 'brand_name-collection') {
         await this.$store.dispatch('appData/getCollections')
       }
     },
