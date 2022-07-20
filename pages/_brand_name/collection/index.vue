@@ -101,10 +101,15 @@ export default {
       files: [],
     }
   },
-  watch: {
-    '$store.state.appData.allCollectionList'(v) {
-      this.files = [...v]
-    },
+  mounted() {
+    const workspace = this.$getWorkspaceId()
+    this.$axios
+      .$get(`/digital/collection/get-all?url_workspace_id=${workspace}`)
+      .then(({ data }) => {
+        this.files = data.sort(this.$sortBy('name', false, null, true))
+      })
+      /* .catch(this.$errorToast) */
+      .catch(console.error)
   },
   head() {
     return {
