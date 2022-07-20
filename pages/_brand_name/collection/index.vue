@@ -96,9 +96,14 @@ export default {
   },
   mixins: [collectionSorting],
   middleware: ['check-url', 'check-auth'],
-  computed: {
-    files() {
-      return this.$store.state.appData.allCollectionList
+  data() {
+    return {
+      files: [],
+    }
+  },
+  watch: {
+    '$store.state.appData.allCollectionList'(v) {
+      this.files = [...v]
     },
   },
   head() {
