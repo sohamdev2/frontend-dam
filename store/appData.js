@@ -174,7 +174,7 @@ export const actions = {
     commit('loading.folders', false)
   },
   // collection list
-  getCollections({ commit }) {
+  getRecentCollection({ commit }) {
     if (!this.$auth.loggedIn) return
     const workspace = this.$getWorkspaceId()
     return (
@@ -182,14 +182,23 @@ export const actions = {
         .$get(`/digital/collection/get-all?url_workspace_id=${workspace}`)
         .then(({ data }) => {
           commit('recentCollectionList', data.splice(0, 4))
-          commit(
-            'allCollectionList',
-            data.sort(this.$sortBy('name', false, null, true))
-          )
         })
         /* .catch(this.$errorToast) */
         .catch()
     )
+  },
+  getAllCollections({ commit }) {
+    if (!this.$auth.loggedIn) return
+    const workspace = this.$getWorkspaceId()
+    return this.$axios
+      .$get(`/digital/collection/get-all?url_workspace_id=${workspace}`)
+      .then(({ data }) => {
+        commit(
+          'allCollectionList',
+          data.sort(this.$sortBy('name', false, null, true))
+        )
+      })
+      .catch()
   },
   setLeftMenuOpen({ commit }, open) {
     commit('leftMenuOpen', !!open)
