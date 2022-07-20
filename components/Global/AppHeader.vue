@@ -619,8 +619,8 @@ export default {
       const workspace = this.$getWorkspaceId()
       if (!workspace) {
         this.$logout()
-      } else if (!this.$route.name === 'brand_name-collection') {
-        await this.$store.dispatch('appData/getCollections')
+      } else {
+        await this.$store.dispatch('appData/getRecentCollection')
       }
     },
     async changeInstance(instance) {
