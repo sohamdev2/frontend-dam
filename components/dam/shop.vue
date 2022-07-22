@@ -219,8 +219,8 @@ export default {
         return JSON.parse(this.file.asset_product.options).map((elem) => {
           return {
             ...elem,
-            name: elem.qty + ' Qty - ' + elem.price + ' $',
-            text: elem.qty + ' Qty - ' + elem.price + ' $',
+            name: elem.qty + ' Qty - $ ' + elem.price,
+            text: elem.qty + ' Qty - $ ' + elem.price,
           }
         })
       }
