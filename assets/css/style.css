@@ -386,6 +386,7 @@ header .user-dropdown.show .dropdown-toggle{color: var(--secondary);}
 .header-sec .cart-list .cart-icon .fill-color {fill: var(--secondary);}
 .header-sec .cart-list .count {background-color: var(--secondary);color: var(--primary);font-size: 12px;padding: 0px 5px 1px;border-radius: 3px;text-align: center;font-weight: 600;margin-left: 6px;position: absolute;top: -5px;right: -10px;min-width: 25px;}
 
+
 .fl-as-imgtxt.a{background-color: #f44336 !important;}
 .fl-as-imgtxt.b{background-color: #e91e63 !important;}
 .fl-as-imgtxt.c{background-color: #9c27b0 !important;}
@@ -662,6 +663,7 @@ header .user-dropdown.show .dropdown-toggle{color: var(--secondary);}
 .dam-detail .product-tag svg{height: 22px;}
 .table-list-view .tbody li:hover .product-tag{opacity: 0;visibility: hidden;}
 .grid-list .table-list-view .tbody li .product-tag{display: none;}
+
 .grid-list .table-list-view .tbody li:hover .preview-img.video video {opacity: 0;}
 .grid-list .table-list-view .tbody li:hover .preview-img.video img {opacity:1;}
 .recentuploads-sec.grid-tile .table-list-view .tbody > li,
@@ -922,6 +924,7 @@ header .user-dropdown.show .dropdown-toggle{color: var(--secondary);}
 
 .add-to-cart-modal .success-msg .alert{padding: 8px 15px;font-size: 15px;}
 .add-to-cart-modal .success-msg .alert .alert-icon{height: 20px;}
+
 .add-to-cart-modal .select2 .select2-selection__rendered {line-height: 24px;}
 .add-to-cart-modal .form-group strong {font-weight: 600;}
 .add-to-cart-modal .form-group p {font-size: 13px;margin-top: 10px;margin-left: 50px;margin-bottom: 0;}
@@ -931,12 +934,14 @@ header .user-dropdown.show .dropdown-toggle{color: var(--secondary);}
 .cart-empty .cart-icon{height: 75px;opacity: 0.2;margin-bottom: 5px;}
 .cart-empty h2{color: #b6b6b6;}
 
+
 .quantity {display: inline-flex;position: relative;}
 .quantity input::-webkit-inner-spin-button, 
 .quantity input::-webkit-outer-spin-button {appearance: none;-ms-appearance: none;-moz-appearance: none;-webkit-appearance: none;}
 .quantity input {font-size: 14px;text-align: center;max-width: 115px;padding: 3px 26px;max-height: 32px;border-color: #D8DCE2;}
 .quantity input:disabled{background-color: rgba(0, 0, 0, 0.01);}
 .quantity .quantity-button {display: flex;position: absolute;align-items: center;justify-content: center;width: 26px;height: 30px;cursor: pointer;transition: 0.2s;-webkit-transition: 0.2s;-ms-transition: 0.2s;background-color: rgba(0, 0, 0, 0.04);border-style: solid;border-color: rgba(0, 0, 0, 0.04);}
+
 .quantity .quantity-button.disabled {pointer-events: none;opacity: 0.5;}
 .quantity .quantity-down {border-top-left-radius: 4px;border-bottom-left-radius: 4px;left: 1px;top: 1px;border-width: 0px 1px 0px 0px;}
 .quantity .quantity-up {border-top-right-radius: 4px;border-bottom-right-radius: 4px;right: 1px;top: 1px;border-width: 0px 0px 0px 1px;}
@@ -946,6 +951,7 @@ header .user-dropdown.show .dropdown-toggle{color: var(--secondary);}
 .quantity .quantity-down svg{margin-top: 2px;}
 .quantity .quantity-button:hover,
 .quantity .quantity-button:focus{background-color: rgba(0, 0, 0, 0.1);border-color: #D8DCE2;}
+
 
 .serch-category {position: relative;}
 .serch-category .form-control {padding-left: 50px;}
@@ -1175,6 +1181,7 @@ header .user-dropdown.show .dropdown-toggle{color: var(--secondary);}
 .general-settings-title .back-btn {width: 30px;height: 20px;display: flex;align-items: center;}
 .general-settings-title .back-btn svg{height: 20px;}
 .general-settings-title h4 strong {font-weight: 600;margin-left: 2px;}
+
 .general-settings-title .right-side{float: right;display: flex;align-items: center;flex: 0% 1 1;}
 .general-settings-title .right-side>*{margin-left: 15px;}
 .general-settings-title .right-side .track-ship{margin-right: 4em;display: flex;align-items: center;}
@@ -1277,6 +1284,7 @@ textarea.form-control {resize: none;}
 .tables td[align="right"]{text-align: right;}
 .tables .categary-image {position: relative;overflow: hidden;border-radius: 4px;transform: translateZ(0) scale(1.0, 1.0);backface-visibility: hidden;width: 50px;}
 .tables .media a{margin: 0px;font-weight: 600;color: #070E22;}
+
 
 .share-inner-table{height: calc(100% - 44px);}
 .share-inner-table .categary-image img{right: auto;}
