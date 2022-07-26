@@ -71,11 +71,7 @@
             </ContentLoader>
           </div>
           <ul v-else class="tbody">
-            <li
-              v-for="cartItem in cartList"
-              :key="cartItem.id"
-              :class="!cartItem.is_public ? 'productNotAvailable disabled' : ''"
-            >
+            <li v-for="cartItem in cartList" :key="cartItem.id">
               <div class="tb-column flex40">
                 <div class="media">
                   <div class="media-left">
@@ -496,7 +492,9 @@ export default {
       this.$axios
         .$get(`digital/cart/view-cart?workspace_id=${this.$getWorkspaceId()}`)
         .then(({ data }) => {
-          this.cartList = data || []
+          this.cartList = (data || []).filter(
+            (e) => !e.asset.is_archive && !e.asset.is_deleted
+          )
         })
         .catch(console.log)
         .finally(() => {
