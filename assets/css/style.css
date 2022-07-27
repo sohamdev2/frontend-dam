@@ -142,6 +142,7 @@ h2.title {font-size: 22px;font-weight: 500;color: #070E22;margin: 0;}
 .v-popper--theme-tooltip .v-popper__inner li {margin: 10px 0;text-align: left;}
 .v-popper__popper[data-popper-placement^=top] .v-popper__arrow {border-width: 6px 8px 0 !important;border-color: #777;left: -4px;}
 .v-popper--theme-tooltip li {margin: 10px 0;text-align: left;}
+.v-popper--theme-tooltip .v-popper__arrow-outer{border-color: #777 !important;}
 
 /* Cuatom Scrollbar ----------------*/
 .customscrollbar{height:100%;overflow-x:hidden;overflow-y:auto;scroll-behavior:smooth;}
