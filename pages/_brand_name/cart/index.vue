@@ -108,7 +108,11 @@
                       class="table-a"
                       >{{ cartItem.display_file_name }}</nuxt-link
                     >
-                    <span v-if="!cartItem.is_public" class="altmsg"
+                    <span
+                      v-if="
+                        cartItem.asset.is_deleted || cartItem.asset.is_archive
+                      "
+                      class="altmsg"
                       >Product is not available.</span
                     >
                   </div>
