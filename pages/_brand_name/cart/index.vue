@@ -108,7 +108,11 @@
                       class="table-a"
                       >{{ cartItem.display_file_name }}</nuxt-link
                     >
-                    <span v-if="!cartItem.is_public" class="altmsg"
+                    <span
+                      v-if="
+                        cartItem.asset.is_deleted || cartItem.asset.is_archive
+                      "
+                      class="altmsg"
                       >Product is not available.</span
                     >
                   </div>
@@ -119,7 +123,9 @@
                   <div
                     v-if="cartItem.product.pricing_option === '1'"
                     class="quantity"
-                    :class="!cartItem.is_public ? 'disabled' : ''"
+                    :class="{
+                      disabled: cartItem.is_deleted || cartItem._is_archive,
+                    }"
                   >
                     <div
                       class="quantity-button quantity-down"
@@ -206,7 +212,11 @@
                   </div>
                   <Select2
                     v-else
-                    :class="!cartItem.is_public ? 'disabled' : ''"
+                    :class="
+                      cartItem.is_archive || cartItem.is_deleted
+                        ? 'disabled'
+                        : ''
+                    "
                     :options="getPriceOptions(cartItem.product.options)"
                     :attrs="{ minimumResultsForSearch: -1 }"
                     :value="cartItem.selected_option"
@@ -402,7 +412,10 @@ export default {
     getTotalPrice() {
       return this.cartList.reduce((prev, current) => {
         return parseFloat(
-          prev + (current.is_public ? parseFloat(current.total_amount) : 0)
+          prev +
+            (current.is_archive || current.is_deleted
+              ? 0
+              : parseFloat(current.total_amount))
         )
       }, 0)
     },
@@ -429,6 +442,7 @@ export default {
       this.showDeleteDialog = true
     },
     getPrice(val) {
+      debugger
       let price = ''
       if (!val) return '-'
       if (val) {
