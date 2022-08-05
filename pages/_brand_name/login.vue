@@ -179,6 +179,11 @@ export default {
           // set current workspace
           this.$auth.user.workspace_id &&
             this.$setCurrentWorkspace(this.$auth.user.workspace_id)
+          // store user subscription
+          this.$store.commit(
+            'appData/subscriptionFeatures',
+            this.$auth.user.subscription_features
+          )
           this.$router.push(`/${this.brandName}`)
         })
         .catch(this.$showErrorToast)
