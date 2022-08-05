@@ -99,36 +99,17 @@ export default {
   data() {
     return {
       files: [],
-      loading: false,
     }
   },
-  created() {
-    this.getCollections()
-  },
-  methods: {
-    async getCollections() {
-      this.loading = true
-      await this.$axios
-        .$get(
-          `/digital/collection/get-all?url_workspace_id=${this.$getWorkspaceId()}`
-        )
-        .then((response) => {
-          if (response.data?.length === 0) {
-            this.$router.replace({
-              name: 'brand_name',
-              params: { brand_name: this.$getBrandName() },
-            })
-          }
-
-          this.files = response.data.sort(
-            this.$sortBy('name', false, null, true)
-          )
-          this.loading = false
-        })
-        .catch((error) =>
-          this.$toast.global.error(this.$getErrorMessage(error))
-        )
-    },
+  mounted() {
+    const workspace = this.$getWorkspaceId()
+    this.$axios
+      .$get(`/digital/collection/get-all?url_workspace_id=${workspace}`)
+      .then(({ data }) => {
+        this.files = data.sort(this.$sortBy('name', false, null, true))
+      })
+      /* .catch(this.$errorToast) */
+      .catch(console.error)
   },
   head() {
     return {

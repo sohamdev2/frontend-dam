@@ -208,8 +208,7 @@
             />
           </g>
         </svg>
-
-        <p>No Data Found</p>
+        <p>No Products Available</p>
       </div>
     </div>
     <div
@@ -397,6 +396,7 @@ export default {
     },
   },
   mounted() {
+    this.$store.dispatch('appData/fetchFolders')
     this.getData()
   },
   methods: {
@@ -443,9 +443,7 @@ export default {
     addToCart(file) {
       this.file = file
       this.$nextTick(() => {
-        setTimeout(() => {
-          this.$refs.cartDialog.toggleModel()
-        }, 200)
+        this.$refs.cartDialog.toggleModel()
       })
     },
     removeSelectedFiles() {

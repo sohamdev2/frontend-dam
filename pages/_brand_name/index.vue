@@ -294,6 +294,7 @@ export default {
     },
   },
   mounted() {
+    this.$store.dispatch('product/fetchOrderAlertList')
     this.$store.dispatch('appData/fetchFolders')
     this.$store.dispatch('appData/fetchDashboardData').then(() => {
       if (this.$store.state.appData.scrollToRecent) {
@@ -307,7 +308,7 @@ export default {
       this.otherSliderTrigger()
     })
     this.$store.dispatch('appData/fetchTileData')
-    this.$store.dispatch('appData/getCollections')
+    // this.$store.dispatch('appData/getCollections')
     // document.querySelector("link[rel~='icon']").href =
     //   this.$_auth()?.favicon === '' ? '/favicon.png' : this.$_auth()?.favicon
   },

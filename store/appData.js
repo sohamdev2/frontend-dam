@@ -17,6 +17,7 @@ const _state = () => ({
   leftMenuOpen: true,
   allCollectionList: [],
   subscriptionFeatures: {},
+  recentCollectionList: [],
 })
 
 export { _state as state }
@@ -32,7 +33,8 @@ export const mutations = {
     'tileData',
     'loading.tile',
     'leftMenuOpen',
-    'allCollectionList'
+    'allCollectionList',
+    'recentCollectionList'
   ),
 
   // brandDetails(state, item) {
@@ -176,16 +178,31 @@ export const actions = {
     commit('loading.folders', false)
   },
   // collection list
-  getCollections({ commit }) {
+  getRecentCollection({ commit }) {
     if (!this.$auth.loggedIn) return
     const workspace = this.$getWorkspaceId()
     return (
       this.$axios
         .$get(`/digital/collection/get-all?url_workspace_id=${workspace}`)
-        .then(({ data }) => commit('allCollectionList', data.splice(0, 4)))
+        .then(({ data }) => {
+          commit('recentCollectionList', data.splice(0, 4))
+        })
         /* .catch(this.$errorToast) */
         .catch()
     )
+  },
+  getAllCollections({ commit }) {
+    if (!this.$auth.loggedIn) return
+    const workspace = this.$getWorkspaceId()
+    return this.$axios
+      .$get(`/digital/collection/get-all?url_workspace_id=${workspace}`)
+      .then(({ data }) => {
+        commit(
+          'allCollectionList',
+          data.sort(this.$sortBy('name', false, null, true))
+        )
+      })
+      .catch()
   },
   setLeftMenuOpen({ commit }, open) {
     commit('leftMenuOpen', !!open)

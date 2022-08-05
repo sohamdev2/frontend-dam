@@ -236,6 +236,15 @@
           <div class="common-box detail-tabs p0">
             <div class="tabs-view h-100">
               <ul class="nav nav-left" role="tablist">
+                <li class="nav-item">
+                  <a
+                    v-if="file.asset_product"
+                    class="nav-link"
+                    :class="{ active: ui.tab === 'shop' }"
+                    @click="ui.tab = 'shop'"
+                    >Shop</a
+                  >
+                </li>
                 <li class="nav-item" @click="ui.tab = 'overview'">
                   <a class="nav-link" :class="{ active: ui.tab === 'overview' }"
                     >Overview</a
@@ -257,6 +266,11 @@
                   <SpinLoading
                     v-if="ui.tab == 'metadata' && ui.exifLoading"
                     style="position: absolute; top: 1rem; right: 1rem"
+                  />
+                  <shop
+                    v-if="file.asset_product"
+                    :class="{ active: ui.tab === 'shop' }"
+                    :file="file"
                   />
                   <div
                     id="overview"
@@ -415,44 +429,6 @@
                   </div>
                 </div>
                 <div class="detail-right-actions">
-                  <a
-                    v-if="file.asset_product"
-                    href="javascript:void(0);"
-                    class="btn btn-icon"
-                    @click="$refs.cartDialog.toggleModel()"
-                  >
-                    <svg
-                      id="Capa_1"
-                      class="cart-icon"
-                      version="1.1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      xmlns:xlink="http://www.w3.org/1999/xlink"
-                      x="0px"
-                      y="0px"
-                      viewBox="0 0 512 512"
-                      xml:space="preserve"
-                    >
-                      <g>
-                        <g>
-                          <g>
-                            <path
-                              class="fill-color"
-                              d="M194.6,382.7c-35.6,0-64.6,29-64.6,64.6s29,64.6,64.6,64.6s64.6-29,64.6-64.6S230.2,382.7,194.6,382.7z M194.6,473.2c-14.3,0-25.9-11.6-25.9-25.9s11.6-25.9,25.9-25.9c14.3,0,25.9,11.6,25.9,25.9C220.4,461.6,208.9,473.2,194.6,473.2z"
-                            ></path>
-                            <path
-                              class="fill-color"
-                              d="M385.9,382.7c-35.6,0-64.6,29-64.6,64.6s29,64.6,64.6,64.6s64.6-29,64.6-64.6S421.6,382.7,385.9,382.7z M385.9,473.2c-14.3,0-25.9-11.6-25.9-25.9s11.6-25.9,25.9-25.9c14.3,0,25.9,11.6,25.9,25.9C411.8,461.6,400.2,473.2,385.9,473.2z"
-                            ></path>
-                            <path
-                              class="fill-color"
-                              d="M498.1,126.3c-3.7-4.6-9.3-7.3-15.2-7.3H143.3l-17.6-89.1c-1.5-7.8-7.7-13.9-15.5-15.3L32.6,0.3C22-1.6,12,5.4,10,15.9s5,20.6,15.6,22.6l64.6,11.8L147.1,338c1.8,9.1,9.8,15.6,19,15.6h271.5c9,0,16.9-6.2,18.9-15l45.3-195.9C503.1,136.9,501.8,130.9,498.1,126.3z M422.2,314.8H182.1L151,157.7h307.5L422.2,314.8z"
-                            ></path>
-                          </g>
-                        </g>
-                      </g>
-                    </svg>
-                    Add to cart
-                  </a>
                   <button
                     type="button"
                     class="btn btn-icon"
@@ -792,7 +768,7 @@ export default {
   data() {
     return {
       ui: {
-        tab: 'overview',
+        tab: '',
         loading: false,
         deleting: false,
         archiving: false,
@@ -931,6 +907,11 @@ export default {
     },
   },
   mounted() {
+    if (this.file.asset_product) {
+      this.ui.tab = 'shop'
+    } else {
+      this.ui.tab = 'overview'
+    }
     this.$setPageTitle(this.file.display_file_name + ' | ' + this.$brandName())
     this.getExif()
     if (this.isVideo) this.$nextTick(() => this.getThumbnail())
