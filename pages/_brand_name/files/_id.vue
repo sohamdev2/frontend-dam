@@ -471,7 +471,7 @@
                     Download
                   </button>
                   <div
-                    v-if="downloadableFormats.length && assetConversionAllowed"
+                    v-if="downloadableFormats.length"
                     class="dropdown convert-video"
                   >
                     <a
@@ -783,10 +783,6 @@ export default {
     }
   },
   computed: {
-    assetConversionAllowed() {
-      return !!this.$store.state.appData.subscriptionFeatures?.asset_conversion
-        ?.enable
-    },
     downloadableFormats() {
       const sortAscending = (a, b) => a.localeCompare(b)
       if (this.file.type === 'video')

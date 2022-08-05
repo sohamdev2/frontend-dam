@@ -1,10 +1,9 @@
-export default function ({ $auth, $getBrandName, error, redirect, store }) {
+export default function ({ $auth, $getBrandName, error, redirect }) {
   if (!$auth.loggedIn)
-    return redirect({
+    redirect({
       name: 'brand_name-login',
       params: {
         brand_name: $getBrandName(),
       },
     })
-  store.commit('appData/subscriptionFeatures', $auth.user.subscription_features)
 }

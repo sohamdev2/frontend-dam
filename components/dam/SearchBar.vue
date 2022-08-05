@@ -52,7 +52,7 @@
         </a>
       </div>
     </div>
-    <div class="refine-btn" v-if="advancedSearchAllowed">
+    <div class="refine-btn">
       <button
         type="button"
         class="btn btn-icon filter-icon"
@@ -416,10 +416,6 @@ export default {
     }
   },
   computed: {
-    advancedSearchAllowed() {
-      return !!this.$store.state.appData.subscriptionFeatures
-        ?.advance_search_functionality?.enable
-    },
     hashParam() {
       return (this.$route.hash || '').replace('#', '')
     },

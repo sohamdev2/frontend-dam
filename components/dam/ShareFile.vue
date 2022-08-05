@@ -120,79 +120,77 @@
             :collection="collection"
           />
         </div>
-        <template v-if="privateCustomizationAllowed">
-          <div
-            v-if="isPrivate.length && !shareMessage && !collection"
-            class="notes"
-          >
-            <p>
-              <strong>Note : </strong
-              ><span
-                v-if="
-                  isPrivate.length > 1 &&
-                  files.length > 1 &&
-                  isPrivate.length === files.length
-                "
-                >All the assets that you have selected are private assets, which
-                are available for internal use only.</span
-              >
-              <span
-                v-else-if="
-                  isPrivate.length > 1 ||
-                  (isPrivate.length === 1 && files.length > 1)
-                "
-                >Some of the assets that you have selected are private assets,
-                which are available for internal use only.</span
-              >
-              <span v-else-if="isPrivate.length === 1 && files.length === 1"
-                >Selected asset is a private asset, which is available for
-                internal use only.
-              </span>
-            </p>
-          </div>
-          <div
-            v-if="isFolderPrivate.length && !shareMessage && !collection"
-            class="notes"
-          >
-            <p>
-              <strong>Note : </strong>
-              <span
-                v-if="
-                  isFolderPrivate.length > 1 &&
-                  folders.length > 1 &&
-                  isFolderPrivate.length === folders.length
-                "
-                >All the selected folder contains private assets, which are
-                available for internal use only.</span
-              >
-              <span
-                v-else-if="
-                  isFolderPrivate.length > 1 ||
-                  (isFolderPrivate.length === 1 && folders.length > 1)
-                "
-                >Some of the folders that you have selected contains private
-                assets, which are available for internal use only.</span
-              >
-              <span
-                v-else-if="isFolderPrivate.length === 1 && folders.length === 1"
-                >Selected folder contains private assets, which are available
-                for internal use only.</span
-              >
-            </p>
-          </div>
-          <div v-if="shareMessage" class="notes">
-            <p>
-              <strong>Note : </strong>Selection contains private assets, which
-              are available for internal use only.
-            </p>
-          </div>
-          <div v-if="collection && isPrivate.length" class="notes">
-            <p>
-              <strong>Note : </strong>Collection contains private assets, which
-              are available for internal use only.
-            </p>
-          </div>
-        </template>
+        <div
+          v-if="isPrivate.length && !shareMessage && !collection"
+          class="notes"
+        >
+          <p>
+            <strong>Note : </strong
+            ><span
+              v-if="
+                isPrivate.length > 1 &&
+                files.length > 1 &&
+                isPrivate.length === files.length
+              "
+              >All the assets that you have selected are private assets, which
+              are available for internal use only.</span
+            >
+            <span
+              v-else-if="
+                isPrivate.length > 1 ||
+                (isPrivate.length === 1 && files.length > 1)
+              "
+              >Some of the assets that you have selected are private assets,
+              which are available for internal use only.</span
+            >
+            <span v-else-if="isPrivate.length === 1 && files.length === 1"
+              >Selected asset is a private asset, which is available for
+              internal use only.
+            </span>
+          </p>
+        </div>
+        <div
+          v-if="isFolderPrivate.length && !shareMessage && !collection"
+          class="notes"
+        >
+          <p>
+            <strong>Note : </strong>
+            <span
+              v-if="
+                isFolderPrivate.length > 1 &&
+                folders.length > 1 &&
+                isFolderPrivate.length === folders.length
+              "
+              >All the selected folder contains private assets, which are
+              available for internal use only.</span
+            >
+            <span
+              v-else-if="
+                isFolderPrivate.length > 1 ||
+                (isFolderPrivate.length === 1 && folders.length > 1)
+              "
+              >Some of the folders that you have selected contains private
+              assets, which are available for internal use only.</span
+            >
+            <span
+              v-else-if="isFolderPrivate.length === 1 && folders.length === 1"
+              >Selected folder contains private assets, which are available for
+              internal use only.</span
+            >
+          </p>
+        </div>
+        <div v-if="shareMessage" class="notes">
+          <p>
+            <strong>Note : </strong>Selection contains private assets, which are
+            available for internal use only.
+          </p>
+        </div>
+        <div v-if="collection && isPrivate.length" class="notes">
+          <p>
+            <strong>Note : </strong>Collection contains private assets, which
+            are available for internal use only.
+          </p>
+        </div>
       </template>
     </div>
     <div v-if="!shareUrl" class="modal-footer">
@@ -250,10 +248,6 @@ export default {
     //     })
     //   );
     // },
-    privateCustomizationAllowed() {
-      return !!this.$store.state.appData.subscriptionFeatures
-        ?.public_and_private_asset_customisation?.enable
-    },
     resourceType() {
       return this.files?.length && this.folders?.length
         ? 'assets'
