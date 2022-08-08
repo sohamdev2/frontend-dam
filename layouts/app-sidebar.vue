@@ -294,6 +294,7 @@
             </li>
           </ul>
           <nuxt-link
+            v-if="orderManagementAllowed"
             :to="{
               name: 'brand_name-store',
             }"

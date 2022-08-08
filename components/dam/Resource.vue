@@ -102,7 +102,11 @@
           </client-only>
 
           <div
-            v-if="file.asset_product && $route.name !== 'brand_name-store'"
+            v-if="
+              file.asset_product &&
+              $route.name !== 'brand_name-store' &&
+              orderManagementAllowed
+            "
             class="product-tag"
           >
             <svg
@@ -136,7 +140,9 @@
                 <span :inner-html.prop="file.file_type || '&dash;'"></span>
                 <span
                   v-if="
-                    file.asset_product && $route.name !== 'brand_name-store'
+                    file.asset_product &&
+                    $route.name !== 'brand_name-store' &&
+                    orderManagementAllowed
                   "
                   >Product</span
                 >
@@ -288,7 +294,7 @@
                         >Download</a
                       >
                     </li>
-                    <li v-if="file.asset_product">
+                    <li v-if="file.asset_product && orderManagementAllowed">
                       <a
                         class="dropdown-item"
                         href="javascript:void(0);"
@@ -589,7 +595,11 @@
             </div>
           </client-only>
           <div
-            v-if="file.asset_product && $route.name !== 'brand_name-store'"
+            v-if="
+              file.asset_product &&
+              $route.name !== 'brand_name-store' &&
+              orderManagementAllowed
+            "
             class="product-tag"
           >
             <svg
@@ -625,7 +635,9 @@
                 }}</span>
                 <span
                   v-if="
-                    file.asset_product && $route.name !== 'brand_name-store'
+                    file.asset_product &&
+                    $route.name !== 'brand_name-store' &&
+                    orderManagementAllowed
                   "
                   >Product</span
                 >
@@ -766,7 +778,7 @@
                         >Share</a
                       >
                     </li>
-                    <li v-if="file.asset_product">
+                    <li v-if="file.asset_product && orderManagementAllowed">
                       <a
                         class="dropdown-item"
                         href="javascript:void(0);"
@@ -960,7 +972,12 @@
       <div class="top-column">
         <div class="tags">
           <span :inner-html.prop="file.file_type || '&dash;'"></span>
-          <span v-if="file.asset_product && $route.name !== 'brand_name-store'"
+          <span
+            v-if="
+              file.asset_product &&
+              $route.name !== 'brand_name-store' &&
+              orderManagementAllowed
+            "
             >Product</span
           >
         </div>
@@ -1129,7 +1146,7 @@
                     Download
                   </a>
                 </li>
-                <li>
+                <li v-if="orderManagementAllowed">
                   <a
                     class="dropdown-item"
                     href="javascript:void(0);"
@@ -1357,6 +1374,9 @@ export default {
     }
   },
   computed: {
+    orderManagementAllowed() {
+      return !!this.$auth.user.subscription_features?.order_management?.enable
+    },
     hasZipCompressedImage() {
       return (
         this.file.file_type === 'zip' &&
@@ -1472,6 +1492,7 @@ export default {
   },
   methods: {
     addToCart() {
+      if (!this.orderManagementAllowed) return
       this.$emit('emitCart', true)
     },
     onExpandAssetsCount() {

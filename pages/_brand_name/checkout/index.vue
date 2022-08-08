@@ -396,7 +396,7 @@ import { email, required } from 'vuelidate/lib/validators'
 const checkNull = (value) => value !== 0 && value !== '' && value !== null
 export default {
   layout: 'app-sidebar',
-  middleware: ['check-url', 'check-auth'],
+  middleware: ['check-url', 'check-auth', 'can-access-cart-store'],
   components: {
     // ContentLoader,
   },
@@ -430,15 +430,22 @@ export default {
       selectedAddressOption: '',
     }
   },
+  computed: {
+    orderManagementAllowed() {
+      return !!this.$auth.user.subscription_features?.order_management?.enable
+    },
+  },
   watch: {
     selectedAddressOption() {
       this.getAddress()
     },
   },
   created() {
+    if (!this.orderManagementAllowed) return
     this.getCartList()
   },
   mounted() {
+    if (!this.orderManagementAllowed) return
     this.getAddressList()
     this.$store.dispatch('appData/fetchFolders')
     this.getUserInfo()

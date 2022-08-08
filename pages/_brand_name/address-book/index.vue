@@ -328,7 +328,7 @@
 import { ContentLoader } from 'vue-content-loader'
 export default {
   layout: 'app-min-no-search',
-  middleware: ['check-auth', 'can-access'],
+  middleware: ['check-auth', 'can-access', 'can-access-cart-store'],
   components: {
     ContentLoader,
   },
@@ -344,6 +344,9 @@ export default {
     }
   },
   computed: {
+    orderManagementAllowed() {
+      return !!this.$auth.user.subscription_features?.order_management?.enable
+    },
     user() {
       return this.$auth.user
     },
@@ -395,6 +398,7 @@ export default {
         })
     },
     removeCartItem() {
+      if (!this.orderManagementAllowed) return
       this.$axios
         .$post('digital/user-address/delete-address', {
           address_id: this.deletionId,
