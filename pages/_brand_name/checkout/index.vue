@@ -432,7 +432,8 @@ export default {
   },
   computed: {
     orderManagementAllowed() {
-      return !!this.$auth.user.subscription_features?.order_management?.enable
+      return !!this.$auth.user.subscription_features?.asset_order_management
+        ?.enable
     },
   },
   watch: {
