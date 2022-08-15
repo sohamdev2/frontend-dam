@@ -319,7 +319,7 @@ import SelectionBar from '~/components/dam/SelectionBar'
 // import ErrorPage from '~/pages/404.vue'
 export default {
   layout: 'app-sidebar',
-  middleware: ['check-url', 'check-auth'],
+  middleware: ['check-url', 'check-auth', 'can-access-cart-store'],
   components: {
     ContentLoader,
     // ListingHeader,

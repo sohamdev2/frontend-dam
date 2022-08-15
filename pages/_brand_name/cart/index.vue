@@ -396,7 +396,7 @@ import { ContentLoader } from 'vue-content-loader'
 import fileType from '~/mixins/fileType'
 export default {
   layout: 'app-sidebar',
-  middleware: ['check-url', 'check-auth'],
+  middleware: ['check-url', 'check-auth', 'can-access-cart-store'],
   components: {
     ContentLoader,
   },
@@ -409,6 +409,10 @@ export default {
     }
   },
   computed: {
+    orderManagementAllowed() {
+      return !!this.$auth.user.subscription_features?.asset_order_management
+        ?.enable
+    },
     getTotalPrice() {
       return this.cartList.reduce((prev, current) => {
         return parseFloat(
@@ -432,6 +436,7 @@ export default {
     },
   },
   mounted() {
+    if (!this.orderManagementAllowed) return
     this.$store.dispatch('product/fetchBadgeCount')
     this.$store.dispatch('appData/fetchFolders')
     this.getCartList()
@@ -442,7 +447,6 @@ export default {
       this.showDeleteDialog = true
     },
     getPrice(val) {
-      debugger
       let price = ''
       if (!val) return '-'
       if (val) {
