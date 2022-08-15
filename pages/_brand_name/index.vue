@@ -233,7 +233,11 @@
         type="folder"
       />
     </client-only>
-    <AddToCartModal v-if="selectedFile" ref="cartDialog" :file="selectedFile" />
+    <AddToCartModal
+      v-if="selectedFile && orderManagementAllowed"
+      ref="cartDialog"
+      :file="selectedFile"
+    />
   </div>
 </template>
 
@@ -253,6 +257,10 @@ export default {
     }
   },
   computed: {
+    orderManagementAllowed() {
+      return !!this.$auth.user.subscription_features?.asset_order_management
+        ?.enable
+    },
     showTrending() {
       return this.$auth.user.settings?.is_trading
     },

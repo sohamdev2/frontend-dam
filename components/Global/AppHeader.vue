@@ -136,7 +136,7 @@
           </ul>
         </div>
       </div>
-      <div class="cart-list">
+      <div v-if="orderManagementAllowed" class="cart-list">
         <nuxt-link
           :to="{
             name: 'brand_name-cart',
@@ -541,6 +541,10 @@ export default {
     }
   },
   computed: {
+    orderManagementAllowed() {
+      return !!this.$auth.user.subscription_features?.asset_order_management
+        ?.enable
+    },
     user() {
       return this.$auth.user
     },
