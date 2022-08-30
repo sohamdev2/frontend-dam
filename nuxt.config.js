@@ -257,7 +257,6 @@ export default {
       next()
     },
     '~/middleware/url-check.js',
-    { path: '/convert', handler: '~/api-middlewares/media-converter' },
   ],
   build: {
     extend(config, { isDev, isClient }) {
