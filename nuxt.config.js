@@ -256,7 +256,7 @@ export default {
       }
       next()
     },
-    '~/middleware/url-check.js',
+    // '~/middleware/url-check.js',
   ],
   build: {
     extend(config, { isDev, isClient }) {
